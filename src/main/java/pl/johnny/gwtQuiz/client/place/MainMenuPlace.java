@@ -4,13 +4,18 @@ import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceTokenizer;
 
 //public class HelloPlace extends ActivityPlace<HelloActivity>
-public class HelloPlace extends Place
+public class MainMenuPlace extends Place
 {
 	private String helloName;
 	
-	public HelloPlace(String token)
+	public MainMenuPlace(String token)
 	{
 		this.helloName = token;
+	}
+	
+	public MainMenuPlace()
+	{
+		
 	}
 
 	public String getHelloName()
@@ -18,19 +23,19 @@ public class HelloPlace extends Place
 		return helloName;
 	}
 
-	public static class Tokenizer implements PlaceTokenizer<HelloPlace>
+	public static class Tokenizer implements PlaceTokenizer<MainMenuPlace>
 	{
 
 		@Override
-		public String getToken(HelloPlace place)
+		public String getToken(MainMenuPlace place)
 		{
 			return place.getHelloName();
 		}
 
 		@Override
-		public HelloPlace getPlace(String token)
+		public MainMenuPlace getPlace(String token)
 		{
-			return new HelloPlace(token);
+			return new MainMenuPlace(token);
 		}
 
 	}

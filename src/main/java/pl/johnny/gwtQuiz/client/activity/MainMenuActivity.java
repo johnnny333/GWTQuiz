@@ -1,23 +1,28 @@
 package pl.johnny.gwtQuiz.client.activity;
 
 import pl.johnny.gwtQuiz.client.ClientFactory;
-import pl.johnny.gwtQuiz.client.place.HelloPlace;
-import pl.johnny.gwtQuiz.client.ui.HelloView;
+import pl.johnny.gwtQuiz.client.event.NewQuestionEvent;
+import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
+import pl.johnny.gwtQuiz.client.place.QuestionPlace;
+import pl.johnny.gwtQuiz.client.ui.MainMenuView;
 
 import com.google.gwt.activity.shared.AbstractActivity;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
-public class HelloActivity extends AbstractActivity implements
-		HelloView.Presenter {
+public class MainMenuActivity extends AbstractActivity implements
+		MainMenuView.Presenter {
 	// Used to obtain views, eventBus, placeController
 	// Alternatively, could be injected via GIN
 	private ClientFactory clientFactory;
 	// Name that will be appended to "Hello,"
 	private String name;
+	private EventBus eventBus;
+	private MainMenuView mainMenuView;
 
-	public HelloActivity(HelloPlace place, ClientFactory clientFactory) {
+	public MainMenuActivity(MainMenuPlace place, ClientFactory clientFactory) {
 		this.name = place.getHelloName();
 		this.clientFactory = clientFactory;
 	}
@@ -27,10 +32,17 @@ public class HelloActivity extends AbstractActivity implements
 	 */
 	@Override
 	public void start(AcceptsOneWidget containerWidget, EventBus eventBus) {
-		HelloView helloView = clientFactory.getHelloView();
-		helloView.setName(name);
+		MainMenuView helloView = clientFactory.getMainMenuView();
+//		helloView.setName("sfsd1");
 		helloView.setPresenter(this);
 		containerWidget.setWidget(helloView.asWidget());
+		this.eventBus = eventBus;
+	}
+	
+	@Override
+	public void onNewGameButtonClicked(String string) {
+		goTo(new QuestionPlace(string));
+		eventBus.fireEvent(new NewQuestionEvent(string));		
 	}
 
 	/**
@@ -38,7 +50,8 @@ public class HelloActivity extends AbstractActivity implements
 	 */
 	@Override
 	public String mayStop() {
-		return "Please hold on. This activity is stopping.";
+//		return "The quiz is about to start!";
+		return null;
 	}
 
 	/**

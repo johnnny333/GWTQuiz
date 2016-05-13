@@ -1,9 +1,9 @@
 package pl.johnny.gwtQuiz.client;
 
-import pl.johnny.gwtQuiz.client.ui.GoodbyeView;
-import pl.johnny.gwtQuiz.client.ui.GoodbyeViewImpl;
-import pl.johnny.gwtQuiz.client.ui.HelloView;
-import pl.johnny.gwtQuiz.client.ui.HelloViewImpl;
+import pl.johnny.gwtQuiz.client.ui.QuestionView;
+import pl.johnny.gwtQuiz.client.ui.QuestionViewImpl;
+import pl.johnny.gwtQuiz.client.ui.MainMenuView;
+import pl.johnny.gwtQuiz.client.ui.MainMenuViewImpl;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
@@ -13,8 +13,8 @@ public class ClientFactoryImpl implements ClientFactory
 {
 	private static final EventBus eventBus = new SimpleEventBus();
 	private static final PlaceController placeController = new PlaceController(eventBus);
-	private static final HelloView helloView = new HelloViewImpl();
-	private static final GoodbyeView goodbyeView = new GoodbyeViewImpl();
+	private static final MainMenuView mainMenuView = new MainMenuViewImpl();
+	private static final QuestionView questionView = new QuestionViewImpl();
 
 	@Override
 	public EventBus getEventBus()
@@ -23,9 +23,9 @@ public class ClientFactoryImpl implements ClientFactory
 	}
 
 	@Override
-	public HelloView getHelloView()
+	public MainMenuView getMainMenuView()
 	{
-		return helloView;
+		return mainMenuView;
 	}
 
 	@Override
@@ -35,9 +35,9 @@ public class ClientFactoryImpl implements ClientFactory
 	}
 
 	@Override
-	public GoodbyeView getGoodbyeView()
+	public QuestionView getQuestionView()
 	{
-		return goodbyeView;
+		return questionView;
 	}
 
 }

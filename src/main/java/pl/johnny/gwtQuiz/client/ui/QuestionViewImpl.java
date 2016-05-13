@@ -5,13 +5,15 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.SimplePanel;
 
-public class GoodbyeViewImpl extends Composite implements GoodbyeView
+import pl.johnny.gwtQuiz.client.ui.MainMenuView.Presenter;
+
+public class QuestionViewImpl extends Composite implements QuestionView
 {
 
 	SimplePanel viewPanel = new SimplePanel(); 
 	Element nameSpan = DOM.createSpan();
 
-	public GoodbyeViewImpl()
+	public QuestionViewImpl()
 	{
 		viewPanel.getElement().appendChild(nameSpan);
 		initWidget(viewPanel);
@@ -22,5 +24,15 @@ public class GoodbyeViewImpl extends Composite implements GoodbyeView
 	{
 		nameSpan.setInnerText("Good-bye, " + name);
 	}
-	
+
+	@Override
+	public void setPresenter(Presenter listener) {
+		
+	}
+
+	@Override
+	public Boolean getName() {
+		if (nameSpan.getInnerText() == "") return null;
+		return true;
+	}
 }

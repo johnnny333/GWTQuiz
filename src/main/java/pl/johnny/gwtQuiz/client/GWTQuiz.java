@@ -2,16 +2,17 @@ package pl.johnny.gwtQuiz.client;
 
 import pl.johnny.gwtQuiz.client.mvp.AppActivityMapper;
 import pl.johnny.gwtQuiz.client.mvp.AppPlaceHistoryMapper;
-import pl.johnny.gwtQuiz.client.place.HelloPlace;
+import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
 
 import com.google.gwt.activity.shared.ActivityManager;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.shared.EventBus;
+import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 
@@ -20,7 +21,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
  */
 public class GWTQuiz implements EntryPoint
 {
-	private Place defaultPlace = new HelloPlace("World!");
+	private Place defaultPlace = new MainMenuPlace("World!!!");
 	private SimplePanel appWidget = new SimplePanel();
 
 	/**
