@@ -1,14 +1,17 @@
 package pl.johnny.gwtQuiz.client.activity;
 
 import pl.johnny.gwtQuiz.client.ClientFactory;
+import pl.johnny.gwtQuiz.client.QuestionsServiceAsync;
 import pl.johnny.gwtQuiz.client.event.NewQuestionEvent;
 import pl.johnny.gwtQuiz.client.place.QuestionPlace;
 import pl.johnny.gwtQuiz.client.ui.QuestionView;
+import pl.johnny.gwtQuiz.shared.Question;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 public class QuestionActivity extends AbstractActivity implements QuestionView.Presenter {
@@ -31,7 +34,24 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 		this.eventBus = eventBus;
 //		questionView.setPresenter(this);
 //		questionView.setName("eloooo");
-	
+		
+		//RPC 
+		QuestionsServiceAsync questionService = clientFactory.getContactService();
+		questionService.getQuestion(1, new AsyncCallback<Question>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				GWT.log("fail RPC! " + caught.getMessage());
+				
+			}
+
+			@Override
+			public void onSuccess(Question result) {
+				GWT.log("RPC success! " + result);
+				
+			}
+			
+		});
 //		GWT.log("" + clientFactory.getMainMenuView());
 		
 		handler = new NewQuestionEvent.Handler() {
@@ -40,6 +60,8 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 			public void onNewQuestion(NewQuestionEvent event) {
 				questionView.setName(event.getString());
 				GWT.log("on handler!!!" + event);
+				
+				
 			}
 		};
 		
