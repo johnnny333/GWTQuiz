@@ -7,13 +7,13 @@
 
   <!-- Servlets -->
   <servlet>
-    <servlet-name>questionServiceImpl</servlet-name>
+    <servlet-name>questionServlet</servlet-name>
     <servlet-class>pl.johnny.gwtQuiz.server.QuestionServiceImpl</servlet-class>
   </servlet>
   
   <servlet-mapping>
-    <servlet-name>questionServiceImpl</servlet-name>
-    <url-pattern>/gwtQuiz/questionsService</url-pattern>
+    <servlet-name>questionServlet</servlet-name>
+    <url-pattern>/gwtQuiz/questionService</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->

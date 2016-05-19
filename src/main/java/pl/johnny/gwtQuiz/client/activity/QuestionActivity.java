@@ -1,11 +1,10 @@
 package pl.johnny.gwtQuiz.client.activity;
 
 import pl.johnny.gwtQuiz.client.ClientFactory;
-import pl.johnny.gwtQuiz.client.QuestionsServiceAsync;
+import pl.johnny.gwtQuiz.client.QuestionServiceAsync;
 import pl.johnny.gwtQuiz.client.event.NewQuestionEvent;
 import pl.johnny.gwtQuiz.client.place.QuestionPlace;
 import pl.johnny.gwtQuiz.client.ui.QuestionView;
-import pl.johnny.gwtQuiz.shared.Question;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.core.shared.GWT;
@@ -36,8 +35,8 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 //		questionView.setName("eloooo");
 		
 		//RPC 
-		QuestionsServiceAsync questionService = clientFactory.getContactService();
-		questionService.getQuestion(1, new AsyncCallback<Question>() {
+		QuestionServiceAsync questionService = clientFactory.getContactService();
+		questionService.getQuestion(new AsyncCallback<String>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -46,7 +45,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 			}
 
 			@Override
-			public void onSuccess(Question result) {
+			public void onSuccess(String result) {
 				GWT.log("RPC success! " + result);
 				
 			}

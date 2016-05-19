@@ -16,7 +16,7 @@ public class ClientFactoryImpl implements ClientFactory
 	private static final PlaceController placeController = new PlaceController(eventBus);
 	private static final MainMenuView mainMenuView = new MainMenuViewImpl();
 	private static final QuestionView questionView = new QuestionViewImpl();
-	private final QuestionsServiceAsync questionService = GWT.create(QuestionsService.class);
+	private final QuestionServiceAsync questionService = GWT.create(QuestionService.class);
 
 
 	@Override
@@ -44,7 +44,7 @@ public class ClientFactoryImpl implements ClientFactory
 	}
 
 	@Override
-	public QuestionsServiceAsync getContactService() {
+	public QuestionServiceAsync getContactService() {
 		return questionService;
 	}
 

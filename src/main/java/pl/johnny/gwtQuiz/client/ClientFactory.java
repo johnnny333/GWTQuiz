@@ -12,5 +12,5 @@ public interface ClientFactory
 	PlaceController getPlaceController();
 	MainMenuView getMainMenuView();
 	QuestionView getQuestionView();
-	QuestionsServiceAsync getContactService();
+	QuestionServiceAsync getContactService();
 }

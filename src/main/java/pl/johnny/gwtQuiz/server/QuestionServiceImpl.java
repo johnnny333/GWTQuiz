@@ -1,15 +1,12 @@
 package pl.johnny.gwtQuiz.server;
 
-import java.util.HashMap;
-
-import pl.johnny.gwtQuiz.client.QuestionsService;
-import pl.johnny.gwtQuiz.shared.Question;
+import pl.johnny.gwtQuiz.client.QuestionService;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 @SuppressWarnings("serial")
 public class QuestionServiceImpl extends RemoteServiceServlet implements
-    QuestionsService{
+    QuestionService{
 
   private static final String[] contactsFirstNameData = new String[] {
       "Hollie", "Emerson", "Healy", "Brigitte"};
@@ -31,25 +28,25 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements
 //      "user31065@example.com", "ftsgeolbx@example.com"};
   
       
-  private final HashMap<Integer, Question> questions = new HashMap<Integer, Question>();
+//  private final HashMap<Integer, String> questions = new HashMap<Integer, String>();
 
   public QuestionServiceImpl() {
-    initContacts();
+//    initContacts();
   }
   
   private void initContacts() {
     // TODO: Create a real UID for each contact
     //
-    for (int i = 0; i < contactsFirstNameData.length && i < contactsLastNameData.length;) {
-    	Question question = new Question(contactsFirstNameData[i], contactsLastNameData[i]);
-      questions.put(i, question); 
-    }
+//    for (int i = 0; i < contactsFirstNameData.length && i < contactsLastNameData.length;) {
+//    	Question question = new Question(contactsFirstNameData[i], contactsLastNameData[i]);
+//      questions.put(1, "sdfdsf"); 
+//    }
   }
 
 @Override
-public Question getQuestion(Integer id) {
-	System.out.println("" + questions);
-	return questions.get(id);
+public String getQuestion() {
+//	System.out.println("" + questions);
+	return "Hello";
 }
   
 //  @Override
