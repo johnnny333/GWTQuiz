@@ -1,13 +1,17 @@
 package pl.johnny.gwtQuiz.client;
 
+import java.util.ArrayList;
+
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+
+import pl.johnny.gwtQuiz.shared.Question;
 
 @RemoteServiceRelativePath("questionService")
 public interface QuestionService extends RemoteService {
 
-//	String getQuestion(Integer id);
+	Question getQuestionId(Integer i);
 
-	String getQuestion();
+	ArrayList<Question> getQuestion();
 	
 }

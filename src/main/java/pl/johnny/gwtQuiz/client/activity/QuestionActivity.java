@@ -1,10 +1,6 @@
 package pl.johnny.gwtQuiz.client.activity;
 
-import pl.johnny.gwtQuiz.client.ClientFactory;
-import pl.johnny.gwtQuiz.client.QuestionServiceAsync;
-import pl.johnny.gwtQuiz.client.event.NewQuestionEvent;
-import pl.johnny.gwtQuiz.client.place.QuestionPlace;
-import pl.johnny.gwtQuiz.client.ui.QuestionView;
+import java.util.ArrayList;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.core.shared.GWT;
@@ -12,6 +8,13 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+
+import pl.johnny.gwtQuiz.client.ClientFactory;
+import pl.johnny.gwtQuiz.client.QuestionServiceAsync;
+import pl.johnny.gwtQuiz.client.event.NewQuestionEvent;
+import pl.johnny.gwtQuiz.client.place.QuestionPlace;
+import pl.johnny.gwtQuiz.client.ui.QuestionView;
+import pl.johnny.gwtQuiz.shared.Question;
 
 public class QuestionActivity extends AbstractActivity implements QuestionView.Presenter {
 	private final ClientFactory clientFactory;
@@ -31,28 +34,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 	public void start(AcceptsOneWidget containerWidget, EventBus eventBus) {
 		questionView = clientFactory.getQuestionView();
 		this.eventBus = eventBus;
-//		questionView.setPresenter(this);
-//		questionView.setName("eloooo");
-		
-		//RPC 
-		QuestionServiceAsync questionService = clientFactory.getContactService();
-		questionService.getQuestion(new AsyncCallback<String>() {
-
-			@Override
-			public void onFailure(Throwable caught) {
-				GWT.log("fail RPC! " + caught.getMessage());
 				
-			}
-
-			@Override
-			public void onSuccess(String result) {
-				GWT.log("RPC success! " + result);
-				
-			}
-			
-		});
-//		GWT.log("" + clientFactory.getMainMenuView());
-		
 		handler = new NewQuestionEvent.Handler() {
 			
 			@Override
@@ -60,7 +42,25 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 				questionView.setName(event.getString());
 				GWT.log("on handler!!!" + event);
 				
-				
+				//RPC 
+				QuestionServiceAsync questionService = clientFactory.getContactService();
+				questionService.getQuestion(new AsyncCallback<ArrayList<Question>>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						GWT.log("fail RPC! " + caught.getMessage());
+						
+					}
+
+					@Override
+					public void onSuccess(ArrayList<Question> result) {
+						GWT.log("Question " + result.get(0).getQuestion());
+						GWT.log("answer " + result.get(0).getAnswers());
+						String[] answersArr = result.get(0).getAnswers();
+						
+					}
+					
+				});
 			}
 		};
 		

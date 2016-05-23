@@ -7,17 +7,18 @@ public class Question implements IsSerializable {
 	
 	public String id;
 	public String question;
-	public String answers;
+	public String[] answers;
 
 	public Question(){}
 	
-	public Question(String question, String contactsLastNameData) {
+	public Question(String question, String[] contactsLastNameData) {
 //		this.id = id;
 		this.question = question;
 		this.answers = contactsLastNameData;
 	}
 
-//	public String getId() { return id; }
+	public String getQuestion() { return question; }
+	public String[] getAnswers() { return answers; }
 
 	
 }
