@@ -4,6 +4,7 @@ import pl.johnny.gwtQuiz.client.ui.MainMenuView;
 import pl.johnny.gwtQuiz.client.ui.MainMenuViewImpl;
 import pl.johnny.gwtQuiz.client.ui.QuestionView;
 import pl.johnny.gwtQuiz.client.ui.QuestionViewImpl;
+import pl.johnny.gwtQuiz.client.ui.QuestionViewImpl;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;

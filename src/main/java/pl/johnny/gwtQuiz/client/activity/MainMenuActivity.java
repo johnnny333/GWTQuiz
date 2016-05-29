@@ -1,16 +1,15 @@
 package pl.johnny.gwtQuiz.client.activity;
 
+import com.google.gwt.activity.shared.AbstractActivity;
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.place.shared.Place;
+import com.google.gwt.user.client.ui.AcceptsOneWidget;
+
 import pl.johnny.gwtQuiz.client.ClientFactory;
 import pl.johnny.gwtQuiz.client.event.NewQuestionEvent;
 import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
 import pl.johnny.gwtQuiz.client.place.QuestionPlace;
 import pl.johnny.gwtQuiz.client.ui.MainMenuView;
-
-import com.google.gwt.activity.shared.AbstractActivity;
-import com.google.gwt.core.shared.GWT;
-import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.place.shared.Place;
-import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 public class MainMenuActivity extends AbstractActivity implements
 		MainMenuView.Presenter {
@@ -33,7 +32,6 @@ public class MainMenuActivity extends AbstractActivity implements
 	@Override
 	public void start(AcceptsOneWidget containerWidget, EventBus eventBus) {
 		MainMenuView helloView = clientFactory.getMainMenuView();
-//		helloView.setName("sfsd1");
 		helloView.setPresenter(this);
 		containerWidget.setWidget(helloView.asWidget());
 		this.eventBus = eventBus;

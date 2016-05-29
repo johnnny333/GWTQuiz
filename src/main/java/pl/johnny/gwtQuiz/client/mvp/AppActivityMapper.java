@@ -2,10 +2,9 @@ package pl.johnny.gwtQuiz.client.mvp;
 
 import pl.johnny.gwtQuiz.client.ClientFactory;
 import pl.johnny.gwtQuiz.client.activity.QuestionActivity;
-import pl.johnny.gwtQuiz.client.activity.MainMenuActivity;
-import pl.johnny.gwtQuiz.client.place.QuestionPlace;
 import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
-
+import pl.johnny.gwtQuiz.client.place.QuestionPlace;
+import pl.johnny.gwtQuiz.client.activity.MainMenuActivity;
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;

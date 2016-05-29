@@ -11,24 +11,25 @@ import pl.johnny.gwtQuiz.shared.Question;
 public class QuestionServiceImpl extends RemoteServiceServlet implements
     QuestionService{
 
-  private static final String[] contactsFirstNameData = new String[] {
-      "Hollie", "Emerson", "Healy", "Brigitte"};
+  private static final String[] questionsData = new String[] {
+      "Ile strun ma typowa gitara elektryczna?",
+      "Jak na nazwisko ma Barack?", 
+      "W jakim województwie leży Jurata?",
+      "W którym roku wydano Nevermind Nirvany?"};
   
-  private final String[][] contactsLastNameData = new String[][] {
-		  {"Voss", "Milton", "Colette", "Cobb", "Lockhart", "Engle"},
-		  {"Pacheco", "Blake", "Horton", "Daniel", "Childers", "Starnes"},
-		  {"Carson", "Kelchner", "Hutchinson", "Underwood", "Rush", "Bouchard"}, 
-		  {"Louis", "Andrews", "English", "Snedden"}};
+  private static final String[][] answersData = new String[][] {
+		  {"5", "6", "4", "7"},
+		  {"Pacheco", "Blake", "Horton", "Obama"},
+		  {"Mazowieckim", "Śląskim", "Pomorskim", "Łódzkim"}, 
+		  {"1994", "2001", "1984", "2007"}};
   
-//  private final String[] contactsEmailData = new String[] {
-//      "mark@example.com", "hollie@example.com", "boticario@example.com",
-//      "emerson@example.com", "healy@example.com", "brigitte@example.com",
-//      "elba@example.com", "claudio@example.com", "dena@example.com",
-//      "brasilsp@example.com", "parker@example.com", "derbvktqsr@example.com",
-//      "qetlyxxogg@example.com", "antenas_sul@example.com",
-//      "cblake@example.com", "gailh@example.com", "orville@example.com",
-//      "post_master@example.com", "rchilders@example.com", "buster@example.com",
-//      "user31065@example.com", "ftsgeolbx@example.com"};
+  private static String[] correctAnswersData = new String[] {
+      answersData[0][1],
+      answersData[1][3],
+      answersData[2][2],
+      answersData[3][0]
+//		  "1","2","3","4"
+		  };
   
       
   private final ArrayList<Question> questions = new ArrayList<Question>();
@@ -38,23 +39,15 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements
   }
   
   private void initContacts() {
-    // TODO: Create a real UID for each contact
-    //
-    for (int i = 0; i < contactsFirstNameData.length ; ++i) {
-    	Question question = new Question(contactsFirstNameData[i], contactsLastNameData[i]);
+    for (int i = 0; i < questionsData.length ; ++i) {
+    	Question question = new Question(questionsData[i], answersData[i], correctAnswersData[i]);
       questions.add(question); 
     }
   }
 
 @Override
 public ArrayList<Question> getQuestion() {
-
 	return questions;
-}
-
-@Override
-public Question getQuestionId(Integer i) {
-	return questions.get(i);
 }
   
 //  @Override

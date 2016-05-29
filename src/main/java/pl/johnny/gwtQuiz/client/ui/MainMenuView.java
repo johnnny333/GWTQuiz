@@ -18,6 +18,5 @@ public interface MainMenuView extends IsWidget
 	{
 		void goTo(Place place);
 		void onNewGameButtonClicked(String string);
-//		void onNewGameButtonClicked();
 	}
 }
