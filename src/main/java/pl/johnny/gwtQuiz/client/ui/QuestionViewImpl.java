@@ -59,10 +59,10 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	@UiHandler(value={"btn0", "btn1", "btn2","btn3"})
 	void onAnswerBtnClicked(ClickEvent e) {	
 		Button btn = (Button) e.getSource();
-		GWT.log("Button text on View " + btn.getText());
+//		GWT.log("Button text on View " + btn.getText());
 		
-//		if (listener != null) {
+		if (listener != null) {
 			listener.onAnswerBtnClicked(btn.getText());
-//		}
+		}
 	}
 }

@@ -1,6 +1,5 @@
 package pl.johnny.gwtQuiz.client.event;
 
-import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 
@@ -11,10 +10,10 @@ public class NewQuestionEvent extends GwtEvent<NewQuestionEvent.Handler> {
 	}
 
 	public static final Type<NewQuestionEvent.Handler> TYPE = new Type<NewQuestionEvent.Handler>();
-	private final String string;
+	private final int currentQuestion;
 
-	public NewQuestionEvent(String string) {
-		this.string = string;	
+	public NewQuestionEvent(int currentQuestion) {
+		this.currentQuestion = currentQuestion;	
 		}
 
 	@Override
@@ -22,8 +21,13 @@ public class NewQuestionEvent extends GwtEvent<NewQuestionEvent.Handler> {
 		return TYPE;
 	}
 	
-	public String getString() {
-		return string;
+	/**
+	 * Get current question.
+	 * @return integer which corresponds to the current question,</br>
+	 * eg: int 0 = first question in quiz.
+	 */
+	public int getCurrentQuestionInt() {
+		return currentQuestion;
 	}
 
 	@Override

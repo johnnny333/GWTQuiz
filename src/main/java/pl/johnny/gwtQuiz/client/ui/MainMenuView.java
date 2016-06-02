@@ -17,6 +17,7 @@ public interface MainMenuView extends IsWidget
 	public interface Presenter
 	{
 		void goTo(Place place);
-		void onNewGameButtonClicked(String string);
+//		void onNewGameButtonClicked(String string);
+		void onNewGameButtonClicked(int currentQuestion);
 	}
 }

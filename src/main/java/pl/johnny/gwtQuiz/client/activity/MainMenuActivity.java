@@ -38,9 +38,9 @@ public class MainMenuActivity extends AbstractActivity implements
 	}
 	
 	@Override
-	public void onNewGameButtonClicked(String string) {
-		goTo(new QuestionPlace(string));
-		eventBus.fireEvent(new NewQuestionEvent(string));		
+	public void onNewGameButtonClicked(int currentQuestion) {
+		goTo(new QuestionPlace("Quiz!"));
+		eventBus.fireEvent(new NewQuestionEvent(currentQuestion));
 	}
 
 	/**

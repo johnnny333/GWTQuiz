@@ -34,7 +34,7 @@ public class MainMenuViewImpl extends Composite implements MainMenuView {
 	@UiHandler("newGameButton")
 	void onNewGameButtonClicked(ClickEvent e) {
 		if (listener != null) {
-			listener.onNewGameButtonClicked("asd");
+			listener.onNewGameButtonClicked(0);
 		}
 	}
 
