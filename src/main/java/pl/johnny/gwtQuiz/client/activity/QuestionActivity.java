@@ -2,7 +2,6 @@ package pl.johnny.gwtQuiz.client.activity;
 
 import java.util.ArrayList;
 
-import com.gargoylesoftware.htmlunit.javascript.host.Window;
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
@@ -25,23 +24,15 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 	private final String token;
 	private final Place place;
 	/** Keeps current question int given from event, so other methods could use it to keep state. */
-	public int currentQuestionInt;
+	private int currentQuestionInt;
 	/** Keeps whole ArrayList&lt;Question> from server in client to avoid RPC calling. */   
-	public ArrayList<Question> questionsArrayList;
+	private ArrayList<Question> questionsArrayList;
 
 	public QuestionActivity(QuestionPlace place, ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
 		token = place.getGoodbyeName();
 		this.place = place;
-	}
-
-	@Override
-	public void start(AcceptsOneWidget containerWidget, final EventBus eventBus) {
-		this.eventBus = eventBus;
-		questionView = clientFactory.getQuestionView();
-		questionView.setPresenter(this);
-		containerWidget.setWidget(questionView.asWidget());
-
+		
 		/** Download questions from server,save it in a client and show 1st question */
 		QuestionServiceAsync questionService = clientFactory.getContactService();
 		questionService.getQuestion(new AsyncCallback<ArrayList<Question>>() {
@@ -57,7 +48,15 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 				eventBus.fireEvent(new NewQuestionEvent(currentQuestionInt));
 			}
 		});
-		
+	}
+
+	@Override
+	public void start(AcceptsOneWidget containerWidget, final EventBus eventBus) {
+		this.eventBus = eventBus;
+		questionView = clientFactory.getQuestionView();
+		questionView.setPresenter(this);
+		containerWidget.setWidget(questionView.asWidget());
+
 		/** Global handler for question showing. Event argument holds question int */
 		handler = new NewQuestionEvent.Handler() {
 			
@@ -65,6 +64,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 			public void onNewQuestion(NewQuestionEvent event) {
 				GWT.log("on handler!!!: " + event.getCurrentQuestionInt());
 				GWT.log("questionsArrayList state: " + questionsArrayList);
+				GWT.log("currentQuestionInt state: " + currentQuestionInt);
 				currentQuestionInt = event.getCurrentQuestionInt();
 				
 				if(questionsArrayList != null){
@@ -97,7 +97,12 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 	public void onAnswerBtnClicked(final String clkdBtnTxt) {
 		if( clkdBtnTxt.equals(questionsArrayList.get(currentQuestionInt).getCorrectAnsw()) ){
 			GWT.log("good answer!");
-			eventBus.fireEvent(new NewQuestionEvent(currentQuestionInt+1));
+			if(questionsArrayList.size() -1 == currentQuestionInt){
+				GWT.log("end of quiz!");
+				return;
+			}
+			GWT.log("size:" + questionsArrayList.size() );
+			eventBus.fireEvent(new NewQuestionEvent(currentQuestionInt + 1));
 		}else{
 			GWT.log("bad answer!");
 		}		
