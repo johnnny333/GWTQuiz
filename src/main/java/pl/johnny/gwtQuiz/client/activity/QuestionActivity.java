@@ -30,6 +30,8 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 
 	public QuestionActivity(QuestionPlace place, ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
+		questionView = clientFactory.getQuestionView();
+		questionView.setPresenter(this);
 		token = place.getGoodbyeName();
 		this.place = place;
 		
@@ -53,8 +55,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 	@Override
 	public void start(AcceptsOneWidget containerWidget, final EventBus eventBus) {
 		this.eventBus = eventBus;
-		questionView = clientFactory.getQuestionView();
-		questionView.setPresenter(this);
+		
 		containerWidget.setWidget(questionView.asWidget());
 
 		/** Global handler for question showing. Event argument holds question int */
@@ -99,6 +100,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 			GWT.log("good answer!");
 			if(questionsArrayList.size() -1 == currentQuestionInt){
 				GWT.log("end of quiz!");
+				questionView.showModal();
 				return;
 			}
 			GWT.log("size:" + questionsArrayList.size() );

@@ -16,6 +16,7 @@ public interface QuestionView extends IsWidget
 	void setPresenter(Presenter listener);
 	void setQuestion(String question);
 	public void setAnswers(Question answers);
+	void showModal();
 	
 	public interface Presenter {
 		void goTo(Place place);

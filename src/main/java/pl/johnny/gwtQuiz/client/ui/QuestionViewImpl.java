@@ -3,6 +3,8 @@ package pl.johnny.gwtQuiz.client.ui;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.gwtbootstrap3.client.ui.Modal;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -10,7 +12,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -34,7 +35,8 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	@UiField Button btn1;
 	@UiField Button btn2;
 	@UiField Button btn3;
-	@UiField FocusPanel focusPanel;
+	
+	@UiField Modal modal;
 
 	@Override
 	public void setPresenter(Presenter listener) {
@@ -64,5 +66,10 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 		if (listener != null) {
 			listener.onAnswerBtnClicked(btn.getText());
 		}
+	}
+	
+	@Override
+	public void showModal() {
+		modal.show();
 	}
 }
