@@ -8,6 +8,6 @@
 	</ui:style>
 	<g:HTMLPanel>
 		<g:Button ui:field="newGameButton">New Game</g:Button>
-		<b:Button type="SUCCESS" ui:field="alert">Success</b:Button>
+		<b:Button type="SUCCESS" ui:field="alertBtn">Success</b:Button>
 	</g:HTMLPanel>
 </ui:UiBinder>

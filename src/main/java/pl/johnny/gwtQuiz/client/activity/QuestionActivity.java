@@ -6,6 +6,7 @@ import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
+import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
@@ -17,7 +18,7 @@ import pl.johnny.gwtQuiz.client.ui.QuestionView;
 import pl.johnny.gwtQuiz.shared.Question;
 
 public class QuestionActivity extends AbstractActivity implements QuestionView.Presenter {
-	private final ClientFactory clientFactory;
+	public ClientFactory clientFactory;
 	private QuestionView questionView;
 	private EventBus eventBus;
 	private NewQuestionEvent.Handler handler;
@@ -34,7 +35,6 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 		questionView.setPresenter(this);
 		token = place.getGoodbyeName();
 		this.place = place;
-		
 		/** Download questions from server,save it in a client and show 1st question */
 		QuestionServiceAsync questionService = clientFactory.getContactService();
 		questionService.getQuestion(new AsyncCallback<ArrayList<Question>>() {
@@ -63,14 +63,12 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 			
 			@Override
 			public void onNewQuestion(NewQuestionEvent event) {
-				GWT.log("on handler!!!: " + event.getCurrentQuestionInt());
-				GWT.log("questionsArrayList state: " + questionsArrayList);
-				GWT.log("currentQuestionInt state: " + currentQuestionInt);
 				currentQuestionInt = event.getCurrentQuestionInt();
-				
 				if(questionsArrayList != null){
 				questionView.setQuestion(questionsArrayList.get(currentQuestionInt).getQuestion());
 				questionView.setAnswers(questionsArrayList.get(currentQuestionInt));
+				/*Display previous button only on > 0 questions */
+				if(currentQuestionInt < 1) questionView.setPrvBtnVsbl(false); else questionView.setPrvBtnVsbl(true);
 				}
 			}
 		};
@@ -103,10 +101,16 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 				questionView.showModal();
 				return;
 			}
-			GWT.log("size:" + questionsArrayList.size() );
 			eventBus.fireEvent(new NewQuestionEvent(currentQuestionInt + 1));
 		}else{
 			GWT.log("bad answer!");
 		}		
+	}
+
+	@Override
+	public void onPreviousBtnClicked() {
+		if(currentQuestionInt > 0 ){
+			eventBus.fireEvent(new NewQuestionEvent(currentQuestionInt - 1));
+		}
 	}
 }

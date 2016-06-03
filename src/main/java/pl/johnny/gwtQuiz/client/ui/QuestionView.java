@@ -17,9 +17,12 @@ public interface QuestionView extends IsWidget
 	void setQuestion(String question);
 	public void setAnswers(Question answers);
 	void showModal();
+	void setPrvBtnVsbl(boolean bool);
 	
 	public interface Presenter {
 		void goTo(Place place);
 		void onAnswerBtnClicked(String clkdBtnTxt);
+		void onPreviousBtnClicked();
 	}
+
 }

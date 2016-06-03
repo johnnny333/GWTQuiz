@@ -17,7 +17,7 @@ public class MainMenuViewImpl extends Composite implements MainMenuView {
 	}
 
 	@UiField Button newGameButton;
-	@UiField org.gwtbootstrap3.client.ui.Button alert;
+	@UiField org.gwtbootstrap3.client.ui.Button alertBtn;
 	
 	private Presenter listener;
 	private String name;
@@ -38,7 +38,7 @@ public class MainMenuViewImpl extends Composite implements MainMenuView {
 		}
 	}
 
-	@UiHandler("alert")
+	@UiHandler("alertBtn")
 	void alert(ClickEvent e) {
 		Window.alert("clicked!");
 	}
