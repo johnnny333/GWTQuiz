@@ -3,6 +3,7 @@ package pl.johnny.gwtQuiz.client.ui;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.gwtbootstrap3.client.ui.Heading;
 import org.gwtbootstrap3.client.ui.Modal;
 
 import com.google.gwt.core.client.GWT;
@@ -37,9 +38,11 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	@UiField org.gwtbootstrap3.client.ui.Button btn2;
 	@UiField org.gwtbootstrap3.client.ui.Button btn3;
 	@UiField Modal modal;
-	@UiField Label pointsPanel;
+	@UiField Label modalPointsLabel;
 	@UiField Button prvsQstBtn;
 	@UiField org.gwtbootstrap3.client.ui.Button modalCloseBtn;
+	@UiField Heading questionCounter;
+	@UiField Heading pointsCounter;
 	
 	@Override
 	public void setPresenter(Presenter listener) {
@@ -55,7 +58,6 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	public void setAnswers(Question answers) {
 		ArrayList<org.gwtbootstrap3.client.ui.Button> ansBtns = new ArrayList<>(Arrays.asList(btn0, btn1, btn2, btn3));
 		for (int i = 0; i < answers.getAnswers().length; i++) {
-//			ansBtns.get(i).setWidth("6em");
 			ansBtns.get(i).setText(answers.getAnswer(i));
 		}
 	}
@@ -83,13 +85,23 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	}
 	
 	@Override
-	public void showModal() {
-		pointsPanel.setText("3 points!");
+	public void showModal(int userPoints) {
+		modalPointsLabel.setText("Points " + userPoints);
 		modal.show();
 	}
 	
 	@Override
 	public void setPrvBtnVsbl(boolean bool){
 		prvsQstBtn.setVisible(bool);
+	}
+	
+	@Override
+	public void setQuestionCounter(int questionNumber ) {
+		questionCounter.setText("Question " + questionNumber);
+	}
+	
+	@Override
+	public void setPointsCounter(int userPoints) {
+		pointsCounter.setText("Points " + userPoints);
 	}
 }

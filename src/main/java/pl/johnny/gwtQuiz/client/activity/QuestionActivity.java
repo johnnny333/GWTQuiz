@@ -27,6 +27,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 	private int currentQuestionInt;
 	/** Keeps whole ArrayList&lt;Question> from server in client to avoid RPC calling. */   
 	private ArrayList<Question> questionsArrayList;
+	private int userPoints;
 
 	public QuestionActivity(QuestionPlace place, ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
@@ -34,7 +35,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 		questionView.setPresenter(this);
 		token = place.getGoodbyeName();
 		this.place = place;
-		/** Download questions from server,save it in a client and show 1st question */
+		/* Download questions from server,save it in a client and show 1st question */
 		QuestionServiceAsync questionService = clientFactory.getContactService();
 		questionService.getQuestion(new AsyncCallback<ArrayList<Question>>() {
 
@@ -57,7 +58,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 		
 		containerWidget.setWidget(questionView.asWidget());
 
-		/** Global handler for question showing. Event argument holds question int */
+		/* Global handler for question showing. Event argument holds question int */
 		handler = new NewQuestionEvent.Handler() {
 			
 			@Override
@@ -68,6 +69,8 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 				questionView.setAnswers(questionsArrayList.get(currentQuestionInt));
 				/* Display previous button only on > 0 questions */
 				if(currentQuestionInt < 1) questionView.setPrvBtnVsbl(false); else questionView.setPrvBtnVsbl(true);
+				questionView.setQuestionCounter(currentQuestionInt + 1);
+				questionView.setPointsCounter(userPoints);
 				}
 			}
 		};
@@ -78,34 +81,28 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 	public void goTo(Place place) {
 		clientFactory.getPlaceController().goTo(place);
 	}
-	
-	/**
-	 * Ask user before stopping this activity
-	 */
-	@Override
-	public String mayStop() {
-//		return "Nie skończyłeś quizu,wyjście spowoduje utrate wyniku!";
-		return null;
-	}
-	
-	/**
-	 * Check answer and got to next question
-	 */
+		
 	@Override
 	public void onAnswerBtnClicked(final String clkdBtnTxt) {
+		//Check for correct answer
 		if( clkdBtnTxt.equals(questionsArrayList.get(currentQuestionInt).getCorrectAnsw()) ){
 			GWT.log("good answer!");
-			if(questionsArrayList.size() -1 == currentQuestionInt){
-				GWT.log("end of quiz!");
-				questionView.showModal();
-				return;
-			}
-			eventBus.fireEvent(new NewQuestionEvent(currentQuestionInt + 1));
+			userPoints++; //TODO ++ or +1 in JAVA?
 		}else{
 			GWT.log("bad answer!");
-		}		
+		}
+		//If we got last question, show modal with user points and return from this function
+		if(questionsArrayList.size()  == currentQuestionInt + 1){
+			GWT.log("end of quiz!");
+			//TODO !DRY
+			questionView.setPointsCounter(userPoints);
+			questionView.showModal(userPoints);
+			return;
+		}
+		//Show next question
+		eventBus.fireEvent(new NewQuestionEvent(currentQuestionInt + 1));
 	}
-
+	//TODO Whole previous question logic
 	@Override
 	public void onPreviousBtnClicked() {
 		if(currentQuestionInt > 0 ){
