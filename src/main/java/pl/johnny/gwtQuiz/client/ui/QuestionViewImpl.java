@@ -5,7 +5,6 @@ import java.util.Arrays;
 
 import org.gwtbootstrap3.client.ui.Modal;
 
-import com.gargoylesoftware.htmlunit.History;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -13,11 +12,9 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
-import pl.johnny.gwtQuiz.client.ClientFactoryImpl;
 import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
 import pl.johnny.gwtQuiz.shared.Question;
 
@@ -58,7 +55,7 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	public void setAnswers(Question answers) {
 		ArrayList<org.gwtbootstrap3.client.ui.Button> ansBtns = new ArrayList<>(Arrays.asList(btn0, btn1, btn2, btn3));
 		for (int i = 0; i < answers.getAnswers().length; i++) {
-			ansBtns.get(i).setWidth("6em");
+//			ansBtns.get(i).setWidth("6em");
 			ansBtns.get(i).setText(answers.getAnswer(i));
 		}
 	}

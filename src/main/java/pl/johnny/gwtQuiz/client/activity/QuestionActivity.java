@@ -6,7 +6,6 @@ import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
-import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
@@ -67,7 +66,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 				if(questionsArrayList != null){
 				questionView.setQuestion(questionsArrayList.get(currentQuestionInt).getQuestion());
 				questionView.setAnswers(questionsArrayList.get(currentQuestionInt));
-				/*Display previous button only on > 0 questions */
+				/* Display previous button only on > 0 questions */
 				if(currentQuestionInt < 1) questionView.setPrvBtnVsbl(false); else questionView.setPrvBtnVsbl(true);
 				}
 			}

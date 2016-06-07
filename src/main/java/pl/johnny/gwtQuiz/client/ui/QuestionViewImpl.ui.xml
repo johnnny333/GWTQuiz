@@ -2,31 +2,50 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:b="urn:import:org.gwtbootstrap3.client.ui">
 	<ui:style>
-	.important {
-		font-weight: bold;
+	.panelBody {
+		text-align: center;
+	}
+	.ansBut{
+		margin: auto 5px;
+		width: 20%;
 	}
 	</ui:style>
 	<g:HTMLPanel>
-		<g:Label ui:field="qstnLbl"></g:Label>
-		<b:Button ui:field="btn0" text="questionButton" ></b:Button>
-		<b:Button ui:field="btn1" text="questionButton" ></b:Button>
-		<b:Button ui:field="btn2" text="questionButton" ></b:Button>
-		<b:Button ui:field="btn3" text="questionButton" ></b:Button>
-		<br/>
-		<g:Button ui:field="prvsQstBtn" text="Previous Question" visible="false"></g:Button>
-		
+
+		<b:Container fluid="true">
+			<b:Row>
+				<b:Column size="SM_12">
+					<b:PageHeader text="Pytanie nr" subText="01pnkt" />
+					<g:HTMLPanel addStyleNames='{style.panelBody}'>
+						<b:Panel>
+							<b:PanelHeader>
+								<g:Label ui:field="qstnLbl"></g:Label>
+							</b:PanelHeader>
+							<b:PanelBody>
+								<b:Button ui:field="btn0" text="questionButton" addStyleNames='{style.ansBut}'></b:Button>
+								<b:Button ui:field="btn1" text="questionButton" addStyleNames='{style.ansBut}'></b:Button>
+								<b:Button ui:field="btn2" text="questionButton" addStyleNames='{style.ansBut}'></b:Button>
+								<b:Button ui:field="btn3" text="questionButton" addStyleNames='{style.ansBut}'></b:Button>
+
+							</b:PanelBody>
+							<b:PanelFooter>
+								<g:Button ui:field="prvsQstBtn" text="Previous Question"
+									visible="false"></g:Button>
+							</b:PanelFooter>
+						</b:Panel>
+
+					</g:HTMLPanel>
+				</b:Column>
+			</b:Row>
+		</b:Container>
 
 		<!-- MODAL -->
-		<b:Modal title="FINISHED!" closable="true" fade="true" dataBackdrop="STATIC"
-			dataKeyboard="true" b:id="myModal" ui:field="modal">
+		<b:Modal title="FINISHED!" closable="true" fade="true"
+			dataBackdrop="STATIC" dataKeyboard="true" b:id="myModal" ui:field="modal">
 			<b:ModalBody>
-<!-- 				<g:HTML> -->
-<!-- 					FINISHED! -->
-					<g:Label ui:field="pointsPanel"></g:Label>
-<!-- 				</g:HTML> -->
+				<g:Label ui:field="pointsPanel"></g:Label>
 			</b:ModalBody>
 			<b:ModalFooter>
-				<!-- <b:Button type="PRIMARY">Do something</b:Button> -->
 				<b:Button type="DANGER" dataDismiss="MODAL" ui:field="modalCloseBtn">Close</b:Button>
 			</b:ModalFooter>
 		</b:Modal>

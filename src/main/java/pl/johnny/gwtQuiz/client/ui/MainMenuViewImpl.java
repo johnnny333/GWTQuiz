@@ -5,8 +5,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -16,8 +14,7 @@ public class MainMenuViewImpl extends Composite implements MainMenuView {
 	interface HelloViewImplUiBinder extends UiBinder<Widget, MainMenuViewImpl> {
 	}
 
-	@UiField Button newGameButton;
-	@UiField org.gwtbootstrap3.client.ui.Button alertBtn;
+	@UiField org.gwtbootstrap3.client.ui.Button newGameButton;
 	
 	private Presenter listener;
 	private String name;
@@ -36,11 +33,6 @@ public class MainMenuViewImpl extends Composite implements MainMenuView {
 		if (listener != null) {
 			listener.onNewGameButtonClicked(0);
 		}
-	}
-
-	@UiHandler("alertBtn")
-	void alert(ClickEvent e) {
-		Window.alert("clicked!");
 	}
 	
 	@Override
