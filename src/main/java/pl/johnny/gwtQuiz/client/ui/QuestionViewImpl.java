@@ -111,7 +111,6 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	@Override
 	public void setTimerCounter(String timerSeconds) {
 		timerCounter.setText(timerSeconds + " sec");
-		
 	}
 
 	@Override

@@ -8,8 +8,10 @@
 	}
 	
 	.ansBut {
-		margin: auto 5px;
-		width: 20%;
+		margin: 5px 5px;
+		min-width: 20%;
+		max-width: 35%;
+		word-break: break-all;
 	}
 	
 	.pointColumn {

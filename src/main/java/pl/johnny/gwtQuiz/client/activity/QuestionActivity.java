@@ -67,6 +67,8 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 			
 			@Override
 			public void onNewQuestion(NewQuestionEvent event) {
+				//Start a new instance of timer on every question.
+//				timerForProgressBar(5);
 				currentQuestionInt = event.getCurrentQuestionInt();
 				if(questionsArrayList != null){
 				questionView.setQuestion(questionsArrayList.get(currentQuestionInt).getQuestion());
@@ -75,8 +77,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 				if(currentQuestionInt < 1) questionView.setPrvBtnVsbl(false); else questionView.setPrvBtnVsbl(true);
 				questionView.setQuestionCounter(currentQuestionInt + 1);
 				questionView.setPointsCounter(userPoints);
-				//Start a new instance of timer on every question.
-				timer(5);
+
 				}
 			}
 		};
@@ -123,7 +124,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 	 * 
 	 * @param timerTime user specified countdown time
 	 * */
-	private void timer(final int timerTime) {
+	private void timerForProgressBar(final int timerTime) {
 		// Create a new timer that updates the countdown every second.
 	    questionTimer = new Timer() {
 	    	int count = 0;
