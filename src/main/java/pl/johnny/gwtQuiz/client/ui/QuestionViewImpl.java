@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import org.gwtbootstrap3.client.ui.Heading;
 import org.gwtbootstrap3.client.ui.Modal;
+import org.gwtbootstrap3.client.ui.ProgressBar;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -43,6 +44,8 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	@UiField org.gwtbootstrap3.client.ui.Button modalCloseBtn;
 	@UiField Heading questionCounter;
 	@UiField Heading pointsCounter;
+	@UiField Heading timerCounter;
+	@UiField ProgressBar progressBar;
 	
 	@Override
 	public void setPresenter(Presenter listener) {
@@ -103,5 +106,16 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	@Override
 	public void setPointsCounter(int userPoints) {
 		pointsCounter.setText("Points " + userPoints);
+	}
+
+	@Override
+	public void setTimerCounter(String timerSeconds) {
+		timerCounter.setText(timerSeconds + " sec");
+		
+	}
+
+	@Override
+	public void setProgressBar(Double percent) {
+		progressBar.setPercent(percent);	
 	}
 }

@@ -6,32 +6,42 @@
 	.panelBody {
 		text-align: center;
 	}
+	
 	.ansBut {
 		margin: auto 5px;
 		width: 20%;
 	}
-	.pointColumn{
+	
+	.pointColumn {
 		text-align: right;
 		padding-top: 5px;
 	}
 	</ui:style>
-	<g:HTMLPanel >
+	<g:HTMLPanel>
 
 		<b:Container fluid="true">
 			<b:Row>
-				<b:Column size="XS_9">
-					<b:Heading size="H2" text="Question nmbr" ui:field="questionCounter"/>
+				<b:Column size="XS_6">
+					<b:Heading size="H2" text="Question nmbr" ui:field="questionCounter" />
 				</b:Column>
 				<!-- <b:Column size="XS_3"></b:Column> -->
-				<!-- <b:Column size="XS_3"></b:Column> -->
+				<b:Column size="XS_3">
+					<b:Heading size="H3" text="" subText="" ui:field="timerCounter" />
+				</b:Column>
 				<b:Column size="XS_3" addStyleNames='{style.pointColumn}'>
-					<b:Heading size="H3" text="nmbr points" subText="" ui:field="pointsCounter"/>
+					<b:Heading size="H3" text="nmbr points" subText=""
+						ui:field="pointsCounter" />
 				</b:Column>
 			</b:Row>
 
 			<b:Row>
 				<b:Column size="SM_12">
 					<h:Hr></h:Hr>
+					
+					<b:Progress active="true" type="STRIPED">
+						<b:ProgressBar type="SUCCESS"  ui:field="progressBar"/>
+					</b:Progress>
+					
 					<g:HTMLPanel addStyleNames='{style.panelBody}'>
 						<b:Panel>
 							<b:PanelHeader>

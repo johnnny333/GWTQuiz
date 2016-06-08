@@ -6,6 +6,7 @@ import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
@@ -27,7 +28,10 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 	private int currentQuestionInt;
 	/** Keeps whole ArrayList&lt;Question> from server in client to avoid RPC calling. */   
 	private ArrayList<Question> questionsArrayList;
+	/** Keeps user points on instance of the quiz */
 	private int userPoints;
+	/** Global Timer variable to enable canceling it from whole this class */
+	private Timer questionTimer;
 
 	public QuestionActivity(QuestionPlace place, ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
@@ -71,6 +75,8 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 				if(currentQuestionInt < 1) questionView.setPrvBtnVsbl(false); else questionView.setPrvBtnVsbl(true);
 				questionView.setQuestionCounter(currentQuestionInt + 1);
 				questionView.setPointsCounter(userPoints);
+				//Start a new instance of timer on every question.
+				timer(5);
 				}
 			}
 		};
@@ -84,6 +90,8 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 		
 	@Override
 	public void onAnswerBtnClicked(final String clkdBtnTxt) {
+		//cancel previous timer
+		if(questionTimer != null){questionTimer.cancel();};
 		//Check for correct answer
 		if( clkdBtnTxt.equals(questionsArrayList.get(currentQuestionInt).getCorrectAnsw()) ){
 			GWT.log("good answer!");
@@ -108,5 +116,32 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 		if(currentQuestionInt > 0 ){
 			eventBus.fireEvent(new NewQuestionEvent(currentQuestionInt - 1));
 		}
+	}
+	
+	/** 
+	 * Timer to hurry up user answering ;) 
+	 * 
+	 * @param timerTime user specified countdown time
+	 * */
+	private void timer(final int timerTime) {
+		// Create a new timer that updates the countdown every second.
+	    questionTimer = new Timer() {
+	    	int count = 0;
+	      @Override
+		public void run() {
+	        GWT.log("Time remaining: " + Integer.toString(count) + "s.");
+	        questionView.setTimerCounter(Integer.toString(count));
+	        questionView.setProgressBar(Math.floor(100 * count / timerTime));
+	        count++;
+	        if(count > timerTime) {
+	        	GWT.log("Time is up!");
+	            this.cancel(); //cancel the timer -- important!
+	            //When time for answer has elapsed, fire up new question.
+	            onAnswerBtnClicked("");
+	        }
+	      }
+	    };
+	    // Schedule the timer to run once every second, 1000 ms.
+	    questionTimer.scheduleRepeating(1000); //scheduleRepeating(), not just schedule().
 	}
 }

@@ -13,50 +13,61 @@ import pl.johnny.gwtQuiz.shared.Question;
  */
 public interface QuestionView extends IsWidget
 {	
-	/** Function used by corresponding Activity to establish communication
-	 *  between said Activity and this View.
+	/** 
+	 * Function used by corresponding Activity to establish communication
+	 * between said Activity and this View.
 	 * 
 	 * @param listener
 	 */
 	void setPresenter(Presenter listener);
 	
-	/** Sets question text in a View. 
+	/** 
+	 * Sets question text in a View. 
 	 * 
 	 * @param question
 	 */
 	void setQuestion(String question);
 	
-	/** Sets question in views buttons.
+	/** 
+	 * Sets answers in views buttons.
 	 * 
 	 * @param answers
 	 */
 	public void setAnswers(Question answers);
 	
-	/** Shows modal (at the end of the quiz) with user points.
+	/** 
+	 * Shows modal (at the end of the quiz) with user points.
 	 * 
-	 *  @param userPoints given from QuestionActivity
+	 * @param userPoints given from QuestionActivity
 	 * */
 	void showModal(int userPoints);
 	
 	void setPrvBtnVsbl(boolean bool);
 	
-	/** Displays actual question number in a widget View.
+	/** 
+	 * Displays actual question number in a widget View.
 	 * 
 	 * @param questionNumber given from QuestionActivity
 	 */
 	void setQuestionCounter(int questionNumber);
 	
-	/** Displays user points in a widget View.
+	/** 
+	 * Displays user points in a widget View.
 	 * 
 	 * @param userPoints given from QuestionActivity
 	 */
 	void setPointsCounter(int userPoints);
 	
+	void setTimerCounter(String timerSeconds);
+	
+	void setProgressBar(Double percent);
+	
 	public interface Presenter {
 		void goTo(Place place);
 		
-		/** Function to check for correct answer and manage points,
-		 *  show next question and
+		/** 
+		 * Function to check for correct answer and manage points,
+		 * show next question and
 		 * end quiz if the actual question is last.
 		 *  
 		 * @param clkdBtnTxt
