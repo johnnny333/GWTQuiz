@@ -59,7 +59,6 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 	@Override
 	public void start(AcceptsOneWidget containerWidget, final EventBus eventBus) {
 		this.eventBus = eventBus;
-		
 		containerWidget.setWidget(questionView.asWidget());
 
 		/* Global handler for question showing. Event argument holds question int */
@@ -87,6 +86,17 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 	@Override
 	public void goTo(Place place) {
 		clientFactory.getPlaceController().goTo(place);
+	}
+	
+	/**
+	 * If user navigates back or forward from browser - 
+	 * stop current timer.
+	 */
+	@Override
+	public String mayStop() {
+		//cancel current timer
+		if(questionTimer != null){questionTimer.cancel();};
+		return null;
 	}
 		
 	@Override
