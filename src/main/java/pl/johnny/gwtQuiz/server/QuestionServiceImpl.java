@@ -10,24 +10,16 @@ import pl.johnny.gwtQuiz.shared.Question;
 @SuppressWarnings("serial")
 public class QuestionServiceImpl extends RemoteServiceServlet implements
 		QuestionService {
-
-	private final ArrayList<Question> questions = new ArrayList<Question>();
+	
+	private QuestionServiceDatabaseConn questionServiceDBConn;
 
 	public QuestionServiceImpl() {
-		initQuestions();
-	}
-
-	private void initQuestions() {
-		QuestionServiceDatabaseConn dbConn = new QuestionServiceDatabaseConn();
-		for(int i = 0; i < dbConn.questionsData.length; ++i) {
-			Question question = new Question(dbConn.questionsData[i], dbConn.answersData[i], dbConn.correctAnswersData[i]);
-			questions.add(question);
-		}
+		questionServiceDBConn = new QuestionServiceDatabaseConn();
 	}
 
 	@Override
 	public ArrayList<Question> getQuestion() {
-		return questions;
+		return questionServiceDBConn.questions;
 	}
 
 	//  @Override

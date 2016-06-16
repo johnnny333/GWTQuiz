@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+
+import pl.johnny.gwtQuiz.shared.Question;
 
 /**
  * Basically,we need to recreate arrays structure as follows:
@@ -31,11 +34,12 @@ import java.sql.Statement;
  * */
 public class QuestionServiceDatabaseConn {
 	
+	private String[] questionsData;
+	private String[][] answersData;
+	private String[] correctAnswersData;
 	//Using default (no modifier) access modifiers
-	String[] questionsData;
-	String[][] answersData;
-	String[] correctAnswersData;
-
+	ArrayList<Question> questions = new ArrayList<Question>();
+	
 	QuestionServiceDatabaseConn() {
 
 		Connection c = null;
@@ -78,6 +82,13 @@ public class QuestionServiceDatabaseConn {
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.exit(0);
+		}
+		/* After filling arrays with questions data, make models with them 
+		 * and pack said models to an ArrayList in order to use it on QuestionServiceImpl
+		 */
+		for(int i = 0; i < questionsData.length; ++i) {
+			Question question = new Question(questionsData[i], answersData[i], correctAnswersData[i]);
+			questions.add(question);
 		}
 	}
 }
