@@ -41,7 +41,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 		this.place = place;
 		/* Download questions from server,save it in a client and show 1st question */
 		QuestionServiceAsync questionService = clientFactory.getContactService();
-		questionService.getQuestion(new AsyncCallback<ArrayList<Question>>() {
+		questionService.getShuffledQuestions(new AsyncCallback<ArrayList<Question>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {

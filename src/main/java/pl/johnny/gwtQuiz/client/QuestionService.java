@@ -9,5 +9,7 @@ import pl.johnny.gwtQuiz.shared.Question;
 
 @RemoteServiceRelativePath("questionService")
 public interface QuestionService extends RemoteService {
-	ArrayList<Question> getQuestion();	
+	ArrayList<Question> getQuestions();
+
+	ArrayList<Question> getShuffledQuestions();	
 }

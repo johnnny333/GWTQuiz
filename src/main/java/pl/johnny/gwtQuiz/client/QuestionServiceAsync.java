@@ -7,5 +7,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import pl.johnny.gwtQuiz.shared.Question;
 
 public interface QuestionServiceAsync {
-	void getQuestion(AsyncCallback<ArrayList<Question>> asyncCallback);	
+	void getQuestions(AsyncCallback<ArrayList<Question>> asyncCallback);
+
+	void getShuffledQuestions(AsyncCallback<ArrayList<Question>> asyncCallback);	
 }

@@ -61,7 +61,7 @@ public class QuestionServiceDatabaseConn {
 
 			ResultSet resultSet = stmt.executeQuery("SELECT answers.answer1,answers.answer2,answers.answer3,answers.answer4,"
 					+ "answers.correct_answer,questions.question FROM answers "
-					+ "LEFT JOIN questions ON answers.questionID = questions.questionID; ");
+					+ "LEFT JOIN questions ON answers.questionID = questions.ID; ");
 
 			while(resultSet.next()) {
 				//Get questions and save it to an Array

@@ -1,6 +1,7 @@
 package pl.johnny.gwtQuiz.server;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -18,8 +19,15 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public ArrayList<Question> getQuestion() {
+	public ArrayList<Question> getQuestions() {
 		return questionServiceDBConn.questions;
+	}
+	
+	@Override
+	public ArrayList<Question> getShuffledQuestions() {
+		ArrayList<Question> shuffledQuestions = questionServiceDBConn.questions;
+		Collections.shuffle(shuffledQuestions);
+		return shuffledQuestions;
 	}
 
 	//  @Override
