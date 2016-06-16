@@ -1,8 +1,5 @@
 package pl.johnny.gwtQuiz.client.ui;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import org.gwtbootstrap3.client.ui.Heading;
 import org.gwtbootstrap3.client.ui.Modal;
 import org.gwtbootstrap3.client.ui.ProgressBar;
@@ -64,9 +61,9 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 
 	@Override
 	public void setAnswers(Question answers) {
-		ArrayList<org.gwtbootstrap3.client.ui.Button> ansBtns = new ArrayList<>(Arrays.asList(btn0, btn1, btn2, btn3));
+		org.gwtbootstrap3.client.ui.Button[] ansBtns = new org.gwtbootstrap3.client.ui.Button[]{btn0, btn1, btn2, btn3};
 		for (int i = 0; i < answers.getAnswers().length; i++) {
-			ansBtns.get(i).setText(answers.getAnswer(i));
+			ansBtns[i].setText(answers.getAnswer(i));
 		}
 	}
 	

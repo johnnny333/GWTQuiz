@@ -33,12 +33,14 @@ import pl.johnny.gwtQuiz.shared.Question;
  * </pre>
  * */
 public class QuestionServiceDatabaseConn {
-
-	private String[] questionsData;
+	
+	/** Two dimensional array. At first[0] position we'll store question String,
+	 * at second[1] base64 image representation.*/
+	private String[][] questionsData;
 	private String[][] answersData;
 	private String[] correctAnswersData;
-	public static String[] authorData;
-	public static String[] categoryData;
+	public String[] authorData;
+	public String[] categoryData;
 	//Using default (no modifier) access modifiers
 	ArrayList<Question> questions = new ArrayList<Question>();
 
@@ -56,8 +58,8 @@ public class QuestionServiceDatabaseConn {
 			c.createStatement().execute("PRAGMA foreign_keys = ON");
 			ResultSet rsRowCount = stmt.executeQuery("SELECT COUNT(*) FROM questions;");
 			int rowsCount = rsRowCount.getInt(1);
-
-			questionsData = new String[rowsCount];
+			
+			questionsData = new String[rowsCount][2];
 			answersData = new String[rowsCount][rowsCount];
 			correctAnswersData = new String[rowsCount];
 			authorData = new String[rowsCount];
@@ -70,7 +72,7 @@ public class QuestionServiceDatabaseConn {
 			while(resultSet.next()) {
 				//Get questions and save it to an Array
 				String question = resultSet.getString("question");
-				questionsData[resultSet.getRow() - 1] = question;
+				questionsData[resultSet.getRow() - 1][0] = question;
 				//Get answers and save it to an Array
 				for(int i = 0; i < rowsCount; i++) {
 					String answer = resultSet.getString("answer" + (i + 1));
@@ -95,7 +97,7 @@ public class QuestionServiceDatabaseConn {
 		 * and pack said models to an ArrayList in order to use it on QuestionServiceImpl
 		 */
 		for(int i = 0; i < questionsData.length; ++i) {
-			Question question = new Question(questionsData[i], answersData[i], correctAnswersData[i], 
+			Question question = new Question(questionsData[i][0], answersData[i], correctAnswersData[i],
 					authorData[i], categoryData[i]);
 			questions.add(question);
 		}

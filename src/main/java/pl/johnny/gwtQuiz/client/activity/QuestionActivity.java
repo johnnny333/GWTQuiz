@@ -133,7 +133,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 	/** 
 	 * Timer to hurry up user answering ;) 
 	 * 
-	 * @param timerTime user specified countdown time
+	 * @param timerTime user specified count-down time
 	 * */
 	private void timerForProgressBar(final int timerTime) {
 		//cancel previous timer
