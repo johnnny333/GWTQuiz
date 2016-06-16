@@ -58,7 +58,9 @@ public interface QuestionView extends IsWidget
 	 */
 	void setPointsCounter(int userPoints);
 	
-	void setTimerCounter(String timerSeconds);
+	void setCategoryField(String category);
+	
+	void setAuthorField(String timerSeconds);
 	
 	void setProgressBar(Double percent);
 	

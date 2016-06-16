@@ -67,7 +67,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 			@Override
 			public void onNewQuestion(NewQuestionEvent event) {
 				//Start a new instance of timer on every question.
-				timerForProgressBar(25);
+//				timerForProgressBar(25);
 				currentQuestionInt = event.getCurrentQuestionInt();
 				if(questionsArrayList != null){
 				questionView.setQuestion(questionsArrayList.get(currentQuestionInt).getQuestion());
@@ -76,7 +76,8 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 				if(currentQuestionInt < 1) questionView.setPrvBtnVsbl(false); else questionView.setPrvBtnVsbl(true);
 				questionView.setQuestionCounter(currentQuestionInt + 1);
 				questionView.setPointsCounter(userPoints);
-
+				questionView.setCategoryField(questionsArrayList.get(currentQuestionInt).getCategory());
+		        questionView.setAuthorField(questionsArrayList.get(currentQuestionInt).getAuthor());
 				}
 			}
 		};
@@ -143,7 +144,6 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 	      @Override
 		public void run() {
 	        GWT.log("Time remaining: " + Integer.toString(count) + "s.");
-	        questionView.setTimerCounter(Integer.toString(count));
 	        questionView.setProgressBar(Math.floor(100 * count / timerTime));
 	        count++;
 	        if(count > timerTime) {

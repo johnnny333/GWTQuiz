@@ -20,6 +20,10 @@ import com.google.gwt.user.client.ui.Widget;
 import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
 import pl.johnny.gwtQuiz.shared.Question;
 
+/**
+ * View with multiple methods to set and display question view.
+ * @author jzarewicz
+ */
 public class QuestionViewImpl extends Composite implements QuestionView {
 
 	private static QuestionViewImplUiBinder uiBinder = GWT.create(QuestionViewImplUiBinder.class);
@@ -44,7 +48,8 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	@UiField org.gwtbootstrap3.client.ui.Button modalCloseBtn;
 	@UiField Heading questionCounter;
 	@UiField Heading pointsCounter;
-	@UiField Heading timerCounter;
+	@UiField Heading categoryField;
+	@UiField Heading authorField;
 	@UiField ProgressBar progressBar;
 	
 	@Override
@@ -100,17 +105,22 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	
 	@Override
 	public void setQuestionCounter(int questionNumber ) {
-		questionCounter.setText("Question " + questionNumber);
+		questionCounter.setText("" + questionNumber);
 	}
 	
 	@Override
 	public void setPointsCounter(int userPoints) {
-		pointsCounter.setText("Points " + userPoints);
+		pointsCounter.setText("" + userPoints);
+	}
+	
+	@Override
+	public void setCategoryField(String category) {
+		categoryField.setText(category);
 	}
 
 	@Override
-	public void setTimerCounter(String timerSeconds) {
-		timerCounter.setText(timerSeconds + " sec");
+	public void setAuthorField(String author) {
+		authorField.setText(author);
 	}
 
 	@Override

@@ -33,13 +33,15 @@ import pl.johnny.gwtQuiz.shared.Question;
  * </pre>
  * */
 public class QuestionServiceDatabaseConn {
-	
+
 	private String[] questionsData;
 	private String[][] answersData;
 	private String[] correctAnswersData;
+	public static String[] authorData;
+	public static String[] categoryData;
 	//Using default (no modifier) access modifiers
 	ArrayList<Question> questions = new ArrayList<Question>();
-	
+
 	QuestionServiceDatabaseConn() {
 
 		Connection c = null;
@@ -50,7 +52,7 @@ public class QuestionServiceDatabaseConn {
 			c = DriverManager.getConnection("jdbc:sqlite:questions.db");
 			c.setAutoCommit(false);
 			stmt = c.createStatement();
-			
+
 			c.createStatement().execute("PRAGMA foreign_keys = ON");
 			ResultSet rsRowCount = stmt.executeQuery("SELECT COUNT(*) FROM questions;");
 			int rowsCount = rsRowCount.getInt(1);
@@ -58,9 +60,11 @@ public class QuestionServiceDatabaseConn {
 			questionsData = new String[rowsCount];
 			answersData = new String[rowsCount][rowsCount];
 			correctAnswersData = new String[rowsCount];
+			authorData = new String[rowsCount];
+			categoryData = new String[rowsCount];
 
 			ResultSet resultSet = stmt.executeQuery("SELECT answers.answer1,answers.answer2,answers.answer3,answers.answer4,"
-					+ "answers.correct_answer,questions.question FROM answers "
+					+ "answers.correct_answer,questions.question,questions.author,questions.category FROM answers "
 					+ "LEFT JOIN questions ON answers.questionID = questions.ID; ");
 
 			while(resultSet.next()) {
@@ -74,6 +78,10 @@ public class QuestionServiceDatabaseConn {
 				}
 				//Get correct answers array
 				correctAnswersData[resultSet.getRow() - 1] = answersData[resultSet.getRow() - 1][resultSet.getInt("correct_answer")];
+				//Get author data
+				authorData[resultSet.getRow() - 1] = resultSet.getString("author");
+				//Get category Data
+				categoryData[resultSet.getRow() - 1] = resultSet.getString("category");
 			}
 			resultSet.close();
 			stmt.close();
@@ -87,7 +95,8 @@ public class QuestionServiceDatabaseConn {
 		 * and pack said models to an ArrayList in order to use it on QuestionServiceImpl
 		 */
 		for(int i = 0; i < questionsData.length; ++i) {
-			Question question = new Question(questionsData[i], answersData[i], correctAnswersData[i]);
+			Question question = new Question(questionsData[i], answersData[i], correctAnswersData[i], 
+					authorData[i], categoryData[i]);
 			questions.add(question);
 		}
 	}
