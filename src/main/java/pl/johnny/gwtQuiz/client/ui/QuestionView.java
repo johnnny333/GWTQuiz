@@ -34,7 +34,7 @@ public interface QuestionView extends IsWidget
 	 * @param answers
 	 */
 	
-	void setQuestionImage(String questionImage,boolean isVisible);
+	void setQuestionImage(String questionImageURL,boolean isVisible);
 	
 	public void setAnswers(Question answers);
 	

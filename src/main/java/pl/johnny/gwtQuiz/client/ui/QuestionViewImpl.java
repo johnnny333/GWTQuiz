@@ -62,8 +62,8 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	}
 	
 	@Override
-	public void setQuestionImage(String questionImageBase64,boolean isVisible) {
-		questionImage.setUrl("data:image/png;base64,"+questionImageBase64);
+	public void setQuestionImage(String questionImageURL,boolean isVisible) {
+		questionImage.setUrl(questionImageURL);
 		questionImage.setVisible(isVisible);
 	}
 

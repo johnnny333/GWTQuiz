@@ -54,7 +54,7 @@ public class QuestionServiceDatabaseConn {
 
 		try {
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:questions.db");
+			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
 			c.setAutoCommit(false);
 			stmt = c.createStatement();
 
@@ -70,7 +70,7 @@ public class QuestionServiceDatabaseConn {
 
 			ResultSet resultSet = stmt.executeQuery("SELECT answers.answer1,answers.answer2,answers.answer3,answers.answer4,"
 					+ "answers.correct_answer,questions.question,questions.author,"
-					+ "questions.category,questions.has_image,questions.image FROM answers "
+					+ "questions.category,questions.has_image,questions.image_url FROM answers "
 					+ "LEFT JOIN questions ON answers.questionID = questions.ID; ");
 
 			while(resultSet.next()) {
@@ -80,7 +80,7 @@ public class QuestionServiceDatabaseConn {
 				
 				boolean questionImg = resultSet.getBoolean("has_image");
 				if(questionImg != false){
-				questionsData[resultSet.getRow() - 1][1] = resultSet.getString("image");
+				questionsData[resultSet.getRow() - 1][1] = resultSet.getString("image_url");
 				}
 				
 				//Get answers and save it to an Array

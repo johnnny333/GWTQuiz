@@ -1,6 +1,7 @@
 package pl.johnny.gwtQuiz.client.activity;
 
 import com.google.gwt.activity.shared.AbstractActivity;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -35,6 +36,8 @@ public class MainMenuActivity extends AbstractActivity implements
 		helloView.setPresenter(this);
 		containerWidget.setWidget(helloView.asWidget());
 		this.eventBus = eventBus;
+		
+		GWT.log(GWT.getModuleBaseURL());
 	}
 	
 	@Override

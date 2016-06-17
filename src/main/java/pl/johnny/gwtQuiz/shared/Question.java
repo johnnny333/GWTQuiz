@@ -15,7 +15,7 @@ public class Question implements IsSerializable {
 	private String correctAnsw;
 	private String authorData;
 	private String categoryData;
-	/**Base64 encoded image represented as String/ */
+	/** Image server url as String/ */
 	private String questionImageData;
 
 	/**
@@ -39,8 +39,8 @@ public class Question implements IsSerializable {
 		return question;
 	}
 	
-	/**Get Base64 encoded image represented as String. */
-	public String getQuestionImage() {
+	/**Get image server url as String. */
+	public String getQuestionImageURL() {
 		return questionImageData;
 	}
 

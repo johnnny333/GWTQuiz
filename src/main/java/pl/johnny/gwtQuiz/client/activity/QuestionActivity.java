@@ -31,7 +31,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 	private final Place place;
 	/** Keeps current question int given from event, so other methods could use it to keep state. */
 	private int currentQuestionInt;
-	/** Keeps whole ArrayList&lt;Question> from server in client to avoid RPC calling. */   
+	/** Keeps whole ArrayList&lt;Question> from server in client to avoid RPC calling. */
 	private ArrayList<Question> questionsArrayList;
 	/** Keeps user points on instance of the quiz */
 	private int userPoints;
@@ -68,26 +68,33 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 
 		/* Global handler for question showing. Event argument holds question int */
 		handler = new NewQuestionEvent.Handler() {
-			
+
 			@Override
 			public void onNewQuestion(NewQuestionEvent event) {
 				//Start a new instance of timer on every question.
-//				timerForProgressBar(25);
+				//				timerForProgressBar(25);
 				currentQuestionInt = event.getCurrentQuestionInt();
-				if(questionsArrayList != null){
-				questionView.setQuestion(questionsArrayList.get(currentQuestionInt).getQuestion());
-				//Question image logic
-				if(questionsArrayList.get(currentQuestionInt).getQuestionImage() != null){
-				questionView.setQuestionImage(questionsArrayList.get(currentQuestionInt).getQuestionImage(),true);
-				}else questionView.setQuestionImage(null,false);
-				
-				questionView.setAnswers(questionsArrayList.get(currentQuestionInt));
-				/* Display previous button only on > 0 questions */
-				if(currentQuestionInt < 1) questionView.setPrvBtnVsbl(false); else questionView.setPrvBtnVsbl(true);
-				questionView.setQuestionCounter(currentQuestionInt + 1, questionsArrayList.size());
-				questionView.setPointsCounter(userPoints);
-				questionView.setCategoryField(questionsArrayList.get(currentQuestionInt).getCategory());
-		        questionView.setAuthorField(questionsArrayList.get(currentQuestionInt).getAuthor());
+				if(questionsArrayList != null) {
+					questionView.setQuestion(questionsArrayList.get(currentQuestionInt).getQuestion());
+					
+					//Question image logic
+					if(questionsArrayList.get(currentQuestionInt).getQuestionImageURL() != null) {
+						questionView.setQuestionImage(questionsArrayList.get(currentQuestionInt).getQuestionImageURL(), true);
+					} else {
+						questionView.setQuestionImage("", false);
+						GWT.log("No picture " + questionsArrayList.get(currentQuestionInt).getQuestionImageURL());
+					}
+
+					questionView.setAnswers(questionsArrayList.get(currentQuestionInt));
+					/* Display previous button only on > 0 questions */
+					if(currentQuestionInt < 1)
+						questionView.setPrvBtnVsbl(false);
+					else
+						questionView.setPrvBtnVsbl(true);
+					questionView.setQuestionCounter(currentQuestionInt + 1, questionsArrayList.size());
+					questionView.setPointsCounter(userPoints);
+					questionView.setCategoryField(questionsArrayList.get(currentQuestionInt).getCategory());
+					questionView.setAuthorField(questionsArrayList.get(currentQuestionInt).getAuthor());
 				}
 			}
 		};
@@ -98,7 +105,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 	public void goTo(Place place) {
 		clientFactory.getPlaceController().goTo(place);
 	}
-	
+
 	/**
 	 * If user navigates back or forward from browser - 
 	 * stop current timer.
@@ -106,23 +113,27 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 	@Override
 	public String mayStop() {
 		//cancel current timer
-		if(questionTimer != null){questionTimer.cancel();};
+		if(questionTimer != null) {
+			questionTimer.cancel();
+		} ;
 		return null;
 	}
-		
+
 	@Override
 	public void onAnswerBtnClicked(final String clkdBtnTxt) {
 		//cancel previous timer
-		if(questionTimer != null){questionTimer.cancel();};
+		if(questionTimer != null) {
+			questionTimer.cancel();
+		} ;
 		//Check for correct answer
-		if( clkdBtnTxt.equals(questionsArrayList.get(currentQuestionInt).getCorrectAnsw()) ){
+		if(clkdBtnTxt.equals(questionsArrayList.get(currentQuestionInt).getCorrectAnsw())) {
 			GWT.log("good answer!");
 			userPoints++; //TODO ++ or +1 in JAVA?
-		}else{
+		} else {
 			GWT.log("bad answer!");
 		}
 		//If we got last question, show modal with user points and return from this function
-		if(questionsArrayList.size()  == currentQuestionInt + 1){
+		if(questionsArrayList.size() == currentQuestionInt + 1) {
 			GWT.log("end of quiz!");
 			//TODO !DRY
 			questionView.setPointsCounter(userPoints);
@@ -132,14 +143,15 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 		//Show next question
 		eventBus.fireEvent(new NewQuestionEvent(currentQuestionInt + 1));
 	}
+
 	//TODO Whole previous question logic
 	@Override
 	public void onPreviousBtnClicked() {
-		if(currentQuestionInt > 0 ){
+		if(currentQuestionInt > 0) {
 			eventBus.fireEvent(new NewQuestionEvent(currentQuestionInt - 1));
 		}
 	}
-	
+
 	/** 
 	 * Timer to hurry up user answering ;) 
 	 * 
@@ -147,24 +159,27 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 	 * */
 	private void timerForProgressBar(final int timerTime) {
 		//cancel previous timer
-		if(questionTimer != null){questionTimer.cancel();};
+		if(questionTimer != null) {
+			questionTimer.cancel();
+		} ;
 		// Create a new timer that updates the countdown every second.
-	    questionTimer = new Timer() {
-	    	int count = 0;
-	      @Override
-		public void run() {
-	        GWT.log("Time remaining: " + Integer.toString(count) + "s.");
-	        questionView.setProgressBar(Math.floor(100 * count / timerTime));
-	        count++;
-	        if(count > timerTime) {
-	        	GWT.log("Time is up!");
-	            this.cancel(); //cancel the timer -- important!
-	            //When time for answer has elapsed, fire up new question.
-	            onAnswerBtnClicked("");
-	        }
-	      }
-	    };
-	    // Schedule the timer to run once every second, 1000 ms.
-	    questionTimer.scheduleRepeating(1000); //scheduleRepeating(), not just schedule().
+		questionTimer = new Timer() {
+			int count = 0;
+
+			@Override
+			public void run() {
+				GWT.log("Time remaining: " + Integer.toString(count) + "s.");
+				questionView.setProgressBar(Math.floor(100 * count / timerTime));
+				count++;
+				if(count > timerTime) {
+					GWT.log("Time is up!");
+					this.cancel(); //cancel the timer -- important!
+					//When time for answer has elapsed, fire up new question.
+					onAnswerBtnClicked("");
+				}
+			}
+		};
+		// Schedule the timer to run once every second, 1000 ms.
+		questionTimer.scheduleRepeating(1000); //scheduleRepeating(), not just schedule().
 	}
 }
