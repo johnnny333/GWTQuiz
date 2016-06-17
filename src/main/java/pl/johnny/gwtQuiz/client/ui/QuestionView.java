@@ -10,7 +10,7 @@ import pl.johnny.gwtQuiz.shared.Question;
  * its container widget. 
  * 
  * @author jzarewicz
- */
+  */
 public interface QuestionView extends IsWidget
 {	
 	/** 
@@ -33,6 +33,9 @@ public interface QuestionView extends IsWidget
 	 * 
 	 * @param answers
 	 */
+	
+	void setQuestionImage(String questionImage,boolean isVisible);
+	
 	public void setAnswers(Question answers);
 	
 	/** 
@@ -49,7 +52,7 @@ public interface QuestionView extends IsWidget
 	 * 
 	 * @param questionNumber given from QuestionActivity
 	 */
-	void setQuestionCounter(int questionNumber);
+	void setQuestionCounter(int questionNumber,int questionsNumber );
 	
 	/** 
 	 * Displays user points in a widget View.
@@ -79,4 +82,5 @@ public interface QuestionView extends IsWidget
 		/** Takes user to previous question relative to the actual.*/
 		void onPreviousBtnClicked();
 	}
+
 }

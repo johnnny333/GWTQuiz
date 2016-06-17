@@ -2,6 +2,11 @@ package pl.johnny.gwtQuiz.shared;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
+/**
+ * Model Class.
+ * @author jzarewicz
+ *
+ */
 @SuppressWarnings("serial")
 public class Question implements IsSerializable {
 
@@ -10,6 +15,8 @@ public class Question implements IsSerializable {
 	private String correctAnsw;
 	private String authorData;
 	private String categoryData;
+	/**Base64 encoded image represented as String/ */
+	private String questionImageData;
 
 	/**
 	 * Do NOT delete this default,public,no-arg constructor. It's necessary 
@@ -18,9 +25,10 @@ public class Question implements IsSerializable {
 	public Question() {
 	};
 
-	public Question(String questionData, String[] contactsLastNameData, String correctAnswersData, 
+	public Question(String questionData,String questionImageData, String[] contactsLastNameData, String correctAnswersData, 
 			String authorData, String categoryData) {
 		this.question = questionData;
+		this.questionImageData = questionImageData;
 		this.answers = contactsLastNameData;
 		this.correctAnsw = correctAnswersData;
 		this.authorData = authorData;
@@ -30,10 +38,15 @@ public class Question implements IsSerializable {
 	public String getQuestion() {
 		return question;
 	}
+	
+	/**Get Base64 encoded image represented as String. */
+	public String getQuestionImage() {
+		return questionImageData;
+	}
 
 	/**
 	 * Get all questions from an array <br/>
-	 * e.g getting size() of questions array
+	 * Handy e.g in getting size() of questions array
 	 * 
 	 * @return String[] 
 	 */

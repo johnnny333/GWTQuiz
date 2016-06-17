@@ -17,6 +17,11 @@ import pl.johnny.gwtQuiz.client.place.QuestionPlace;
 import pl.johnny.gwtQuiz.client.ui.QuestionView;
 import pl.johnny.gwtQuiz.shared.Question;
 
+/**
+ * All quiz logic: RPC calling, questions showing, setting view,points counting, quiz finish... 
+ * @author jzarewicz
+ *
+ */
 public class QuestionActivity extends AbstractActivity implements QuestionView.Presenter {
 	public ClientFactory clientFactory;
 	private QuestionView questionView;
@@ -71,10 +76,15 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 				currentQuestionInt = event.getCurrentQuestionInt();
 				if(questionsArrayList != null){
 				questionView.setQuestion(questionsArrayList.get(currentQuestionInt).getQuestion());
+				//Question image logic
+				if(questionsArrayList.get(currentQuestionInt).getQuestionImage() != null){
+				questionView.setQuestionImage(questionsArrayList.get(currentQuestionInt).getQuestionImage(),true);
+				}else questionView.setQuestionImage(null,false);
+				
 				questionView.setAnswers(questionsArrayList.get(currentQuestionInt));
 				/* Display previous button only on > 0 questions */
 				if(currentQuestionInt < 1) questionView.setPrvBtnVsbl(false); else questionView.setPrvBtnVsbl(true);
-				questionView.setQuestionCounter(currentQuestionInt + 1);
+				questionView.setQuestionCounter(currentQuestionInt + 1, questionsArrayList.size());
 				questionView.setPointsCounter(userPoints);
 				questionView.setCategoryField(questionsArrayList.get(currentQuestionInt).getCategory());
 		        questionView.setAuthorField(questionsArrayList.get(currentQuestionInt).getAuthor());

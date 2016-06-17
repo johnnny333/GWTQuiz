@@ -1,6 +1,7 @@
 package pl.johnny.gwtQuiz.client.ui;
 
 import org.gwtbootstrap3.client.ui.Heading;
+import org.gwtbootstrap3.client.ui.Image;
 import org.gwtbootstrap3.client.ui.Modal;
 import org.gwtbootstrap3.client.ui.ProgressBar;
 
@@ -34,7 +35,8 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 
 	private Presenter listener;
 	
-	@UiField Label qstnLbl;
+	@UiField Heading qstnLbl;
+	@UiField Image questionImage;
 	@UiField org.gwtbootstrap3.client.ui.Button btn0;
 	@UiField org.gwtbootstrap3.client.ui.Button btn1;
 	@UiField org.gwtbootstrap3.client.ui.Button btn2;
@@ -57,6 +59,12 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	@Override
 	public void setQuestion(String question) {
 		qstnLbl.setText(question);
+	}
+	
+	@Override
+	public void setQuestionImage(String questionImageBase64,boolean isVisible) {
+		questionImage.setUrl("data:image/png;base64,"+questionImageBase64);
+		questionImage.setVisible(isVisible);
 	}
 
 	@Override
@@ -101,8 +109,8 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	}
 	
 	@Override
-	public void setQuestionCounter(int questionNumber ) {
-		questionCounter.setText("" + questionNumber);
+	public void setQuestionCounter(int questionNumber, int questionsNumber ) {
+		questionCounter.setText("" + questionNumber + " / " + questionsNumber);
 	}
 	
 	@Override
@@ -124,4 +132,5 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	public void setProgressBar(Double percent) {
 		progressBar.setPercent(percent);	
 	}
+
 }

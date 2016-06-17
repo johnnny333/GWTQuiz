@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import pl.johnny.gwtQuiz.shared.Question;
 
 /**
+ * Class in charge of all database operations.
+ * <br/>
  * Basically,we need to recreate arrays structure as follows:
  * <pre>
  * 
@@ -31,9 +33,10 @@ import pl.johnny.gwtQuiz.shared.Question;
  *  		answersData[3][0]
  *	};
  * </pre>
+ * @author jzarewicz
  * */
 public class QuestionServiceDatabaseConn {
-	
+
 	/** Two dimensional array. At first[0] position we'll store question String,
 	 * at second[1] base64 image representation.*/
 	private String[][] questionsData;
@@ -58,23 +61,30 @@ public class QuestionServiceDatabaseConn {
 			c.createStatement().execute("PRAGMA foreign_keys = ON");
 			ResultSet rsRowCount = stmt.executeQuery("SELECT COUNT(*) FROM questions;");
 			int rowsCount = rsRowCount.getInt(1);
-			
+
 			questionsData = new String[rowsCount][2];
-			answersData = new String[rowsCount][rowsCount];
+			answersData = new String[rowsCount][4];
 			correctAnswersData = new String[rowsCount];
 			authorData = new String[rowsCount];
 			categoryData = new String[rowsCount];
 
 			ResultSet resultSet = stmt.executeQuery("SELECT answers.answer1,answers.answer2,answers.answer3,answers.answer4,"
-					+ "answers.correct_answer,questions.question,questions.author,questions.category FROM answers "
+					+ "answers.correct_answer,questions.question,questions.author,"
+					+ "questions.category,questions.has_image,questions.image FROM answers "
 					+ "LEFT JOIN questions ON answers.questionID = questions.ID; ");
 
 			while(resultSet.next()) {
 				//Get questions and save it to an Array
 				String question = resultSet.getString("question");
 				questionsData[resultSet.getRow() - 1][0] = question;
+				
+				boolean questionImg = resultSet.getBoolean("has_image");
+				if(questionImg != false){
+				questionsData[resultSet.getRow() - 1][1] = resultSet.getString("image");
+				}
+				
 				//Get answers and save it to an Array
-				for(int i = 0; i < rowsCount; i++) {
+				for(int i = 0; i < 4; i++) {
 					String answer = resultSet.getString("answer" + (i + 1));
 					answersData[resultSet.getRow() - 1][i] = answer;
 				}
@@ -97,7 +107,7 @@ public class QuestionServiceDatabaseConn {
 		 * and pack said models to an ArrayList in order to use it on QuestionServiceImpl
 		 */
 		for(int i = 0; i < questionsData.length; ++i) {
-			Question question = new Question(questionsData[i][0], answersData[i], correctAnswersData[i],
+			Question question = new Question(questionsData[i][0],questionsData[i][1], answersData[i], correctAnswersData[i],
 					authorData[i], categoryData[i]);
 			questions.add(question);
 		}
