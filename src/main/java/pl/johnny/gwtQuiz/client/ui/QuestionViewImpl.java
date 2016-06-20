@@ -3,6 +3,7 @@ package pl.johnny.gwtQuiz.client.ui;
 import org.gwtbootstrap3.client.ui.Heading;
 import org.gwtbootstrap3.client.ui.Image;
 import org.gwtbootstrap3.client.ui.Modal;
+import org.gwtbootstrap3.client.ui.ModalBody;
 import org.gwtbootstrap3.client.ui.ProgressBar;
 
 import com.google.gwt.core.client.GWT;
@@ -31,6 +32,8 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 
 	public QuestionViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
+//		HighScoreCellTableView highScoreCellTableView = new HighScoreCellTableView();
+//		highScoreCellTableView.HighScoreCellTableViewGet();
 	}
 
 	private Presenter listener;
@@ -42,6 +45,7 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	@UiField org.gwtbootstrap3.client.ui.Button btn2;
 	@UiField org.gwtbootstrap3.client.ui.Button btn3;
 	@UiField Modal modal;
+	@UiField ModalBody modalBody;
 	@UiField Label modalPointsLabel;
 	@UiField Button prvsQstBtn;
 	@UiField org.gwtbootstrap3.client.ui.Button modalCloseBtn;
@@ -50,6 +54,7 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	@UiField Heading categoryField;
 	@UiField Heading authorField;
 	@UiField ProgressBar progressBar;
+//	@UiField CellTable<Contact> cellTableHighScores;
 	
 	@Override
 	public void setPresenter(Presenter listener) {
@@ -100,6 +105,9 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	@Override
 	public void showModal(int userPoints) {
 		modalPointsLabel.setText("Points " + userPoints);
+		//remove any previously added high score cell table widget to avoid doubling them
+		modalBody.remove(0);
+		modalBody.add(new HighScoreCellTableView());
 		modal.show();
 	}
 	

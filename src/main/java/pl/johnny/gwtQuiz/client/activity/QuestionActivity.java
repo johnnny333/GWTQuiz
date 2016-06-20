@@ -76,7 +76,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 				currentQuestionInt = event.getCurrentQuestionInt();
 				if(questionsArrayList != null) {
 					questionView.setQuestion(questionsArrayList.get(currentQuestionInt).getQuestion());
-					
+
 					//Question image logic
 					if(questionsArrayList.get(currentQuestionInt).getQuestionImageURL() != null) {
 						questionView.setQuestionImage(questionsArrayList.get(currentQuestionInt).getQuestionImageURL(), true);
@@ -87,10 +87,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 
 					questionView.setAnswers(questionsArrayList.get(currentQuestionInt));
 					/* Display previous button only on > 0 questions */
-					if(currentQuestionInt < 1)
-						questionView.setPrvBtnVsbl(false);
-					else
-						questionView.setPrvBtnVsbl(true);
+					if(currentQuestionInt < 1)questionView.setPrvBtnVsbl(false);else questionView.setPrvBtnVsbl(true);
 					questionView.setQuestionCounter(currentQuestionInt + 1, questionsArrayList.size());
 					questionView.setPointsCounter(userPoints);
 					questionView.setCategoryField(questionsArrayList.get(currentQuestionInt).getCategory());
@@ -115,7 +112,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 		//cancel current timer
 		if(questionTimer != null) {
 			questionTimer.cancel();
-		} ;
+		};
 		return null;
 	}
 
