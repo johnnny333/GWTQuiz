@@ -1,8 +1,6 @@
 package pl.johnny.gwtQuiz.client.ui;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.ArrayList;
 
 import org.gwtbootstrap3.client.ui.gwt.CellTable;
 
@@ -16,77 +14,110 @@ import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.NoSelectionModel;
 
+import pl.johnny.gwtQuiz.client.ui.QuestionView.Presenter;
+import pl.johnny.gwtQuiz.shared.UserScore;
+
+/** 
+ * View class in charge of creating high scores cell table from given models.
+ * Integral part of QuestionView - separated for convenience and readability.
+ * <br/><br/>
+ * Building table cell is kinda complex due to the nature of asynchronomous RPC call made to 
+ * retrieve high score list from server.<br/>
+ * It goes...
+ * <br/>
+ * <ol >
+ * <li>
+ * This class is instatianted in QuestionViewImpl with listener parameter, which allows to 
+ * call QuestionActivity.getUserScores(this).
+ * </li>
+ *  <br/>
+ * <li>
+ * After said call is made - on success - the result of RPC call is handed to already 
+ * instatianted highScoreCellTableView.buildHighScoreCellTable(ArrayList&lt;UserScore> result)
+ * available from passed argument, where said result parameter from RPC call is used as a model to build and populate our cell list.
+ * </li>
+ * </ol>
+ * @author jzarewicz
+ *
+ */
 public class HighScoreCellTableView extends VerticalPanel {
 
 	/**
 	* The list of data to display.
 	*/
-	private static final List<Contact> CONTACTS = Arrays.asList(
-			new Contact("John", new Date(80, 4, 12), "5", true),
-			new Contact("Joe", new Date(85, 2, 22), "4", false),
-			new Contact("George", new Date(46, 6, 6), "4", false));
+//	private static final List<UserScore> CONTACTS = Arrays.asList(
+//			new UserScore("John", "5", true),
+//			new UserScore("Joe", "4", false),
+//			new UserScore("George", "4", false));
+	
+	
+	//Package access modifiers
+	HighScoreCellTableView(Presenter listener) {
+		listener.getUserScores(this);
+	}
 
-	public HighScoreCellTableView() {
-
-		CellTable<Contact> cellTableHighScores = new CellTable<Contact>();
+	public void buildHighScoreCellTable(ArrayList<UserScore> result){
+		CellTable<UserScore> cellTableHighScores = new CellTable<UserScore>();
 		cellTableHighScores.setWidth("100%", true);
 		cellTableHighScores.setStriped(true);
 		//		cellTableHighScores.setCondensed(true);
 		//		cellTableHighScores.setBordered(true);
-				cellTableHighScores.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.DISABLED);
+		cellTableHighScores.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.DISABLED);
 
 		// Add a text column to show the name.
-		Column<Contact, String> nameColumn = new Column<Contact, String>(new MyTextInputCell()) {
+		Column<UserScore, String> nameColumn = new Column<UserScore, String>(new MyTextInputCell()) {
 			@Override
-			public String getValue(Contact object) {
-				return object.name;
+			public String getValue(UserScore object) {
+				return object.playerDisplay;
 			}
 		};
-		
-		nameColumn.setFieldUpdater( new FieldUpdater<Contact, String>(){
+
+		nameColumn.setFieldUpdater(new FieldUpdater<UserScore, String>() {
 
 			@Override
-			public void update(int index, Contact object, String value) {
-				GWT.log("changed value " + value);	
+			public void update(int index, UserScore object, String value) {
+				GWT.log("changed value " + value);
 			}
+		});
 
-			 
-			});
-		
 		cellTableHighScores.addColumn(nameColumn, "Player");
 
 		// Add a text column to show the address.
-		TextColumn<Contact> addressColumn = new TextColumn<Contact>() {
+		TextColumn<UserScore> addressColumn = new TextColumn<UserScore>() {
 			@Override
-			public String getValue(Contact object) {
-				return object.address;
+			public String getValue(UserScore object) {
+				return object.score;
 			}
 		};
 		cellTableHighScores.addColumn(addressColumn, "Score");
 
 		// Add a selection model to handle user selection.
-				final NoSelectionModel<Contact> selectionModel = new NoSelectionModel<Contact>();
-				cellTableHighScores.setSelectionModel(selectionModel);
+		final NoSelectionModel<UserScore> selectionModel = new NoSelectionModel<UserScore>();
+		cellTableHighScores.setSelectionModel(selectionModel);
 
 		// Set the total row count. This isn't strictly necessary,
 		// but it affects paging calculations, so its good habit to
 		// keep the row count up to date.
-		cellTableHighScores.setRowCount(CONTACTS.size(), true);
+		cellTableHighScores.setRowCount(result.size(), true);
 
 		// Push the data into the widget.
-		cellTableHighScores.setRowData(0, CONTACTS);
-
+		cellTableHighScores.setRowData(0, result);
 		add(cellTableHighScores);
 	}
-
+	
+	/**
+	 * Custom TextInputCell class to enable certain cells to be editable in CellTable - 
+	 * when 'isThisCellEditable' of UserScore field is set to true.
+	 * @author jzarewicz
+	 */
 	public class MyTextInputCell extends TextInputCell {
 		@Override
 		public void render(Context context, String value, SafeHtmlBuilder sb) {
-			Contact object = (Contact) context.getKey();
+			UserScore object = (UserScore) context.getKey();
 			if(object.isThisCellEditable) {
-				 super.render(context,value,sb);
+				super.render(context, value, sb);
 			} else {
-				sb.appendEscaped(value); // our some other HTML. Whatever you want.
+				sb.appendEscaped(value);
 			}
 		}
 	}

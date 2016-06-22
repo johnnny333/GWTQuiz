@@ -107,7 +107,7 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 		modalPointsLabel.setText("Points " + userPoints);
 		//remove any previously added high score cell table widget to avoid doubling them
 		modalBody.remove(0);
-		modalBody.add(new HighScoreCellTableView());
+		modalBody.add(new HighScoreCellTableView(listener));
 		modal.show();
 	}
 	

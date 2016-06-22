@@ -7,6 +7,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import pl.johnny.gwtQuiz.client.QuestionService;
 import pl.johnny.gwtQuiz.shared.Question;
+import pl.johnny.gwtQuiz.shared.UserScore;
 
 @SuppressWarnings("serial")
 public class QuestionServiceImpl extends RemoteServiceServlet implements
@@ -20,14 +21,19 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public ArrayList<Question> getQuestions() {
-		return questionServiceDBConn.questions;
+		return questionServiceDBConn.getQuestions();
 	}
 	
 	@Override
 	public ArrayList<Question> getShuffledQuestions() {
-		ArrayList<Question> shuffledQuestions = questionServiceDBConn.questions;
+		ArrayList<Question> shuffledQuestions = questionServiceDBConn.getQuestions();
 		Collections.shuffle(shuffledQuestions);
 		return shuffledQuestions;
+	}
+	
+	@Override
+	public ArrayList<UserScore> getUserScores() {
+		return questionServiceDBConn.getUserScores();
 	}
 
 	//  @Override

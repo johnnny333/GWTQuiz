@@ -14,8 +14,10 @@ import pl.johnny.gwtQuiz.client.ClientFactory;
 import pl.johnny.gwtQuiz.client.QuestionServiceAsync;
 import pl.johnny.gwtQuiz.client.event.NewQuestionEvent;
 import pl.johnny.gwtQuiz.client.place.QuestionPlace;
+import pl.johnny.gwtQuiz.client.ui.HighScoreCellTableView;
 import pl.johnny.gwtQuiz.client.ui.QuestionView;
 import pl.johnny.gwtQuiz.shared.Question;
+import pl.johnny.gwtQuiz.shared.UserScore;
 
 /**
  * All quiz logic: RPC calling, questions showing, setting view,points counting, quiz finish... 
@@ -25,6 +27,7 @@ import pl.johnny.gwtQuiz.shared.Question;
 public class QuestionActivity extends AbstractActivity implements QuestionView.Presenter {
 	public ClientFactory clientFactory;
 	private QuestionView questionView;
+	private QuestionServiceAsync questionService;
 	private EventBus eventBus;
 	private NewQuestionEvent.Handler handler;
 	private final String token;
@@ -37,6 +40,8 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 	private int userPoints;
 	/** Global Timer variable to enable canceling it from whole this class */
 	private Timer questionTimer;
+//	private ArrayList<UserScore> userScoresArray ;
+
 
 	public QuestionActivity(QuestionPlace place, ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
@@ -45,12 +50,12 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 		token = place.getGoodbyeName();
 		this.place = place;
 		/* Download questions from server,save it in a client and show 1st question */
-		QuestionServiceAsync questionService = clientFactory.getContactService();
+		questionService = clientFactory.getContactService();
 		questionService.getShuffledQuestions(new AsyncCallback<ArrayList<Question>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				GWT.log("fail RPC! " + caught.getMessage());
+				GWT.log("Failed getShuffledQuestions() RPC! " + caught.getMessage());
 			}
 
 			@Override
@@ -178,5 +183,24 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 		};
 		// Schedule the timer to run once every second, 1000 ms.
 		questionTimer.scheduleRepeating(1000); //scheduleRepeating(), not just schedule().
+	}
+	ArrayList<UserScore> userScoresArray ;
+	@Override
+	public void getUserScores(final HighScoreCellTableView highScoreCellTableView){
+		
+		questionService.getUserScores(new AsyncCallback<ArrayList<UserScore>>() {	
+			
+			@Override
+			public void onSuccess(ArrayList<UserScore> result) {
+				highScoreCellTableView.buildHighScoreCellTable(result);
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				GWT.log("Failed getUserScores() RPC! " + caught.getMessage());
+			}
+			
+		});
+		//TODO Think about making separate class with all RPCs
 	}
 }

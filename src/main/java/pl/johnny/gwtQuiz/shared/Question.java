@@ -7,7 +7,6 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * @author jzarewicz
  *
  */
-@SuppressWarnings("serial")
 public class Question implements IsSerializable {
 
 	private String question;

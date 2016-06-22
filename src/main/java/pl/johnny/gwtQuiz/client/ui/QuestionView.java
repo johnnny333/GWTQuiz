@@ -34,7 +34,7 @@ public interface QuestionView extends IsWidget
 	 * @param answers
 	 */
 	
-	void setQuestionImage(String questionImageURL,boolean isVisible);
+	void setQuestionImage(String questionImageURL, boolean isVisible);
 	
 	public void setAnswers(Question answers);
 	
@@ -81,6 +81,11 @@ public interface QuestionView extends IsWidget
 		
 		/** Takes user to previous question relative to the actual.*/
 		void onPreviousBtnClicked();
+		
+		/** 
+		 * Get user scores from server via RPC call. 
+		 * @param highScoreCellTableView 
+		 * */
+		void getUserScores(HighScoreCellTableView highScoreCellTableView);
 	}
-
 }

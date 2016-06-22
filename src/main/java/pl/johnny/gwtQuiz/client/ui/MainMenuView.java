@@ -7,7 +7,7 @@ import com.google.gwt.user.client.ui.IsWidget;
  * View interface. Extends IsWidget so a view impl can easily provide
  * its container widget.
  *
- * @author drfibonacci
+ * @author jzarewicz
  */
 public interface MainMenuView extends IsWidget
 {
@@ -17,7 +17,6 @@ public interface MainMenuView extends IsWidget
 	public interface Presenter
 	{
 		void goTo(Place place);
-//		void onNewGameButtonClicked(String string);
 		void onNewGameButtonClicked(int currentQuestion);
 	}
 }
