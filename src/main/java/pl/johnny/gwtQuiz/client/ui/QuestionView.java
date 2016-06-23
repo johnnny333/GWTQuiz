@@ -4,6 +4,7 @@ import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.ui.IsWidget;
 
 import pl.johnny.gwtQuiz.shared.Question;
+import pl.johnny.gwtQuiz.shared.UserScore;
 
 /**
  * View interface. Extends IsWidget so a view impl can easily provide
@@ -86,6 +87,8 @@ public interface QuestionView extends IsWidget
 		 * Get user scores from server via RPC call. 
 		 * @param highScoreCellTableView 
 		 * */
-		void getUserScores(HighScoreCellTableView highScoreCellTableView);
+		void insertUserScore(HighScoreCellTableView highScoreCellTableView);
+		
+		void updateUserScore(UserScore userScore);
 	}
 }

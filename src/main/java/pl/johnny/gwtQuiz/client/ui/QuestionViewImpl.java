@@ -32,8 +32,7 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 
 	public QuestionViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
-//		HighScoreCellTableView highScoreCellTableView = new HighScoreCellTableView();
-//		highScoreCellTableView.HighScoreCellTableViewGet();
+
 	}
 
 	private Presenter listener;

@@ -35,6 +35,17 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements
 	public ArrayList<UserScore> getUserScores() {
 		return questionServiceDBConn.getUserScores();
 	}
+	
+	@Override
+	public ArrayList<UserScore> insertUserScore(UserScore userScore) {
+		questionServiceDBConn.insertUserScore(userScore);
+		return questionServiceDBConn.getUserScores();
+	}
+	
+	@Override
+	public void updateUserScore(UserScore userScore) {
+		questionServiceDBConn.updateUserScore(userScore);
+	}
 
 	//  @Override
 	//public Contact addContact(Contact contact) {

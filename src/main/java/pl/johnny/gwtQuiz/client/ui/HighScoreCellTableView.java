@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import org.gwtbootstrap3.client.ui.gwt.CellTable;
 
 import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.NumberCell;
 import com.google.gwt.cell.client.TextInputCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
-import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.NoSelectionModel;
 
@@ -49,14 +49,17 @@ public class HighScoreCellTableView extends VerticalPanel {
 //			new UserScore("John", "5", true),
 //			new UserScore("Joe", "4", false),
 //			new UserScore("George", "4", false));
-	
+	private Presenter listener;
 	
 	//Package access modifiers
 	HighScoreCellTableView(Presenter listener) {
-		listener.getUserScores(this);
+		this.listener = listener;
+		listener.insertUserScore(this);
 	}
 
-	public void buildHighScoreCellTable(ArrayList<UserScore> result){
+	public void buildHighScoreCellTable(final ArrayList<UserScore> result){
+		GWT.log("result last id " + result.get(result.size() -1 ).userScoreID );
+		
 		CellTable<UserScore> cellTableHighScores = new CellTable<UserScore>();
 		cellTableHighScores.setWidth("100%", true);
 		cellTableHighScores.setStriped(true);
@@ -68,7 +71,7 @@ public class HighScoreCellTableView extends VerticalPanel {
 		Column<UserScore, String> nameColumn = new Column<UserScore, String>(new MyTextInputCell()) {
 			@Override
 			public String getValue(UserScore object) {
-				return object.playerDisplay;
+				return object.userDisplay;
 			}
 		};
 
@@ -77,15 +80,23 @@ public class HighScoreCellTableView extends VerticalPanel {
 			@Override
 			public void update(int index, UserScore object, String value) {
 				GWT.log("changed value " + value);
+				
+				int userScoreLastID = result.get(result.size() -1 ).userScoreID;
+				int lastUserScore = result.get(result.size() -1 ).score;
+				
+				UserScore userScore = new UserScore(userScoreLastID, value, 
+						lastUserScore, false);
+				
+				listener.updateUserScore(userScore);
 			}
 		});
 
 		cellTableHighScores.addColumn(nameColumn, "Player");
 
-		// Add a text column to show the address.
-		TextColumn<UserScore> addressColumn = new TextColumn<UserScore>() {
+		// Add a number column to show the address.
+		Column<UserScore,Number> addressColumn = new Column<UserScore,Number>(new NumberCell()) {
 			@Override
-			public String getValue(UserScore object) {
+			public Integer getValue(UserScore object) {
 				return object.score;
 			}
 		};
@@ -99,7 +110,7 @@ public class HighScoreCellTableView extends VerticalPanel {
 		// but it affects paging calculations, so its good habit to
 		// keep the row count up to date.
 		cellTableHighScores.setRowCount(result.size(), true);
-
+		
 		// Push the data into the widget.
 		cellTableHighScores.setRowData(0, result);
 		add(cellTableHighScores);
@@ -114,7 +125,7 @@ public class HighScoreCellTableView extends VerticalPanel {
 		@Override
 		public void render(Context context, String value, SafeHtmlBuilder sb) {
 			UserScore object = (UserScore) context.getKey();
-			if(object.isThisCellEditable) {
+			if(object.isEditable) {
 				super.render(context, value, sb);
 			} else {
 				sb.appendEscaped(value);

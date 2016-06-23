@@ -2,8 +2,8 @@ package pl.johnny.gwtQuiz.server;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -19,23 +19,8 @@ import pl.johnny.gwtQuiz.shared.UserScore;
  * */
 public class QuestionServiceDatabaseConn {
 
-	private Connection c;
-	private Statement stmt;
-
 	//Package access modifiers
 	QuestionServiceDatabaseConn() {
-
-		try {
-			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
-			c.setAutoCommit(false);
-			c.createStatement().execute("PRAGMA foreign_keys = ON");
-			stmt = c.createStatement();
-
-		} catch (SQLException e) {
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
-			System.err.println(e.getCause() + " " + e.getStackTrace());
-			System.exit(0);
-		}
 	}
 
 	/**
@@ -80,6 +65,8 @@ public class QuestionServiceDatabaseConn {
 	 * */
 	ArrayList<Question> getQuestions() {
 
+		Connection c;
+		Statement stmt;
 		/** Two dimensional array. At first[i][0] position we'll store question String,
 		 * at second[i][1] image server url.*/
 		String[][] questionsData;
@@ -91,7 +78,13 @@ public class QuestionServiceDatabaseConn {
 		ArrayList<Question> questionsArray = new ArrayList<Question>();
 
 		try {
+			//Connection
+			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
+			c.setAutoCommit(false);
+			c.createStatement().execute("PRAGMA foreign_keys = ON");
+			stmt = c.createStatement();
 
+			//Actual query
 			ResultSet rsRowCount = stmt.executeQuery("SELECT COUNT(*) FROM questions;");
 			int rowsCount = rsRowCount.getInt(1);
 
@@ -129,8 +122,8 @@ public class QuestionServiceDatabaseConn {
 				categoryData[resultSet.getRow() - 1] = resultSet.getString("category");
 			}
 			resultSet.close();
-//			stmt.close();
-//			c.close();
+			stmt.close();
+			c.close();
 
 			/* After filling arrays with questions data, make models with them 
 			 * and pack said models to an ArrayList in order to use it on QuestionServiceImpl */
@@ -152,34 +145,53 @@ public class QuestionServiceDatabaseConn {
 	 */
 	ArrayList<UserScore> getUserScores() {
 
+		Connection c;
+		Statement stmt;
+		
+		int[] userScoreID;
 		String[] userDisplay;
-		String[] userScores;
+		int[] userScores;
+		Boolean[] isEditable;
 		ArrayList<UserScore> userScoresArray = new ArrayList<UserScore>();
 
 		try {
+			//Connection
+			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
+			c.setAutoCommit(false);
+			c.createStatement().execute("PRAGMA foreign_keys = ON");
+			stmt = c.createStatement();
+
+			//Actual query
 			ResultSet rsRowCount = stmt.executeQuery("SELECT COUNT(*) FROM user_scores;");
 			int rowsCount = rsRowCount.getInt(1);
 			System.out.println(rsRowCount.getInt(1));
 
+			userScoreID = new int[rowsCount];
 			userDisplay = new String[rowsCount];
-			userScores = new String[rowsCount];
+			userScores = new int[rowsCount];
+			isEditable = new Boolean[rowsCount];
 
-			ResultSet resultSet = stmt.executeQuery("SELECT user_display, user_score FROM user_scores;");
+			ResultSet resultSet = stmt.executeQuery("SELECT ID, user_display, user_score, "
+					+ "is_editable FROM user_scores ORDER BY user_score DESC;");
 
 			while(resultSet.next()) {
+				//Get user score ID and save it to an Array
+				userScoreID[resultSet.getRow() - 1] = resultSet.getInt("ID");
 				//Get user displays and save it to an Array
 				userDisplay[resultSet.getRow() - 1] = resultSet.getString("user_display");
 				//Get user scores and save it to an Array
-				userScores[resultSet.getRow() - 1] = resultSet.getString("user_score");
+				userScores[resultSet.getRow() - 1] = resultSet.getInt("user_score");
+				//Get isEditable flags and save it on an Array
+				isEditable[resultSet.getRow() - 1] = resultSet.getBoolean("is_editable");
 			}
 			resultSet.close();
-//			stmt.close();
-//			c.close();
-			
+			stmt.close();
+			c.close();
+
 			/* After filling arrays with user scores data, make models with them 
 			 * and pack said models to an ArrayList in order to use it on QuestionServiceImpl */
 			for(int i = 0; i < userDisplay.length; ++i) {
-				UserScore userScore = new UserScore(userDisplay[i], userScores[i], false);
+				UserScore userScore = new UserScore(userScoreID[i],userDisplay[i], userScores[i], isEditable[i]);
 				userScoresArray.add(userScore);
 			}
 
@@ -189,5 +201,65 @@ public class QuestionServiceDatabaseConn {
 			System.exit(0);
 		}
 		return userScoresArray;
+	}
+
+	void insertUserScore(UserScore userScore) {
+
+		Connection c;
+		PreparedStatement prepStmt;
+
+		try {
+			//Connection
+			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
+			c.setAutoCommit(false);
+			c.createStatement().execute("PRAGMA foreign_keys = ON");
+
+			prepStmt = c.prepareStatement(
+					"INSERT INTO user_scores (user_display,user_score,is_editable) VALUES (?, ?, ?);");
+
+			prepStmt.setString(1, userScore.userDisplay);
+			prepStmt.setInt(2, userScore.score);
+			prepStmt.setBoolean(3, userScore.isEditable);
+			prepStmt.executeUpdate();
+
+			prepStmt.close();
+			c.commit();
+			c.close();
+
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.err.println(e.getCause() + " " + e.getStackTrace());
+			System.exit(0);
+		}
+	}
+	
+	void updateUserScore(UserScore userScore) {
+
+		Connection c;
+		PreparedStatement prepStmt;
+
+		try {
+			//Connection
+			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
+			c.setAutoCommit(false);
+			c.createStatement().execute("PRAGMA foreign_keys = ON");
+
+			prepStmt = c.prepareStatement(
+					"UPDATE user_scores SET user_display=?, is_editable=? WHERE ID=?;");
+
+			prepStmt.setString(1, userScore.userDisplay);
+			prepStmt.setBoolean(2, userScore.isEditable);
+			prepStmt.setInt(3, userScore.userScoreID);
+			prepStmt.executeUpdate();
+
+			prepStmt.close();
+			c.commit();
+			c.close();
+
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.err.println(e.getCause() + " " + e.getStackTrace());
+			System.exit(0);
+		}
 	}
 }

@@ -12,5 +12,9 @@ public interface QuestionServiceAsync {
 
 	void getShuffledQuestions(AsyncCallback<ArrayList<Question>> asyncCallback);
 
-	void getUserScores(AsyncCallback<ArrayList<UserScore>> asynccallback);	
+	void getUserScores(AsyncCallback<ArrayList<UserScore>> asyncCallback);
+
+	void insertUserScore(UserScore userScore, AsyncCallback<ArrayList<UserScore>> asyncCallback);
+
+	void updateUserScore(UserScore userScore, AsyncCallback<Void> asyncCallback);	
 }

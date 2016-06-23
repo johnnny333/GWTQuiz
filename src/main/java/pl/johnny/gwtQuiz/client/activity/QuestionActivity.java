@@ -40,8 +40,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 	private int userPoints;
 	/** Global Timer variable to enable canceling it from whole this class */
 	private Timer questionTimer;
-//	private ArrayList<UserScore> userScoresArray ;
-
+	//	private ArrayList<UserScore> userScoresArray ;
 
 	public QuestionActivity(QuestionPlace place, ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
@@ -92,7 +91,10 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 
 					questionView.setAnswers(questionsArrayList.get(currentQuestionInt));
 					/* Display previous button only on > 0 questions */
-					if(currentQuestionInt < 1)questionView.setPrvBtnVsbl(false);else questionView.setPrvBtnVsbl(true);
+					if(currentQuestionInt < 1)
+						questionView.setPrvBtnVsbl(false);
+					else
+						questionView.setPrvBtnVsbl(true);
 					questionView.setQuestionCounter(currentQuestionInt + 1, questionsArrayList.size());
 					questionView.setPointsCounter(userPoints);
 					questionView.setCategoryField(questionsArrayList.get(currentQuestionInt).getCategory());
@@ -117,7 +119,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 		//cancel current timer
 		if(questionTimer != null) {
 			questionTimer.cancel();
-		};
+		} ;
 		return null;
 	}
 
@@ -184,23 +186,40 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 		// Schedule the timer to run once every second, 1000 ms.
 		questionTimer.scheduleRepeating(1000); //scheduleRepeating(), not just schedule().
 	}
-	ArrayList<UserScore> userScoresArray ;
+
+	//TODO Think about making separate class with all RPCs
+	/** Insert in database and than display user score with blank name field */
 	@Override
-	public void getUserScores(final HighScoreCellTableView highScoreCellTableView){
-		
-		questionService.getUserScores(new AsyncCallback<ArrayList<UserScore>>() {	
-			
+	public void insertUserScore(final HighScoreCellTableView highScoreCellTableView) {
+
+		UserScore userScore = new UserScore("", userPoints, true);
+
+		questionService.insertUserScore(userScore, new AsyncCallback<ArrayList<UserScore>>() {
 			@Override
 			public void onSuccess(ArrayList<UserScore> result) {
 				highScoreCellTableView.buildHighScoreCellTable(result);
 			}
-			
+
 			@Override
 			public void onFailure(Throwable caught) {
-				GWT.log("Failed getUserScores() RPC! " + caught.getMessage());
+				GWT.log("Failed insertUserScore() RPC! " + caught.getMessage());
 			}
-			
 		});
-		//TODO Think about making separate class with all RPCs
+	}
+
+	@Override
+	public void updateUserScore(UserScore userScore) {
+		questionService.updateUserScore(userScore, new AsyncCallback<Void>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				GWT.log("Failed updateUserScore() RPC! " + caught.getMessage());
+			}
+
+			@Override
+			public void onSuccess(Void result) {
+				// TODO Auto-generated method stub	
+			}
+		});
 	}
 }
