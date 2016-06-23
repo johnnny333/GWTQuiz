@@ -50,6 +50,9 @@ public class HighScoreCellTableView extends VerticalPanel {
 //			new UserScore("Joe", "4", false),
 //			new UserScore("George", "4", false));
 	private Presenter listener;
+	Boolean valueChanged = false;
+	int userScoreLastID;
+	int lastUserScore;
 	
 	//Package access modifiers
 	HighScoreCellTableView(Presenter listener) {
@@ -58,7 +61,9 @@ public class HighScoreCellTableView extends VerticalPanel {
 	}
 
 	public void buildHighScoreCellTable(final ArrayList<UserScore> result){
-		GWT.log("result last id " + result.get(result.size() -1 ).userScoreID );
+		
+		userScoreLastID = result.get(result.size() -1 ).userScoreID;
+		lastUserScore = result.get(result.size() -1 ).score;
 		
 		CellTable<UserScore> cellTableHighScores = new CellTable<UserScore>();
 		cellTableHighScores.setWidth("100%", true);
@@ -81,13 +86,14 @@ public class HighScoreCellTableView extends VerticalPanel {
 			public void update(int index, UserScore object, String value) {
 				GWT.log("changed value " + value);
 				
-				int userScoreLastID = result.get(result.size() -1 ).userScoreID;
-				int lastUserScore = result.get(result.size() -1 ).score;
+				
 				
 				UserScore userScore = new UserScore(userScoreLastID, value, 
 						lastUserScore, false);
 				
 				listener.updateUserScore(userScore);
+				
+				valueChanged = true;
 			}
 		});
 

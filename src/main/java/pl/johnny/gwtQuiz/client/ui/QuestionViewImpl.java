@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
 import pl.johnny.gwtQuiz.shared.Question;
+import pl.johnny.gwtQuiz.shared.UserScore;
 
 /**
  * View with multiple methods to set and display question view.
@@ -36,6 +37,7 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	}
 
 	private Presenter listener;
+	private HighScoreCellTableView highScoreCellTableView;
 	
 	@UiField Heading qstnLbl;
 	@UiField Image questionImage;
@@ -96,6 +98,11 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	
 	@UiHandler("modalCloseBtn")
 	void onModalCloseBtnClicked(ClickEvent e) {
+		if(highScoreCellTableView.valueChanged == false){
+			UserScore userScore = new UserScore(highScoreCellTableView.userScoreLastID, "Player1", 
+					highScoreCellTableView.lastUserScore, false);
+			listener.updateUserScore(userScore);
+		}
 		if (listener != null) {
 			listener.goTo(new MainMenuPlace("MainMenu"));
 		}
@@ -106,7 +113,8 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 		modalPointsLabel.setText("Points " + userPoints);
 		//remove any previously added high score cell table widget to avoid doubling them
 		modalBody.remove(0);
-		modalBody.add(new HighScoreCellTableView(listener));
+		highScoreCellTableView = new HighScoreCellTableView(listener);
+		modalBody.add(highScoreCellTableView);
 		modal.show();
 	}
 	
