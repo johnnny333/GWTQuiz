@@ -38,14 +38,15 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 	private ArrayList<Question> questionsArrayList;
 	/** Keeps user points on instance of the quiz */
 	private int userPoints;
-	/** Global Timer variable to enable canceling it from whole this class */
+	/** Global Timer variable to enable canceling it from this whole class */
 	private Timer questionTimer;
-	//	private ArrayList<UserScore> userScoresArray ;
+	private HighScoreCellTableView highScoreCellTableView;
 
 	public QuestionActivity(QuestionPlace place, ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
 		questionView = clientFactory.getQuestionView();
 		questionView.setPresenter(this);
+
 		token = place.getGoodbyeName();
 		this.place = place;
 		/* Download questions from server,save it in a client and show 1st question */
@@ -76,9 +77,10 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 			@Override
 			public void onNewQuestion(NewQuestionEvent event) {
 				//Start a new instance of timer on every question.
-				//				timerForProgressBar(25);
+				//timerForProgressBar(25);
 				currentQuestionInt = event.getCurrentQuestionInt();
 				if(questionsArrayList != null) {
+					questionView.setShowModal(false);
 					questionView.setQuestion(questionsArrayList.get(currentQuestionInt).getQuestion());
 
 					//Question image logic
@@ -116,6 +118,15 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 	 */
 	@Override
 	public String mayStop() {
+		/*
+		 * Keeps user records in db clean when user navigates away from user scores 
+		 * with blank name field (fill in name with generic name and set is_editable flag  
+		 * to false.
+		 */
+		if(!highScoreCellTableView.getIsNameFieldFilled() && questionView.isShowModal()) {
+			highScoreCellTableView.fillEmptyRecord();
+		}
+
 		//cancel current timer
 		if(questionTimer != null) {
 			questionTimer.cancel();
@@ -158,7 +169,6 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 
 	/** 
 	 * Timer to hurry up user answering ;) 
-	 * 
 	 * @param timerTime user specified count-down time
 	 * */
 	private void timerForProgressBar(final int timerTime) {
@@ -187,17 +197,23 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 		questionTimer.scheduleRepeating(1000); //scheduleRepeating(), not just schedule().
 	}
 
-	//TODO Think about making separate class with all RPCs
-	/** Insert in database and than display user score with blank name field */
 	@Override
-	public void insertUserScore(final HighScoreCellTableView highScoreCellTableView) {
+	public HighScoreCellTableView getHighScoreCellTableView() {
+		highScoreCellTableView = clientFactory.getHighScoreCellTableView();
+		highScoreCellTableView.setPresenter(this);
+		return highScoreCellTableView;
+	}
+
+	//TODO Think about making separate class with all RPCs
+	@Override
+	public void insertDataIntoUserScoresTable() {
 
 		UserScore userScore = new UserScore("", userPoints, true);
 
 		questionService.insertUserScore(userScore, new AsyncCallback<ArrayList<UserScore>>() {
 			@Override
 			public void onSuccess(ArrayList<UserScore> result) {
-				highScoreCellTableView.buildHighScoreCellTable(result);
+				highScoreCellTableView.fillHighScoreCellTable(result);
 			}
 
 			@Override

@@ -84,11 +84,26 @@ public interface QuestionView extends IsWidget
 		void onPreviousBtnClicked();
 		
 		/** 
-		 * Get user scores from server via RPC call. 
+		 * Insert current (not yet named) player record into database.
+		 * Then, get all user scores with our freshly added record 
+		 * from server via RPC call. 
 		 * @param highScoreCellTableView 
 		 * */
-		void insertUserScore(HighScoreCellTableView highScoreCellTableView);
+		void insertDataIntoUserScoresTable();
 		
+		/** 
+		 * Previously (not yet named) player is now named and sent in argument.
+		 * His record will be updated with provided name and is_editable flag set 
+		 * to false.
+		 * @param userScore
+		 */
 		void updateUserScore(UserScore userScore);
+		
+		/** Get access to instance of HighScoreCellTableView() */
+		public HighScoreCellTableView getHighScoreCellTableView();
 	}
+
+	boolean isShowModal();
+
+	void setShowModal(boolean isShowModal);
 }

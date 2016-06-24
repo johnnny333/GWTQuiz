@@ -2,140 +2,30 @@ package pl.johnny.gwtQuiz.client.ui;
 
 import java.util.ArrayList;
 
-import org.gwtbootstrap3.client.ui.gwt.CellTable;
-
-import com.google.gwt.cell.client.FieldUpdater;
-import com.google.gwt.cell.client.NumberCell;
-import com.google.gwt.cell.client.TextInputCell;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.view.client.NoSelectionModel;
+import com.google.gwt.user.client.ui.IsWidget;
 
 import pl.johnny.gwtQuiz.client.ui.QuestionView.Presenter;
 import pl.johnny.gwtQuiz.shared.UserScore;
 
-/** 
- * View class in charge of creating high scores cell table from given models.
- * Integral part of QuestionView - separated for convenience and readability.
- * <br/><br/>
- * Building table cell is kinda complex due to the nature of asynchronomous RPC call made to 
- * retrieve high score list from server.<br/>
- * It goes...
- * <br/>
- * <ol >
- * <li>
- * This class is instatianted in QuestionViewImpl with listener parameter, which allows to 
- * call QuestionActivity.getUserScores(this).
- * </li>
- *  <br/>
- * <li>
- * After said call is made - on success - the result of RPC call is handed to already 
- * instatianted highScoreCellTableView.buildHighScoreCellTable(ArrayList&lt;UserScore> result)
- * available from passed argument, where said result parameter from RPC call is used as a model to build and populate our cell list.
- * </li>
- * </ol>
- * @author jzarewicz
- *
- */
-public class HighScoreCellTableView extends VerticalPanel {
+public interface HighScoreCellTableView extends IsWidget {
 
-	/**
-	* The list of data to display.
-	*/
-//	private static final List<UserScore> CONTACTS = Arrays.asList(
-//			new UserScore("John", "5", true),
-//			new UserScore("Joe", "4", false),
-//			new UserScore("George", "4", false));
-	private Presenter listener;
-	Boolean valueChanged = false;
-	int userScoreLastID;
-	int lastUserScore;
-	
-	//Package access modifiers
-	HighScoreCellTableView(Presenter listener) {
-		this.listener = listener;
-		listener.insertUserScore(this);
-	}
-
-	public void buildHighScoreCellTable(final ArrayList<UserScore> result){
-		
-		userScoreLastID = result.get(result.size() -1 ).userScoreID;
-		lastUserScore = result.get(result.size() -1 ).score;
-		
-		CellTable<UserScore> cellTableHighScores = new CellTable<UserScore>();
-		cellTableHighScores.setWidth("100%", true);
-		cellTableHighScores.setStriped(true);
-		//		cellTableHighScores.setCondensed(true);
-		//		cellTableHighScores.setBordered(true);
-		cellTableHighScores.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.DISABLED);
-
-		// Add a text column to show the name.
-		Column<UserScore, String> nameColumn = new Column<UserScore, String>(new MyTextInputCell()) {
-			@Override
-			public String getValue(UserScore object) {
-				return object.userDisplay;
-			}
-		};
-
-		nameColumn.setFieldUpdater(new FieldUpdater<UserScore, String>() {
-
-			@Override
-			public void update(int index, UserScore object, String value) {
-				GWT.log("changed value " + value);
-				
-				
-				
-				UserScore userScore = new UserScore(userScoreLastID, value, 
-						lastUserScore, false);
-				
-				listener.updateUserScore(userScore);
-				
-				valueChanged = true;
-			}
-		});
-
-		cellTableHighScores.addColumn(nameColumn, "Player");
-
-		// Add a number column to show the address.
-		Column<UserScore,Number> addressColumn = new Column<UserScore,Number>(new NumberCell()) {
-			@Override
-			public Integer getValue(UserScore object) {
-				return object.score;
-			}
-		};
-		cellTableHighScores.addColumn(addressColumn, "Score");
-
-		// Add a selection model to handle user selection.
-		final NoSelectionModel<UserScore> selectionModel = new NoSelectionModel<UserScore>();
-		cellTableHighScores.setSelectionModel(selectionModel);
-
-		// Set the total row count. This isn't strictly necessary,
-		// but it affects paging calculations, so its good habit to
-		// keep the row count up to date.
-		cellTableHighScores.setRowCount(result.size(), true);
-		
-		// Push the data into the widget.
-		cellTableHighScores.setRowData(0, result);
-		add(cellTableHighScores);
-	}
-	
-	/**
-	 * Custom TextInputCell class to enable certain cells to be editable in CellTable - 
-	 * when 'isThisCellEditable' of UserScore field is set to true.
-	 * @author jzarewicz
+	/** 
+	 * Function used by corresponding Activity to establish communication
+	 * between said Activity and this View.
+	 * 
+	 * @param listener
 	 */
-	public class MyTextInputCell extends TextInputCell {
-		@Override
-		public void render(Context context, String value, SafeHtmlBuilder sb) {
-			UserScore object = (UserScore) context.getKey();
-			if(object.isEditable) {
-				super.render(context, value, sb);
-			} else {
-				sb.appendEscaped(value);
-			}
-		}
-	}
+	void setPresenter(Presenter listener);
+	
+	/** Fill empty high score cell table with data from RPC call */
+	void fillHighScoreCellTable(ArrayList<UserScore> result);
+	
+	Boolean getIsNameFieldFilled();
+
+	/** 
+	 * Creates generic record for situations when user don't provide its name to an empty name field
+	 * in HighScoreCellTableView. (either click close on records modal or close,navigates away from records view). 
+	 * Said record is then updated in database with updateUserScore(userScore);
+	 */
+	void fillEmptyRecord();
 }

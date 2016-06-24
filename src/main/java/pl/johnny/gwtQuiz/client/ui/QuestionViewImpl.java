@@ -18,7 +18,6 @@ import com.google.gwt.user.client.ui.Widget;
 
 import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
 import pl.johnny.gwtQuiz.shared.Question;
-import pl.johnny.gwtQuiz.shared.UserScore;
 
 /**
  * View with multiple methods to set and display question view.
@@ -38,6 +37,7 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 
 	private Presenter listener;
 	private HighScoreCellTableView highScoreCellTableView;
+	private boolean isShowModal;
 	
 	@UiField Heading qstnLbl;
 	@UiField Image questionImage;
@@ -57,9 +57,13 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	@UiField ProgressBar progressBar;
 //	@UiField CellTable<Contact> cellTableHighScores;
 	
+	
 	@Override
 	public void setPresenter(Presenter listener) {
 		this.listener = listener;
+		//Add empty HighScoreCellTableView 
+		highScoreCellTableView = listener.getHighScoreCellTableView();
+		modalBody.add(highScoreCellTableView);
 	}
 
 	@Override
@@ -96,26 +100,35 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 		}
 	}
 	
+	@Override
+	public void showModal(int userPoints) {
+		isShowModal = true;
+		modalPointsLabel.setText("Points " + userPoints);
+		//remove any previously added high score cell table widget to avoid doubling them
+//		modalBody.remove(0);
+		listener.insertDataIntoUserScoresTable();
+		modal.show();
+	}
+	
+	@Override
+	public void setShowModal(boolean isShowModal) {
+		this.isShowModal = isShowModal;
+	}
+
+	@Override
+	public boolean isShowModal() {
+		return isShowModal;
+	}
+	
 	@UiHandler("modalCloseBtn")
 	void onModalCloseBtnClicked(ClickEvent e) {
-		if(highScoreCellTableView.valueChanged == false){
-			UserScore userScore = new UserScore(highScoreCellTableView.userScoreLastID, "Player1", 
-					highScoreCellTableView.lastUserScore, false);
-			listener.updateUserScore(userScore);
+		if(highScoreCellTableView.getIsNameFieldFilled() == false){
+//			GWT.log("getIsNameFieldFilled() (false) " + highScoreCellTableView.getIsNameFieldFilled());
+			highScoreCellTableView.fillEmptyRecord();
 		}
 		if (listener != null) {
 			listener.goTo(new MainMenuPlace("MainMenu"));
 		}
-	}
-	
-	@Override
-	public void showModal(int userPoints) {
-		modalPointsLabel.setText("Points " + userPoints);
-		//remove any previously added high score cell table widget to avoid doubling them
-		modalBody.remove(0);
-		highScoreCellTableView = new HighScoreCellTableView(listener);
-		modalBody.add(highScoreCellTableView);
-		modal.show();
 	}
 	
 	@Override
@@ -147,5 +160,4 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	public void setProgressBar(Double percent) {
 		progressBar.setPercent(percent);	
 	}
-
 }

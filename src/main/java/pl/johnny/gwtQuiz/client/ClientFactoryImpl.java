@@ -1,15 +1,16 @@
 package pl.johnny.gwtQuiz.client;
 
-import pl.johnny.gwtQuiz.client.ui.MainMenuView;
-import pl.johnny.gwtQuiz.client.ui.MainMenuViewImpl;
-import pl.johnny.gwtQuiz.client.ui.QuestionView;
-import pl.johnny.gwtQuiz.client.ui.QuestionViewImpl;
-import pl.johnny.gwtQuiz.client.ui.QuestionViewImpl;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.place.shared.PlaceController;
+
+import pl.johnny.gwtQuiz.client.ui.HighScoreCellTableView;
+import pl.johnny.gwtQuiz.client.ui.HighScoreCellTableViewImpl;
+import pl.johnny.gwtQuiz.client.ui.MainMenuView;
+import pl.johnny.gwtQuiz.client.ui.MainMenuViewImpl;
+import pl.johnny.gwtQuiz.client.ui.QuestionView;
+import pl.johnny.gwtQuiz.client.ui.QuestionViewImpl;
 
 public class ClientFactoryImpl implements ClientFactory
 {
@@ -17,6 +18,7 @@ public class ClientFactoryImpl implements ClientFactory
 	private static final PlaceController placeController = new PlaceController(eventBus);
 	private static final MainMenuView mainMenuView = new MainMenuViewImpl();
 	private static final QuestionView questionView = new QuestionViewImpl();
+	private static final HighScoreCellTableView HighScoreCellTableView = new HighScoreCellTableViewImpl();
 	private final QuestionServiceAsync questionService = GWT.create(QuestionService.class);
 
 
@@ -42,6 +44,12 @@ public class ClientFactoryImpl implements ClientFactory
 	public QuestionView getQuestionView()
 	{
 		return questionView;
+	}
+	
+	@Override
+	public HighScoreCellTableView getHighScoreCellTableView()
+	{
+		return HighScoreCellTableView;
 	}
 
 	@Override
