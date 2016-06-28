@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.gwtbootstrap3.client.ui.gwt.CellTable;
 
+import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.NumberCell;
 import com.google.gwt.cell.client.TextInputCell;
@@ -11,6 +12,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
+import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.NoSelectionModel;
 
@@ -46,6 +48,8 @@ public class HighScoreCellTableViewImpl extends VerticalPanel implements HighSco
 		//		cellTableHighScores.setCondensed(true);
 		//		cellTableHighScores.setBordered(true);
 		cellTableHighScores.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.DISABLED);
+		
+		cellTableHighScores.addColumn(new RowNumberColumn());
 
 		// Add a text column to show the name.
 		Column<UserScore, String> nameColumn = new Column<UserScore, String>(new MyTextInputCell()) {
@@ -54,7 +58,7 @@ public class HighScoreCellTableViewImpl extends VerticalPanel implements HighSco
 				return object.userDisplay;
 			}
 		};
-
+		
 		nameColumn.setFieldUpdater(new FieldUpdater<UserScore, String>() {
 
 			@Override
@@ -145,5 +149,22 @@ public class HighScoreCellTableViewImpl extends VerticalPanel implements HighSco
 				sb.appendEscaped(value);
 			}
 		}
+	}
+	
+	/** Cell numberer. */
+	public class RowNumberColumn extends Column<UserScore, Integer> {
+
+	    public RowNumberColumn() {
+	        super(new AbstractCell<Integer>() {
+	            @Override
+	            public void render(Context context, Integer o, SafeHtmlBuilder safeHtmlBuilder) {
+	                safeHtmlBuilder.append(context.getIndex() + 1);
+	            }
+	        });
+	    }
+	    @Override
+	    public Integer getValue(UserScore s) {
+	        return null;
+	    }
 	}
 }
