@@ -7,6 +7,7 @@ public class UserScore implements IsSerializable{
 	public String userDisplay;
 	public int score;
 	public boolean isEditable;
+	public String createdAt;
 	
 	/**
 	 * Do NOT delete this default,public,no-arg constructor. It's necessary 
@@ -16,11 +17,12 @@ public class UserScore implements IsSerializable{
 	};
 	
 	/** User score retrieved from database with id set by database */
-	public UserScore(int userScoreID, String userDisplay, int score, boolean isEditable) {
+	public UserScore(int userScoreID, String userDisplay, int score, boolean isEditable, String createdAt) {
 		this.userScoreID = userScoreID;
 		this.userDisplay = userDisplay;
 		this.score = score;
 		this.isEditable = isEditable;
+		this.createdAt = createdAt;
 	}
 	
 	/** Used when user score is set and database sets the id of a record so 

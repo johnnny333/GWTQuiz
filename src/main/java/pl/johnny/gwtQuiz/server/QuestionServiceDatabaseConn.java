@@ -152,6 +152,8 @@ public class QuestionServiceDatabaseConn {
 		String[] userDisplay;
 		int[] userScores;
 		Boolean[] isEditable;
+		//Array for each record timestamp
+		String[] usersScoresCreatedAt;
 		ArrayList<UserScore> userScoresArray = new ArrayList<UserScore>();
 
 		try {
@@ -170,9 +172,11 @@ public class QuestionServiceDatabaseConn {
 			userDisplay = new String[rowsCount];
 			userScores = new int[rowsCount];
 			isEditable = new Boolean[rowsCount];
+			usersScoresCreatedAt = new String[rowsCount];
 
 			ResultSet resultSet = stmt.executeQuery("SELECT ID, user_display, user_score, "
-					+ "is_editable FROM user_scores ORDER BY user_score DESC;");
+					+ "is_editable, datetime(created_at, 'localtime') AS created_at"
+					+ " FROM user_scores ORDER BY user_score DESC;");
 
 			while(resultSet.next()) {
 				//Get user score ID and save it to an Array
@@ -183,6 +187,8 @@ public class QuestionServiceDatabaseConn {
 				userScores[resultSet.getRow() - 1] = resultSet.getInt("user_score");
 				//Get isEditable flags and save it on an Array
 				isEditable[resultSet.getRow() - 1] = resultSet.getBoolean("is_editable");
+				//Get users scores created at and save it to an Array
+				usersScoresCreatedAt[resultSet.getRow() - 1] = resultSet.getString("created_at");
 			}
 			resultSet.close();
 			stmt.close();
@@ -191,7 +197,7 @@ public class QuestionServiceDatabaseConn {
 			/* After filling arrays with user scores data, make models with them 
 			 * and pack said models to an ArrayList in order to use it on QuestionServiceImpl */
 			for(int i = 0; i < userDisplay.length; ++i) {
-				UserScore userScore = new UserScore(userScoreID[i],userDisplay[i], userScores[i], isEditable[i]);
+				UserScore userScore = new UserScore(userScoreID[i],userDisplay[i], userScores[i], isEditable[i], usersScoresCreatedAt[i]);
 				userScoresArray.add(userScore);
 			}
 

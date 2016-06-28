@@ -9,6 +9,7 @@ import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.NumberCell;
 import com.google.gwt.cell.client.TextInputCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
@@ -49,7 +50,10 @@ public class HighScoreCellTableViewImpl extends VerticalPanel implements HighSco
 		//		cellTableHighScores.setBordered(true);
 		cellTableHighScores.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.DISABLED);
 		
-		cellTableHighScores.addColumn(new RowNumberColumn());
+		//Add position column
+		Column<UserScore, Integer> positionColumn = new RowNumberColumn();
+		cellTableHighScores.setColumnWidth(positionColumn, 15.0, Unit.PCT);
+		cellTableHighScores.addColumn(positionColumn, "Position");
 
 		// Add a text column to show the name.
 		Column<UserScore, String> nameColumn = new Column<UserScore, String>(new MyTextInputCell()) {
@@ -58,7 +62,6 @@ public class HighScoreCellTableViewImpl extends VerticalPanel implements HighSco
 				return object.userDisplay;
 			}
 		};
-		
 		nameColumn.setFieldUpdater(new FieldUpdater<UserScore, String>() {
 
 			@Override
@@ -66,23 +69,32 @@ public class HighScoreCellTableViewImpl extends VerticalPanel implements HighSco
 				GWT.log("changed value " + value);
 
 				UserScore userScore = new UserScore(userScoreLastID, value,
-						lastUserScore, false);
+						lastUserScore, false, null);
 
 				listener.updateUserScore(userScore);
 				isNameFieldFilled = true;
 			}
 		});
-
 		cellTableHighScores.addColumn(nameColumn, "Player");
 
-		// Add a number column to show the address.
-		Column<UserScore, Number> addressColumn = new Column<UserScore, Number>(new NumberCell()) {
+		// Add a NumberCell() column to show the user score.
+		Column<UserScore, Number> scoreColumn = new Column<UserScore, Number>(new NumberCell()) {
 			@Override
 			public Integer getValue(UserScore object) {
 				return object.score;
 			}
 		};
-		cellTableHighScores.addColumn(addressColumn, "Score");
+		cellTableHighScores.setColumnWidth(scoreColumn, 12.0, Unit.PCT);
+		cellTableHighScores.addColumn(scoreColumn, "Score");
+		
+		// Add a Created at column to show the creation time.
+		TextColumn<UserScore> createdAtColumn = new TextColumn<UserScore>() {
+			@Override
+			public String getValue(UserScore object) {
+				return object.createdAt;
+			}
+		};
+		cellTableHighScores.addColumn(createdAtColumn, "Date");
 
 		// Add a selection model to handle user selection.
 		final NoSelectionModel<UserScore> selectionModel = new NoSelectionModel<UserScore>();
@@ -125,7 +137,7 @@ public class HighScoreCellTableViewImpl extends VerticalPanel implements HighSco
 	@Override
 	public void fillEmptyRecord(){
 		UserScore userScore = new UserScore(userScoreLastID, "mysteriousPlayer", 
-				lastUserScore, false);
+				lastUserScore, false, null);
 		listener.updateUserScore(userScore);
 	}
 
