@@ -101,6 +101,8 @@ public interface QuestionView extends IsWidget
 		
 		/** Get access to instance of HighScoreCellTableView() */
 		public HighScoreCellTableView getHighScoreCellTableView();
+
+		void deleteUserScore(UserScore userScore);
 	}
 
 	boolean isShowModal();

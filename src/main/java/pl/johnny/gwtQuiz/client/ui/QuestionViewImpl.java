@@ -122,9 +122,9 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	
 	@UiHandler("modalCloseBtn")
 	void onModalCloseBtnClicked(ClickEvent e) {
-		if(highScoreCellTableView.getIsNameFieldFilled() == false){
+		if(!highScoreCellTableView.getIsNameFieldFilled()){
 //			GWT.log("getIsNameFieldFilled() (false) " + highScoreCellTableView.getIsNameFieldFilled());
-			highScoreCellTableView.fillEmptyRecord();
+			highScoreCellTableView.deleteEmptyRecord();
 		}
 		if (listener != null) {
 			listener.goTo(new MainMenuPlace("MainMenu"));

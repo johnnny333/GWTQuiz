@@ -124,7 +124,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 		 * to false.
 		 */
 		if(!highScoreCellTableView.getIsNameFieldFilled() && questionView.isShowModal()) {
-			highScoreCellTableView.fillEmptyRecord();
+			highScoreCellTableView.deleteEmptyRecord();
 		}
 
 		//cancel current timer
@@ -226,6 +226,22 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 	@Override
 	public void updateUserScore(UserScore userScore) {
 		questionService.updateUserScore(userScore, new AsyncCallback<Void>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				GWT.log("Failed updateUserScore() RPC! " + caught.getMessage());
+			}
+
+			@Override
+			public void onSuccess(Void result) {
+				// TODO Auto-generated method stub	
+			}
+		});
+	}
+	
+	@Override
+	public void deleteUserScore(UserScore userScore) {
+		questionService.deleteUserScore(userScore, new AsyncCallback<Void>() {
 
 			@Override
 			public void onFailure(Throwable caught) {

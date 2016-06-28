@@ -18,5 +18,7 @@ public interface QuestionService extends RemoteService {
 
 	ArrayList<UserScore> insertUserScore(UserScore userScore);
 
-	void updateUserScore(UserScore userScore);	
+	void updateUserScore(UserScore userScore);
+
+	void deleteUserScore(UserScore userScore);	
 }

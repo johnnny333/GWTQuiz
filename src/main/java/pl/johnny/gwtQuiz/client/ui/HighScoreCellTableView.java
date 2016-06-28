@@ -27,5 +27,5 @@ public interface HighScoreCellTableView extends IsWidget {
 	 * in HighScoreCellTableView. (either click close on records modal or close,navigates away from records view). 
 	 * Said record is then updated in database with updateUserScore(userScore);
 	 */
-	void fillEmptyRecord();
+	void deleteEmptyRecord();
 }

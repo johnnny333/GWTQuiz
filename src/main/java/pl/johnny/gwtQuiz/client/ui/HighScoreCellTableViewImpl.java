@@ -42,14 +42,14 @@ public class HighScoreCellTableViewImpl extends VerticalPanel implements HighSco
 
 	/** Builds empty High Score Cell Table */
 	public HighScoreCellTableViewImpl() {
-		
+
 		cellTableHighScores = new CellTable<UserScore>();
 		cellTableHighScores.setWidth("100%", true);
 		cellTableHighScores.setStriped(true);
 		//		cellTableHighScores.setCondensed(true);
 		//		cellTableHighScores.setBordered(true);
 		cellTableHighScores.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.DISABLED);
-		
+
 		//Add position column
 		Column<UserScore, Integer> positionColumn = new RowNumberColumn();
 		cellTableHighScores.setColumnWidth(positionColumn, 15.0, Unit.PCT);
@@ -71,8 +71,14 @@ public class HighScoreCellTableViewImpl extends VerticalPanel implements HighSco
 				UserScore userScore = new UserScore(userScoreLastID, value,
 						lastUserScore, false, null);
 
-				listener.updateUserScore(userScore);
-				isNameFieldFilled = true;
+				/*
+				 * Issue when user edit record and then deletes it. Empty name field is thus inserted to db.
+				 * TODO check it
+				 */
+				if(value != "") {
+					listener.updateUserScore(userScore);
+					isNameFieldFilled = true;
+				};
 			}
 		});
 		cellTableHighScores.addColumn(nameColumn, "Player");
@@ -86,7 +92,7 @@ public class HighScoreCellTableViewImpl extends VerticalPanel implements HighSco
 		};
 		cellTableHighScores.setColumnWidth(scoreColumn, 12.0, Unit.PCT);
 		cellTableHighScores.addColumn(scoreColumn, "Score");
-		
+
 		// Add a Created at column to show the creation time.
 		TextColumn<UserScore> createdAtColumn = new TextColumn<UserScore>() {
 			@Override
@@ -108,9 +114,16 @@ public class HighScoreCellTableViewImpl extends VerticalPanel implements HighSco
 	public void setPresenter(Presenter listener) {
 		this.listener = listener;
 	}
-	
+
 	@Override
 	public void fillHighScoreCellTable(final ArrayList<UserScore> result) {
+
+		/* 
+		 * Fix issue when user previously provided name but on next game left name field blank 
+		 * which resulted in isNameFieldFilled set to true thus displaying old, editable record
+		 * on List
+		 */
+		isNameFieldFilled = false;
 
 		// Set the total row count. This isn't strictly necessary,
 		// but it affects paging calculations, so its good habit to
@@ -119,26 +132,26 @@ public class HighScoreCellTableViewImpl extends VerticalPanel implements HighSco
 
 		// Push the data into the widget.
 		cellTableHighScores.setRowData(0, result);
-				
+
 		/* 
 		 * Find last (highest id) record from result - which is our not (yet) named record fields - 
 		 * and get its values
 		 */
 		int max = Integer.MIN_VALUE;
 		for(int i = 0; i < result.size(); i++) {
-		      if(result.get(i).userScoreID > max ) {
-		    	  max = result.get(i).userScoreID;
-		    	  userScoreLastID = result.get(i).userScoreID;
-		    	  lastUserScore = result.get(i).score;
-		      }
+			if(result.get(i).userScoreID > max) {
+				max = result.get(i).userScoreID;
+				userScoreLastID = result.get(i).userScoreID;
+				lastUserScore = result.get(i).score;
+			}
 		}
 	}
-	
+
 	@Override
-	public void fillEmptyRecord(){
-		UserScore userScore = new UserScore(userScoreLastID, "mysteriousPlayer", 
+	public void deleteEmptyRecord() {
+		UserScore userScore = new UserScore(userScoreLastID, "mysteriousPlayer",
 				lastUserScore, false, null);
-		listener.updateUserScore(userScore);
+		listener.deleteUserScore(userScore);
 	}
 
 	@Override
@@ -162,21 +175,22 @@ public class HighScoreCellTableViewImpl extends VerticalPanel implements HighSco
 			}
 		}
 	}
-	
+
 	/** Cell numberer. */
 	public class RowNumberColumn extends Column<UserScore, Integer> {
 
-	    public RowNumberColumn() {
-	        super(new AbstractCell<Integer>() {
-	            @Override
-	            public void render(Context context, Integer o, SafeHtmlBuilder safeHtmlBuilder) {
-	                safeHtmlBuilder.append(context.getIndex() + 1);
-	            }
-	        });
-	    }
-	    @Override
-	    public Integer getValue(UserScore s) {
-	        return null;
-	    }
+		public RowNumberColumn() {
+			super(new AbstractCell<Integer>() {
+				@Override
+				public void render(Context context, Integer o, SafeHtmlBuilder safeHtmlBuilder) {
+					safeHtmlBuilder.append(context.getIndex() + 1);
+				}
+			});
+		}
+
+		@Override
+		public Integer getValue(UserScore s) {
+			return null;
+		}
 	}
 }

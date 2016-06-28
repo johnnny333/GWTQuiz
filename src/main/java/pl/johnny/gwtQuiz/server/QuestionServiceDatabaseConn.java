@@ -268,4 +268,32 @@ public class QuestionServiceDatabaseConn {
 			System.exit(0);
 		}
 	}
+	
+	void deleteUserScore(UserScore userScore) {
+
+		Connection c;
+		PreparedStatement prepStmt;
+
+		try {
+			//Connection
+			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
+			c.setAutoCommit(false);
+			c.createStatement().execute("PRAGMA foreign_keys = ON");
+
+			prepStmt = c.prepareStatement(
+					"DELETE FROM user_scores WHERE ID=?;");
+
+			prepStmt.setInt(1, userScore.userScoreID);
+			prepStmt.executeUpdate();
+			
+			prepStmt.close();
+			c.commit();
+			c.close();
+
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.err.println(e.getCause() + " " + e.getStackTrace());
+			System.exit(0);
+		}
+	}
 }

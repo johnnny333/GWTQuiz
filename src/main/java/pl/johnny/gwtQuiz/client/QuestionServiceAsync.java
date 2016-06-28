@@ -16,5 +16,7 @@ public interface QuestionServiceAsync {
 
 	void insertUserScore(UserScore userScore, AsyncCallback<ArrayList<UserScore>> asyncCallback);
 
-	void updateUserScore(UserScore userScore, AsyncCallback<Void> asyncCallback);	
+	void updateUserScore(UserScore userScore, AsyncCallback<Void> asyncCallback);
+
+	void deleteUserScore(UserScore userScore, AsyncCallback<Void> asyncCallback);	
 }
