@@ -99,13 +99,13 @@ public interface QuestionView extends IsWidget
 		 */
 		void updateUserScore(UserScore userScore);
 		
-		/** Get access to instance of HighScoreCellTableView() */
-		public HighScoreCellTableView getHighScoreCellTableView();
-
 		void deleteUserScore(UserScore userScore);
 	}
 
 	boolean isShowModal();
 
 	void setShowModal(boolean isShowModal);
+	
+	/** Add empty HighScoreCellTableView */ 
+	void buildHighScoreCellTableView(HighScoreCellTableView highScoreCellTableView);
 }

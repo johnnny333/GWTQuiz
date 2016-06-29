@@ -4,35 +4,35 @@ import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceTokenizer;
 
 //public class HelloPlace extends ActivityPlace<HelloActivity>
-public class MainMenuPlace extends Place
+public class HighScoresPlace extends Place
 {
-	private String helloName;
+	private String token;
 	
-	public MainMenuPlace(String token)
+	public HighScoresPlace(String token)
 	{
-		this.helloName = token;
+		this.token = token;
 	}
 	
-	public MainMenuPlace(){}
+	public HighScoresPlace(){}
 
 	public String getHelloName()
 	{
-		return helloName;
+		return token;
 	}
 
-	public static class Tokenizer implements PlaceTokenizer<MainMenuPlace>
+	public static class Tokenizer implements PlaceTokenizer<HighScoresPlace>
 	{
 
 		@Override
-		public String getToken(MainMenuPlace place)
+		public String getToken(HighScoresPlace place)
 		{
 			return place.getHelloName();
 		}
 
 		@Override
-		public MainMenuPlace getPlace(String token)
+		public HighScoresPlace getPlace(String token)
 		{
-			return new MainMenuPlace(token);
+			return new HighScoresPlace(token);
 		}
 
 	}

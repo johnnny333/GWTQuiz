@@ -15,6 +15,7 @@ public class MainMenuViewImpl extends Composite implements MainMenuView {
 	}
 
 	@UiField org.gwtbootstrap3.client.ui.Button newGameButton;
+	@UiField org.gwtbootstrap3.client.ui.Button highScoresButton;
 	
 	private Presenter listener;
 	private String name;
@@ -32,6 +33,13 @@ public class MainMenuViewImpl extends Composite implements MainMenuView {
 	void onNewGameButtonClicked(ClickEvent e) {
 		if (listener != null) {
 			listener.onNewGameButtonClicked(0);
+		}
+	}
+	
+	@UiHandler("highScoresButton")
+	void onHighScoresButtonClicked(ClickEvent e) {
+		if (listener != null) {
+			listener.onHighScoreButtonClicked();
 		}
 	}
 	

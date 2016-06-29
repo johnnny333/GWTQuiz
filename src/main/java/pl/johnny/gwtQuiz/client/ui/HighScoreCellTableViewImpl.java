@@ -17,7 +17,6 @@ import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.NoSelectionModel;
 
-import pl.johnny.gwtQuiz.client.ui.QuestionView.Presenter;
 import pl.johnny.gwtQuiz.shared.UserScore;
 
 /** 
@@ -34,7 +33,7 @@ public class HighScoreCellTableViewImpl extends VerticalPanel implements HighSco
 	//			new UserScore("John", "5", true),
 	//			new UserScore("Joe", "4", false),
 	//			new UserScore("George", "4", false));
-	private Presenter listener;
+	private QuestionView.Presenter listener;
 	private CellTable<UserScore> cellTableHighScores;
 	private Boolean isNameFieldFilled = false;
 	private int userScoreLastID;
@@ -73,7 +72,6 @@ public class HighScoreCellTableViewImpl extends VerticalPanel implements HighSco
 
 				/*
 				 * Issue when user edit record and then deletes it. Empty name field is thus inserted to db.
-				 * TODO check it
 				 */
 				if(value != "") {
 					listener.updateUserScore(userScore);
@@ -111,7 +109,7 @@ public class HighScoreCellTableViewImpl extends VerticalPanel implements HighSco
 	}
 
 	@Override
-	public void setPresenter(Presenter listener) {
+	public void setPresenter(QuestionView.Presenter listener) {
 		this.listener = listener;
 	}
 

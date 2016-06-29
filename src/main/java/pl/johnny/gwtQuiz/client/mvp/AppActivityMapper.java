@@ -1,13 +1,16 @@
 package pl.johnny.gwtQuiz.client.mvp;
 
-import pl.johnny.gwtQuiz.client.ClientFactory;
-import pl.johnny.gwtQuiz.client.activity.QuestionActivity;
-import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
-import pl.johnny.gwtQuiz.client.place.QuestionPlace;
-import pl.johnny.gwtQuiz.client.activity.MainMenuActivity;
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;
+
+import pl.johnny.gwtQuiz.client.ClientFactory;
+import pl.johnny.gwtQuiz.client.activity.HighScoresActivity;
+import pl.johnny.gwtQuiz.client.activity.MainMenuActivity;
+import pl.johnny.gwtQuiz.client.activity.QuestionActivity;
+import pl.johnny.gwtQuiz.client.place.HighScoresPlace;
+import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
+import pl.johnny.gwtQuiz.client.place.QuestionPlace;
 
 public class AppActivityMapper implements ActivityMapper {
 
@@ -36,6 +39,9 @@ public class AppActivityMapper implements ActivityMapper {
 			return new MainMenuActivity((MainMenuPlace) place, clientFactory);
 		else if (place instanceof QuestionPlace)
 			return new QuestionActivity((QuestionPlace) place, clientFactory);
+		
+		else if (place instanceof HighScoresPlace)
+			return new HighScoresActivity((HighScoresPlace) place, clientFactory);
 
 		return null;
 	}

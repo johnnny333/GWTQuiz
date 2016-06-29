@@ -4,6 +4,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.PlaceController;
 
 import pl.johnny.gwtQuiz.client.ui.HighScoreCellTableView;
+import pl.johnny.gwtQuiz.client.ui.HighScoresView;
 import pl.johnny.gwtQuiz.client.ui.MainMenuView;
 import pl.johnny.gwtQuiz.client.ui.QuestionView;
 
@@ -15,4 +16,5 @@ public interface ClientFactory
 	QuestionView getQuestionView();
 	QuestionServiceAsync getContactService();
 	HighScoreCellTableView getHighScoreCellTableView();
+	HighScoresView getHighScoreView();
 }

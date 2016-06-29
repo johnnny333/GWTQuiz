@@ -2,9 +2,9 @@ package pl.johnny.gwtQuiz.client.ui;
 
 import java.util.ArrayList;
 
+import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.ui.IsWidget;
 
-import pl.johnny.gwtQuiz.client.ui.QuestionView.Presenter;
 import pl.johnny.gwtQuiz.shared.UserScore;
 
 public interface HighScoreCellTableView extends IsWidget {
@@ -15,7 +15,7 @@ public interface HighScoreCellTableView extends IsWidget {
 	 * 
 	 * @param listener
 	 */
-	void setPresenter(Presenter listener);
+	void setPresenter(QuestionView.Presenter listener);
 	
 	/** Fill empty high score cell table with data from RPC call */
 	void fillHighScoreCellTable(ArrayList<UserScore> result);
@@ -28,4 +28,9 @@ public interface HighScoreCellTableView extends IsWidget {
 	 * Said record is then updated in database with updateUserScore(userScore);
 	 */
 	void deleteEmptyRecord();
+	
+	public interface Presenter {
+		void goTo(Place place);
+	}
+		
 }

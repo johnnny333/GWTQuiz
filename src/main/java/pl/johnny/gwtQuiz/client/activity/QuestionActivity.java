@@ -46,6 +46,10 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 		this.clientFactory = clientFactory;
 		questionView = clientFactory.getQuestionView();
 		questionView.setPresenter(this);
+		
+		highScoreCellTableView = clientFactory.getHighScoreCellTableView();
+		highScoreCellTableView.setPresenter(this);
+		questionView.buildHighScoreCellTableView(highScoreCellTableView);
 
 		token = place.getGoodbyeName();
 		this.place = place;
@@ -197,17 +201,11 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 		questionTimer.scheduleRepeating(1000); //scheduleRepeating(), not just schedule().
 	}
 
-	@Override
-	public HighScoreCellTableView getHighScoreCellTableView() {
-		highScoreCellTableView = clientFactory.getHighScoreCellTableView();
-		highScoreCellTableView.setPresenter(this);
-		return highScoreCellTableView;
-	}
-
 	//TODO Think about making separate class with all RPCs
 	@Override
 	public void insertDataIntoUserScoresTable() {
-
+		
+		//Temporary record with user points and isEditable set to true
 		UserScore userScore = new UserScore("", userPoints, true);
 
 		questionService.insertUserScore(userScore, new AsyncCallback<ArrayList<UserScore>>() {
@@ -218,7 +216,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 
 			@Override
 			public void onFailure(Throwable caught) {
-				GWT.log("Failed insertUserScore() RPC! " + caught.getMessage());
+				GWT.log("Failed insertUserScore() RPC!", caught);
 			}
 		});
 	}
@@ -229,12 +227,12 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 
 			@Override
 			public void onFailure(Throwable caught) {
-				GWT.log("Failed updateUserScore() RPC! " + caught.getMessage());
+				GWT.log("Failed updateUserScore() RPC!", caught);
 			}
 
 			@Override
 			public void onSuccess(Void result) {
-				// TODO Auto-generated method stub	
+				//Record with new name was updated successfully
 			}
 		});
 	}
@@ -245,12 +243,12 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 
 			@Override
 			public void onFailure(Throwable caught) {
-				GWT.log("Failed updateUserScore() RPC! " + caught.getMessage());
+				GWT.log("Failed updateUserScore() RPC!", caught);
 			}
 
 			@Override
 			public void onSuccess(Void result) {
-				// TODO Auto-generated method stub	
+				//Record without new name was deleted successfully
 			}
 		});
 	}

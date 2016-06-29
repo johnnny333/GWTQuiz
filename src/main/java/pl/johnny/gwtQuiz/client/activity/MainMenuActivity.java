@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 import pl.johnny.gwtQuiz.client.ClientFactory;
 import pl.johnny.gwtQuiz.client.event.NewQuestionEvent;
+import pl.johnny.gwtQuiz.client.place.HighScoresPlace;
 import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
 import pl.johnny.gwtQuiz.client.place.QuestionPlace;
 import pl.johnny.gwtQuiz.client.ui.MainMenuView;
@@ -44,6 +45,11 @@ public class MainMenuActivity extends AbstractActivity implements
 	public void onNewGameButtonClicked(int currentQuestion) {
 		goTo(new QuestionPlace("Quiz!"));
 		eventBus.fireEvent(new NewQuestionEvent(currentQuestion));
+	}
+	
+	@Override
+	public void onHighScoreButtonClicked() {
+		goTo(new HighScoresPlace("HighScores"));
 	}
 
 	/**

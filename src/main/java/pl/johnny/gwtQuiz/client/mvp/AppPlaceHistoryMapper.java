@@ -1,10 +1,11 @@
 package pl.johnny.gwtQuiz.client.mvp;
 
-import pl.johnny.gwtQuiz.client.place.QuestionPlace;
-import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
-
 import com.google.gwt.place.shared.PlaceHistoryMapper;
 import com.google.gwt.place.shared.WithTokenizers;
+
+import pl.johnny.gwtQuiz.client.place.HighScoresPlace;
+import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
+import pl.johnny.gwtQuiz.client.place.QuestionPlace;
 
 /**
  * PlaceHistoryMapper interface is used to attach all places which the
@@ -12,6 +13,6 @@ import com.google.gwt.place.shared.WithTokenizers;
  * annotation or by extending PlaceHistoryMapperWithFactory and creating a
  * separate TokenizerFactory.
  */
-@WithTokenizers( { MainMenuPlace.Tokenizer.class, QuestionPlace.Tokenizer.class })
+@WithTokenizers( { MainMenuPlace.Tokenizer.class, QuestionPlace.Tokenizer.class, HighScoresPlace.Tokenizer.class  })
 public interface AppPlaceHistoryMapper extends PlaceHistoryMapper {
 }

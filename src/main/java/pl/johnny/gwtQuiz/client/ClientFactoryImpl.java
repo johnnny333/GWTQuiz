@@ -7,6 +7,8 @@ import com.google.gwt.place.shared.PlaceController;
 
 import pl.johnny.gwtQuiz.client.ui.HighScoreCellTableView;
 import pl.johnny.gwtQuiz.client.ui.HighScoreCellTableViewImpl;
+import pl.johnny.gwtQuiz.client.ui.HighScoresView;
+import pl.johnny.gwtQuiz.client.ui.HighScoresViewImpl;
 import pl.johnny.gwtQuiz.client.ui.MainMenuView;
 import pl.johnny.gwtQuiz.client.ui.MainMenuViewImpl;
 import pl.johnny.gwtQuiz.client.ui.QuestionView;
@@ -19,6 +21,7 @@ public class ClientFactoryImpl implements ClientFactory
 	private static final MainMenuView mainMenuView = new MainMenuViewImpl();
 	private static final QuestionView questionView = new QuestionViewImpl();
 	private static final HighScoreCellTableView HighScoreCellTableView = new HighScoreCellTableViewImpl();
+	private static final HighScoresView HighScoreView = new HighScoresViewImpl();
 	private final QuestionServiceAsync questionService = GWT.create(QuestionService.class);
 
 
@@ -50,6 +53,12 @@ public class ClientFactoryImpl implements ClientFactory
 	public HighScoreCellTableView getHighScoreCellTableView()
 	{
 		return HighScoreCellTableView;
+	}
+	
+	@Override
+	public HighScoresView getHighScoreView()
+	{
+		return HighScoreView;
 	}
 
 	@Override

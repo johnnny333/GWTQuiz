@@ -9,14 +9,14 @@ import com.google.gwt.user.client.ui.IsWidget;
  *
  * @author jzarewicz
  */
-public interface MainMenuView extends IsWidget
+public interface HighScoresView extends IsWidget
 {
-	void setName(String helloName);
 	void setPresenter(Presenter listener);
+	void buildAndFillHighScoreCellTableView(HighScoreCellTableView highScoreCellTableView);
 
 	public interface Presenter {
 		void goTo(Place place);
-		void onNewGameButtonClicked(int currentQuestion);
-		void onHighScoreButtonClicked();
+
+		void getUserScores();
 	}
 }

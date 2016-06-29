@@ -54,15 +54,16 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	@UiField Heading pointsCounter;
 	@UiField Heading categoryField;
 	@UiField Heading authorField;
-	@UiField ProgressBar progressBar;
-//	@UiField CellTable<Contact> cellTableHighScores;
-	
+	@UiField ProgressBar progressBar;	
 	
 	@Override
 	public void setPresenter(Presenter listener) {
 		this.listener = listener;
-		//Add empty HighScoreCellTableView 
-		highScoreCellTableView = listener.getHighScoreCellTableView();
+	}
+	
+	@Override
+	public void buildHighScoreCellTableView(HighScoreCellTableView highScoreCellTableView){
+		this.highScoreCellTableView = highScoreCellTableView;
 		modalBody.add(highScoreCellTableView);
 	}
 
