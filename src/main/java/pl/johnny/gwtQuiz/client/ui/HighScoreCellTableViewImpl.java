@@ -10,6 +10,9 @@ import com.google.gwt.cell.client.NumberCell;
 import com.google.gwt.cell.client.TextInputCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.safehtml.client.SafeHtmlTemplates;
+import com.google.gwt.safehtml.client.SafeHtmlTemplates.Template;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
@@ -38,6 +41,8 @@ public class HighScoreCellTableViewImpl extends VerticalPanel implements HighSco
 	private Boolean isNameFieldFilled = false;
 	private int userScoreLastID;
 	private int lastUserScore;
+	/** Holds actual user position on the score table. */
+	private int actualRecordPosition;
 
 	/** Builds empty High Score Cell Table */
 	public HighScoreCellTableViewImpl() {
@@ -45,7 +50,7 @@ public class HighScoreCellTableViewImpl extends VerticalPanel implements HighSco
 		cellTableHighScores = new CellTable<UserScore>();
 		cellTableHighScores.setWidth("100%", true);
 		cellTableHighScores.setStriped(true);
-		//		cellTableHighScores.setCondensed(true);
+		cellTableHighScores.setCondensed(true);
 		//		cellTableHighScores.setBordered(true);
 		cellTableHighScores.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.DISABLED);
 
@@ -76,9 +81,10 @@ public class HighScoreCellTableViewImpl extends VerticalPanel implements HighSco
 				if(value != "") {
 					listener.updateUserScore(userScore);
 					isNameFieldFilled = true;
-				};
+				} ;
 			}
 		});
+		cellTableHighScores.setColumnWidth(nameColumn, 58.0, Unit.PCT);
 		cellTableHighScores.addColumn(nameColumn, "Player");
 
 		// Add a NumberCell() column to show the user score.
@@ -89,6 +95,7 @@ public class HighScoreCellTableViewImpl extends VerticalPanel implements HighSco
 			}
 		};
 		cellTableHighScores.setColumnWidth(scoreColumn, 12.0, Unit.PCT);
+		//		scoreColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 		cellTableHighScores.addColumn(scoreColumn, "Score");
 
 		// Add a Created at column to show the creation time.
@@ -156,23 +163,68 @@ public class HighScoreCellTableViewImpl extends VerticalPanel implements HighSco
 	public Boolean getIsNameFieldFilled() {
 		return isNameFieldFilled;
 	}
+	
+	@Override
+	public int getActualRecordPosition() {
+		return actualRecordPosition;
+	}
 
+/*================================MyTextInputCellClassOverrides================================*/
+	
+	private static Template template;
+
+	interface Template extends SafeHtmlTemplates {
+		@Template("<input type=\"text\" value=\"{0}\" tabindex=\"-1\" placeholder=\"Fill in your name!\" maxlength=\"15\"></input>")
+		SafeHtml input(String value);
+	}
 	/**
 	 * Custom TextInputCell class to enable certain cells to be editable in CellTable - 
-	 * when 'isThisCellEditable' of UserScore field is set to true.
+	 * when 'isThisCellEditable' of UserScore field is set to true, 
+	 * <br/>
+	 * add placeholder and maxlength attributes to empty input ("placeholder=\"Fill in your name!\"")
+	 * <br/> 
+	 * and to get position of actual record ('actualRecordPosition' field).
 	 * @author jzarewicz
 	 */
 	public class MyTextInputCell extends TextInputCell {
+		
 		@Override
 		public void render(Context context, String value, SafeHtmlBuilder sb) {
+
+			if(template == null) {
+				template = GWT.create(Template.class);
+			}
+
 			UserScore object = (UserScore) context.getKey();
 			if(object.isEditable) {
-				super.render(context, value, sb);
+				//================== super.render(context, value, sb);
+
+				// Get the view data.
+				Object key = context.getKey();
+				//Get actual row position
+				GWT.log("context.getIndex()" + (context.getIndex() + 1));
+				actualRecordPosition = context.getIndex() + 1;
+				
+				ViewData viewData = getViewData(key);
+				if(viewData != null && viewData.getCurrentValue().equals(value)) {
+					clearViewData(key);
+					viewData = null;
+				}
+
+				String s = (viewData != null) ? viewData.getCurrentValue() : value;
+				if(s != null) {
+					sb.append(template.input(s));
+				} else {
+					sb.appendHtmlConstant("<input type=\"text\" tabindex=\"-1\"></input>");
+				}
+				/*================================*/
+
 			} else {
 				sb.appendEscaped(value);
 			}
 		}
 	}
+/*===========================ENDOF==MyTextInputCellClassOverrides================================*/
 
 	/** Cell numberer. */
 	public class RowNumberColumn extends Column<UserScore, Integer> {

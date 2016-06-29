@@ -104,10 +104,15 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	@Override
 	public void showModal(int userPoints) {
 		isShowModal = true;
-		modalPointsLabel.setText("Points " + userPoints);
 		//remove any previously added high score cell table widget to avoid doubling them
 //		modalBody.remove(0);
+		
+		//Download user scores from server and populate user scores cell table
 		listener.insertDataIntoUserScoresTable();
+		
+		//After the list is populated, get position of actual record and show it to user
+		modalPointsLabel.setText("Points " + userPoints + "Pos: " + highScoreCellTableView.getActualRecordPosition());
+		
 		modal.show();
 	}
 	
