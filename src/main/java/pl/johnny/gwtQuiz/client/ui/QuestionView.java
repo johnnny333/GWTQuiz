@@ -100,6 +100,15 @@ public interface QuestionView extends IsWidget
 		void updateUserScore(UserScore userScore);
 		
 		void deleteUserScore(UserScore userScore);
+		
+		/** 
+		 * In conjunction with QuestionView.setActualRecordPositionLabel(int actualRecordPosition).
+		 * <br/>
+		 * Handles index of actual,temporary record of user on User Scores table and then, sends it
+		 * to mentioned QuestionView.setActualRecordPositionLabel(int actualRecordPosition).
+		 * @param actualRecordPosition
+		 */
+		void setActualRecordPosition(int actualRecordPosition);
 	}
 
 	boolean isShowModal();
@@ -108,4 +117,7 @@ public interface QuestionView extends IsWidget
 	
 	/** Add empty HighScoreCellTableView */ 
 	void buildHighScoreCellTableView(HighScoreCellTableView highScoreCellTableView);
+	
+	/** Given value from Presenter, displays on label user position on modal. */
+	void setActualRecordPositionLabel(int actualRecordPosition);
 }

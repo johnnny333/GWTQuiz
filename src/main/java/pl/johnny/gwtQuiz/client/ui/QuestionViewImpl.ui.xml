@@ -83,13 +83,21 @@
 		</b:Container>
 
 		<!-- MODAL -->
-		<b:Modal title="FINISHED!" closable="true" fade="true"
-			dataBackdrop="STATIC" dataKeyboard="true" b:id="myModal" ui:field="modal" >
+		<b:Modal title="FINISHED!" closable="false" fade="true"
+			dataBackdrop="STATIC" dataKeyboard="false" b:id="myModal" ui:field="modal">
 			<b:ModalBody ui:field="modalBody">
-				<g:Label ui:field="modalPointsLabel"></g:Label>
+
+				<b:Alert type="SUCCESS" ui:field="modalAlert">
+					<h:Strong  ui:field="modalPointsLabel"/>
+					<h:Strong ui:field="actualRecordPositionLabel" />
+					<h:Br></h:Br>
+					<h:Text text="Please fill in your name below! :) " />
+				</b:Alert>
+
+				<h:Hr></h:Hr>
 			</b:ModalBody>
 			<b:ModalFooter>
-				<b:Button type="DANGER" dataDismiss="MODAL" ui:field="modalCloseBtn">Close</b:Button>				
+				<b:Button type="DANGER" dataDismiss="MODAL" ui:field="modalCloseBtn">Close</b:Button>
 			</b:ModalFooter>
 		</b:Modal>
 	</g:HTMLPanel>

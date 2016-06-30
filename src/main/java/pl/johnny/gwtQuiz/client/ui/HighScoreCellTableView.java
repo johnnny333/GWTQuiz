@@ -31,8 +31,5 @@ public interface HighScoreCellTableView extends IsWidget {
 	
 	public interface Presenter {
 		void goTo(Place place);
-	}
-
-	int getActualRecordPosition();
-		
+	}		
 }

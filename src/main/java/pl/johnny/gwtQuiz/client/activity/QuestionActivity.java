@@ -252,4 +252,9 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 			}
 		});
 	}
+
+	@Override
+	public void setActualRecordPosition(int actualRecordPosition) {
+		questionView.setActualRecordPositionLabel(actualRecordPosition);
+	}
 }

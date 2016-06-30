@@ -1,10 +1,13 @@
 package pl.johnny.gwtQuiz.client.ui;
 
+import org.gwtbootstrap3.client.ui.Alert;
 import org.gwtbootstrap3.client.ui.Heading;
 import org.gwtbootstrap3.client.ui.Image;
 import org.gwtbootstrap3.client.ui.Modal;
 import org.gwtbootstrap3.client.ui.ModalBody;
 import org.gwtbootstrap3.client.ui.ProgressBar;
+import org.gwtbootstrap3.client.ui.constants.AlertType;
+import org.gwtbootstrap3.client.ui.html.Strong;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -13,7 +16,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
@@ -47,7 +49,9 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	@UiField org.gwtbootstrap3.client.ui.Button btn3;
 	@UiField Modal modal;
 	@UiField ModalBody modalBody;
-	@UiField Label modalPointsLabel;
+	@UiField Alert modalAlert;
+	@UiField Strong modalPointsLabel;
+	@UiField Strong actualRecordPositionLabel;
 	@UiField Button prvsQstBtn;
 	@UiField org.gwtbootstrap3.client.ui.Button modalCloseBtn;
 	@UiField Heading questionCounter;
@@ -111,7 +115,7 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 		listener.insertDataIntoUserScoresTable();
 		
 		//After the list is populated, get position of actual record and show it to user
-		modalPointsLabel.setText("Points " + userPoints + "Pos: " + highScoreCellTableView.getActualRecordPosition());
+		modalPointsLabel.setText("You scored " + userPoints + " point/s and ");
 		
 		modal.show();
 	}
@@ -148,6 +152,15 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	}
 	
 	@Override
+	public void setActualRecordPositionLabel(int actualRecordPosition) {
+		if(actualRecordPosition == 1){modalAlert.setType(AlertType.SUCCESS);}
+		else if (actualRecordPosition < 4){modalAlert.setType(AlertType.INFO);}
+		else {modalAlert.setType(AlertType.WARNING);}
+		
+		actualRecordPositionLabel.setText(" took  " + actualRecordPosition + " place!" );
+	}
+	
+	@Override
 	public void setPointsCounter(int userPoints) {
 		pointsCounter.setText("" + userPoints);
 	}
@@ -166,4 +179,6 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	public void setProgressBar(Double percent) {
 		progressBar.setPercent(percent);	
 	}
+
+	
 }

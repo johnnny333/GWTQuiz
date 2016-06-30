@@ -41,8 +41,6 @@ public class HighScoreCellTableViewImpl extends VerticalPanel implements HighSco
 	private Boolean isNameFieldFilled = false;
 	private int userScoreLastID;
 	private int lastUserScore;
-	/** Holds actual user position on the score table. */
-	private int actualRecordPosition;
 
 	/** Builds empty High Score Cell Table */
 	public HighScoreCellTableViewImpl() {
@@ -163,18 +161,13 @@ public class HighScoreCellTableViewImpl extends VerticalPanel implements HighSco
 	public Boolean getIsNameFieldFilled() {
 		return isNameFieldFilled;
 	}
-	
-	@Override
-	public int getActualRecordPosition() {
-		return actualRecordPosition;
-	}
 
 /*================================MyTextInputCellClassOverrides================================*/
 	
 	private static Template template;
 
 	interface Template extends SafeHtmlTemplates {
-		@Template("<input type=\"text\" value=\"{0}\" tabindex=\"-1\" placeholder=\"Fill in your name!\" maxlength=\"15\"></input>")
+		@Template("<input type=\"text\" value=\"{0}\" class=\"form-control\" tabindex=\"-1\" placeholder=\"Fill in your name!\" maxlength=\"15\"></input>")
 		SafeHtml input(String value);
 	}
 	/**
@@ -201,9 +194,8 @@ public class HighScoreCellTableViewImpl extends VerticalPanel implements HighSco
 
 				// Get the view data.
 				Object key = context.getKey();
-				//Get actual row position
-				GWT.log("context.getIndex()" + (context.getIndex() + 1));
-				actualRecordPosition = context.getIndex() + 1;
+				//Get actual row position and send it to listener.
+				listener.setActualRecordPosition(context.getIndex() + 1);
 				
 				ViewData viewData = getViewData(key);
 				if(viewData != null && viewData.getCurrentValue().equals(value)) {
