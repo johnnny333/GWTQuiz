@@ -5,14 +5,12 @@ import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;
 
 import pl.johnny.gwtQuiz.client.ClientFactory;
-import pl.johnny.gwtQuiz.client.activity.HighScoresActivity;
-import pl.johnny.gwtQuiz.client.activity.MainMenuActivity;
-import pl.johnny.gwtQuiz.client.activity.QuestionActivity;
+import pl.johnny.gwtQuiz.client.activity.NavBarActivity;
 import pl.johnny.gwtQuiz.client.place.HighScoresPlace;
 import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
 import pl.johnny.gwtQuiz.client.place.QuestionPlace;
 
-public class AppActivityMapper implements ActivityMapper {
+public class NavActivityMapper implements ActivityMapper {
 
 	private ClientFactory clientFactory;
 
@@ -23,7 +21,7 @@ public class AppActivityMapper implements ActivityMapper {
 	 * @param clientFactory
 	 *            Factory to be passed to activities
 	 */
-	public AppActivityMapper(ClientFactory clientFactory) {
+	public NavActivityMapper(ClientFactory clientFactory) {
 		super();
 		this.clientFactory = clientFactory;
 	}
@@ -35,13 +33,13 @@ public class AppActivityMapper implements ActivityMapper {
 	@Override
 	public Activity getActivity(Place place) {
 		// This is begging for GIN
-		if (place instanceof MainMenuPlace)
-			return new MainMenuActivity((MainMenuPlace) place, clientFactory);
-		else if (place instanceof QuestionPlace)
-			return new QuestionActivity((QuestionPlace) place, clientFactory);
-		
-		else if (place instanceof HighScoresPlace)
-			return new HighScoresActivity((HighScoresPlace) place, clientFactory);
+		if (place instanceof MainMenuPlace || place instanceof QuestionPlace || place instanceof HighScoresPlace)
+			return new NavBarActivity((MainMenuPlace) place, clientFactory);
+//		else if (place instanceof QuestionPlace)
+//			return new NavBarActivity((MainMenuPlace) place, clientFactory);
+//		
+//		else if (place instanceof HighScoresPlace)
+//			return new NavBarActivity((MainMenuPlace) place, clientFactory);
 
 		return null;
 	}

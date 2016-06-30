@@ -176,7 +176,7 @@ public class QuestionServiceDatabaseConn {
 
 			ResultSet resultSet = stmt.executeQuery("SELECT ID, user_display, user_score, "
 					+ "is_editable, datetime(created_at, 'localtime') AS created_at"
-					+ " FROM user_scores ORDER BY user_score DESC;");
+					+ " FROM user_scores ORDER BY user_score DESC ,created_at DESC;");
 
 			while(resultSet.next()) {
 				//Get user score ID and save it to an Array
