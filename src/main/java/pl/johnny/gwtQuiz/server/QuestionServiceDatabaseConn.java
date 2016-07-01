@@ -254,8 +254,14 @@ public class QuestionServiceDatabaseConn {
 			prepStmt = c.prepareStatement(
 					"UPDATE user_scores SET user_display=?, is_editable=? WHERE ID=?;");
 			
-			String name = stringBarber(userScore.userDisplay); 
-			prepStmt.setString(1, name);
+			String checkedNameString = userScore.userDisplay;
+			/*
+			 * User provided name but deletes all its chars leaving us with empty string (""),
+			 * so we delete this invalid record; 
+			 */
+			if(stringBarber(checkedNameString) == null){deleteUserScore(userScore);return;};
+			
+			prepStmt.setString(1, stringBarber(checkedNameString) );
 			prepStmt.setBoolean(2, userScore.isEditable);
 			prepStmt.setInt(3, userScore.userScoreID);
 			prepStmt.executeUpdate();
@@ -300,13 +306,24 @@ public class QuestionServiceDatabaseConn {
 	}
 	
 	/**
-	 * Trims white spaces and substrings strings (from 0 to 15) to be inserted to database.
+	 * Trims white spaces and non-visible characters, checks for empty strings ("") 
+	 * and substrings strings (from 0 to 15) to be inserted to database.
 	 * @param stringToCut
-	 * @return cutted string
+	 * @return cut string
 	 */
 	private String stringBarber(String stringToCut){
-		stringToCut.trim();
-		stringToCut.substring(0, 15);
-		return stringToCut;
+		/* Strings are constant; their values cannot be changed after they are created,
+		 * hence local assignments;*/
+		
+		//Removes all white-spaces and non-visible characters;
+		String trimmedString = stringToCut.replaceAll("\\s+","");
+		//User provided name but deletes it leaving us with empty string ("").
+		if(trimmedString == "")return null;
+		
+		if(trimmedString.length() > 15){
+			String trimmedAndSubstringed = trimmedString.substring(0, 15);
+			return trimmedAndSubstringed;	
+		}
+		return trimmedString;
 	}
 }
