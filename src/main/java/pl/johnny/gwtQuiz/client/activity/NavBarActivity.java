@@ -9,7 +9,6 @@ import pl.johnny.gwtQuiz.client.ClientFactory;
 import pl.johnny.gwtQuiz.client.place.HighScoresPlace;
 import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
 import pl.johnny.gwtQuiz.client.place.QuestionPlace;
-import pl.johnny.gwtQuiz.client.ui.MainMenuView;
 import pl.johnny.gwtQuiz.client.ui.NavBarView;
 
 public class NavBarActivity extends AbstractActivity implements
@@ -17,17 +16,17 @@ public class NavBarActivity extends AbstractActivity implements
 	// Used to obtain views, eventBus, placeController
 	// Alternatively, could be injected via GIN
 	private ClientFactory clientFactory;
-	// Name that will be appended to "Hello,"
-	private String name;
-	private EventBus eventBus;
-	private MainMenuView mainMenuView;
+	/** On what activity application is */
 	private Place place;
-	private NavBarView navBarView;
-
-	public NavBarActivity(MainMenuPlace place, ClientFactory clientFactory) {
-		this.name = place.getHelloName();
+	
+	/**
+	 * Constructor is overloaded because NavActivityMapper inserts strict typed places.
+	 * I could upcast it to Place here, but thus disables correct type-checking of 'instanceof'
+	 * in start() method. Hence overloaded constructor with all types of Places.
+	 */
+	public NavBarActivity(Place place, ClientFactory clientFactory) {
+		this.place = place;
 		this.clientFactory = clientFactory;
-		navBarView = clientFactory.getNavBarView();
 	}
 
 	public NavBarActivity(QuestionPlace place, ClientFactory clientFactory) {
@@ -48,14 +47,11 @@ public class NavBarActivity extends AbstractActivity implements
 		NavBarView navBarView = clientFactory.getNavBarView();
 		navBarView.setPresenter(this);
 		containerWidget.setWidget(navBarView.asWidget());
-		this.eventBus = eventBus;
 		
-		//Detect what activity on main panel is on and adjust view accordingly.
-		if(place instanceof QuestionPlace )navBarView.setAnchorListItem(0);
-		else if(place instanceof HighScoresPlace )navBarView.setAnchorListItem(1);
-		//For some unknown reason GWT don't 'see' MainMenuPlace despite being on it, hence this else
-		else navBarView.setAnchorListItem(2);
-		
+		//Detect on what activity application is at and adjust view accordingly.
+		if(place instanceof MainMenuPlace )navBarView.setAnchorListItemActive(2);
+		else if(place instanceof QuestionPlace )navBarView.setAnchorListItemActive(0);
+		else if(place instanceof HighScoresPlace )navBarView.setAnchorListItemActive(1);
 	}
 	
 	/**
@@ -63,7 +59,6 @@ public class NavBarActivity extends AbstractActivity implements
 	 */
 	@Override
 	public String mayStop() {
-//		return "The quiz is about to start!";
 		return null;
 	}
 

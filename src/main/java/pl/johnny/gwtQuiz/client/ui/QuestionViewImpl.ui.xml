@@ -4,7 +4,7 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:b="urn:import:org.gwtbootstrap3.client.ui" xmlns:h="urn:import:org.gwtbootstrap3.client.ui.html">
 	<ui:style>
-	.panelBody {
+	.center {
 		text-align: center;
 	}
 	
@@ -26,7 +26,7 @@
 	<g:HTMLPanel>
 
 		<b:Container fluid="true">
-			<b:Row addStyleNames='{style.panelBody}'>
+			<b:Row addStyleNames='{style.center}'>
 				<b:Column size="XS_3">
 					<b:Heading size="H3" subText="Question" ui:field="questionCounter" />
 				</b:Column>
@@ -53,7 +53,7 @@
 						<b:ProgressBar type="SUCCESS" ui:field="progressBar" />
 					</b:Progress>
 
-					<g:HTMLPanel addStyleNames='{style.panelBody}'>
+					<g:HTMLPanel addStyleNames='{style.center}'>
 						<b:Panel>
 							<b:PanelHeader>
 								<b:Heading size="H1" ui:field="qstnLbl"></b:Heading>
@@ -84,7 +84,7 @@
 
 		<!-- MODAL -->
 		<b:Modal title="FINISHED!" closable="false" fade="true"
-			dataBackdrop="STATIC" dataKeyboard="false" b:id="myModal" ui:field="modal">
+			dataBackdrop="STATIC" dataKeyboard="false" b:id="myModal" ui:field="modal" addStyleNames='{style.center}'>
 			<b:ModalBody ui:field="modalBody">
 
 				<b:Alert type="SUCCESS" ui:field="modalAlert">
@@ -96,8 +96,8 @@
 
 				<h:Hr></h:Hr>
 			</b:ModalBody>
-			<b:ModalFooter>
-				<b:Button type="DANGER" dataDismiss="MODAL" ui:field="modalCloseBtn">Close</b:Button>
+			<b:ModalFooter addStyleNames='{style.center}'>
+				<b:Button type="DANGER" dataDismiss="MODAL" ui:field="modalCloseBtn" icon="REMOVE">Close</b:Button>
 			</b:ModalFooter>
 		</b:Modal>
 	</g:HTMLPanel>

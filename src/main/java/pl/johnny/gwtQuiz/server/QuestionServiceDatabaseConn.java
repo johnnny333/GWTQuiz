@@ -222,8 +222,9 @@ public class QuestionServiceDatabaseConn {
 
 			prepStmt = c.prepareStatement(
 					"INSERT INTO user_scores (user_display,user_score,is_editable) VALUES (?, ?, ?);");
-
-			prepStmt.setString(1, userScore.userDisplay);
+			
+//			if(userScore.userDisplay == "");else throw new Exception("Temporary user score name field is not empty(\"\")");
+			prepStmt.setString(1, userScore.userDisplay );
 			prepStmt.setInt(2, userScore.score);
 			prepStmt.setBoolean(3, userScore.isEditable);
 			prepStmt.executeUpdate();
@@ -252,8 +253,9 @@ public class QuestionServiceDatabaseConn {
 
 			prepStmt = c.prepareStatement(
 					"UPDATE user_scores SET user_display=?, is_editable=? WHERE ID=?;");
-
-			prepStmt.setString(1, userScore.userDisplay);
+			
+			String name = stringBarber(userScore.userDisplay); 
+			prepStmt.setString(1, name);
 			prepStmt.setBoolean(2, userScore.isEditable);
 			prepStmt.setInt(3, userScore.userScoreID);
 			prepStmt.executeUpdate();
@@ -295,5 +297,16 @@ public class QuestionServiceDatabaseConn {
 			System.err.println(e.getCause() + " " + e.getStackTrace());
 			System.exit(0);
 		}
+	}
+	
+	/**
+	 * Trims white spaces and substrings strings (from 0 to 15) to be inserted to database.
+	 * @param stringToCut
+	 * @return cutted string
+	 */
+	private String stringBarber(String stringToCut){
+		stringToCut.trim();
+		stringToCut.substring(0, 15);
+		return stringToCut;
 	}
 }

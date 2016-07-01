@@ -17,5 +17,5 @@ public interface NavBarView extends IsWidget
 		void goTo(Place place);
 	}
 
-	void setAnchorListItem(int whichAnchorToHighlight);
+	void setAnchorListItemActive(int whichAnchorToHighlight);
 }

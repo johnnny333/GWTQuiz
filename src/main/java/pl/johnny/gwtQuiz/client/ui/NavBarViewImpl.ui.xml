@@ -8,7 +8,7 @@
 
 	<b:Navbar>
 		<b:NavbarHeader>
-			<b:NavbarBrand ui:field="navBarBrand">GWT Quiz</b:NavbarBrand>
+			<b:NavbarBrand ui:field="navBarBrand" icon="QUESTION_CIRCLE">GWT Quiz</b:NavbarBrand>
 			<b:NavbarCollapseButton dataTarget="#navbar-collapse" />
 		</b:NavbarHeader>
 
@@ -16,8 +16,8 @@
 
 			<b:NavbarNav>
 				<!-- <b:AnchorListItem active="true">Item 1</b:AnchorListItem> -->
-				<b:AnchorListItem ui:field="newGameAnchor">New Game</b:AnchorListItem>
-				<b:AnchorListItem ui:field="highScoreAnchor">High Scores</b:AnchorListItem>
+				<b:AnchorListItem ui:field="newGameAnchor" icon="PLAY_CIRCLE">New Game</b:AnchorListItem>
+				<b:AnchorListItem ui:field="highScoreAnchor" icon="LIST_ALT" >High Scores</b:AnchorListItem>
 			</b:NavbarNav>
 
 			<!-- <b:NavbarText pull="RIGHT"> -->

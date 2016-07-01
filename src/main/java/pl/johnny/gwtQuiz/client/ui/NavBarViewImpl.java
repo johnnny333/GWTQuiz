@@ -2,7 +2,6 @@ package pl.johnny.gwtQuiz.client.ui;
 
 import org.gwtbootstrap3.client.ui.AnchorListItem;
 import org.gwtbootstrap3.client.ui.NavbarBrand;
-import org.gwtbootstrap3.client.ui.constants.IconType;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -31,10 +30,6 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 
 	public NavBarViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
-		
-		// Set icons on navigation bar buttons
-		highScoreAnchor.setIcon(IconType.LIST_ALT);
-		newGameAnchor.setIcon(IconType.PLAY_CIRCLE);
 	}
 
 	@Override
@@ -65,10 +60,14 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 	}
 	
 	@Override
-	public void setAnchorListItem(int whichAnchorToHighlight){
+	public void setAnchorListItemActive(int whichAnchorToHighlight){
 		AnchorListItem[] anchorListItems = new AnchorListItem[]{newGameAnchor,highScoreAnchor};
 		
-		//Reset all nav bar anchors and navBarBrand (which don't have setActive() to non-active.
+		/*
+		 * Reset all nav bar anchors and navBarBrand (which don't have setActive() to non-active 
+		 * on every call.
+		 */
+		
 		for(int i=0; i < anchorListItems.length; i++){anchorListItems[i].setActive(false);};
 		navBarBrand.getElement().getStyle().setProperty("backgroundColor", "#F8F8F8");
 		

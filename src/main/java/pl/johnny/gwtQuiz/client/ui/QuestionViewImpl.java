@@ -34,7 +34,6 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 
 	public QuestionViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
-
 	}
 
 	private Presenter listener;
@@ -116,6 +115,7 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 		
 		//After the list is populated, get position of actual record and show it to user
 		modalPointsLabel.setText("You scored " + userPoints + " point/s and ");
+		//...continued at 'setActualRecordPositionLabel()'
 		
 		modal.show();
 	}
@@ -179,6 +179,4 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	public void setProgressBar(Double percent) {
 		progressBar.setPercent(percent);	
 	}
-
-	
 }
