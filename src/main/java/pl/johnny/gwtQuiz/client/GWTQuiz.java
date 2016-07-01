@@ -56,11 +56,11 @@ public class GWTQuiz implements EntryPoint {
 
 		dockLayoutPanel.setWidth("100%");
 
-		navBarWidget.getElement().getStyle()
-				.setProperty("border", "3px solid red");
-
-		dockLayoutPanel.getElement().getStyle()
-				.setProperty("border", "3px solid green");
+//		navBarWidget.getElement().getStyle()
+//				.setProperty("border", "3px solid red");
+//
+//		dockLayoutPanel.getElement().getStyle()
+//				.setProperty("border", "3px solid green");
 
 		dockLayoutPanel.add(navBarWidget, DockPanel.NORTH);
 		dockLayoutPanel.add(appWidget, DockPanel.SOUTH);

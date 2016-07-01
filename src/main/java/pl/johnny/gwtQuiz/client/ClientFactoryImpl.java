@@ -1,9 +1,8 @@
 package pl.johnny.gwtQuiz.client;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.place.shared.PlaceController;
+import com.google.web.bindery.event.shared.EventBus;
 
 import pl.johnny.gwtQuiz.client.ui.HighScoreCellTableView;
 import pl.johnny.gwtQuiz.client.ui.HighScoreCellTableViewImpl;
@@ -18,7 +17,7 @@ import pl.johnny.gwtQuiz.client.ui.QuestionViewImpl;
 
 public class ClientFactoryImpl implements ClientFactory
 {
-	private static final EventBus eventBus = new SimpleEventBus();
+	private static final EventBus eventBus = new com.google.web.bindery.event.shared.SimpleEventBus();
 	private static final PlaceController placeController = new PlaceController(eventBus);
 	private static final MainMenuView mainMenuView = new MainMenuViewImpl();
 	private static final QuestionView questionView = new QuestionViewImpl();

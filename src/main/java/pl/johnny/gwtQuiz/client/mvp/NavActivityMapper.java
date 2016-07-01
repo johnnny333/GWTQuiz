@@ -33,13 +33,14 @@ public class NavActivityMapper implements ActivityMapper {
 	@Override
 	public Activity getActivity(Place place) {
 		// This is begging for GIN
-		if (place instanceof MainMenuPlace || place instanceof QuestionPlace || place instanceof HighScoresPlace)
+		if (place instanceof MainMenuPlace )
 			return new NavBarActivity((MainMenuPlace) place, clientFactory);
-//		else if (place instanceof QuestionPlace)
-//			return new NavBarActivity((MainMenuPlace) place, clientFactory);
-//		
-//		else if (place instanceof HighScoresPlace)
-//			return new NavBarActivity((MainMenuPlace) place, clientFactory);
+		
+		else if (place instanceof QuestionPlace)
+			return new NavBarActivity((QuestionPlace) place, clientFactory);
+		
+		else if (place instanceof HighScoresPlace)
+			return new NavBarActivity((HighScoresPlace) place, clientFactory);
 
 		return null;
 	}
