@@ -6,6 +6,7 @@ import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 import pl.johnny.gwtQuiz.client.ClientFactory;
+import pl.johnny.gwtQuiz.client.place.AddQuestionsPlace;
 import pl.johnny.gwtQuiz.client.place.HighScoresPlace;
 import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
 import pl.johnny.gwtQuiz.client.place.QuestionPlace;
@@ -29,15 +30,15 @@ public class NavBarActivity extends AbstractActivity implements
 		this.clientFactory = clientFactory;
 	}
 
-	public NavBarActivity(QuestionPlace place, ClientFactory clientFactory) {
-		this.place = place;
-		this.clientFactory = clientFactory;
-	}
-
-	public NavBarActivity(HighScoresPlace place, ClientFactory clientFactory) {
-		this.place = place;
-		this.clientFactory = clientFactory;
-	}
+//	public NavBarActivity(QuestionPlace place, ClientFactory clientFactory) {
+//		this.place = place;
+//		this.clientFactory = clientFactory;
+//	}
+//
+//	public NavBarActivity(HighScoresPlace place, ClientFactory clientFactory) {
+//		this.place = place;
+//		this.clientFactory = clientFactory;
+//	}
 
 	/**
 	 * Invoked by the ActivityManager to start a new Activity
@@ -49,9 +50,11 @@ public class NavBarActivity extends AbstractActivity implements
 		containerWidget.setWidget(navBarView.asWidget());
 		
 		//Detect on what activity application is at and adjust view accordingly.
-		if(place instanceof MainMenuPlace )navBarView.setAnchorListItemActive(2);
-		else if(place instanceof QuestionPlace )navBarView.setAnchorListItemActive(0);
-		else if(place instanceof HighScoresPlace )navBarView.setAnchorListItemActive(1);
+		if(place instanceof MainMenuPlace )navBarView.setAnchorListItemActive(0);
+		else if(place instanceof QuestionPlace )navBarView.setAnchorListItemActive(1);
+		else if(place instanceof HighScoresPlace )navBarView.setAnchorListItemActive(2);
+		else if(place instanceof AddQuestionsPlace )navBarView.setAnchorListItemActive(3);
+
 	}
 	
 	/**

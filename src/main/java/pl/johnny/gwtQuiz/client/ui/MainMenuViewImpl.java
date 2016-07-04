@@ -8,6 +8,9 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
+import pl.johnny.gwtQuiz.client.place.AddQuestionsPlace;
+import pl.johnny.gwtQuiz.client.place.HighScoresPlace;
+
 public class MainMenuViewImpl extends Composite implements MainMenuView {
 	private static HelloViewImplUiBinder uiBinder = GWT.create(HelloViewImplUiBinder.class);
 
@@ -16,17 +19,12 @@ public class MainMenuViewImpl extends Composite implements MainMenuView {
 
 	@UiField org.gwtbootstrap3.client.ui.Button newGameButton;
 	@UiField org.gwtbootstrap3.client.ui.Button highScoresButton;
+	@UiField org.gwtbootstrap3.client.ui.Button addQuestionsButton;
 	
 	private Presenter listener;
-	private String name;
 
 	public MainMenuViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
-	}
-
-	@Override
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	@UiHandler("newGameButton")
@@ -39,7 +37,14 @@ public class MainMenuViewImpl extends Composite implements MainMenuView {
 	@UiHandler("highScoresButton")
 	void onHighScoresButtonClicked(ClickEvent e) {
 		if (listener != null) {
-			listener.onHighScoreButtonClicked();
+			listener.goTo(new HighScoresPlace("HighScores"));
+		}
+	}
+	
+	@UiHandler("addQuestionsButton")
+	void onAddQuestionsButtonClicked(ClickEvent e) {
+		if (listener != null) {
+			listener.goTo(new AddQuestionsPlace("AddQuestions"));
 		}
 	}
 	

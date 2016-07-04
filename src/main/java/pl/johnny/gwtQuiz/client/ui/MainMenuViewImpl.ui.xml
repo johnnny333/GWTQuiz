@@ -16,14 +16,12 @@
 	<b:Container fluid="true">
 		<b:Row>
 			<b:Column size="SM_12">
-<!-- 				<b:PageHeader text="GWT QUIZ" subText="" /> -->
-
-
-
-
+			
 				<b:Button ui:field="newGameButton" addStyleNames='{style.button}'>New Game</b:Button>
 				<h:Br></h:Br>
 				<b:Button ui:field="highScoresButton" addStyleNames='{style.button}'>High Scores</b:Button>
+				<h:Br></h:Br>
+				<b:Button ui:field="addQuestionsButton" addStyleNames='{style.button}'>High Scores</b:Button>
 
 			</b:Column>
 		</b:Row>

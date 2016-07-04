@@ -2,6 +2,7 @@ package pl.johnny.gwtQuiz.client;
 
 import com.google.gwt.place.shared.PlaceController;
 
+import pl.johnny.gwtQuiz.client.ui.AddQuestionsView;
 import pl.johnny.gwtQuiz.client.ui.HighScoreCellTableView;
 import pl.johnny.gwtQuiz.client.ui.HighScoresView;
 import pl.johnny.gwtQuiz.client.ui.MainMenuView;
@@ -18,4 +19,5 @@ public interface ClientFactory
 	HighScoreCellTableView getHighScoreCellTableView();
 	HighScoresView getHighScoreView();
 	NavBarView getNavBarView();
+	AddQuestionsView getAddQuestionsView();
 }

@@ -11,6 +11,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
+import pl.johnny.gwtQuiz.client.place.AddQuestionsPlace;
 import pl.johnny.gwtQuiz.client.place.HighScoresPlace;
 import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
 import pl.johnny.gwtQuiz.client.place.QuestionPlace;
@@ -27,6 +28,7 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 	@UiField NavbarBrand navBarBrand;
 	@UiField AnchorListItem newGameAnchor;
 	@UiField AnchorListItem highScoreAnchor;
+	@UiField AnchorListItem addQuestionsAnchor;
 
 	public NavBarViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -59,9 +61,17 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 		}
 	}
 	
+	@UiHandler("addQuestionsAnchor")
+	void onAddQuestionsAnchorClicked(ClickEvent e) {
+		if (listener != null) {
+			listener.goTo(new AddQuestionsPlace("HighScores"));
+		}
+	}
+	
 	@Override
 	public void setAnchorListItemActive(int whichAnchorToHighlight){
-		AnchorListItem[] anchorListItems = new AnchorListItem[]{newGameAnchor,highScoreAnchor};
+		AnchorListItem[] anchorListItems = new AnchorListItem[]{newGameAnchor,highScoreAnchor,
+				addQuestionsAnchor};
 		
 		/*
 		 * Reset all nav bar anchors and navBarBrand (which don't have setActive() to non-active 
@@ -72,13 +82,16 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 		navBarBrand.getElement().getStyle().setProperty("backgroundColor", "#F8F8F8");
 		
 		switch(whichAnchorToHighlight){
-			case 0 : anchorListItems[0].setActive(true);
+			case 0 : navBarBrand.getElement().getStyle().setProperty("backgroundColor", "#E7E7E7");
 			break;
 			
-			case 1 : anchorListItems[1].setActive(true);
+			case 1 : anchorListItems[0].setActive(true);
 			break;
 			
-			case 2 : navBarBrand.getElement().getStyle().setProperty("backgroundColor", "#E7E7E7");
+			case 2 : anchorListItems[1].setActive(true);
+			break;
+			
+			case 3 : anchorListItems[2].setActive(true);
 			break;
 		}
 	}

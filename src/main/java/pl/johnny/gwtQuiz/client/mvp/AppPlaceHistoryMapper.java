@@ -3,6 +3,7 @@ package pl.johnny.gwtQuiz.client.mvp;
 import com.google.gwt.place.shared.PlaceHistoryMapper;
 import com.google.gwt.place.shared.WithTokenizers;
 
+import pl.johnny.gwtQuiz.client.place.AddQuestionsPlace;
 import pl.johnny.gwtQuiz.client.place.HighScoresPlace;
 import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
 import pl.johnny.gwtQuiz.client.place.QuestionPlace;
@@ -13,6 +14,7 @@ import pl.johnny.gwtQuiz.client.place.QuestionPlace;
  * annotation or by extending PlaceHistoryMapperWithFactory and creating a
  * separate TokenizerFactory.
  */
-@WithTokenizers( { MainMenuPlace.Tokenizer.class, QuestionPlace.Tokenizer.class, HighScoresPlace.Tokenizer.class  })
+@WithTokenizers( { MainMenuPlace.Tokenizer.class, QuestionPlace.Tokenizer.class, HighScoresPlace.Tokenizer.class,
+	AddQuestionsPlace.Tokenizer.class  })
 public interface AppPlaceHistoryMapper extends PlaceHistoryMapper {
 }
