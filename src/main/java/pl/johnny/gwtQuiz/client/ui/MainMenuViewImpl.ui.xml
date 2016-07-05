@@ -21,7 +21,7 @@
 				<h:Br></h:Br>
 				<b:Button ui:field="highScoresButton" addStyleNames='{style.button}'>High Scores</b:Button>
 				<h:Br></h:Br>
-				<b:Button ui:field="addQuestionsButton" addStyleNames='{style.button}'>High Scores</b:Button>
+				<b:Button ui:field="addQuestionsButton" addStyleNames='{style.button}'>Add Questions</b:Button>
 
 			</b:Column>
 		</b:Row>

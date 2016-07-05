@@ -18,7 +18,7 @@
 				<!-- <b:AnchorListItem active="true">Item 1</b:AnchorListItem> -->
 				<b:AnchorListItem ui:field="newGameAnchor" icon="PLAY_CIRCLE">New Game</b:AnchorListItem>
 				<b:AnchorListItem ui:field="highScoreAnchor" icon="LIST_ALT" >High Scores</b:AnchorListItem>
-				<b:AnchorListItem ui:field="addQuestionsAnchor" icon="LIST_ALT" >Add Questions</b:AnchorListItem>
+				<b:AnchorListItem ui:field="addQuestionsAnchor" icon="PLUS_CIRCLE" >Add Questions</b:AnchorListItem>
 				
 			</b:NavbarNav>
 
