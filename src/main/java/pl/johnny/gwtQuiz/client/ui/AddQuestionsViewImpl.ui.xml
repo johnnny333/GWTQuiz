@@ -22,135 +22,160 @@
 	</ui:style>
 	<g:HTMLPanel>
 
-		<b:PanelGroup b:id="accordion">
-			<b:Panel>
-				<b:PanelHeader dataToggle="COLLAPSE" dataParent="#accordion2"
-					dataTarget="#collapseOne">
-					<b:Heading size="H4" text="Question one" />
-				</b:PanelHeader>
-				<b:PanelCollapse b:id="collapseOne"  in="true">
-					<b:PanelBody>
+		<!-- <b:PanelGroup b:id="accordion"> -->
+		<!-- <b:Panel> -->
+		<!-- <b:PanelHeader dataToggle="COLLAPSE" dataParent="#accordion2" -->
+		<!-- dataTarget="#collapseOne"> -->
+		<!-- <b:Heading size="H4" text="Question one" /> -->
+		<!-- </b:PanelHeader> -->
+		<!-- <b:PanelCollapse b:id="collapseOne" in="true"> -->
+		<!-- <b:PanelBody> -->
 
-						<!-- Question field -->
+		<!-- Question field -->
 
-						<b:Container fluid="true">
-							<b:Row addStyleNames='{style.center}'>
-								<b:Column size="XS_3">
-									<b:Heading size="H3" subText="Question" ui:field="questionCounter" />
-								</b:Column>
-								<b:Column size="XS_3">
+		<b:Container fluid="true">
+			<b:Row addStyleNames='{style.center}'>
+				<b:Column size="XS_3">
+					<!-- <b:Heading size="H3" subText="Question" ui:field="questionCounter" 
+						/> -->
+				</b:Column>
+				<b:Column size="XS_3">
 
-								</b:Column>
-								<b:Column size="XS_3">
+				</b:Column>
+				<b:Column size="XS_3">
 
-									<b:FormGroup>
-										<b:FormLabel for="categorySelect" addStyleNames="col-lg-2">Category</b:FormLabel>
-										<b:ListBox b:id="categorySelect">
-											<g:item>Polityka</g:item>
-											<g:item>Geografia</g:item>
-											<g:item>Muzyka</g:item>
-										</b:ListBox>
-									</b:FormGroup>
+					<!-- <b:FormGroup> -->
+					<!-- <b:FormLabel for="categorySelect" addStyleNames="col-lg-2">Category</b:FormLabel> -->
+					<!-- <b:ListBox b:id="categorySelect"> -->
+					<!-- <g:item>Polityka</g:item> -->
+					<!-- <g:item>Geografia</g:item> -->
+					<!-- <g:item>Muzyka</g:item> -->
+					<!-- </b:ListBox> -->
+					<!-- </b:FormGroup> -->
 
-								</b:Column>
-								<b:Column size="XS_3">
+				</b:Column>
+				<b:Column size="XS_3">
 
-									<b:FormGroup>
-										<b:FormLabel for="formName">Question author</b:FormLabel>
-										<b:TextBox maxLength="15" placeholder="Write your name..."
-											b:id="formName" />
-									</b:FormGroup>
+					<!-- <b:FormGroup> -->
+					<!-- <b:FormLabel for="formName">Question author</b:FormLabel> -->
+					<!-- <b:TextBox maxLength="15" placeholder="Write your name..." -->
+					<!-- b:id="formName" /> -->
+					<!-- </b:FormGroup> -->
 
-								</b:Column>
-							</b:Row>
+				</b:Column>
+			</b:Row>
 
-							<b:Row>
-								<b:Column size="SM_12">
-									<h:Hr></h:Hr>
+			<b:Row>
+				<b:Column size="SM_12">
+					<!-- <h:Hr></h:Hr> -->
 
-									<g:HTMLPanel addStyleNames='{style.center}'>
-										<b:Panel>
-											<b:PanelHeader>
-												<!-- <b:Heading size="H1" ui:field="qstnLbl"></b:Heading> -->
+					<g:HTMLPanel>
+						<b:Panel>
+							<b:PanelHeader>
+								<!-- <b:Heading size="H1" ui:field="qstnLbl"></b:Heading> -->
 
-												<b:FormGroup>
-													<b:TextBox maxLength="50" placeholder="Fill in your question..."
-														b:id="formName" />
-												</b:FormGroup>
+								<b:FormGroup>
+<!-- 									<b:FormLabel for="categorySelect" addStyleNames="col-lg-2">Category:</b:FormLabel> -->
+									<b:ListBox b:id="categorySelect">
+										<g:item>Polityka</g:item>
+										<g:item>Geografia</g:item>
+										<g:item>Muzyka</g:item>
+									</b:ListBox>
+								</b:FormGroup>
 
-												<b:Image type="ROUNDED" url="" ui:field="questionImage"
-													addStyleNames='{style.questionImage}' visible="false"
-													responsive="true" />
-											</b:PanelHeader>
-											<b:PanelBody>
+								<b:FormGroup>
+<!-- 									<b:FormLabel for="formName" addStyleNames="col-lg-2">Question:</b:FormLabel> -->
+									<b:TextBox maxLength="50" placeholder="Fill in your question..."
+										b:id="formName" />
+								</b:FormGroup>
 
-												<b:Form type="INLINE">
-													<b:FieldSet>
+								<b:Image type="ROUNDED" url="" ui:field="questionImage"
+									addStyleNames='{style.questionImage}' visible="true"
+									responsive="true" width="140px" height="140px" />
+							</b:PanelHeader>
 
-														<b:FormGroup>
-															<b:TextBox placeholder="Fill in your answer!"
-																maxLength="20" addStyleNames='{style.ansBut}' />
-														</b:FormGroup>
+							<b:PanelBody addStyleNames="text-center">
 
-														<b:FormGroup>
-															<b:TextBox placeholder="Fill in your answer!"
-																maxLength="20" addStyleNames='{style.ansBut}' />
-														</b:FormGroup>
+								<b:Form type="INLINE">
+									<b:FieldSet>
 
-														<b:FormGroup>
-															<b:TextBox placeholder="Fill in your answer!"
-																maxLength="20" addStyleNames='{style.ansBut}' />
-														</b:FormGroup>
+										<b:FormGroup>
+											<b:TextBox placeholder="Fill in your answer!"
+												maxLength="20" addStyleNames='{style.ansBut}' />
+										</b:FormGroup>
 
-														<b:FormGroup>
-															<b:TextBox placeholder="Fill in your answer!"
-																maxLength="20" addStyleNames='{style.ansBut}' />
-														</b:FormGroup>
+										<b:FormGroup>
+											<b:TextBox placeholder="Fill in your answer!"
+												maxLength="20" addStyleNames='{style.ansBut}' />
+										</b:FormGroup>
 
-													</b:FieldSet>
-												</b:Form>
+										<b:FormGroup>
+											<b:TextBox placeholder="Fill in your answer!"
+												maxLength="20" addStyleNames='{style.ansBut}' />
+										</b:FormGroup>
 
-											</b:PanelBody>
-											<b:PanelFooter>
+										<b:FormGroup>
+											<b:TextBox placeholder="Fill in your answer!"
+												maxLength="20" addStyleNames='{style.ansBut}' />
+										</b:FormGroup>
 
-												<b:FormGroup>
-													<b:FormLabel for="correctAnsSelect"
-														addStyleNames="col-lg-2">Which
-														answer is correct?</b:FormLabel>
-													<b:ListBox b:id="correctAnsSelect">
-														<g:item>First</g:item>
-														<g:item>Second</g:item>
-														<g:item>Third</g:item>
-														<g:item>Fourth</g:item>
-													</b:ListBox>
-												</b:FormGroup>
+										<h:Hr></h:Hr>
 
-											</b:PanelFooter>
-										</b:Panel>
+										<b:FormGroup>
+											<b:FormLabel for="correctAnsSelect"
+												addStyleNames="col-lg-4">Which answer is correct?</b:FormLabel>
+											<b:ListBox b:id="correctAnsSelect">
+												<g:item>First</g:item>
+												<g:item>Second</g:item>
+												<g:item>Third</g:item>
+												<g:item>Fourth</g:item>
+											</b:ListBox>
+										</b:FormGroup>
 
-									</g:HTMLPanel>
-								</b:Column>
-							</b:Row>
-						</b:Container>
+									</b:FieldSet>
+								</b:Form>
 
-						<!-- End of question field -->
+							</b:PanelBody>
 
-					</b:PanelBody>
-				</b:PanelCollapse>
-			</b:Panel>
+							<b:PanelFooter>
 
-			<b:Panel>
-				<b:PanelHeader dataToggle="COLLAPSE" dataParent="#accordion2"
-					dataTarget="#collapseTwo" >
-					<b:Heading size="H4" text="Add Another question..." />
-				</b:PanelHeader>
-				<b:PanelCollapse b:id="collapseTwo" ui:field="panelCollapse" >
-<!-- 					<b:PanelBody> -->
-<!-- 					</b:PanelBody> -->
-				</b:PanelCollapse>
-			</b:Panel>
+								<!-- <b:FormGroup> -->
+								<!-- <b:FormLabel for="correctAnsSelect" addStyleNames="col-lg-4">Which 
+									answer is correct?</b:FormLabel> -->
+								<!-- <b:ListBox b:id="correctAnsSelect"> -->
+								<!-- <g:item>First</g:item> -->
+								<!-- <g:item>Second</g:item> -->
+								<!-- <g:item>Third</g:item> -->
+								<!-- <g:item>Fourth</g:item> -->
+								<!-- </b:ListBox> -->
+								<!-- </b:FormGroup> -->
 
-		</b:PanelGroup>
+							</b:PanelFooter>
+						</b:Panel>
+
+					</g:HTMLPanel>
+				</b:Column>
+			</b:Row>
+		</b:Container>
+
+		<!-- End of question field -->
+
+		<!-- </b:PanelBody> -->
+		<!-- </b:PanelCollapse> -->
+		<!-- </b:Panel> -->
+
+		<!-- <b:Panel> -->
+		<!-- <b:PanelHeader dataToggle="COLLAPSE" dataParent="#accordion2" -->
+		<!-- dataTarget="#collapseTwo"> -->
+		<!-- <b:Heading size="H4" text="Add Another question..." /> -->
+		<!-- </b:PanelHeader> -->
+		<!-- <b:PanelCollapse b:id="collapseTwo" ui:field="panelCollapse"> -->
+		<!-- <b:PanelBody> -->
+		<!-- </b:PanelBody> -->
+		<!-- </b:PanelCollapse> -->
+		<!-- </b:Panel> -->
+
+		<!-- </b:PanelGroup> -->
 
 
 	</g:HTMLPanel>
