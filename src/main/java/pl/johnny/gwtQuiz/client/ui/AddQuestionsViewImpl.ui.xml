@@ -89,9 +89,10 @@
 										b:id="formName" />
 								</b:FormGroup>
 
-								<b:Image type="ROUNDED" url="" ui:field="questionImage"
-									addStyleNames='{style.questionImage}' visible="true"
-									responsive="true" width="140px" height="140px" />
+<!-- 								<b:Image type="ROUNDED" url="" ui:field="questionImage" -->
+<!-- 									addStyleNames='{style.questionImage}' visible="true" -->
+<!-- 									responsive="true" width="140px" height="140px" /> -->
+									<g:HTMLPanel ui:field="imageWidget"></g:HTMLPanel>
 							</b:PanelHeader>
 
 							<b:PanelBody addStyleNames="text-center">

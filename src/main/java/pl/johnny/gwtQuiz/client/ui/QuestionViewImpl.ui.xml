@@ -83,11 +83,11 @@
 		</b:Container>
 
 		<!-- MODAL -->
-		<b:Modal title="FINISHED!" closable="false" fade="true"
-			dataBackdrop="STATIC" dataKeyboard="false" b:id="myModal" ui:field="modal" addStyleNames='{style.center}'>
+		<b:Modal  closable="false" fade="true" 
+			dataBackdrop="STATIC" dataKeyboard="false" b:id="myModal" ui:field="modal"  >
 			<b:ModalBody ui:field="modalBody">
 
-				<b:Alert type="SUCCESS" ui:field="modalAlert">
+				<b:Alert type="SUCCESS" ui:field="modalAlert" addStyleNames='text-center'>
 					<h:Strong  ui:field="modalPointsLabel"/>
 					<h:Strong ui:field="actualRecordPositionLabel" />
 					<h:Br></h:Br>

@@ -20,5 +20,18 @@
   <welcome-file-list>
     <welcome-file>GWTQuiz.html</welcome-file>
   </welcome-file-list>
+  
+  <!-- Upload servlet -->
+	<servlet>
+		<servlet-name>uploadServlet</servlet-name>
+		<servlet-class>pl.johnny.gwtQuiz.server.FileUploadServlet</servlet-class>
+	</servlet>
+
+	<!-- TODO: Add <servlet-mapping> tags for each <servlet> here. -->
+
+	<servlet-mapping>
+		<servlet-name>uploadServlet</servlet-name>
+		<url-pattern>/gwtQuiz/upload</url-pattern>
+	</servlet-mapping>
 
 </web-app>

@@ -2,7 +2,9 @@ package pl.johnny.gwtQuiz.client.ui;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class AddQuestionsViewImpl extends Composite implements AddQuestionsView {
@@ -15,17 +17,13 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 	private Presenter listener;
 	
 //	@UiField PanelCollapse panelCollapse;
+	@UiField HTMLPanel imageWidget; 
 
 
 	public AddQuestionsViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
 		
-//		panelCollapse.addShowHandler(new ShowHandler() {
-//			@Override
-//			public void onShow(ShowEvent showEvent) {
-//				GWT.log("panelHeader clicked ");
-//			}
-//		});
+		imageWidget.add(new TextButtonAndProgressText());
 	}
 
 	@Override

@@ -17,7 +17,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.view.client.NoSelectionModel;
 
 import pl.johnny.gwtQuiz.shared.UserScore;
@@ -27,7 +27,7 @@ import pl.johnny.gwtQuiz.shared.UserScore;
  * @author jzarewicz
  *
  */
-public class HighScoreCellTableViewImpl extends VerticalPanel implements HighScoreCellTableView {
+public class HighScoreCellTableViewImpl extends Composite implements HighScoreCellTableView {
 
 	/**
 	* The list of data to display.
@@ -109,8 +109,8 @@ public class HighScoreCellTableViewImpl extends VerticalPanel implements HighSco
 		final NoSelectionModel<UserScore> selectionModel = new NoSelectionModel<UserScore>();
 		cellTableHighScores.setSelectionModel(selectionModel);
 
-		//Add CellTable onto the extended Vertical Panel
-		add(cellTableHighScores);
+		//Initialize widget as Composite
+		initWidget(cellTableHighScores);
 	}
 
 	@Override
@@ -137,8 +137,8 @@ public class HighScoreCellTableViewImpl extends VerticalPanel implements HighSco
 		cellTableHighScores.setRowData(0, result);
 
 		/* 
-		 * Find last (highest id) record from result - which is our not (yet) named record fields - 
-		 * and get its values
+		 * Find last (highest id) record from result - which is our temporary - not (yet) named record field - 
+		 * and get its value
 		 */
 		int max = Integer.MIN_VALUE;
 		for(int i = 0; i < result.size(); i++) {
