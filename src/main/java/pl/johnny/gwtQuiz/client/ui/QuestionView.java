@@ -3,6 +3,7 @@ package pl.johnny.gwtQuiz.client.ui;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.ui.IsWidget;
 
+import pl.johnny.gwtQuiz.client.ui.widgets.HighScoreCellTableView;
 import pl.johnny.gwtQuiz.shared.Question;
 import pl.johnny.gwtQuiz.shared.UserScore;
 

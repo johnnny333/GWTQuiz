@@ -7,6 +7,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import pl.johnny.gwtQuiz.client.ui.widgets.HighScoreCellTableView;
+
 public class HighScoresViewImpl extends Composite implements HighScoresView {
 
 	private static HighScoresViewImplUiBinder uiBinder = GWT.create(HighScoresViewImplUiBinder.class);

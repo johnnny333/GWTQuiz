@@ -12,9 +12,9 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import pl.johnny.gwtQuiz.client.ClientFactory;
 import pl.johnny.gwtQuiz.client.QuestionServiceAsync;
 import pl.johnny.gwtQuiz.client.place.HighScoresPlace;
-import pl.johnny.gwtQuiz.client.ui.HighScoreCellTableView;
 import pl.johnny.gwtQuiz.client.ui.HighScoresView;
 import pl.johnny.gwtQuiz.client.ui.MainMenuView;
+import pl.johnny.gwtQuiz.client.ui.widgets.HighScoreCellTableView;
 import pl.johnny.gwtQuiz.shared.UserScore;
 
 public class HighScoresActivity extends AbstractActivity implements

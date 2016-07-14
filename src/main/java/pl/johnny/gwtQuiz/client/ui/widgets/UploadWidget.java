@@ -1,4 +1,4 @@
-package pl.johnny.gwtQuiz.client.ui;
+package pl.johnny.gwtQuiz.client.ui.widgets;
 
 import org.moxieapps.gwt.uploader.client.Uploader;
 import org.moxieapps.gwt.uploader.client.events.FileDialogCompleteEvent;
@@ -24,7 +24,6 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;  
@@ -32,14 +31,14 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 /** 
  * Simple Text Link and Progress text label example of GWT Uploader 
  */  
-public class TextButtonAndProgressText extends Composite{  
+public class UploadWidget extends Composite{  
   
     private Label progressLabel;  
     private Uploader uploader;  
     private VerticalPanel verticalPanel = new VerticalPanel();  
     private Image recivedImg = new Image();
   
-	public TextButtonAndProgressText() {  
+	public UploadWidget() {  
         progressLabel = new Label();  
         progressLabel.setStyleName("progressLabel");  
   
@@ -55,7 +54,7 @@ public class TextButtonAndProgressText extends Composite{
         uploader.setPostParams(params);
         
         uploader.setUploadURL(GWT.getModuleBaseURL() + "upload")  
-            .setButtonText("<span class=\"buttonText\">Click to Upload</span>")  
+        	.setButtonText("<button class=\"btn btn-default\">Click to Upload</button>")
             .setButtonTextStyle(".buttonText {font-family: Arial, sans-serif; font-size: 14px; color: #BB4B44}")  
             .setFileSizeLimit("50 MB")  
             .setButtonWidth(150)  
@@ -72,7 +71,8 @@ public class TextButtonAndProgressText extends Composite{
                 }  
             })  
             .setUploadSuccessHandler(new UploadSuccessHandler() {  
-                @Override
+
+				@Override
 				public boolean onUploadSuccess(UploadSuccessEvent uploadSuccessEvent) {  
                     resetText();  
                     StringBuilder sb = new StringBuilder();  
@@ -88,8 +88,9 @@ public class TextButtonAndProgressText extends Composite{
                         .append(uploadSuccessEvent.getFile().getPercentUploaded()); 
                     
                     //Handle the server response
-                    GWT.log(uploadSuccessEvent.getServerData().toString());
+//                    GWT.log(uploadSuccessEvent.getServerData().toString());
                     
+                    recivedImg.setSize("480px", "270px");
                     recivedImg.setUrl("data:image;base64," + uploadSuccessEvent.getServerData());
                     GWT.log("base64? " + recivedImg);
                     verticalPanel.add(recivedImg);
@@ -103,7 +104,7 @@ public class TextButtonAndProgressText extends Composite{
 				public boolean onFileDialogComplete(FileDialogCompleteEvent fileDialogCompleteEvent) {  
                     if (fileDialogCompleteEvent.getTotalFilesInQueue() > 0 && uploader.getStats().getUploadsInProgress() <= 0) {  
                         progressLabel.setText("0%");  
-                        uploader.setButtonText("<span class=\"buttonText\">Uploading...</span>");  
+                        uploader.setButtonText("<button class=\"btn btn-default\">Uploading...</button>");  
                         uploader.startUpload();  
                     }  
                     return true;  
@@ -171,9 +172,11 @@ public class TextButtonAndProgressText extends Composite{
         }  
   
         
-        verticalPanel.add(progressLabel);  
-        verticalPanel.setCellHorizontalAlignment(uploader, HorizontalPanel.ALIGN_LEFT);  
-        verticalPanel.setCellHorizontalAlignment(progressLabel, HorizontalPanel.ALIGN_LEFT);  
+        verticalPanel.add(progressLabel);
+        verticalPanel.getElement().getStyle().setProperty("marginLeft", "auto");
+        verticalPanel.getElement().getStyle().setProperty("marginRight", "auto");
+//        verticalPanel.setCellHorizontalAlignment(uploader, HorizontalPanel.ALIGN_LEFT);  
+//        verticalPanel.setCellHorizontalAlignment(progressLabel, HorizontalPanel.ALIGN_RIGHT);  
   
         //noinspection GwtToHtmlReferences  
 //        RootPanel.get().add(verticalPanel); 
@@ -183,6 +186,6 @@ public class TextButtonAndProgressText extends Composite{
   
     private void resetText() {  
         progressLabel.setText("");  
-        uploader.setButtonText("<span class=\"buttonText\">Click to Upload</span>");  
+        uploader.setButtonText("<button class=\"btn btn-default\">Click to Upload</button>");  
     }  
 }  

@@ -7,6 +7,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import pl.johnny.gwtQuiz.client.ui.widgets.UploadWidget;
+
 public class AddQuestionsViewImpl extends Composite implements AddQuestionsView {
 
 	private static AddQuestionViewImplUiBinder uiBinder = GWT.create(AddQuestionViewImplUiBinder.class);
@@ -23,7 +25,7 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 	public AddQuestionsViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
 		
-		imageWidget.add(new TextButtonAndProgressText());
+		imageWidget.add(new UploadWidget());
 	}
 
 	@Override

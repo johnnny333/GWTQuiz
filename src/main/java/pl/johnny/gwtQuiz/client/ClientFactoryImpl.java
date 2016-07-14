@@ -6,8 +6,6 @@ import com.google.web.bindery.event.shared.EventBus;
 
 import pl.johnny.gwtQuiz.client.ui.AddQuestionsView;
 import pl.johnny.gwtQuiz.client.ui.AddQuestionsViewImpl;
-import pl.johnny.gwtQuiz.client.ui.HighScoreCellTableView;
-import pl.johnny.gwtQuiz.client.ui.HighScoreCellTableViewImpl;
 import pl.johnny.gwtQuiz.client.ui.HighScoresView;
 import pl.johnny.gwtQuiz.client.ui.HighScoresViewImpl;
 import pl.johnny.gwtQuiz.client.ui.MainMenuView;
@@ -16,6 +14,8 @@ import pl.johnny.gwtQuiz.client.ui.NavBarView;
 import pl.johnny.gwtQuiz.client.ui.NavBarViewImpl;
 import pl.johnny.gwtQuiz.client.ui.QuestionView;
 import pl.johnny.gwtQuiz.client.ui.QuestionViewImpl;
+import pl.johnny.gwtQuiz.client.ui.widgets.HighScoreCellTableView;
+import pl.johnny.gwtQuiz.client.ui.widgets.HighScoreCellTableViewImpl;
 
 public class ClientFactoryImpl implements ClientFactory
 {

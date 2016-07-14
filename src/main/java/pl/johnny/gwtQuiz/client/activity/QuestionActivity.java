@@ -14,8 +14,8 @@ import pl.johnny.gwtQuiz.client.ClientFactory;
 import pl.johnny.gwtQuiz.client.QuestionServiceAsync;
 import pl.johnny.gwtQuiz.client.event.NewQuestionEvent;
 import pl.johnny.gwtQuiz.client.place.QuestionPlace;
-import pl.johnny.gwtQuiz.client.ui.HighScoreCellTableView;
 import pl.johnny.gwtQuiz.client.ui.QuestionView;
+import pl.johnny.gwtQuiz.client.ui.widgets.HighScoreCellTableView;
 import pl.johnny.gwtQuiz.shared.Question;
 import pl.johnny.gwtQuiz.shared.UserScore;
 

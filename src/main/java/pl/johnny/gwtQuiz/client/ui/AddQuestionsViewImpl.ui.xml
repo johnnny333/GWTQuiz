@@ -92,7 +92,10 @@
 <!-- 								<b:Image type="ROUNDED" url="" ui:field="questionImage" -->
 <!-- 									addStyleNames='{style.questionImage}' visible="true" -->
 <!-- 									responsive="true" width="140px" height="140px" /> -->
-									<g:HTMLPanel ui:field="imageWidget"></g:HTMLPanel>
+								<b:Well>
+									<g:HTMLPanel ui:field="imageWidget" ></g:HTMLPanel>
+								</b:Well>
+								
 							</b:PanelHeader>
 
 							<b:PanelBody addStyleNames="text-center">
@@ -123,8 +126,7 @@
 										<h:Hr></h:Hr>
 
 										<b:FormGroup>
-											<b:FormLabel for="correctAnsSelect"
-												addStyleNames="col-lg-4">Which answer is correct?</b:FormLabel>
+											  <b:FormLabel for="correctAnsSelect">Which answer is correct? </b:FormLabel>
 											<b:ListBox b:id="correctAnsSelect">
 												<g:item>First</g:item>
 												<g:item>Second</g:item>

@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
 import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
+import pl.johnny.gwtQuiz.client.ui.widgets.HighScoreCellTableView;
 import pl.johnny.gwtQuiz.shared.Question;
 
 /**

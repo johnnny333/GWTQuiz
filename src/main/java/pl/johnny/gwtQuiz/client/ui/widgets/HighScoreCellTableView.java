@@ -1,10 +1,12 @@
-package pl.johnny.gwtQuiz.client.ui;
+package pl.johnny.gwtQuiz.client.ui.widgets;
 
 import java.util.ArrayList;
 
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.ui.IsWidget;
 
+import pl.johnny.gwtQuiz.client.ui.QuestionView;
+import pl.johnny.gwtQuiz.client.ui.QuestionView.Presenter;
 import pl.johnny.gwtQuiz.shared.UserScore;
 
 public interface HighScoreCellTableView extends IsWidget {

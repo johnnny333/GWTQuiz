@@ -22,7 +22,7 @@ public class FileUploadServlet extends HttpServlet {
 
 	private final long FILE_SIZE_LIMIT = 1 * 1024 * 1024; // 1 MiB
 	private final Logger logger = Logger.getLogger("UploadServlet");
-	/** Name of the directory where image we'll be saved */
+	/** Name of the directory where image will be saved */
 	private String recivedParameter;
 	private FileItem uploadedFile;
 	private String base64EncodedImageString;

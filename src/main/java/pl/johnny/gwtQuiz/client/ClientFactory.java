@@ -3,11 +3,11 @@ package pl.johnny.gwtQuiz.client;
 import com.google.gwt.place.shared.PlaceController;
 
 import pl.johnny.gwtQuiz.client.ui.AddQuestionsView;
-import pl.johnny.gwtQuiz.client.ui.HighScoreCellTableView;
 import pl.johnny.gwtQuiz.client.ui.HighScoresView;
 import pl.johnny.gwtQuiz.client.ui.MainMenuView;
 import pl.johnny.gwtQuiz.client.ui.NavBarView;
 import pl.johnny.gwtQuiz.client.ui.QuestionView;
+import pl.johnny.gwtQuiz.client.ui.widgets.HighScoreCellTableView;
 
 public interface ClientFactory
 {
