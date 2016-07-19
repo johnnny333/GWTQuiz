@@ -75,7 +75,7 @@
 								<!-- <b:Heading size="H1" ui:field="qstnLbl"></b:Heading> -->
 
 								<b:FormGroup>
-<!-- 									<b:FormLabel for="categorySelect" addStyleNames="col-lg-2">Category:</b:FormLabel> -->
+									<!-- <b:FormLabel for="categorySelect" addStyleNames="col-lg-2">Category:</b:FormLabel> -->
 									<b:ListBox b:id="categorySelect">
 										<g:item>Polityka</g:item>
 										<g:item>Geografia</g:item>
@@ -83,19 +83,32 @@
 									</b:ListBox>
 								</b:FormGroup>
 
+								<!-- <b:Image type="ROUNDED" url="" ui:field="questionImage" -->
+								<!-- addStyleNames='{style.questionImage}' visible="true" -->
+								<!-- responsive="true" width="140px" height="140px" /> -->
+
+								<b:PanelGroup b:id="accordion">
+									<b:Panel>
+										<b:PanelHeader dataToggle="COLLAPSE" dataParent="#accordion2"
+											dataTarget="#collapseOne">
+											<b:Heading size="H4" text="Add image to question?" />
+										</b:PanelHeader>
+										<b:PanelCollapse b:id="collapseOne">
+											<b:PanelBody>
+												<g:HTMLPanel ui:field="imageWidget"></g:HTMLPanel>
+											</b:PanelBody>
+										</b:PanelCollapse>
+									</b:Panel>
+								</b:PanelGroup>
+								
+								
 								<b:FormGroup>
-<!-- 									<b:FormLabel for="formName" addStyleNames="col-lg-2">Question:</b:FormLabel> -->
+									<!-- <b:FormLabel for="formName" addStyleNames="col-lg-2">Question:</b:FormLabel> -->
 									<b:TextBox maxLength="50" placeholder="Fill in your question..."
 										b:id="formName" />
 								</b:FormGroup>
-
-<!-- 								<b:Image type="ROUNDED" url="" ui:field="questionImage" -->
-<!-- 									addStyleNames='{style.questionImage}' visible="true" -->
-<!-- 									responsive="true" width="140px" height="140px" /> -->
-								<b:Well>
-									<g:HTMLPanel ui:field="imageWidget" ></g:HTMLPanel>
-								</b:Well>
 								
+
 							</b:PanelHeader>
 
 							<b:PanelBody addStyleNames="text-center">
@@ -126,7 +139,7 @@
 										<h:Hr></h:Hr>
 
 										<b:FormGroup>
-											  <b:FormLabel for="correctAnsSelect">Which answer is correct? </b:FormLabel>
+											<b:FormLabel for="correctAnsSelect">Which answer is correct? </b:FormLabel>
 											<b:ListBox b:id="correctAnsSelect">
 												<g:item>First</g:item>
 												<g:item>Second</g:item>

@@ -1,5 +1,6 @@
 package pl.johnny.gwtQuiz.client.ui.widgets;
 
+import org.gwtbootstrap3.client.ui.constants.ImageType;
 import org.moxieapps.gwt.uploader.client.Uploader;
 import org.moxieapps.gwt.uploader.client.events.FileDialogCompleteEvent;
 import org.moxieapps.gwt.uploader.client.events.FileDialogCompleteHandler;
@@ -36,7 +37,7 @@ public class UploadWidget extends Composite{
     private Label progressLabel;  
     private Uploader uploader;  
     private VerticalPanel verticalPanel = new VerticalPanel();  
-    private Image recivedImg = new Image();
+    private org.gwtbootstrap3.client.ui.Image recivedImg = new org.gwtbootstrap3.client.ui.Image();
   
 	public UploadWidget() {  
         progressLabel = new Label();  
@@ -54,11 +55,11 @@ public class UploadWidget extends Composite{
         uploader.setPostParams(params);
         
         uploader.setUploadURL(GWT.getModuleBaseURL() + "upload")  
-        	.setButtonText("<button class=\"btn btn-default\">Click to Upload</button>")
+        	.setButtonText("<button class=\"btn btn-default\">Click to upload image</button>")
             .setButtonTextStyle(".buttonText {font-family: Arial, sans-serif; font-size: 14px; color: #BB4B44}")  
-            .setFileSizeLimit("50 MB")  
-            .setButtonWidth(150)  
-            .setButtonHeight(22)  
+            .setFileSizeLimit("1 MB")  
+            .setButtonWidth(200)  
+            .setButtonHeight(42)  
             .setButtonCursor(Uploader.Cursor.HAND)  
             .setButtonAction(Uploader.ButtonAction.SELECT_FILE)  
             .setUploadProgressHandler(new UploadProgressHandler() {  
@@ -76,23 +77,26 @@ public class UploadWidget extends Composite{
 				public boolean onUploadSuccess(UploadSuccessEvent uploadSuccessEvent) {  
                     resetText();  
                     StringBuilder sb = new StringBuilder();  
-                    sb.append("File ").append(uploadSuccessEvent.getFile().getName())  
-                        .append(" (")  
-                        .append(NumberFormat.getDecimalFormat().format(uploadSuccessEvent.getFile().getSize() / 1024))  
-                        .append(" KB)")  
-                        .append(" uploaded successfully at ")  
-                        .append(NumberFormat.getDecimalFormat().format(  
-                            uploadSuccessEvent.getFile().getAverageSpeed() / 1024  
-                        ))  
-                        .append(" Kb/second")
+                    sb
+//                    	.append("File ")
+//                    		.append(uploadSuccessEvent.getFile().getName())  
+//                        .append(" (")  
+//                        .append(NumberFormat.getDecimalFormat().format(uploadSuccessEvent.getFile().getSize() / 1024))  
+//                        .append(" KB)")  
+//                        .append(" uploaded successfully at ")  
+//                        .append(NumberFormat.getDecimalFormat().format(  
+//                            uploadSuccessEvent.getFile().getAverageSpeed() / 1024  
+//                        ))  
+//                        .append(" Kb/second")
                         .append(uploadSuccessEvent.getFile().getPercentUploaded()); 
                     
                     //Handle the server response
 //                    GWT.log(uploadSuccessEvent.getServerData().toString());
                     
-                    recivedImg.setSize("480px", "270px");
+//                    recivedImg.setSize("480px", "270px");
                     recivedImg.setUrl("data:image;base64," + uploadSuccessEvent.getServerData());
-                    GWT.log("base64? " + recivedImg);
+                    recivedImg.setType(ImageType.ROUNDED);
+                    recivedImg.setResponsive(true);
                     verticalPanel.add(recivedImg);
                     
                     progressLabel.setText(sb.toString());  
@@ -137,7 +141,7 @@ public class UploadWidget extends Composite{
         
         //Drag and drop field.
         if (Uploader.isAjaxUploadWithProgressEventsSupported()) {  
-            final Label dropFilesLabel = new Label("Drop Files Here");  
+            final Label dropFilesLabel = new Label("Drop image here");  
             dropFilesLabel.setStyleName("dropFilesLabel");  
             dropFilesLabel.addDragOverHandler(new DragOverHandler() {  
                 @Override
@@ -186,6 +190,6 @@ public class UploadWidget extends Composite{
   
     private void resetText() {  
         progressLabel.setText("");  
-        uploader.setButtonText("<button class=\"btn btn-default\">Click to Upload</button>");  
+        uploader.setButtonText("<button class=\"btn btn-default\">Click to upload image</button>");  
     }  
 }  

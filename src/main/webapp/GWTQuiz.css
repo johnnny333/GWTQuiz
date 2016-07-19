@@ -32,3 +32,36 @@ h1 {
 #closeButton {
   margin: 15px 6px 6px;
 }
+
+/* Upload widget drag'n'drop styles */
+.dropFilesLabel {
+    margin-top: 6px;
+width: 300px;
+    padding: 28px 20px;
+    font-family: verdana, arial, sans-serif;
+    font-size: 12px;
+/*     color: #2d4b6d; */
+    font-weight: bold;
+    text-align: center;
+    display: block;
+    border: 2px dashed #888888;
+    border-radius: 7px;
+}
+
+/* It's not ":hover" - not a typo! */
+.dropFilesLabelHover {
+    border: 2px solid #444444;
+    color: #7c9647;
+}
+
+/* Styling collapse with add image widget */
+#accordion > div > div.panel-heading {
+	background-color: white;
+	cursor: pointer;
+	color: #555;
+}
+
+/* Center all element in collapse */
+#collapseOne > div > div > table > tbody > tr > td {
+	text-align: center;
+}
