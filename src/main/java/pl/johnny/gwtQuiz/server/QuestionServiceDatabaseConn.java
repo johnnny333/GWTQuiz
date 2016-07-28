@@ -84,16 +84,18 @@ public class QuestionServiceDatabaseConn {
 			c.createStatement().execute("PRAGMA foreign_keys = ON");
 			stmt = c.createStatement();
 
-			//Actual query
+			//Count rows
 			ResultSet rsRowCount = stmt.executeQuery("SELECT COUNT(*) FROM questions;");
 			int rowsCount = rsRowCount.getInt(1);
-
+			
+			//Initialize arrays
 			questionsData = new String[rowsCount][2];
 			answersData = new String[rowsCount][4];
 			correctAnswersData = new String[rowsCount];
 			authorData = new String[rowsCount];
 			categoryData = new String[rowsCount];
-
+			
+			//Actual query
 			ResultSet resultSet = stmt.executeQuery("SELECT answers.answer1,answers.answer2,answers.answer3,answers.answer4,"
 					+ "answers.correct_answer,questions.question,questions.author,"
 					+ "questions.category,questions.has_image,questions.image_url FROM answers "
@@ -303,6 +305,58 @@ public class QuestionServiceDatabaseConn {
 			System.err.println(e.getCause() + " " + e.getStackTrace());
 			System.exit(0);
 		}
+	}
+	
+	/**
+	 * Return question categories from database.
+	 * @return
+	 */
+	String[] getCategories(){
+		
+		Connection c;
+		Statement stmt;
+		
+		String[] categoryData = null ;
+		
+		try {
+			//Connection
+			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
+			c.setAutoCommit(false);
+			c.createStatement().execute("PRAGMA foreign_keys = ON");
+
+			stmt = c.createStatement();
+			
+			//Count rows
+			ResultSet rsRowCount = stmt.executeQuery("SELECT COUNT(*) FROM category_type_enum;");
+			int rowsCount = rsRowCount.getInt(1);
+			
+			//Initialize array
+			categoryData = new String[rowsCount];
+			
+			//Actual query
+			ResultSet resultSet = stmt.executeQuery("SELECT category FROM category_type_enum;");
+			
+			//Iterate over ResultSet and put each record into an array
+			while(resultSet.next()) {
+				String category = resultSet.getString("category");
+				categoryData[resultSet.getRow() - 1] = category;
+			}
+			
+			//Close connection gracefully.
+			resultSet.close();
+			stmt.close();
+			c.close();
+			
+			//Return filled category data.
+//			return categoryData;
+
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.err.println(e.getCause() + " " + e.getStackTrace());
+			System.exit(0);
+		}
+		//Return filled category data.
+		return categoryData;
 	}
 	
 	/**

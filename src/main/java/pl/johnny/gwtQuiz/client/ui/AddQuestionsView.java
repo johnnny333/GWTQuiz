@@ -12,6 +12,11 @@ import com.google.gwt.user.client.ui.IsWidget;
 public interface AddQuestionsView extends IsWidget
 {
 	void setPresenter(Presenter listener);
+	
+	/**
+	 * Sets categories in ListBox.
+	 */
+	void setCategories(String categories);
 
 	public interface Presenter {
 		void goTo(Place place);

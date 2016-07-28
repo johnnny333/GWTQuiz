@@ -32,7 +32,7 @@ public class HighScoresActivity extends AbstractActivity implements
 	public HighScoresActivity(HighScoresPlace place, ClientFactory clientFactory) {
 		this.name = place.getHelloName();
 		this.clientFactory = clientFactory;
-		questionService = clientFactory.getContactService();
+		questionService = clientFactory.getQuestionsService();
 	}
 
 	/**

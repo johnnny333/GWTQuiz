@@ -15,7 +15,7 @@ public interface ClientFactory
 	PlaceController getPlaceController();
 	MainMenuView getMainMenuView();
 	QuestionView getQuestionView();
-	QuestionServiceAsync getContactService();
+	QuestionServiceAsync getQuestionsService();
 	HighScoreCellTableView getHighScoreCellTableView();
 	HighScoresView getHighScoreView();
 	NavBarView getNavBarView();

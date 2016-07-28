@@ -14,12 +14,16 @@
 	<!-- <inherits name='com.google.gwt.user.theme.standard.Standard'/> -->
 	<!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
 	<!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/> -->
+	
 	<!-- GWT Bootstrap 3 -->
 	<inherits name="org.gwtbootstrap3.GwtBootstrap3"/>
 	<!--Moxieapps uploader-->
 	<inherits name="org.moxieapps.gwt.uploader.Uploader" />
 	<set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
-	  
+	
+<!-- 	Hibernate Validator -->
+	<inherits name='org.hibernate.validator.HibernateValidator' />
+	
 	<!-- Other module inherits -->
 	<inherits name="com.google.gwt.activity.Activity" />
 	<inherits name="com.google.gwt.place.Place" />
@@ -30,6 +34,12 @@
 	<!-- Use ClientFactoryImpl by default -->
   <replace-with class="pl.johnny.gwtQuiz.client.ClientFactoryImpl">
     <when-type-is class="pl.johnny.gwtQuiz.client.ClientFactory"/>
+  </replace-with>
+  
+  <!-- Specify the Validator for the Validation bootstrap to use. -->
+  <replace-with
+    class="com.google.gwt.sample.validation.client.SampleValidatorFactory">
+    <when-type-is class="javax.validation.ValidatorFactory" />
   </replace-with>
 
 	<!-- Specify the paths for translatable code -->

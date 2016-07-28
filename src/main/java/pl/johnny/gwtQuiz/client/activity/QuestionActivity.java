@@ -54,12 +54,12 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 		token = place.getGoodbyeName();
 		this.place = place;
 		/* Download questions from server,save it in a client and show 1st question */
-		questionService = clientFactory.getContactService();
+		questionService = clientFactory.getQuestionsService();
 		questionService.getShuffledQuestions(new AsyncCallback<ArrayList<Question>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				GWT.log("Failed getShuffledQuestions() RPC! " + caught.getMessage());
+				GWT.log("Failed getShuffledQuestions() RPC! ", caught);
 			}
 
 			@Override

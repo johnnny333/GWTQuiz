@@ -67,7 +67,7 @@ public class ClientFactoryImpl implements ClientFactory
 	}
 
 	@Override
-	public QuestionServiceAsync getContactService() {
+	public QuestionServiceAsync getQuestionsService() {
 		return questionService;
 	}
 

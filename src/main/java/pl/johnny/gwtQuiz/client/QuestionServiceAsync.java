@@ -18,5 +18,7 @@ public interface QuestionServiceAsync {
 
 	void updateUserScore(UserScore userScore, AsyncCallback<Void> asyncCallback);
 
-	void deleteUserScore(UserScore userScore, AsyncCallback<Void> asyncCallback);	
+	void deleteUserScore(UserScore userScore, AsyncCallback<Void> asyncCallback);
+
+	void getCategories(AsyncCallback<String[]> asyncCallback);	
 }
