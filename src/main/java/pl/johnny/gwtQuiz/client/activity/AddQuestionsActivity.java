@@ -27,9 +27,7 @@ public class AddQuestionsActivity extends AbstractActivity implements
 			
 			@Override
 			public void onSuccess(String[] result) {				
-				for(int i = 0; i < result.length; i++ ){
-				clientFactory.getAddQuestionsView().setCategories(result[i]);
-				}
+				clientFactory.getAddQuestionsView().setCategories(result);	
 			}
 			
 			@Override

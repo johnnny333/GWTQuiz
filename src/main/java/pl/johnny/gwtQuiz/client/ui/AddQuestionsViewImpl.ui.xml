@@ -47,7 +47,7 @@
 
 							<b:PanelHeader>
 							
-								<b:Form>
+								<b:Form ui:field="form">
 								
 								<b:Legend>Edit Question</b:Legend>
 								
@@ -124,6 +124,8 @@
 										</b:ListBox>
 									</b:FormGroup>
 									
+									<b:Button ui:field="formValidateButton">Validate</b:Button>
+									<b:Button ui:field="formResetButton">Reset</b:Button>
 								</b:Form>
 								
 							</b:PanelHeader>
@@ -135,8 +137,6 @@
 							<b:PanelFooter>
 
 							</b:PanelFooter>
-
-
 
 						</b:Panel>
 

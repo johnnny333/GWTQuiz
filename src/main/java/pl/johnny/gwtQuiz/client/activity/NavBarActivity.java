@@ -30,15 +30,20 @@ public class NavBarActivity extends AbstractActivity implements
 		this.clientFactory = clientFactory;
 	}
 
-//	public NavBarActivity(QuestionPlace place, ClientFactory clientFactory) {
-//		this.place = place;
-//		this.clientFactory = clientFactory;
-//	}
+	public NavBarActivity(QuestionPlace place, ClientFactory clientFactory) {
+		this.place = place;
+		this.clientFactory = clientFactory;
+	}
 //
-//	public NavBarActivity(HighScoresPlace place, ClientFactory clientFactory) {
-//		this.place = place;
-//		this.clientFactory = clientFactory;
-//	}
+	public NavBarActivity(HighScoresPlace place, ClientFactory clientFactory) {
+		this.place = place;
+		this.clientFactory = clientFactory;
+	}
+	
+	public NavBarActivity(AddQuestionsPlace place, ClientFactory clientFactory) {
+		this.place = place;
+		this.clientFactory = clientFactory;
+	}
 
 	/**
 	 * Invoked by the ActivityManager to start a new Activity
