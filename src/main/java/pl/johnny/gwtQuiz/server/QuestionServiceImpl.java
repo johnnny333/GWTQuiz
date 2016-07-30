@@ -55,6 +55,10 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements
 	public String[] getCategories() {
 		return questionServiceDBConn.getCategories();
 	}
+	
+	public void insertUserQuestion(Question userQuestion){
+		questionServiceDBConn.insertUserQuestion(userQuestion);
+	}
 
 	//  @Override
 	//public Contact addContact(Contact contact) {

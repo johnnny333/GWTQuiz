@@ -51,9 +51,9 @@
 								
 								<b:Legend>Edit Question</b:Legend>
 								
-									<b:FormGroup>
-									<b:FormLabel for="categorySelect">Category</b:FormLabel>
-										<b:ListBox b:id="categorySelect" ui:field="categoryListBox">
+									<b:FormGroup ui:field="categorySelectFormGroup">
+									<b:FormLabel for="categoryListBox">Category</b:FormLabel>
+										<b:ListBox b:id="categoryListBox" ui:field="categoryListBox">
 											<g:item>Choose your question category...</g:item>
 										</b:ListBox>
 									</b:FormGroup>
@@ -77,13 +77,13 @@
 										<b:FormLabel for="formName">Question</b:FormLabel>
 										<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
 										<b:TextBox maxLength="50" placeholder="Fill in your question..."
-											b:id="formName" validateOnBlur="true" allowBlank="false" />
+											b:id="formName" validateOnBlur="true" allowBlank="false" ui:field="questionField"/>
 									</b:FormGroup>
 
 									<b:FormGroup>
 										<b:FormLabel for="answer1">First answer</b:FormLabel>
 										<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
-										<b:TextBox placeholder="Fill in your answer!"
+										<b:TextBox placeholder="Fill in your answer!" ui:field="answer1Field"
 											maxLength="20" addStyleNames='{style.ansBut}' b:id="answer1" validateOnBlur="true"
 											allowBlank="false" />
 									</b:FormGroup>
@@ -91,7 +91,7 @@
 									<b:FormGroup>
 										<b:FormLabel for="answer2">Second answer</b:FormLabel>
 										<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
-										<b:TextBox placeholder="Fill in your answer!"
+										<b:TextBox placeholder="Fill in your answer!" ui:field="answer2Field"
 											maxLength="20" addStyleNames='{style.ansBut}' b:id="answer2" validateOnBlur="true"
 											allowBlank="false" />
 									</b:FormGroup>
@@ -99,7 +99,7 @@
 									<b:FormGroup>
 										<b:FormLabel for="answer3">Third answer</b:FormLabel>
 										<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
-										<b:TextBox placeholder="Fill in your answer!"
+										<b:TextBox placeholder="Fill in your answer!" ui:field="answer3Field"
 											maxLength="20" addStyleNames='{style.ansBut}' b:id="answer3" validateOnBlur="true"
 											allowBlank="false" />
 									</b:FormGroup>
@@ -107,20 +107,20 @@
 									<b:FormGroup>
 										<b:FormLabel for="answer4">Fourth answer</b:FormLabel>
 										<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
-										<b:TextBox placeholder="Fill in your answer!"
+										<b:TextBox placeholder="Fill in your answer!" ui:field="answer4Field"
 											maxLength="20" addStyleNames='{style.ansBut}' b:id="answer4" validateOnBlur="true"
 											allowBlank="false" />
 									</b:FormGroup>
 
-									<b:FormGroup>
+									<b:FormGroup ui:field="correctAnsFormGroup">
 										<b:FormLabel 
-											for="correctAnsSelect">Which answer is correct? </b:FormLabel>
-										<b:ListBox b:id="correctAnsSelect" ui:field="correctAnsSelect">
+											for="correctAnsListBox">Which answer is correct? </b:FormLabel>
+										<b:ListBox  b:id="correctAnsListBox" ui:field="correctAnsListBox">
 											<g:item>Which answer is correct?</g:item>
-											<g:item>First</g:item>
-											<g:item>Second</g:item>
-											<g:item>Third</g:item>
-											<g:item>Fourth</g:item>
+											<g:item value='0'>First</g:item>
+											<g:item value='1'>Second</g:item>
+											<g:item value='2'>Third</g:item>
+											<g:item value='3'>Fourth</g:item>
 										</b:ListBox>
 									</b:FormGroup>
 									

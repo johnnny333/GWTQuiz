@@ -23,4 +23,6 @@ public interface QuestionService extends RemoteService {
 	void deleteUserScore(UserScore userScore);
 	
 	public String[] getCategories();
+	
+	public void insertUserQuestion(Question userQuestion);
 }

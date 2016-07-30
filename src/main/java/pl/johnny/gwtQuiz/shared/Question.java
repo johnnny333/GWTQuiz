@@ -24,11 +24,11 @@ public class Question implements IsSerializable {
 	public Question() {
 	};
 
-	public Question(String questionData,String questionImageData, String[] contactsLastNameData, String correctAnswersData, 
+	public Question(String questionData,String questionImageData, String[] answers, String correctAnswersData, 
 			String authorData, String categoryData) {
 		this.question = questionData;
 		this.questionImageData = questionImageData;
-		this.answers = contactsLastNameData;
+		this.answers = answers;
 		this.correctAnsw = correctAnswersData;
 		this.authorData = authorData;
 		this.categoryData = categoryData;

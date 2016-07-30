@@ -360,6 +360,74 @@ public class QuestionServiceDatabaseConn {
 	}
 	
 	/**
+	 * Insert submitted user question into question_tmp table. 
+	 * @param userQuestion
+	 */
+	void insertUserQuestion(Question userQuestion){
+
+		//Insert user question into question_tmp
+		try {
+			//Connection
+			Connection c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
+			c.setAutoCommit(false);
+			c.createStatement().execute("PRAGMA foreign_keys = ON");
+
+			PreparedStatement prepStmt = c.prepareStatement(
+					"INSERT INTO questions_tmp (question,author,category) VALUES (?, ?, ?);");
+			
+			prepStmt.setString(1, userQuestion.getQuestion());
+			prepStmt.setString(2, userQuestion.getAuthor());
+			prepStmt.setString(3, userQuestion.getCategory());
+			prepStmt.executeUpdate();
+
+			prepStmt.close();
+			c.commit();
+			c.close();
+			
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.err.println(e.getCause() + " " + e.getStackTrace());
+			System.exit(0);
+		}
+		
+		//Insert user-question answers into answers_tmp
+		try {
+			//Connection
+			Connection c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
+			c.setAutoCommit(false);
+			c.createStatement().execute("PRAGMA foreign_keys = ON");
+			
+			/*
+			 * Count rows from question_tmp to relate answers being now inserted into answers_tmp 
+			 * with appropriate question which was just inserted into questions_tmp.
+			 */
+			Statement stmt = c.createStatement();
+			ResultSet rsRowCount = stmt.executeQuery("SELECT COUNT(*) FROM questions_tmp;");
+			String questionID = rsRowCount.getString(1);
+
+			PreparedStatement prepStmt = c.prepareStatement(
+					"INSERT INTO answers_tmp (questionID,answer1,answer2,answer3,answer4,correct_answer) VALUES (?,?,?,?,?,?);");
+			
+			prepStmt.setString(1, questionID);
+			prepStmt.setString(2, userQuestion.getAnswer(0));
+			prepStmt.setString(3, userQuestion.getAnswer(1));
+			prepStmt.setString(4, userQuestion.getAnswer(2));
+			prepStmt.setString(5, userQuestion.getAnswer(3));
+			prepStmt.setString(6, userQuestion.getCorrectAnsw());
+			prepStmt.executeUpdate();
+
+			prepStmt.close();
+			c.commit();
+			c.close();
+			
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.err.println(e.getCause() + " " + e.getStackTrace());
+			System.exit(0);
+		}	
+	}
+	
+	/**
 	 * Trims white spaces and non-visible characters, checks for empty strings ("") 
 	 * and substrings strings (from 0 to 15) to be inserted to database.
 	 * @param stringToCut

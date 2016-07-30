@@ -11,6 +11,7 @@ import pl.johnny.gwtQuiz.client.ClientFactory;
 import pl.johnny.gwtQuiz.client.QuestionServiceAsync;
 import pl.johnny.gwtQuiz.client.place.AddQuestionsPlace;
 import pl.johnny.gwtQuiz.client.ui.AddQuestionsView;
+import pl.johnny.gwtQuiz.shared.Question;
 
 public class AddQuestionsActivity extends AbstractActivity implements
 	AddQuestionsView.Presenter {
@@ -20,13 +21,11 @@ public class AddQuestionsActivity extends AbstractActivity implements
 
 	public AddQuestionsActivity(AddQuestionsPlace place, final ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
-		QuestionServiceAsync questionService = clientFactory.getQuestionsService();
-		
 		//Put categories from database into ListBox in this activity view.
-		questionService.getCategories(new AsyncCallback<String[]>() {
+		clientFactory.getQuestionsService().getCategories(new AsyncCallback<String[]>() {
 			
 			@Override
-			public void onSuccess(String[] result) {				
+			public void onSuccess(String[] result) {
 				clientFactory.getAddQuestionsView().setCategories(result);	
 			}
 			
@@ -62,5 +61,21 @@ public class AddQuestionsActivity extends AbstractActivity implements
 	@Override
 	public void goTo(Place place) {
 		clientFactory.getPlaceController().goTo(place);
+	}
+
+	@Override
+	public void insertUserQuestion(Question userQuestion) {
+		clientFactory.getQuestionsService().insertUserQuestion(userQuestion, new AsyncCallback<Void>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				GWT.log("insertUserQuestion failed", caught);
+			}
+
+			@Override
+			public void onSuccess(Void result) {
+				GWT.log("Question submitted");
+			}
+		});
 	}
 }
