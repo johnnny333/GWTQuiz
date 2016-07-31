@@ -1,12 +1,21 @@
 package pl.johnny.gwtQuiz.server;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import javax.servlet.ServletContext;
+
+import org.apache.commons.io.FileUtils;
 
 import pl.johnny.gwtQuiz.shared.Question;
 import pl.johnny.gwtQuiz.shared.UserScore;
@@ -365,6 +374,8 @@ public class QuestionServiceDatabaseConn {
 	 * @param userQuestion
 	 */
 	void insertUserQuestion(Question userQuestion){
+		
+		String questionID = null;
 
 		//Insert user question into question_tmp
 		try {
@@ -407,7 +418,7 @@ public class QuestionServiceDatabaseConn {
 			 */
 			Statement stmt = c.createStatement();
 			ResultSet rsRowCount = stmt.executeQuery("SELECT COUNT(*) FROM questions_tmp;");
-			String questionID = rsRowCount.getString(1);
+			questionID = rsRowCount.getString(1);
 
 			PreparedStatement prepStmt = c.prepareStatement(
 					"INSERT INTO answers_tmp (questionID,answer1,answer2,answer3,answer4,correct_answer) VALUES (?,?,?,?,?,?);");
@@ -428,7 +439,26 @@ public class QuestionServiceDatabaseConn {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.err.println(e.getCause() + " " + e.getStackTrace());
 			System.exit(0);
-		}	
+		}
+		
+		//Move uploaded image from /tmp to our pending storage.
+		try {
+			
+			String property = "javax.servlet.context.tempdir";
+		    String tempDir = System.getProperty(property);
+			
+			
+			File directory = new File(tempDir + File.separatorChar + questionID );
+			directory.mkdirs();
+			
+			FileUtils.moveFileToDirectory(
+				      FileUtils.getFile("/tmp/jetty-127.0.0.1-8888-webapp-_-any-/HELLO_BITCH!"
+				    		  + File.separatorChar + userQuestion.getImageURL()), 
+				      FileUtils.getFile("savedFile/" + userQuestion.getImageURL()), false);
+			
+        } catch (IOException e) {
+            System.err.println(e);
+        }
 	}
 	
 	/**
