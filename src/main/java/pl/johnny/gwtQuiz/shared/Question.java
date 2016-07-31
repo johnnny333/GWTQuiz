@@ -39,7 +39,7 @@ public class Question implements IsSerializable {
 	}
 	
 	/**Get image server url as String. */
-	public String getQuestionImageURL() {
+	public String getImageURL() {
 		return questionImageData;
 	}
 

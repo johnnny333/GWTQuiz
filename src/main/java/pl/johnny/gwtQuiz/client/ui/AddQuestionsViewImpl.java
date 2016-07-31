@@ -55,12 +55,9 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 	TextBox answer3Field;
 	@UiField
 	TextBox answer4Field;
-
+	
 	public AddQuestionsViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
-
-		// Add image widget to this view
-		imageWidget.add(new UploadWidget());
 
 		// Set first ListBox.listItem disabled so it acts as a placeholder.
 		correctAnsListBox.getElement().getFirstChildElement().setAttribute("disabled", "disabled");
@@ -70,6 +67,12 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 	@Override
 	public void setPresenter(Presenter listener) {
 		this.listener = listener;
+		
+		/*
+		 * Add image widget to this view and hand instance of listener so it communicate 
+		 * with this view. 
+		 */
+		imageWidget.add(new UploadWidget(listener));
 	}
 
 	@Override
@@ -106,10 +109,12 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 			
 			//Create user question model from filled fields
 			String[] userAnswers = new String[]{answer1Field.getValue(),answer2Field.getValue(),answer3Field.getValue(),answer4Field.getValue()}; 
-			Question userQuestion = new Question(questionField.getValue(), null, userAnswers, 
+			Question userQuestion = new Question(questionField.getValue(), listener.getUploadedImageName(), userAnswers, 
 					correctAnsListBox.getSelectedValue(),"Janek", categoryListBox.getSelectedValue());
 			// There goes RPC logic over activity...
 			listener.insertUserQuestion(userQuestion);
+			//After sending user question either with or without image, reset uploadedImageName to null (no image). 
+			listener.setUploadedImageName(null);
 			
 		}else{
 			/*
@@ -134,5 +139,4 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 		correctAnsListBox.setItemSelected(0, true);
 		
 	}
-
 }

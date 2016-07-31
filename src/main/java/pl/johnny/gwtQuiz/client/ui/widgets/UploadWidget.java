@@ -27,7 +27,9 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.VerticalPanel;  
+import com.google.gwt.user.client.ui.VerticalPanel;
+
+import pl.johnny.gwtQuiz.client.ui.AddQuestionsView.Presenter;  
   
 /** 
  * Simple Text Link and Progress text label example of GWT Uploader 
@@ -39,7 +41,7 @@ public class UploadWidget extends Composite{
     private VerticalPanel verticalPanel = new VerticalPanel();  
     private org.gwtbootstrap3.client.ui.Image recivedImg = new org.gwtbootstrap3.client.ui.Image();
   
-	public UploadWidget() {  
+	public UploadWidget(final Presenter listener) {  
         progressLabel = new Label();  
         progressLabel.setStyleName("progressLabel");  
   
@@ -94,6 +96,11 @@ public class UploadWidget extends Composite{
 //                    GWT.log(uploadSuccessEvent.getServerData().toString());
                     
 //                    recivedImg.setSize("480px", "270px");
+                    
+                    //Send uploaded image name into addQuestionsActivity.
+                    listener.setUploadedImageName(uploadSuccessEvent.getFile().getName());
+                    
+                    //Display uploded image
                     recivedImg.setUrl("data:image;base64," + uploadSuccessEvent.getServerData());
                     recivedImg.setType(ImageType.ROUNDED);
                     recivedImg.setResponsive(true);

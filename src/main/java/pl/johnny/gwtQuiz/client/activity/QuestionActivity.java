@@ -88,11 +88,11 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 					questionView.setQuestion(questionsArrayList.get(currentQuestionInt).getQuestion());
 
 					//Question image logic
-					if(questionsArrayList.get(currentQuestionInt).getQuestionImageURL() != null) {
-						questionView.setQuestionImage(questionsArrayList.get(currentQuestionInt).getQuestionImageURL(), true);
+					if(questionsArrayList.get(currentQuestionInt).getImageURL() != null) {
+						questionView.setQuestionImage(questionsArrayList.get(currentQuestionInt).getImageURL(), true);
 					} else {
 						questionView.setQuestionImage("", false);
-						GWT.log("No picture " + questionsArrayList.get(currentQuestionInt).getQuestionImageURL());
+						GWT.log("No picture " + questionsArrayList.get(currentQuestionInt).getImageURL());
 					}
 
 					questionView.setAnswers(questionsArrayList.get(currentQuestionInt));

@@ -18,6 +18,8 @@ public class AddQuestionsActivity extends AbstractActivity implements
 	// Used to obtain views, eventBus, placeController
 	// Alternatively, could be injected via GIN
 	private ClientFactory clientFactory;
+	/**Field representing uploaded image name. If its null it means no image was uploaded. */
+	private String uploadedImageName = null;
 
 	public AddQuestionsActivity(AddQuestionsPlace place, final ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
@@ -77,5 +79,15 @@ public class AddQuestionsActivity extends AbstractActivity implements
 				GWT.log("Question submitted");
 			}
 		});
+	}
+	
+	@Override
+	public void setUploadedImageName(String uploadedImageName) {
+		this.uploadedImageName = uploadedImageName;
+	}
+	
+	@Override
+	public String getUploadedImageName() {
+		return uploadedImageName;
 	}
 }

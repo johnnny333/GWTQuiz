@@ -1,5 +1,6 @@
 package pl.johnny.gwtQuiz.server;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -373,11 +374,14 @@ public class QuestionServiceDatabaseConn {
 			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			PreparedStatement prepStmt = c.prepareStatement(
-					"INSERT INTO questions_tmp (question,author,category) VALUES (?, ?, ?);");
+					"INSERT INTO questions_tmp (question,author,category,has_image,image_url) VALUES (?,?,?,?,?);");
 			
 			prepStmt.setString(1, userQuestion.getQuestion());
 			prepStmt.setString(2, userQuestion.getAuthor());
 			prepStmt.setString(3, userQuestion.getCategory());
+			//If user submitted image, set has_image column flag to 1(true).Otherwise its 0(false).
+			if(userQuestion.getImageURL() != null){prepStmt.setString(4, "1");}else{prepStmt.setString(4, "0");}
+			prepStmt.setString(5, userQuestion.getImageURL());
 			prepStmt.executeUpdate();
 
 			prepStmt.close();
