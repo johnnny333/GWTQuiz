@@ -29,7 +29,7 @@ public interface AddQuestionsView extends IsWidget
 		void insertUserQuestion(Question userQuestion);
 		
 		/**
-		 * Set image name which was uploaded via UploadWidget.class
+		 * Set image path sent from UploadServlet.class 
 		 * into this Activity so its View can use it to construct UserScore model with
 		 * said image name.
 		 * @param uploadedImageName
@@ -37,7 +37,7 @@ public interface AddQuestionsView extends IsWidget
 		void setUploadedImageName(String uploadedImageName);
 		
 		/**
-		 * Returns uploaded image name which was sent from UploadWidget.class and set with 
+		 * Returns uploaded image path which was sent from UploadWidget.class and set with 
 		 * insertUserQuestion(Question userQuestion).
 		 * @return uploadedImageName
 		 */

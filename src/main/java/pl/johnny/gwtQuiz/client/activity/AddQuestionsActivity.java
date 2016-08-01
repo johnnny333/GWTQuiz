@@ -19,7 +19,7 @@ public class AddQuestionsActivity extends AbstractActivity implements
 	// Alternatively, could be injected via GIN
 	private ClientFactory clientFactory;
 	/**Field representing uploaded image name. If its null it means no image was uploaded. */
-	private String uploadedImageName = null;
+	private String uploadedImagePath = null;
 
 	public AddQuestionsActivity(AddQuestionsPlace place, final ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
@@ -83,11 +83,11 @@ public class AddQuestionsActivity extends AbstractActivity implements
 	
 	@Override
 	public void setUploadedImageName(String uploadedImageName) {
-		this.uploadedImageName = uploadedImageName;
+		this.uploadedImagePath = uploadedImageName;
 	}
 	
 	@Override
 	public String getUploadedImageName() {
-		return uploadedImageName;
+		return uploadedImagePath;
 	}
 }

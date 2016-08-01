@@ -22,10 +22,11 @@ import com.google.gwt.event.dom.client.DropEvent;
 import com.google.gwt.event.dom.client.DropHandler;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -52,9 +53,9 @@ public class UploadWidget extends Composite{
          * so server can create folder with this value in 
          * /GWTQuiz/src/main/webapp/quiz_resources/question_images/{id}
          */
-        JSONObject params = new JSONObject();
-        params.put("post_param_name_1", new JSONString("HELLO_BITCH!"));
-        uploader.setPostParams(params);
+//        JSONObject params = new JSONObject();
+//        params.put("post_param_name_1", new JSONString("param_key"));
+//        uploader.setPostParams(params);
         
         uploader.setUploadURL(GWT.getModuleBaseURL() + "upload")  
         	.setButtonText("<button class=\"btn btn-default\">Click to upload image</button>")
@@ -96,12 +97,23 @@ public class UploadWidget extends Composite{
 //                    GWT.log(uploadSuccessEvent.getServerData().toString());
                     
 //                    recivedImg.setSize("480px", "270px");
-                    
-                    //Send uploaded image name into addQuestionsActivity.
-                    listener.setUploadedImageName(uploadSuccessEvent.getFile().getName());
-                    
-                    //Display uploded image
-                    recivedImg.setUrl("data:image;base64," + uploadSuccessEvent.getServerData());
+                     
+                    /* Display uploded image:
+                    Parse response into JSON */  
+                    JSONValue jsonValue = JSONParser.parseStrict(uploadSuccessEvent.getServerData());
+                    //Convert JSONValue into JSONObject
+                    JSONObject responseAsObject = jsonValue.isObject();
+                    //Convert JSONValue into String
+                    //Get base64 image from JSON
+                    JSONString base64EncodedString = responseAsObject.get("base64EncodedString").isString();
+                    //Get image path from JSON
+                    JSONString imagePath = responseAsObject.get("pathToFile").isString();
+                    //Send uploaded image path to addQuestionsActivity.
+                    listener.setUploadedImageName(imagePath.stringValue());
+
+//                    GWT.log("JSON Value ? " + imagePath.toString());
+
+                    recivedImg.setUrl("data:image;base64," + base64EncodedString.stringValue());
                     recivedImg.setType(ImageType.ROUNDED);
                     recivedImg.setResponsive(true);
                     verticalPanel.add(recivedImg);

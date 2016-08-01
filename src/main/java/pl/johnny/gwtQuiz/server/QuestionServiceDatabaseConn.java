@@ -1,19 +1,12 @@
 package pl.johnny.gwtQuiz.server;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-
-import javax.servlet.ServletContext;
 
 import org.apache.commons.io.FileUtils;
 
@@ -392,6 +385,7 @@ public class QuestionServiceDatabaseConn {
 			prepStmt.setString(3, userQuestion.getCategory());
 			//If user submitted image, set has_image column flag to 1(true).Otherwise its 0(false).
 			if(userQuestion.getImageURL() != null){prepStmt.setString(4, "1");}else{prepStmt.setString(4, "0");}
+			//TODO RegExp full path to only filename, - [^\/]+$
 			prepStmt.setString(5, userQuestion.getImageURL());
 			prepStmt.executeUpdate();
 
@@ -444,17 +438,14 @@ public class QuestionServiceDatabaseConn {
 		//Move uploaded image from /tmp to our pending storage.
 		try {
 			
-			String property = "javax.servlet.context.tempdir";
-		    String tempDir = System.getProperty(property);
-			
-			
-			File directory = new File(tempDir + File.separatorChar + questionID );
-			directory.mkdirs();
-			
 			FileUtils.moveFileToDirectory(
-				      FileUtils.getFile("/tmp/jetty-127.0.0.1-8888-webapp-_-any-/HELLO_BITCH!"
-				    		  + File.separatorChar + userQuestion.getImageURL()), 
-				      FileUtils.getFile("savedFile/" + userQuestion.getImageURL()), false);
+					/* 
+					 * getImageURL resolves to full,absolute path of uploaded image
+					 * and was brought from servlet response after successful image
+					 * upload.So here we just use it to point to a source file.
+					 */
+				      FileUtils.getFile(userQuestion.getImageURL()), 
+				      FileUtils.getFile("quiz_resources/question_images_tmp/"), false);
 			
         } catch (IOException e) {
             System.err.println(e);
