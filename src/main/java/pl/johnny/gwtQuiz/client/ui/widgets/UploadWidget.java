@@ -14,6 +14,7 @@ import org.moxieapps.gwt.uploader.client.events.UploadSuccessEvent;
 import org.moxieapps.gwt.uploader.client.events.UploadSuccessHandler;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.DragLeaveEvent;
 import com.google.gwt.event.dom.client.DragLeaveHandler;
 import com.google.gwt.event.dom.client.DragOverEvent;
@@ -61,8 +62,8 @@ public class UploadWidget extends Composite{
         	.setButtonText("<button class=\"btn btn-default\">Click to upload image</button>")
             .setButtonTextStyle(".buttonText {font-family: Arial, sans-serif; font-size: 14px; color: #BB4B44}")  
             .setFileSizeLimit("1 MB")  
-            .setButtonWidth(200)  
-            .setButtonHeight(42)  
+//            .setButtonWidth(200)  
+//            .setButtonHeight(42)  
             .setButtonCursor(Uploader.Cursor.HAND)  
             .setButtonAction(Uploader.ButtonAction.SELECT_FILE)  
             .setUploadProgressHandler(new UploadProgressHandler() {  
@@ -160,7 +161,7 @@ public class UploadWidget extends Composite{
         
         //Drag and drop field.
         if (Uploader.isAjaxUploadWithProgressEventsSupported()) {  
-            final Label dropFilesLabel = new Label("Drop image here");  
+            final Label dropFilesLabel = new Label("Or drop image here");  
             dropFilesLabel.setStyleName("dropFilesLabel");  
             dropFilesLabel.addDragOverHandler(new DragOverHandler() {  
                 @Override
@@ -196,8 +197,8 @@ public class UploadWidget extends Composite{
   
         
         verticalPanel.add(progressLabel);
-        verticalPanel.getElement().getStyle().setProperty("marginLeft", "auto");
-        verticalPanel.getElement().getStyle().setProperty("marginRight", "auto");
+        verticalPanel.getElement().getStyle().setWidth(100.0, Unit.PCT);
+//        verticalPanel.getElement().getStyle().setProperty("marginRight", "auto");
 //        verticalPanel.setCellHorizontalAlignment(uploader, HorizontalPanel.ALIGN_LEFT);  
 //        verticalPanel.setCellHorizontalAlignment(progressLabel, HorizontalPanel.ALIGN_RIGHT);  
   
