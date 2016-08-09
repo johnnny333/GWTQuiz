@@ -54,22 +54,22 @@ h1 {
 }
 
 /* Styling collapse heading with add image widget */
-#accordion div.panel-heading {
+div#accordion div.panel-heading {
 	background-color: white;
 	cursor: pointer;
 	color: #555;
 }
 
 /* Center content in every cells in collapse */
-#collapseOne td {
+div#collapseOne td {
 	text-align: center;
 	padding-bottom: 15px; 
 }
 
-/* Padding for upload counter */
-#collapseOne tr:nth-child(3) > td {
-/* 	padding-top: 10px; */
-}
+/* Reset padding on last row */
+div#collapseOne tr:nth-child(4) > td {
+	padding-bottom: 0px;
+	}
 
 /* Center uploaded image */
 #collapseOne tr:nth-child(4) img.img-rounded {
