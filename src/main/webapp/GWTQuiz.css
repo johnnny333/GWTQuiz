@@ -33,7 +33,7 @@ h1 {
 /*======================== UPLOAD WIDGET ==================*/
 
 /* Upload widget drag'n'drop styles */
-.dropFilesLabel {
+div.dropFilesLabel {
 /* 	margin-top: 15px; */
 /* 	width: 300px; */
 	padding: 28px 20px;
@@ -48,7 +48,7 @@ h1 {
 }
 
 /* It's not ":hover" - not a typo! */
-.dropFilesLabelHover {
+div.dropFilesLabelHover {
 	border: 2px solid #444444;
 	color: #7c9647;
 }
@@ -63,7 +63,11 @@ div#accordion div.panel-heading {
 /* Center content in every cells in collapse */
 div#collapseOne td {
 	text-align: center;
-	padding-bottom: 15px; 
+	padding-top: 15px; 
+}
+
+div#collapseOne tr:first-of-type > td {
+	padding-top: 0px;
 }
 
 /* Reset padding on last row */
@@ -72,6 +76,14 @@ div#collapseOne tr:nth-child(4) > td {
 	}
 
 /* Center uploaded image */
-#collapseOne tr:nth-child(4) img.img-rounded {
+div#collapseOne tr:nth-child(4) img.img-rounded {
 	margin: 0 auto;
+}
+
+/*Hide rows with unused drop div and upload counter in <= 760px view */ 
+@media screen and (max-width: 768px) {
+   div#collapseOne tr:nth-child(n+2):nth-child(-n+3) {
+/*         background-color: lightgreen; */
+		display: none;
+    }
 }

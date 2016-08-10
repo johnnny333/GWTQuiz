@@ -162,7 +162,7 @@ public class UploadWidget extends Composite{
         //Drag and drop field.
         if (Uploader.isAjaxUploadWithProgressEventsSupported()) {  
             final Label dropFilesLabel = new Label("Or drop image here");  
-            dropFilesLabel.setStyleName("dropFilesLabel");  
+            dropFilesLabel.setStyleName("dropFilesLabel hidden-xs");  
             dropFilesLabel.addDragOverHandler(new DragOverHandler() {  
                 @Override
 				public void onDragOver(DragOverEvent event) {  
