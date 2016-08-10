@@ -15,7 +15,6 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
 
 import pl.johnny.gwtQuiz.client.ui.widgets.UploadWidget;
 import pl.johnny.gwtQuiz.shared.Question;
@@ -45,7 +44,7 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 	Button formValidateButton;
 	@UiField
 	Button formResetButton;
-	@UiField 
+	@UiField
 	TextBox questionField;
 	@UiField
 	TextBox answer1Field;
@@ -55,7 +54,7 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 	TextBox answer3Field;
 	@UiField
 	TextBox answer4Field;
-	
+
 	public AddQuestionsViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
 
@@ -67,12 +66,20 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 	@Override
 	public void setPresenter(Presenter listener) {
 		this.listener = listener;
-		
+
 		/*
 		 * Add image widget to this view and hand instance of listener so it communicate 
 		 * with this view. 
 		 */
-		imageWidget.add(new UploadWidget(listener));
+		GWT.log("Image widget count before: " + imageWidget.getWidgetCount());
+		if(imageWidget.getWidgetCount() < 1) {
+			imageWidget.add(new UploadWidget(listener));
+			GWT.log("In add()");
+		} else {
+			imageWidget.remove(0);
+			imageWidget.add(new UploadWidget(listener));
+		}
+		GWT.log("Image widget count after: " + imageWidget.getWidgetCount());
 	}
 
 	@Override
@@ -88,35 +95,35 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 		 * decreased by 1, but our non-updated condition in for loop would
 		 * remain the same, hence, we end up with IndexOutOfBounsException;
 		 */
-		while (listBoxLength != 1) {
+		while(listBoxLength != 1) {
 			int i = listBoxLength;
 			categoryListBox.removeItem(i - 1);
 			// Important - update total items count after remove()
 			listBoxLength = categoryListBox.getItemCount();
 		}
 
-		for (int i = 0; i < categories.length; i++) {
+		for(int i = 0; i < categories.length; i++) {
 			categoryListBox.addItem(categories[i]);
 		}
 	}
 
 	@UiHandler("formValidateButton")
 	public void onFormValidateClick(ClickEvent event) {
-//		Check is form is properly filled. If yes, send new question model.Else, highlight unfilled fields.
-		if (form.validate() == true && categoryListBox.getSelectedValue() != "Choose your question category..."
+		//		Check is form is properly filled. If yes, send new question model.Else, highlight unfilled fields.
+		if(form.validate() == true && categoryListBox.getSelectedValue() != "Choose your question category..."
 				&& correctAnsListBox.getSelectedValue() != "Choose your question category...") {
 			GWT.log("Form validated!");
-			
+
 			//Create user question model from filled fields
-			String[] userAnswers = new String[]{answer1Field.getValue(),answer2Field.getValue(),answer3Field.getValue(),answer4Field.getValue()}; 
-			Question userQuestion = new Question(questionField.getValue(), listener.getUploadedImageName(), userAnswers, 
-					correctAnsListBox.getSelectedValue(),"Janek", categoryListBox.getSelectedValue());
+			String[] userAnswers = new String[] { answer1Field.getValue(), answer2Field.getValue(), answer3Field.getValue(), answer4Field.getValue() };
+			Question userQuestion = new Question(questionField.getValue(), listener.getUploadedImageName(), userAnswers,
+					correctAnsListBox.getSelectedValue(), "Janek", categoryListBox.getSelectedValue());
 			// There goes RPC logic over activity...
 			listener.insertUserQuestion(userQuestion);
 			//After sending user question either with or without image, reset uploadedImageName to null (no image). 
 			listener.setUploadedImageName(null);
-			
-		}else{
+
+		} else {
 			/*
 			 * GWTBootstrap3 already red-highlighted empty text fields, so here we only red-highlight selects
 			 * which are not validated natively.
@@ -137,6 +144,6 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 		categoryListBox.setItemSelected(0, true);
 		correctAnsFormGroup.setValidationState(ValidationState.NONE);
 		correctAnsListBox.setItemSelected(0, true);
-		
+
 	}
 }
