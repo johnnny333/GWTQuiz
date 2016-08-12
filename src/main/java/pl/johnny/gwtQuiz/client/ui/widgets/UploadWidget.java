@@ -1,5 +1,9 @@
 package pl.johnny.gwtQuiz.client.ui.widgets;
 
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Modal;
+import org.gwtbootstrap3.client.ui.ModalBody;
+import org.gwtbootstrap3.client.ui.ModalFooter;
 import org.gwtbootstrap3.client.ui.constants.ImageType;
 import org.moxieapps.gwt.uploader.client.Uploader;
 import org.moxieapps.gwt.uploader.client.events.FileDialogCompleteEvent;
@@ -14,7 +18,10 @@ import org.moxieapps.gwt.uploader.client.events.UploadSuccessEvent;
 import org.moxieapps.gwt.uploader.client.events.UploadSuccessHandler;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.TextAlign;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DragLeaveEvent;
 import com.google.gwt.event.dom.client.DragLeaveHandler;
 import com.google.gwt.event.dom.client.DragOverEvent;
@@ -26,190 +33,215 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-import pl.johnny.gwtQuiz.client.ui.AddQuestionsView.Presenter;  
-  
+import pl.johnny.gwtQuiz.client.ui.AddQuestionsView.Presenter;
+
 /** 
  * Simple Text Link and Progress text label example of GWT Uploader 
- */  
-public class UploadWidget extends Composite{  
-  
-    private Label progressLabel;  
-    private Uploader uploader;  
-    private VerticalPanel verticalPanel = new VerticalPanel();  
-    private org.gwtbootstrap3.client.ui.Image recivedImg = new org.gwtbootstrap3.client.ui.Image();
-  
-	public UploadWidget(final Presenter listener) {  
-        progressLabel = new Label();  
-        progressLabel.setStyleName("progressLabel");  
-  
-        uploader = new Uploader();
-        
-        /*
-         * Set post parameter with currently highest id (+1) from questions database table 
-         * so server can create folder with this value in 
-         * /GWTQuiz/src/main/webapp/quiz_resources/question_images/{id}
-         */
-//        JSONObject params = new JSONObject();
-//        params.put("post_param_name_1", new JSONString("param_key"));
-//        uploader.setPostParams(params);
-        
-        uploader.setUploadURL(GWT.getModuleBaseURL() + "upload")  
-        	.setButtonText("<button class=\"btn btn-default\">Click to upload image</button>")
-            .setButtonTextStyle(".buttonText {font-family: Arial, sans-serif; font-size: 14px; color: #BB4B44}")  
-            .setFileSizeLimit("1 MB")  
-//            .setButtonWidth(200)  
-//            .setButtonHeight(42)  
-            .setButtonCursor(Uploader.Cursor.HAND)  
-            .setButtonAction(Uploader.ButtonAction.SELECT_FILE)  
-            .setUploadProgressHandler(new UploadProgressHandler() {  
-                @Override
-				public boolean onUploadProgress(UploadProgressEvent uploadProgressEvent) {  
-                    progressLabel.setText(NumberFormat.getPercentFormat().format(  
-                        (double)uploadProgressEvent.getBytesComplete() / (double)uploadProgressEvent.getBytesTotal()  
-                    ));  
-                    return true;  
-                }  
-            })  
-            .setUploadSuccessHandler(new UploadSuccessHandler() {  
+ */
+public class UploadWidget extends Composite {
 
+	private Label progressLabel;
+	private Modal modal;
+	private ModalBody modalBody;
+	private final ModalFooter modalFooter;
+	private Uploader uploader;
+	private VerticalPanel verticalPanel = new VerticalPanel();
+	private org.gwtbootstrap3.client.ui.Image recivedImg = new org.gwtbootstrap3.client.ui.Image();
+	private HTML modalLabel = new HTML();
+
+	public UploadWidget(final Presenter listener) {
+		progressLabel = new Label();
+
+		//Modal settings
+		modal = new Modal();
+		modal.setClosable(false);
+		modal.setFade(true);
+		modal.setTitle("Upload Error");
+		modalBody = new ModalBody();
+		modal.add(modalBody);
+		
+		modalFooter = new ModalFooter();
+		modalFooter.getElement().getStyle().setTextAlign(TextAlign.CENTER);
+        modalFooter.add(new Button("OK", new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                modal.hide();
+            }
+        }));
+        modal.add(modalFooter);
+        
+		progressLabel.setStyleName("progressLabel");
+
+		uploader = new Uploader();
+		uploader.setUploadURL(GWT.getModuleBaseURL() + "upload")
+				.setButtonText("<button class=\"btn btn-default\">Click to upload image</button>")
+				.setButtonTextStyle(".buttonText {font-family: Arial, sans-serif; font-size: 14px; color: #BB4B44}")
+				.setFileSizeLimit("1 MB")
+				.setFileTypes("*.png;*.jpg;*.jpeg;*.img")
+				//            .setButtonWidth(200)  
+				//            .setButtonHeight(42)  
+				.setButtonCursor(Uploader.Cursor.HAND)
+				.setButtonAction(Uploader.ButtonAction.SELECT_FILE)
+				.setUploadProgressHandler(new UploadProgressHandler() {
+					@Override
+					public boolean onUploadProgress(UploadProgressEvent uploadProgressEvent) {
+						progressLabel.setText(NumberFormat.getPercentFormat().format(
+								(double) uploadProgressEvent.getBytesComplete() / (double) uploadProgressEvent.getBytesTotal()));
+						return true;
+					}
+				})
+				.setUploadSuccessHandler(new UploadSuccessHandler() {
+
+					@Override
+					public boolean onUploadSuccess(UploadSuccessEvent uploadSuccessEvent) {
+						resetText();
+						StringBuilder sb = new StringBuilder();
+						sb
+								//                    	.append("File ")
+								//                    		.append(uploadSuccessEvent.getFile().getName())  
+								//                        .append(" (")  
+								//                        .append(NumberFormat.getDecimalFormat().format(uploadSuccessEvent.getFile().getSize() / 1024))  
+								//                        .append(" KB)")  
+								//                        .append(" uploaded successfully at ")  
+								//                        .append(NumberFormat.getDecimalFormat().format(  
+								//                            uploadSuccessEvent.getFile().getAverageSpeed() / 1024  
+								//                        ))  
+								//                        .append(" Kb/second")
+								.append(uploadSuccessEvent.getFile().getPercentUploaded());
+
+						//Handle the server response
+						//                    GWT.log(uploadSuccessEvent.getServerData().toString());
+
+						//                    recivedImg.setSize("480px", "270px");
+
+						/* Display uploded image:
+						Parse response into JSON */
+						JSONValue jsonValue = JSONParser.parseStrict(uploadSuccessEvent.getServerData());
+						//Convert JSONValue into JSONObject
+						JSONObject responseAsObject = jsonValue.isObject();
+						//Convert JSONValue into String
+						//Get base64 image from JSON
+						JSONString base64EncodedString = responseAsObject.get("base64EncodedString").isString();
+						//Get image path from JSON
+						JSONString imagePath = responseAsObject.get("pathToFile").isString();
+						//Send uploaded image path to addQuestionsActivity.
+						listener.setUploadedImageName(imagePath.stringValue());
+
+						//                    GWT.log("JSON Value ? " + imagePath.toString());
+
+						recivedImg.setUrl("data:image;base64," + base64EncodedString.stringValue());
+						recivedImg.setType(ImageType.ROUNDED);
+						recivedImg.setResponsive(true);
+						verticalPanel.add(recivedImg);
+
+						progressLabel.setText(sb.toString());
+						return true;
+					}
+				})
+				.setFileDialogCompleteHandler(new FileDialogCompleteHandler() {
+					@Override
+					public boolean onFileDialogComplete(FileDialogCompleteEvent fileDialogCompleteEvent) {
+						if(fileDialogCompleteEvent.getTotalFilesInQueue() > 0 && uploader.getStats().getUploadsInProgress() <= 0) {
+							progressLabel.setText("0%");
+							uploader.setButtonText("<button class=\"btn btn-default\">Uploading...</button>");
+							uploader.startUpload();
+						}
+						return true;
+					}
+				})
+				.setFileQueueErrorHandler(new FileQueueErrorHandler() {
+					@Override
+					public boolean onFileQueueError(FileQueueErrorEvent fileQueueErrorEvent) {
+						resetText();
+						
+//						Window.alert("1 Upload of file " + fileQueueErrorEvent.getFile().getName() + " failed due to [" +
+//								fileQueueErrorEvent.getErrorCode().toString() + "]: " + fileQueueErrorEvent.getMessage());
+						
+						//Check whether error server response is 415 and display proper message to the user
+						if(fileQueueErrorEvent.getMessage() == "Unsuccessful server response code of: 415") {
+							modalLabel.setText("Uploaded file is NOT in one of those formats: png ,jpeg, img ,jpg.");
+						} else {
+							modalLabel.setText(fileQueueErrorEvent.getMessage());
+						}
+						modalBody.add(modalLabel);
+						modal.show();
+						return true;
+					}
+				})
+				.setUploadErrorHandler(new UploadErrorHandler() {
+					@Override
+					public boolean onUploadError(UploadErrorEvent uploadErrorEvent) {
+						resetText();
+						
+//						Window.alert("2 Upload of file " + uploadErrorEvent.getFile().getName() + " failed due to [" +
+//								uploadErrorEvent.getErrorCode().toString() + "]: " + uploadErrorEvent.getMessage());
+						
+						//Check whether error server response is 415 and display proper message to the user
+						if(uploadErrorEvent.getMessage() == "Unsuccessful server response code of: 415") {
+							modalLabel.setText("Uploaded file is NOT in one of those formats: png ,jpeg, img ,jpg.");
+						} else {
+							modalLabel.setText(uploadErrorEvent.getMessage());
+						}
+						modalBody.add(modalLabel);
+						modal.show();
+						return true;
+					}
+				});
+
+		verticalPanel.add(uploader);
+
+		//Drag and drop field.
+		if(Uploader.isAjaxUploadWithProgressEventsSupported()) {
+			final Label dropFilesLabel = new Label("Or drop image here");
+			dropFilesLabel.setStyleName("dropFilesLabel hidden-xs");
+			dropFilesLabel.addDragOverHandler(new DragOverHandler() {
 				@Override
-				public boolean onUploadSuccess(UploadSuccessEvent uploadSuccessEvent) {  
-                    resetText();  
-                    StringBuilder sb = new StringBuilder();  
-                    sb
-//                    	.append("File ")
-//                    		.append(uploadSuccessEvent.getFile().getName())  
-//                        .append(" (")  
-//                        .append(NumberFormat.getDecimalFormat().format(uploadSuccessEvent.getFile().getSize() / 1024))  
-//                        .append(" KB)")  
-//                        .append(" uploaded successfully at ")  
-//                        .append(NumberFormat.getDecimalFormat().format(  
-//                            uploadSuccessEvent.getFile().getAverageSpeed() / 1024  
-//                        ))  
-//                        .append(" Kb/second")
-                        .append(uploadSuccessEvent.getFile().getPercentUploaded()); 
-                    
-                    //Handle the server response
-//                    GWT.log(uploadSuccessEvent.getServerData().toString());
-                    
-//                    recivedImg.setSize("480px", "270px");
-                     
-                    /* Display uploded image:
-                    Parse response into JSON */  
-                    JSONValue jsonValue = JSONParser.parseStrict(uploadSuccessEvent.getServerData());
-                    //Convert JSONValue into JSONObject
-                    JSONObject responseAsObject = jsonValue.isObject();
-                    //Convert JSONValue into String
-                    //Get base64 image from JSON
-                    JSONString base64EncodedString = responseAsObject.get("base64EncodedString").isString();
-                    //Get image path from JSON
-                    JSONString imagePath = responseAsObject.get("pathToFile").isString();
-                    //Send uploaded image path to addQuestionsActivity.
-                    listener.setUploadedImageName(imagePath.stringValue());
+				public void onDragOver(DragOverEvent event) {
+					if(!uploader.getButtonDisabled()) {
+						dropFilesLabel.addStyleName("dropFilesLabelHover");
+					}
+				}
+			});
+			dropFilesLabel.addDragLeaveHandler(new DragLeaveHandler() {
+				@Override
+				public void onDragLeave(DragLeaveEvent event) {
+					dropFilesLabel.removeStyleName("dropFilesLabelHover");
+				}
+			});
+			dropFilesLabel.addDropHandler(new DropHandler() {
+				@Override
+				public void onDrop(DropEvent event) {
+					dropFilesLabel.removeStyleName("dropFilesLabelHover");
 
-//                    GWT.log("JSON Value ? " + imagePath.toString());
+					if(uploader.getStats().getUploadsInProgress() <= 0) {
+						//                        progressBarPanel.clear();  
+						//                        progressBars.clear();  
+						//                        cancelButtons.clear();  
+					}
 
-                    recivedImg.setUrl("data:image;base64," + base64EncodedString.stringValue());
-                    recivedImg.setType(ImageType.ROUNDED);
-                    recivedImg.setResponsive(true);
-                    verticalPanel.add(recivedImg);
-                    
-                    progressLabel.setText(sb.toString());  
-                    return true;  
-                }  
-            })  
-            .setFileDialogCompleteHandler(new FileDialogCompleteHandler() {  
-                @Override
-				public boolean onFileDialogComplete(FileDialogCompleteEvent fileDialogCompleteEvent) {  
-                    if (fileDialogCompleteEvent.getTotalFilesInQueue() > 0 && uploader.getStats().getUploadsInProgress() <= 0) {  
-                        progressLabel.setText("0%");  
-                        uploader.setButtonText("<button class=\"btn btn-default\">Uploading...</button>");  
-                        uploader.startUpload();  
-                    }  
-                    return true;  
-                }  
-            })  
-            .setFileQueueErrorHandler(new FileQueueErrorHandler() {  
-                @Override
-				public boolean onFileQueueError(FileQueueErrorEvent fileQueueErrorEvent) {  
-                    resetText();  
-                    Window.alert("Upload of file " + fileQueueErrorEvent.getFile().getName() + " failed due to [" +  
-                        fileQueueErrorEvent.getErrorCode().toString() + "]: " + fileQueueErrorEvent.getMessage()  
-                    );  
-                    return true;  
-                }  
-            })  
-            .setUploadErrorHandler(new UploadErrorHandler() {  
-                @Override
-				public boolean onUploadError(UploadErrorEvent uploadErrorEvent) {  
-                    resetText();  
-                    Window.alert("Upload of file " + uploadErrorEvent.getFile().getName() + " failed due to [" +  
-                        uploadErrorEvent.getErrorCode().toString() + "]: " + uploadErrorEvent.getMessage()  
-                    );  
-                    return true;  
-                }  
-            });  
-        
-        
-       
-        verticalPanel.add(uploader);  
-        
-        //Drag and drop field.
-        if (Uploader.isAjaxUploadWithProgressEventsSupported()) {  
-            final Label dropFilesLabel = new Label("Or drop image here");  
-            dropFilesLabel.setStyleName("dropFilesLabel hidden-xs");  
-            dropFilesLabel.addDragOverHandler(new DragOverHandler() {  
-                @Override
-				public void onDragOver(DragOverEvent event) {  
-                    if (!uploader.getButtonDisabled()) {  
-                        dropFilesLabel.addStyleName("dropFilesLabelHover");  
-                    }  
-                }  
-            });  
-            dropFilesLabel.addDragLeaveHandler(new DragLeaveHandler() {  
-                @Override
-				public void onDragLeave(DragLeaveEvent event) {  
-                    dropFilesLabel.removeStyleName("dropFilesLabelHover");  
-                }  
-            });  
-            dropFilesLabel.addDropHandler(new DropHandler() {  
-                @Override
-				public void onDrop(DropEvent event) {  
-                    dropFilesLabel.removeStyleName("dropFilesLabelHover");  
-  
-                    if (uploader.getStats().getUploadsInProgress() <= 0) {  
-//                        progressBarPanel.clear();  
-//                        progressBars.clear();  
-//                        cancelButtons.clear();  
-                    }  
-  
-                    uploader.addFilesToQueue(Uploader.getDroppedFiles(event.getNativeEvent()));  
-                    event.preventDefault();  
-                }  
-            });  
-            verticalPanel.add(dropFilesLabel);  
-        }  
-  
-        
-        verticalPanel.add(progressLabel);
-        verticalPanel.getElement().getStyle().setWidth(100.0, Unit.PCT);
-//        verticalPanel.getElement().getStyle().setProperty("marginRight", "auto");
-//        verticalPanel.setCellHorizontalAlignment(uploader, HorizontalPanel.ALIGN_LEFT);  
-//        verticalPanel.setCellHorizontalAlignment(progressLabel, HorizontalPanel.ALIGN_RIGHT);  
-  
-        //noinspection GwtToHtmlReferences  
-//        RootPanel.get().add(verticalPanel); 
-        
-        initWidget(verticalPanel);
-    }  
-  
-    private void resetText() {  
-        progressLabel.setText("");  
-        uploader.setButtonText("<button class=\"btn btn-default\">Click to upload image</button>");  
-    }  
-}  
+					uploader.addFilesToQueue(Uploader.getDroppedFiles(event.getNativeEvent()));
+					event.preventDefault();
+				}
+			});
+			verticalPanel.add(dropFilesLabel);
+		}
+
+		verticalPanel.add(progressLabel);
+		verticalPanel.getElement().getStyle().setWidth(100.0, Unit.PCT);
+
+		initWidget(verticalPanel);
+	}
+	
+	/**
+	 * Resets Label with upload status.
+	 */
+	private void resetText() {
+		progressLabel.setText("");
+		uploader.setButtonText("<button class=\"btn btn-default\">Click to upload image</button>");
+	}
+}
