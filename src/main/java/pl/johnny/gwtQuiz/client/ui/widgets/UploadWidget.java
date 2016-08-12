@@ -4,7 +4,9 @@ import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.Modal;
 import org.gwtbootstrap3.client.ui.ModalBody;
 import org.gwtbootstrap3.client.ui.ModalFooter;
+import org.gwtbootstrap3.client.ui.constants.ContextualBackground;
 import org.gwtbootstrap3.client.ui.constants.ImageType;
+import org.gwtbootstrap3.client.ui.html.Span;
 import org.moxieapps.gwt.uploader.client.Uploader;
 import org.moxieapps.gwt.uploader.client.events.FileDialogCompleteEvent;
 import org.moxieapps.gwt.uploader.client.events.FileDialogCompleteHandler;
@@ -22,6 +24,8 @@ import com.google.gwt.dom.client.Style.TextAlign;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.DragLeaveEvent;
 import com.google.gwt.event.dom.client.DragLeaveHandler;
 import com.google.gwt.event.dom.client.DragOverEvent;
@@ -45,7 +49,8 @@ import pl.johnny.gwtQuiz.client.ui.AddQuestionsView.Presenter;
  */
 public class UploadWidget extends Composite {
 
-	private Label progressLabel;
+	private Label progressLabel = progressLabel = new Label();;
+	private Span disclaimerLabel;
 	private Modal modal;
 	private ModalBody modalBody;
 	private final ModalFooter modalFooter;
@@ -53,10 +58,10 @@ public class UploadWidget extends Composite {
 	private VerticalPanel verticalPanel = new VerticalPanel();
 	private org.gwtbootstrap3.client.ui.Image recivedImg = new org.gwtbootstrap3.client.ui.Image();
 	private HTML modalLabel = new HTML();
+	private Presenter listener;
 
 	public UploadWidget(final Presenter listener) {
-		progressLabel = new Label();
-
+		this.listener = listener;
 		//Modal settings
 		modal = new Modal();
 		modal.setClosable(false);
@@ -131,9 +136,16 @@ public class UploadWidget extends Composite {
 						JSONString imagePath = responseAsObject.get("pathToFile").isString();
 						//Send uploaded image path to addQuestionsActivity.
 						listener.setUploadedImageName(imagePath.stringValue());
-
-						//                    GWT.log("JSON Value ? " + imagePath.toString());
-
+						
+						
+						//Delete image on double click/tap
+						recivedImg.addDoubleClickHandler(new DoubleClickHandler() {
+							
+							@Override
+							public void onDoubleClick(DoubleClickEvent event) {
+								resetImg();
+							}
+						});
 						recivedImg.setUrl("data:image;base64," + base64EncodedString.stringValue());
 						recivedImg.setType(ImageType.ROUNDED);
 						recivedImg.setResponsive(true);
@@ -230,7 +242,13 @@ public class UploadWidget extends Composite {
 			});
 			verticalPanel.add(dropFilesLabel);
 		}
-
+		
+		disclaimerLabel = new Span();
+		disclaimerLabel.setContextualBackground(ContextualBackground.WARNING);
+//		disclaimerLabel.setType(LabelType.DEFAULT);
+		disclaimerLabel.setText("Uploader accepts files up to 1Mb in one of the following formats: png ,jpeg, img ,jpg."
+				+ " To delete uploaded image - double click on it.");
+		verticalPanel.add(disclaimerLabel);
 		verticalPanel.add(progressLabel);
 		verticalPanel.getElement().getStyle().setWidth(100.0, Unit.PCT);
 
@@ -243,5 +261,14 @@ public class UploadWidget extends Composite {
 	private void resetText() {
 		progressLabel.setText("");
 		uploader.setButtonText("<button class=\"btn btn-default\">Click to upload image</button>");
+	}
+	
+	private void resetImg() {
+		//Delete path to image so it won't be shown.
+		recivedImg.setUrl("");
+		//Reset progress label.
+		resetText();
+		//Set uploaded image name to null since we deleted the image.
+		listener.setUploadedImageName(null);
 	}
 }

@@ -63,7 +63,7 @@ div#accordion div.panel-heading {
 /* Center content in every cells in collapse */
 div#collapseOne td {
 	text-align: center;
-	padding-top: 15px; 
+	padding-top: 7px; 
 }
 
 div#collapseOne tr:first-of-type > td {
@@ -76,14 +76,14 @@ div#collapseOne tr:nth-child(4) > td {
 	}
 
 /* Center uploaded image */
-div#collapseOne tr:nth-child(4) img.img-rounded {
+div#collapseOne img.img-rounded {
 	margin: 0 auto;
 }
 
 /*Hide rows with unused drop div and upload counter in <= 760px view */ 
 @media screen and (max-width: 768px) {
-   div#collapseOne tr:nth-child(n+2):nth-child(-n+3) {
+   div#collapseOne tr:nth-child(n+4):nth-child(-n+5) {
 /*         background-color: lightgreen; */
-		display: none;
+/* 		display: none; */
     }
 }
