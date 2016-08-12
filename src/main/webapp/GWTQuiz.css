@@ -71,9 +71,9 @@ div#collapseOne tr:first-of-type > td {
 }
 
 /* Reset padding on last row */
-div#collapseOne tr:nth-child(4) > td {
-	padding-bottom: 0px;
-	}
+/* div#collapseOne tr:nth-child(4) > td { */
+/* 	padding-bottom: 0px; */
+/* 	} */
 
 /* Center uploaded image */
 div#collapseOne img.img-rounded {

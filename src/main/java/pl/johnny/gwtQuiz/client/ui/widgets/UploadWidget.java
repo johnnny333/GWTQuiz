@@ -1,10 +1,16 @@
 package pl.johnny.gwtQuiz.client.ui.widgets;
 
 import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Icon;
+import org.gwtbootstrap3.client.ui.Image;
 import org.gwtbootstrap3.client.ui.Modal;
 import org.gwtbootstrap3.client.ui.ModalBody;
 import org.gwtbootstrap3.client.ui.ModalFooter;
+import org.gwtbootstrap3.client.ui.Tooltip;
+import org.gwtbootstrap3.client.ui.constants.ButtonType;
 import org.gwtbootstrap3.client.ui.constants.ContextualBackground;
+import org.gwtbootstrap3.client.ui.constants.IconSize;
+import org.gwtbootstrap3.client.ui.constants.IconType;
 import org.gwtbootstrap3.client.ui.constants.ImageType;
 import org.gwtbootstrap3.client.ui.html.Span;
 import org.moxieapps.gwt.uploader.client.Uploader;
@@ -49,14 +55,13 @@ import pl.johnny.gwtQuiz.client.ui.AddQuestionsView.Presenter;
  */
 public class UploadWidget extends Composite {
 
-	private Label progressLabel = progressLabel = new Label();;
-	private Span disclaimerLabel;
+	private Label progressLabel = new Label();;
 	private Modal modal;
+	private Image recivedImg = new Image();
 	private ModalBody modalBody;
 	private final ModalFooter modalFooter;
 	private Uploader uploader;
 	private VerticalPanel verticalPanel = new VerticalPanel();
-	private org.gwtbootstrap3.client.ui.Image recivedImg = new org.gwtbootstrap3.client.ui.Image();
 	private HTML modalLabel = new HTML();
 	private Presenter listener;
 
@@ -71,13 +76,16 @@ public class UploadWidget extends Composite {
 		modal.add(modalBody);
 		
 		modalFooter = new ModalFooter();
+		Button okBtn = new Button("OK");
+		okBtn.setType(ButtonType.PRIMARY);
+		okBtn.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				 modal.hide();
+			}
+		});
 		modalFooter.getElement().getStyle().setTextAlign(TextAlign.CENTER);
-        modalFooter.add(new Button("OK", new ClickHandler() {
-            @Override
-            public void onClick(final ClickEvent event) {
-                modal.hide();
-            }
-        }));
+        modalFooter.add(okBtn);
         modal.add(modalFooter);
         
 		progressLabel.setStyleName("progressLabel");
@@ -137,7 +145,8 @@ public class UploadWidget extends Composite {
 						//Send uploaded image path to addQuestionsActivity.
 						listener.setUploadedImageName(imagePath.stringValue());
 						
-						
+						//Received image tag settings
+						recivedImg.getElement().setId("recivedImage");
 						//Delete image on double click/tap
 						recivedImg.addDoubleClickHandler(new DoubleClickHandler() {
 							
@@ -146,6 +155,7 @@ public class UploadWidget extends Composite {
 								resetImg();
 							}
 						});
+						recivedImg.setVisible(true);
 						recivedImg.setUrl("data:image;base64," + base64EncodedString.stringValue());
 						recivedImg.setType(ImageType.ROUNDED);
 						recivedImg.setResponsive(true);
@@ -243,12 +253,13 @@ public class UploadWidget extends Composite {
 			verticalPanel.add(dropFilesLabel);
 		}
 		
-		disclaimerLabel = new Span();
-		disclaimerLabel.setContextualBackground(ContextualBackground.WARNING);
-//		disclaimerLabel.setType(LabelType.DEFAULT);
-		disclaimerLabel.setText("Uploader accepts files up to 1Mb in one of the following formats: png ,jpeg, img ,jpg."
+		Tooltip tooltip = new Tooltip();
+		tooltip.setTitle("Uploader accepts files up to 1Mb in one of the following formats: png ,jpeg, img ,jpg."
 				+ " To delete uploaded image - double click on it.");
-		verticalPanel.add(disclaimerLabel);
+		Icon questionIcon = new Icon(IconType.QUESTION_CIRCLE);
+		questionIcon.setSize(IconSize.LARGE);
+		tooltip.add(questionIcon);
+		verticalPanel.add(tooltip);
 		verticalPanel.add(progressLabel);
 		verticalPanel.getElement().getStyle().setWidth(100.0, Unit.PCT);
 
@@ -266,6 +277,7 @@ public class UploadWidget extends Composite {
 	private void resetImg() {
 		//Delete path to image so it won't be shown.
 		recivedImg.setUrl("");
+		recivedImg.setVisible(false);
 		//Reset progress label.
 		resetText();
 		//Set uploaded image name to null since we deleted the image.

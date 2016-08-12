@@ -12,6 +12,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -144,6 +145,11 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 		categoryListBox.setItemSelected(0, true);
 		correctAnsFormGroup.setValidationState(ValidationState.NONE);
 		correctAnsListBox.setItemSelected(0, true);
-
+		
+		//Handles image removing after user resets forms
+		listener.setUploadedImageName(null);
+		
+		if(DOM.getElementById("recivedImage") != null)
+		DOM.getElementById("recivedImage").removeFromParent();
 	}
 }
