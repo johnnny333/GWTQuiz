@@ -87,3 +87,8 @@ div#collapseOne img.img-rounded {
 /* 		display: none; */
     }
 }
+/*====================END= UPLOAD WIDGET ==================*/
+
+div.add-form-buttons > button {
+	margin-right: 5px;
+}

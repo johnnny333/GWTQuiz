@@ -1,7 +1,9 @@
 package pl.johnny.gwtQuiz.client.ui;
 
 import org.gwtbootstrap3.client.ui.AnchorListItem;
+import org.gwtbootstrap3.client.ui.Navbar;
 import org.gwtbootstrap3.client.ui.NavbarBrand;
+import org.gwtbootstrap3.client.ui.NavbarCollapse;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -29,6 +31,7 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 	@UiField AnchorListItem newGameAnchor;
 	@UiField AnchorListItem highScoreAnchor;
 	@UiField AnchorListItem addQuestionsAnchor;
+	@UiField NavbarCollapse navBarCollapse;
 
 	public NavBarViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -44,6 +47,7 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 		navBarBrand.getText();
 		if (listener != null) {
 			listener.goTo(new MainMenuPlace("MainMenu"));
+			navBarCollapse.hide();
 		}
 	}
 	
@@ -51,6 +55,7 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 	void onNewGameAnchorClicked(ClickEvent e) {
 		if (listener != null) {
 			listener.goTo(new QuestionPlace("Quiz!"));
+			navBarCollapse.hide();
 		}
 	}
 	
@@ -58,6 +63,7 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 	void onHighScoreAnchorClicked(ClickEvent e) {
 		if (listener != null) {
 			listener.goTo(new HighScoresPlace("HighScores"));
+			navBarCollapse.hide();
 		}
 	}
 	
@@ -65,6 +71,7 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 	void onAddQuestionsAnchorClicked(ClickEvent e) {
 		if (listener != null) {
 			listener.goTo(new AddQuestionsPlace("HighScores"));
+			navBarCollapse.hide();
 		}
 	}
 	

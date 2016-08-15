@@ -12,7 +12,7 @@
 			<b:NavbarCollapseButton dataTarget="#navbar-collapse" />
 		</b:NavbarHeader>
 
-		<b:NavbarCollapse b:id="navbar-collapse">
+		<b:NavbarCollapse b:id="navbar-collapse" ui:field="navBarCollapse">
 
 			<b:NavbarNav>
 				<b:AnchorListItem ui:field="newGameAnchor" icon="PLAY_CIRCLE" text="New Game"></b:AnchorListItem>

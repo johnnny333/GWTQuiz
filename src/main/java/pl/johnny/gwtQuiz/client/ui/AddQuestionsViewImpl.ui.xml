@@ -18,7 +18,6 @@
 	.h4Margin {
 		margin-top: 25px;
 	}
-	
 	</ui:style>
 	<g:HTMLPanel>
 
@@ -46,20 +45,20 @@
 						<b:Panel>
 
 							<b:PanelHeader>
-							
+
 								<b:Form ui:field="form">
-								
-								<b:Legend>Edit Question</b:Legend>
-								
+
+									<b:Legend>Edit Question</b:Legend>
+
 									<b:FormGroup ui:field="categorySelectFormGroup">
-									<b:FormLabel for="categoryListBox">Category</b:FormLabel>
+										<b:FormLabel for="categoryListBox">Category</b:FormLabel>
 										<b:ListBox b:id="categoryListBox" ui:field="categoryListBox">
 											<g:item>Choose your question category...</g:item>
 										</b:ListBox>
 									</b:FormGroup>
 
 									<b:PanelGroup b:id="accordion">
-									<b:FormLabel >Image</b:FormLabel>
+										<b:FormLabel>Image</b:FormLabel>
 										<b:Panel>
 											<b:PanelHeader dataToggle="COLLAPSE"
 												dataParent="#accordion2" dataTarget="#collapseOne">
@@ -77,45 +76,45 @@
 										<b:FormLabel for="formName">Question</b:FormLabel>
 										<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
 										<b:TextBox maxLength="50" placeholder="Fill in your question..."
-											b:id="formName" validateOnBlur="true" allowBlank="false" ui:field="questionField"/>
+											b:id="formName" validateOnBlur="true" allowBlank="false"
+											ui:field="questionField" />
 									</b:FormGroup>
 
 									<b:FormGroup>
 										<b:FormLabel for="answer1">First answer</b:FormLabel>
 										<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
-										<b:TextBox placeholder="Fill in your answer!" ui:field="answer1Field"
-											maxLength="20" addStyleNames='{style.ansBut}' b:id="answer1" validateOnBlur="true"
-											allowBlank="false" />
+										<b:TextBox placeholder="Fill in your answer!"
+											ui:field="answer1Field" maxLength="20" addStyleNames='{style.ansBut}'
+											b:id="answer1" validateOnBlur="true" allowBlank="false" />
 									</b:FormGroup>
 
 									<b:FormGroup>
 										<b:FormLabel for="answer2">Second answer</b:FormLabel>
 										<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
-										<b:TextBox placeholder="Fill in your answer!" ui:field="answer2Field"
-											maxLength="20" addStyleNames='{style.ansBut}' b:id="answer2" validateOnBlur="true"
-											allowBlank="false" />
+										<b:TextBox placeholder="Fill in your answer!"
+											ui:field="answer2Field" maxLength="20" addStyleNames='{style.ansBut}'
+											b:id="answer2" validateOnBlur="true" allowBlank="false" />
 									</b:FormGroup>
 
 									<b:FormGroup>
 										<b:FormLabel for="answer3">Third answer</b:FormLabel>
 										<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
-										<b:TextBox placeholder="Fill in your answer!" ui:field="answer3Field"
-											maxLength="20" addStyleNames='{style.ansBut}' b:id="answer3" validateOnBlur="true"
-											allowBlank="false" />
+										<b:TextBox placeholder="Fill in your answer!"
+											ui:field="answer3Field" maxLength="20" addStyleNames='{style.ansBut}'
+											b:id="answer3" validateOnBlur="true" allowBlank="false" />
 									</b:FormGroup>
 
 									<b:FormGroup>
 										<b:FormLabel for="answer4">Fourth answer</b:FormLabel>
 										<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
-										<b:TextBox placeholder="Fill in your answer!" ui:field="answer4Field"
-											maxLength="20" addStyleNames='{style.ansBut}' b:id="answer4" validateOnBlur="true"
-											allowBlank="false" />
+										<b:TextBox placeholder="Fill in your answer!"
+											ui:field="answer4Field" maxLength="20" addStyleNames='{style.ansBut}'
+											b:id="answer4" validateOnBlur="true" allowBlank="false" />
 									</b:FormGroup>
 
 									<b:FormGroup ui:field="correctAnsFormGroup">
-										<b:FormLabel 
-											for="correctAnsListBox">Which answer is correct? </b:FormLabel>
-										<b:ListBox  b:id="correctAnsListBox" ui:field="correctAnsListBox">
+										<b:FormLabel for="correctAnsListBox">Which answer is correct? </b:FormLabel>
+										<b:ListBox b:id="correctAnsListBox" ui:field="correctAnsListBox">
 											<g:item>Which answer is correct?</g:item>
 											<g:item value='0'>First</g:item>
 											<g:item value='1'>Second</g:item>
@@ -123,15 +122,15 @@
 											<g:item value='3'>Fourth</g:item>
 										</b:ListBox>
 									</b:FormGroup>
-									
-									<b:Button ui:field="formValidateButton">Validate</b:Button>
-									<b:Button ui:field="formResetButton">Reset</b:Button>
+
+
 								</b:Form>
-								
+
 							</b:PanelHeader>
 
-							<b:PanelBody addStyleNames="text-center">
-
+							<b:PanelBody addStyleNames="text-center add-form-buttons">
+								<b:Button ui:field="formValidateButton" type="SUCCESS">Submit question</b:Button>
+								<b:Button ui:field="formResetButton" type="DANGER">Reset form</b:Button>
 							</b:PanelBody>
 
 							<b:PanelFooter>
