@@ -6,6 +6,8 @@ import com.google.web.bindery.event.shared.EventBus;
 
 import pl.johnny.gwtQuiz.client.ui.AddQuestionsView;
 import pl.johnny.gwtQuiz.client.ui.AddQuestionsViewImpl;
+import pl.johnny.gwtQuiz.client.ui.AdminView;
+import pl.johnny.gwtQuiz.client.ui.AdminViewImpl;
 import pl.johnny.gwtQuiz.client.ui.HighScoresView;
 import pl.johnny.gwtQuiz.client.ui.HighScoresViewImpl;
 import pl.johnny.gwtQuiz.client.ui.MainMenuView;
@@ -27,6 +29,7 @@ public class ClientFactoryImpl implements ClientFactory
 	private static final HighScoresView highScoreView = new HighScoresViewImpl();
 	private static final NavBarView navBarView = new NavBarViewImpl();
 	private static final AddQuestionsView addQuestionsView = new AddQuestionsViewImpl();
+	private static final AdminView adminView = new AdminViewImpl();
 	private final QuestionServiceAsync questionService = GWT.create(QuestionService.class);
 
 
@@ -79,5 +82,10 @@ public class ClientFactoryImpl implements ClientFactory
 	@Override
 	public AddQuestionsView getAddQuestionsView() {
 		return addQuestionsView;
+	}
+
+	@Override
+	public AdminView getAdminView() {
+		return adminView;
 	}
 }

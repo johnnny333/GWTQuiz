@@ -6,10 +6,12 @@ import com.google.gwt.place.shared.Place;
 
 import pl.johnny.gwtQuiz.client.ClientFactory;
 import pl.johnny.gwtQuiz.client.activity.AddQuestionsActivity;
+import pl.johnny.gwtQuiz.client.activity.AdminActivity;
 import pl.johnny.gwtQuiz.client.activity.HighScoresActivity;
 import pl.johnny.gwtQuiz.client.activity.MainMenuActivity;
 import pl.johnny.gwtQuiz.client.activity.QuestionActivity;
 import pl.johnny.gwtQuiz.client.place.AddQuestionsPlace;
+import pl.johnny.gwtQuiz.client.place.AdminPlace;
 import pl.johnny.gwtQuiz.client.place.HighScoresPlace;
 import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
 import pl.johnny.gwtQuiz.client.place.QuestionPlace;
@@ -48,6 +50,9 @@ public class AppActivityMapper implements ActivityMapper {
 		
 		else if (place instanceof AddQuestionsPlace)
 			return new AddQuestionsActivity((AddQuestionsPlace) place, clientFactory);
+		
+		else if(place instanceof AdminPlace)
+			return new AdminActivity((AdminPlace) place, clientFactory);
 
 		return null;
 	}

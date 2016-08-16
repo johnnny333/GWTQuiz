@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 import pl.johnny.gwtQuiz.client.ClientFactory;
 import pl.johnny.gwtQuiz.client.place.AddQuestionsPlace;
+import pl.johnny.gwtQuiz.client.place.AdminPlace;
 import pl.johnny.gwtQuiz.client.place.HighScoresPlace;
 import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
 import pl.johnny.gwtQuiz.client.place.QuestionPlace;
@@ -41,6 +42,11 @@ public class NavBarActivity extends AbstractActivity implements
 	}
 	
 	public NavBarActivity(AddQuestionsPlace place, ClientFactory clientFactory) {
+		this.place = place;
+		this.clientFactory = clientFactory;
+	}
+	
+	public NavBarActivity(AdminPlace place, ClientFactory clientFactory) {
 		this.place = place;
 		this.clientFactory = clientFactory;
 	}
