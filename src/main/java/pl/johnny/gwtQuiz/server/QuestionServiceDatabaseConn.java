@@ -386,23 +386,19 @@ public class QuestionServiceDatabaseConn {
 			prepStmt.setString(1, userQuestion.getQuestion());
 			prepStmt.setString(2, userQuestion.getAuthor());
 			prepStmt.setString(3, userQuestion.getCategory());
-			//If user submitted image, set has_image column flag to 1(true).Otherwise its 0(false).
+			/*
+			 * If user submitted image, set has_image column flag to 1(true).Otherwise its 0(false).
+			 * Also, in if block set image name - trimmed from full path - 
+			 * or - in else block - null if none image is provided .
+			 */
 			if(userQuestion.getImageURL() != null) {
 				prepStmt.setString(4, "1");
-				String trimmedImageURL = userQuestion.getImageURL().substring(userQuestion.getImageURL().lastIndexOf("/")); 
+				String trimmedImageURL = userQuestion.getImageURL().substring(userQuestion.getImageURL().lastIndexOf("/") +1); 
 				prepStmt.setString(5, trimmedImageURL);
 			} else {
 				prepStmt.setString(4, "0");
 				prepStmt.setString(5, userQuestion.getImageURL());
 			}
-			/* Substrings whole image path after last slash. Supports only forward slash: "/". 
-			 * TODO Implement regex to detect "\" or "/" : [^\/|\\]+$ 
-			 * if/else is used to determine whether imageURL is null to avoid NullPointerException when substring*/
-			//			if(userQuestion.getImageURL() != null) {
-			//				prepStmt.setString(5, userQuestion.getImageURL().substring(userQuestion.getImageURL().lastIndexOf("/")));
-			//			} else {
-			//				prepStmt.setString(5, userQuestion.getImageURL());
-			//			}
 			prepStmt.executeUpdate();
 
 			prepStmt.close();

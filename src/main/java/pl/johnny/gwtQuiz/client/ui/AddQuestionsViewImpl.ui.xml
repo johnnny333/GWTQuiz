@@ -123,13 +123,21 @@
 										</b:ListBox>
 									</b:FormGroup>
 
+									<b:FormGroup>
+										<b:FormLabel for="authorField">Author</b:FormLabel>
+										<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
+										<b:TextBox placeholder="Fill in your nick / name!"
+											ui:field="authorField" maxLength="20" addStyleNames='{style.ansBut}'
+											b:id="authorField" validateOnBlur="true" allowBlank="false" />
+									</b:FormGroup>
 
 								</b:Form>
 
 							</b:PanelHeader>
 
 							<b:PanelBody addStyleNames="text-center add-form-buttons">
-								<b:Button ui:field="formValidateButton" type="SUCCESS">Submit question</b:Button>
+								<b:Button ui:field="formValidateButton" type="SUCCESS">Submit
+									question</b:Button>
 								<b:Button ui:field="formResetButton" type="DANGER">Reset form</b:Button>
 							</b:PanelBody>
 

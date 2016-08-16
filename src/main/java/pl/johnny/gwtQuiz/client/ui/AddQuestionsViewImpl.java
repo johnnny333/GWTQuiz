@@ -55,6 +55,8 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 	TextBox answer3Field;
 	@UiField
 	TextBox answer4Field;
+	@UiField
+	TextBox authorField;
 
 	public AddQuestionsViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -118,7 +120,7 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 			//Create user question model from filled fields
 			String[] userAnswers = new String[] { answer1Field.getValue(), answer2Field.getValue(), answer3Field.getValue(), answer4Field.getValue() };
 			Question userQuestion = new Question(questionField.getValue(), listener.getUploadedImageName(), userAnswers,
-					correctAnsListBox.getSelectedValue(), "Janek", categoryListBox.getSelectedValue());
+					correctAnsListBox.getSelectedValue(), authorField.getValue(), categoryListBox.getSelectedValue());
 			// There goes RPC logic over activity...
 			listener.insertUserQuestion(userQuestion);
 			//After sending user question either with or without image, reset uploadedImageName to null (no image). 
@@ -144,9 +146,12 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 	public void formReset() {
 		/*
 		 * Reset removes all text-fields native error-highlight so we must manually remove them from non-native
-		 * selects(TextBox) 
+		 * selects(TextBox). Author field is saved to avoid users hassle of retyping their names on every another 
+		 * question submits. 
 		 */
+		String authorValue = authorField.getValue();
 		form.reset();
+		authorField.setValue(authorValue);
 		categorySelectFormGroup.setValidationState(ValidationState.NONE);
 		categoryListBox.setItemSelected(0, true);
 		correctAnsFormGroup.setValidationState(ValidationState.NONE);
