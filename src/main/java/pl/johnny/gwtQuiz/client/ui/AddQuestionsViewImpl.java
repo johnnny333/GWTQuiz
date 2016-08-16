@@ -122,7 +122,8 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 			// There goes RPC logic over activity...
 			listener.insertUserQuestion(userQuestion);
 			//After sending user question either with or without image, reset uploadedImageName to null (no image). 
-			listener.setUploadedImageName(null);
+//			listener.setUploadedImageName(null);
+			formReset();
 
 		} else {
 			/*
@@ -136,6 +137,11 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 
 	@UiHandler("formResetButton")
 	public void onFormResetClick(ClickEvent event) {
+		formReset();
+	}
+	
+	/** Reset all fields in addQuestionView */
+	public void formReset() {
 		/*
 		 * Reset removes all text-fields native error-highlight so we must manually remove them from non-native
 		 * selects(TextBox) 
@@ -145,11 +151,15 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 		categoryListBox.setItemSelected(0, true);
 		correctAnsFormGroup.setValidationState(ValidationState.NONE);
 		correctAnsListBox.setItemSelected(0, true);
-		
-		//Handles image removing after user resets forms
+
+		/* Here, we hide img tag with image we just uploaded AND set upload image name to null
+		 * so our picture is technically in the DOM but won't be submitted since our
+		 * AddQuestionActivity.uploadedImagePath is null. formReset() is called after 
+		 * onFormValidateClick(ClickEvent event)
+		 * and after onFormResetClick(ClickEvent event).
+		 */
 		listener.setUploadedImageName(null);
-		
 		if(DOM.getElementById("recivedImage") != null)
-		DOM.getElementById("recivedImage").removeFromParent();
+			DOM.getElementById("recivedImage").setAttribute("style", "display:none");
 	}
 }

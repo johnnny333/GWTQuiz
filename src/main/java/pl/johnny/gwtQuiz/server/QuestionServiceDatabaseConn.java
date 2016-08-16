@@ -90,14 +90,14 @@ public class QuestionServiceDatabaseConn {
 			//Count rows
 			ResultSet rsRowCount = stmt.executeQuery("SELECT COUNT(*) FROM questions;");
 			int rowsCount = rsRowCount.getInt(1);
-			
+
 			//Initialize arrays
 			questionsData = new String[rowsCount][2];
 			answersData = new String[rowsCount][4];
 			correctAnswersData = new String[rowsCount];
 			authorData = new String[rowsCount];
 			categoryData = new String[rowsCount];
-			
+
 			//Actual query
 			ResultSet resultSet = stmt.executeQuery("SELECT answers.answer1,answers.answer2,answers.answer3,answers.answer4,"
 					+ "answers.correct_answer,questions.question,questions.author,"
@@ -152,7 +152,7 @@ public class QuestionServiceDatabaseConn {
 
 		Connection c;
 		Statement stmt;
-		
+
 		int[] userScoreID;
 		String[] userDisplay;
 		int[] userScores;
@@ -202,7 +202,7 @@ public class QuestionServiceDatabaseConn {
 			/* After filling arrays with user scores data, make models with them 
 			 * and pack said models to an ArrayList in order to use it on QuestionServiceImpl */
 			for(int i = 0; i < userDisplay.length; ++i) {
-				UserScore userScore = new UserScore(userScoreID[i],userDisplay[i], userScores[i], isEditable[i], usersScoresCreatedAt[i]);
+				UserScore userScore = new UserScore(userScoreID[i], userDisplay[i], userScores[i], isEditable[i], usersScoresCreatedAt[i]);
 				userScoresArray.add(userScore);
 			}
 
@@ -227,9 +227,9 @@ public class QuestionServiceDatabaseConn {
 
 			prepStmt = c.prepareStatement(
 					"INSERT INTO user_scores (user_display,user_score,is_editable) VALUES (?, ?, ?);");
-			
-//			if(userScore.userDisplay == "");else throw new Exception("Temporary user score name field is not empty(\"\")");
-			prepStmt.setString(1, userScore.userDisplay );
+
+			//			if(userScore.userDisplay == "");else throw new Exception("Temporary user score name field is not empty(\"\")");
+			prepStmt.setString(1, userScore.userDisplay);
 			prepStmt.setInt(2, userScore.score);
 			prepStmt.setBoolean(3, userScore.isEditable);
 			prepStmt.executeUpdate();
@@ -244,7 +244,7 @@ public class QuestionServiceDatabaseConn {
 			System.exit(0);
 		}
 	}
-	
+
 	void updateUserScore(UserScore userScore) {
 
 		Connection c;
@@ -258,15 +258,18 @@ public class QuestionServiceDatabaseConn {
 
 			prepStmt = c.prepareStatement(
 					"UPDATE user_scores SET user_display=?, is_editable=? WHERE ID=?;");
-			
+
 			String checkedNameString = userScore.userDisplay;
 			/*
 			 * User provided name but deletes all its chars leaving us with empty string (""),
 			 * so we delete this invalid record; 
 			 */
-			if(stringBarber(checkedNameString) == null){deleteUserScore(userScore);return;};
-			
-			prepStmt.setString(1, stringBarber(checkedNameString) );
+			if(stringBarber(checkedNameString) == null) {
+				deleteUserScore(userScore);
+				return;
+			} ;
+
+			prepStmt.setString(1, stringBarber(checkedNameString));
 			prepStmt.setBoolean(2, userScore.isEditable);
 			prepStmt.setInt(3, userScore.userScoreID);
 			prepStmt.executeUpdate();
@@ -281,7 +284,7 @@ public class QuestionServiceDatabaseConn {
 			System.exit(0);
 		}
 	}
-	
+
 	void deleteUserScore(UserScore userScore) {
 
 		Connection c;
@@ -298,7 +301,7 @@ public class QuestionServiceDatabaseConn {
 
 			prepStmt.setInt(1, userScore.userScoreID);
 			prepStmt.executeUpdate();
-			
+
 			prepStmt.close();
 			c.commit();
 			c.close();
@@ -309,18 +312,18 @@ public class QuestionServiceDatabaseConn {
 			System.exit(0);
 		}
 	}
-	
+
 	/**
 	 * Return question categories from database.
 	 * @return
 	 */
-	String[] getCategories(){
-		
+	String[] getCategories() {
+
 		Connection c;
 		Statement stmt;
-		
-		String[] categoryData = null ;
-		
+
+		String[] categoryData = null;
+
 		try {
 			//Connection
 			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
@@ -328,30 +331,30 @@ public class QuestionServiceDatabaseConn {
 			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			stmt = c.createStatement();
-			
+
 			//Count rows
 			ResultSet rsRowCount = stmt.executeQuery("SELECT COUNT(*) FROM category_type_enum;");
 			int rowsCount = rsRowCount.getInt(1);
-			
+
 			//Initialize array
 			categoryData = new String[rowsCount];
-			
+
 			//Actual query
 			ResultSet resultSet = stmt.executeQuery("SELECT category FROM category_type_enum;");
-			
+
 			//Iterate over ResultSet and put each record into an array
 			while(resultSet.next()) {
 				String category = resultSet.getString("category");
 				categoryData[resultSet.getRow() - 1] = category;
 			}
-			
+
 			//Close connection gracefully.
 			resultSet.close();
 			stmt.close();
 			c.close();
-			
+
 			//Return filled category data.
-//			return categoryData;
+			//			return categoryData;
 
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -361,13 +364,13 @@ public class QuestionServiceDatabaseConn {
 		//Return filled category data.
 		return categoryData;
 	}
-	
+
 	/**
 	 * Insert submitted user question into question_tmp table. 
 	 * @param userQuestion
 	 */
-	void insertUserQuestion(Question userQuestion){
-		
+	void insertUserQuestion(Question userQuestion) {
+
 		String questionID = null;
 
 		//Insert user question into question_tmp
@@ -379,33 +382,46 @@ public class QuestionServiceDatabaseConn {
 
 			PreparedStatement prepStmt = c.prepareStatement(
 					"INSERT INTO questions_tmp (question,author,category,has_image,image_url) VALUES (?,?,?,?,?);");
-			
+
 			prepStmt.setString(1, userQuestion.getQuestion());
 			prepStmt.setString(2, userQuestion.getAuthor());
 			prepStmt.setString(3, userQuestion.getCategory());
 			//If user submitted image, set has_image column flag to 1(true).Otherwise its 0(false).
-			if(userQuestion.getImageURL() != null){prepStmt.setString(4, "1");}else{prepStmt.setString(4, "0");}
-			//TODO RegExp full path to only filename, - [^\/]+$
-			prepStmt.setString(5, userQuestion.getImageURL());
+			if(userQuestion.getImageURL() != null) {
+				prepStmt.setString(4, "1");
+				String trimmedImageURL = userQuestion.getImageURL().substring(userQuestion.getImageURL().lastIndexOf("/")); 
+				prepStmt.setString(5, trimmedImageURL);
+			} else {
+				prepStmt.setString(4, "0");
+				prepStmt.setString(5, userQuestion.getImageURL());
+			}
+			/* Substrings whole image path after last slash. Supports only forward slash: "/". 
+			 * TODO Implement regex to detect "\" or "/" : [^\/|\\]+$ 
+			 * if/else is used to determine whether imageURL is null to avoid NullPointerException when substring*/
+			//			if(userQuestion.getImageURL() != null) {
+			//				prepStmt.setString(5, userQuestion.getImageURL().substring(userQuestion.getImageURL().lastIndexOf("/")));
+			//			} else {
+			//				prepStmt.setString(5, userQuestion.getImageURL());
+			//			}
 			prepStmt.executeUpdate();
 
 			prepStmt.close();
 			c.commit();
 			c.close();
-			
+
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.err.println(e.getCause() + " " + e.getStackTrace());
 			System.exit(0);
 		}
-		
+
 		//Insert user-question answers into answers_tmp
 		try {
 			//Connection
 			Connection c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
 			c.setAutoCommit(false);
 			c.createStatement().execute("PRAGMA foreign_keys = ON");
-			
+
 			/*
 			 * Count rows from question_tmp to relate answers being now inserted into answers_tmp 
 			 * with appropriate question which was just inserted into questions_tmp.
@@ -416,7 +432,7 @@ public class QuestionServiceDatabaseConn {
 
 			PreparedStatement prepStmt = c.prepareStatement(
 					"INSERT INTO answers_tmp (questionID,answer1,answer2,answer3,answer4,correct_answer) VALUES (?,?,?,?,?,?);");
-			
+
 			prepStmt.setString(1, questionID);
 			prepStmt.setString(2, userQuestion.getAnswer(0));
 			prepStmt.setString(3, userQuestion.getAnswer(1));
@@ -428,48 +444,50 @@ public class QuestionServiceDatabaseConn {
 			prepStmt.close();
 			c.commit();
 			c.close();
-			
+
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.err.println(e.getCause() + " " + e.getStackTrace());
 			System.exit(0);
 		}
-		
+
 		//Move uploaded image from /tmp to our pending storage.
-		try {
-			
-			FileUtils.moveFileToDirectory(
-					/* 
-					 * getImageURL resolves to full,absolute path of uploaded image
-					 * and was brought from servlet response after successful image
-					 * upload.So here we just use it to point to a source file.
-					 */
-				      FileUtils.getFile(userQuestion.getImageURL()), 
-				      FileUtils.getFile("quiz_resources/question_images_tmp/"), false);
-			
-        } catch (IOException e) {
-            System.err.println(e);
-        }
+		if(userQuestion.getImageURL() != null) {
+			try {
+
+				FileUtils.moveFileToDirectory(
+						/* 
+						 * getImageURL resolves to full,absolute path of uploaded image
+						 * and was brought from servlet response after successful image
+						 * upload.So here we just use it to point to a source file.
+						 */
+						FileUtils.getFile(userQuestion.getImageURL()),
+						FileUtils.getFile("quiz_resources/question_images_tmp/" + questionID), true);
+
+			} catch (IOException e) {
+				System.err.println(e);
+			}
+		}
 	}
-	
+
 	/**
 	 * Trims white spaces and non-visible characters, checks for empty strings ("") 
 	 * and substrings strings (from 0 to 15) to be inserted to database.
 	 * @param stringToCut
 	 * @return cut string
 	 */
-	private String stringBarber(String stringToCut){
+	private String stringBarber(String stringToCut) {
 		/* Strings are constant; their values cannot be changed after they are created,
 		 * hence local assignments;*/
-		
+
 		//Removes all white-spaces and non-visible characters;
-		String trimmedString = stringToCut.replaceAll("\\s+","");
+		String trimmedString = stringToCut.replaceAll("\\s+", "");
 		//User provided name but deletes it leaving us with empty string ("").
-		if(trimmedString == "")return null;
-		
-		if(trimmedString.length() > 15){
+		if(trimmedString == "") return null;
+
+		if(trimmedString.length() > 15) {
 			String trimmedAndSubstringed = trimmedString.substring(0, 15);
-			return trimmedAndSubstringed;	
+			return trimmedAndSubstringed;
 		}
 		return trimmedString;
 	}
