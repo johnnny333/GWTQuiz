@@ -24,19 +24,12 @@ public class AdminViewImpl extends Composite implements AdminView {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
-	@UiField
-	Button button;
 	private Presenter listener;
 
 	public AdminViewImpl(String firstName) {
 		initWidget(uiBinder.createAndBindUi(this));
-		button.setText(firstName);
 	}
 
-	@UiHandler("button")
-	void onClick(ClickEvent e) {
-		Window.alert("Hello Kitty!");
-	}
 
 	@Override
 	public void setPresenter(Presenter listener) {
