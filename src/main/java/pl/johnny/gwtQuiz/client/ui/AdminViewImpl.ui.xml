@@ -19,36 +19,18 @@
 
 						<b:PanelBody>
 
-							<b:PanelGroup b:id="accordion">
+							<b:PanelGroup b:id="accordion" ui:field="panelGroup">
 
 								<!-- TO RECONSTRUCT -->
-								<b:Panel>
-									<b:PanelHeader dataToggle="COLLAPSE" dataParent="#accordion"
-										dataTarget="#collapseOne" text="One">
-									</b:PanelHeader>
-									<b:PanelCollapse b:id="collapseOne">
-										<b:PanelBody></b:PanelBody>
-									</b:PanelCollapse>
-								</b:Panel>
+<!-- 								<b:Panel> -->
+<!-- 									<b:PanelHeader dataToggle="COLLAPSE" dataParent="#accordion" -->
+<!-- 										dataTarget="#collapseOne" text="One"> -->
+<!-- 									</b:PanelHeader> -->
+<!-- 									<b:PanelCollapse b:id="collapseOne"> -->
+<!-- 										<b:PanelBody></b:PanelBody> -->
+<!-- 									</b:PanelCollapse> -->
+<!-- 								</b:Panel> -->
 								<!-- END TO RECONSTRUCT -->
-
-								<b:Panel>
-									<b:PanelHeader dataToggle="COLLAPSE" dataParent="#accordion"
-										dataTarget="#collapseTwo" text="Two">
-									</b:PanelHeader>
-									<b:PanelCollapse b:id="collapseTwo">
-										<b:PanelBody></b:PanelBody>
-									</b:PanelCollapse>
-								</b:Panel>
-
-								<b:Panel>
-									<b:PanelHeader dataToggle="COLLAPSE" dataParent="#accordion"
-										dataTarget="#collapseThree" text="Three">
-									</b:PanelHeader>
-									<b:PanelCollapse b:id="collapseThree">
-										<b:PanelBody></b:PanelBody>
-									</b:PanelCollapse>
-								</b:Panel>
 
 							</b:PanelGroup>
 

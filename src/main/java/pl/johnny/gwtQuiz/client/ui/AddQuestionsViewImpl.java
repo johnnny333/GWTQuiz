@@ -114,7 +114,7 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 	public void onFormValidateClick(ClickEvent event) {
 		//		Check is form is properly filled. If yes, send new question model.Else, highlight unfilled fields.
 		if(form.validate() == true && categoryListBox.getSelectedValue() != "Choose your question category..."
-				&& correctAnsListBox.getSelectedValue() != "Choose your question category...") {
+				&& correctAnsListBox.getSelectedValue() != "Which answer is correct?") {
 			GWT.log("Form validated!");
 
 			//Create user question model from filled fields
@@ -124,7 +124,7 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 			// There goes RPC logic over activity...
 			listener.insertUserQuestion(userQuestion);
 			//After sending user question either with or without image, reset uploadedImageName to null (no image). 
-//			listener.setUploadedImageName(null);
+			//			listener.setUploadedImageName(null);
 			formReset();
 
 		} else {
@@ -132,8 +132,17 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 			 * GWTBootstrap3 already red-highlighted empty text fields, so here we only red-highlight selects
 			 * which are not validated natively.
 			 */
-			categorySelectFormGroup.setValidationState(ValidationState.ERROR);
-			correctAnsFormGroup.setValidationState(ValidationState.ERROR);
+			if(categoryListBox.getSelectedValue() == "Choose your question category...") {
+				categorySelectFormGroup.setValidationState(ValidationState.ERROR);
+			} else {
+				categorySelectFormGroup.setValidationState(ValidationState.NONE);
+			}
+
+			if(correctAnsListBox.getSelectedValue() == "Which answer is correct?") {
+				correctAnsFormGroup.setValidationState(ValidationState.ERROR);
+			} else {
+				correctAnsFormGroup.setValidationState(ValidationState.NONE);
+			}
 		}
 	}
 
@@ -141,7 +150,7 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 	public void onFormResetClick(ClickEvent event) {
 		formReset();
 	}
-	
+
 	/** Reset all fields in addQuestionView */
 	public void formReset() {
 		/*

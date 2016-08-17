@@ -49,7 +49,6 @@
 										<b:Panel>
 											<b:PanelHeader dataToggle="COLLAPSE"
 												dataParent="#accordion2" dataTarget="#collapseOne" text="Add image to question?">
-<!-- 												<b:Heading size="H4"  /> -->
 											</b:PanelHeader>
 											<b:PanelCollapse b:id="collapseOne">
 												<b:PanelBody>
