@@ -14,21 +14,21 @@ import pl.johnny.gwtQuiz.shared.Question;
 import pl.johnny.gwtQuiz.shared.UserScore;
 
 /**
- * Class in charge of all database operations. 
- * General database connection and statement creation is done in the constructor.
- * Then used in functions by "c" and "stm" global fields previously initialized 
- * in said constructor. 
+ * Class in charge of all database operations. General database connection and
+ * statement creation is done in the constructor. Then used in functions by "c"
+ * and "stm" global fields previously initialized in said constructor.
+ * 
  * @author jzarewicz
- * */
+ */
 public class QuestionServiceDatabaseConn {
 
-	//Package access modifiers
+	// Package access modifiers
 	QuestionServiceDatabaseConn() {
 	}
 
 	/**
-	 * Basically,we need to recreate arrays structure as follows:
-	 * <br/>
+	 * Basically,we need to recreate arrays structure as follows: <br/>
+	 * 
 	 * <pre>
 	 * 	String[][] questionsData = new String[][] {
 	 *			{"Ile strun ma typowa gitara elektryczna?", NULL},
@@ -65,13 +65,15 @@ public class QuestionServiceDatabaseConn {
 	 *  		"Muzyka",
 	 *  		"Geografia" };
 	 * </pre>
-	 * */
+	 */
 	ArrayList<Question> getQuestions() {
 
 		Connection c;
 		Statement stmt;
-		/** Two dimensional array. At first[i][0] position we'll store question String,
-		 * at second[i][1] image server url.*/
+		/**
+		 * Two dimensional array. At first[i][0] position we'll store question
+		 * String, at second[i][1] image server url.
+		 */
 		String[][] questionsData;
 		String[][] answersData;
 		String[] correctAnswersData;
@@ -81,60 +83,65 @@ public class QuestionServiceDatabaseConn {
 		ArrayList<Question> questionsArray = new ArrayList<Question>();
 
 		try {
-			//Connection
+			// Connection
 			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
 			c.setAutoCommit(false);
 			c.createStatement().execute("PRAGMA foreign_keys = ON");
 			stmt = c.createStatement();
 
-			//Count rows
+			// Count rows
 			ResultSet rsRowCount = stmt.executeQuery("SELECT COUNT(*) FROM questions;");
 			int rowsCount = rsRowCount.getInt(1);
 
-			//Initialize arrays
+			// Initialize arrays
 			questionsData = new String[rowsCount][2];
 			answersData = new String[rowsCount][4];
 			correctAnswersData = new String[rowsCount];
 			authorData = new String[rowsCount];
 			categoryData = new String[rowsCount];
 
-			//Actual query
-			ResultSet resultSet = stmt.executeQuery("SELECT answers.answer1,answers.answer2,answers.answer3,answers.answer4,"
-					+ "answers.correct_answer,questions.question,questions.author,"
-					+ "questions.category,questions.has_image,questions.image_url FROM answers "
-					+ "LEFT JOIN questions ON answers.questionID = questions.ID; ");
+			// Actual query
+			ResultSet resultSet = stmt
+					.executeQuery("SELECT answers.answer1,answers.answer2,answers.answer3,answers.answer4,"
+							+ "answers.correct_answer,questions.question,questions.author,"
+							+ "questions.category,questions.has_image,questions.image_url FROM answers "
+							+ "LEFT JOIN questions ON answers.questionID = questions.ID; ");
 
-			while(resultSet.next()) {
-				//Get questions and save it to an Array
+			while (resultSet.next()) {
+				// Get questions and save it to an Array
 				String question = resultSet.getString("question");
 				questionsData[resultSet.getRow() - 1][0] = question;
 
 				boolean questionImg = resultSet.getBoolean("has_image");
-				if(questionImg != false) {
+				if (questionImg != false) {
 					questionsData[resultSet.getRow() - 1][1] = resultSet.getString("image_url");
 				}
 
-				//Get answers and save it to an Array
-				for(int i = 0; i < 4; i++) {
+				// Get answers and save it to an Array
+				for (int i = 0; i < 4; i++) {
 					String answer = resultSet.getString("answer" + (i + 1));
 					answersData[resultSet.getRow() - 1][i] = answer;
 				}
-				//Get correct answers array
-				correctAnswersData[resultSet.getRow() - 1] = answersData[resultSet.getRow() - 1][resultSet.getInt("correct_answer")];
-				//Get author data
+				// Get correct answers array
+				correctAnswersData[resultSet.getRow() - 1] = answersData[resultSet.getRow() - 1][resultSet
+						.getInt("correct_answer")];
+				// Get author data
 				authorData[resultSet.getRow() - 1] = resultSet.getString("author");
-				//Get category data
+				// Get category data
 				categoryData[resultSet.getRow() - 1] = resultSet.getString("category");
 			}
 			resultSet.close();
 			stmt.close();
 			c.close();
 
-			/* After filling arrays with questions data, make models with them 
-			 * and pack said models to an ArrayList in order to use it on QuestionServiceImpl */
-			for(int i = 0; i < questionsData.length; ++i) {
-				Question question = new Question(questionsData[i][0], questionsData[i][1], answersData[i], correctAnswersData[i],
-						authorData[i], categoryData[i]);
+			/*
+			 * After filling arrays with questions data, make models with them
+			 * and pack said models to an ArrayList in order to use it on
+			 * QuestionServiceImpl
+			 */
+			for (int i = 0; i < questionsData.length; ++i) {
+				Question question = new Question(questionsData[i][0], questionsData[i][1], answersData[i],
+						correctAnswersData[i], authorData[i], categoryData[i]);
 				questionsArray.add(question);
 			}
 		} catch (Exception e) {
@@ -146,6 +153,7 @@ public class QuestionServiceDatabaseConn {
 
 	/**
 	 * Get user points and store them into an array.
+	 * 
 	 * @return
 	 */
 	ArrayList<UserScore> getUserScores() {
@@ -157,18 +165,18 @@ public class QuestionServiceDatabaseConn {
 		String[] userDisplay;
 		int[] userScores;
 		Boolean[] isEditable;
-		//Array for each record timestamp
+		// Array for each record timestamp
 		String[] usersScoresCreatedAt;
 		ArrayList<UserScore> userScoresArray = new ArrayList<UserScore>();
 
 		try {
-			//Connection
+			// Connection
 			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
 			c.setAutoCommit(false);
 			c.createStatement().execute("PRAGMA foreign_keys = ON");
 			stmt = c.createStatement();
 
-			//Actual query
+			// Actual query
 			ResultSet rsRowCount = stmt.executeQuery("SELECT COUNT(*) FROM user_scores;");
 			int rowsCount = rsRowCount.getInt(1);
 			System.out.println(rsRowCount.getInt(1));
@@ -183,26 +191,30 @@ public class QuestionServiceDatabaseConn {
 					+ "is_editable, datetime(created_at, 'localtime') AS created_at"
 					+ " FROM user_scores ORDER BY user_score DESC ,created_at DESC;");
 
-			while(resultSet.next()) {
-				//Get user score ID and save it to an Array
+			while (resultSet.next()) {
+				// Get user score ID and save it to an Array
 				userScoreID[resultSet.getRow() - 1] = resultSet.getInt("ID");
-				//Get user displays and save it to an Array
+				// Get user displays and save it to an Array
 				userDisplay[resultSet.getRow() - 1] = resultSet.getString("user_display");
-				//Get user scores and save it to an Array
+				// Get user scores and save it to an Array
 				userScores[resultSet.getRow() - 1] = resultSet.getInt("user_score");
-				//Get isEditable flags and save it on an Array
+				// Get isEditable flags and save it on an Array
 				isEditable[resultSet.getRow() - 1] = resultSet.getBoolean("is_editable");
-				//Get users scores created at and save it to an Array
+				// Get users scores created at and save it to an Array
 				usersScoresCreatedAt[resultSet.getRow() - 1] = resultSet.getString("created_at");
 			}
 			resultSet.close();
 			stmt.close();
 			c.close();
 
-			/* After filling arrays with user scores data, make models with them 
-			 * and pack said models to an ArrayList in order to use it on QuestionServiceImpl */
-			for(int i = 0; i < userDisplay.length; ++i) {
-				UserScore userScore = new UserScore(userScoreID[i], userDisplay[i], userScores[i], isEditable[i], usersScoresCreatedAt[i]);
+			/*
+			 * After filling arrays with user scores data, make models with them
+			 * and pack said models to an ArrayList in order to use it on
+			 * QuestionServiceImpl
+			 */
+			for (int i = 0; i < userDisplay.length; ++i) {
+				UserScore userScore = new UserScore(userScoreID[i], userDisplay[i], userScores[i], isEditable[i],
+						usersScoresCreatedAt[i]);
 				userScoresArray.add(userScore);
 			}
 
@@ -220,7 +232,7 @@ public class QuestionServiceDatabaseConn {
 		PreparedStatement prepStmt;
 
 		try {
-			//Connection
+			// Connection
 			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
 			c.setAutoCommit(false);
 			c.createStatement().execute("PRAGMA foreign_keys = ON");
@@ -228,7 +240,8 @@ public class QuestionServiceDatabaseConn {
 			prepStmt = c.prepareStatement(
 					"INSERT INTO user_scores (user_display,user_score,is_editable) VALUES (?, ?, ?);");
 
-			//			if(userScore.userDisplay == "");else throw new Exception("Temporary user score name field is not empty(\"\")");
+			// if(userScore.userDisplay == "");else throw new
+			// Exception("Temporary user score name field is not empty(\"\")");
 			prepStmt.setString(1, userScore.userDisplay);
 			prepStmt.setInt(2, userScore.score);
 			prepStmt.setBoolean(3, userScore.isEditable);
@@ -251,23 +264,23 @@ public class QuestionServiceDatabaseConn {
 		PreparedStatement prepStmt;
 
 		try {
-			//Connection
+			// Connection
 			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
 			c.setAutoCommit(false);
 			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
-			prepStmt = c.prepareStatement(
-					"UPDATE user_scores SET user_display=?, is_editable=? WHERE ID=?;");
+			prepStmt = c.prepareStatement("UPDATE user_scores SET user_display=?, is_editable=? WHERE ID=?;");
 
 			String checkedNameString = userScore.userDisplay;
 			/*
-			 * User provided name but deletes all its chars leaving us with empty string (""),
-			 * so we delete this invalid record; 
+			 * User provided name but deletes all its chars leaving us with
+			 * empty string (""), so we delete this invalid record;
 			 */
-			if(stringBarber(checkedNameString) == null) {
+			if (stringBarber(checkedNameString) == null) {
 				deleteUserScore(userScore);
 				return;
-			} ;
+			}
+			;
 
 			prepStmt.setString(1, stringBarber(checkedNameString));
 			prepStmt.setBoolean(2, userScore.isEditable);
@@ -291,13 +304,12 @@ public class QuestionServiceDatabaseConn {
 		PreparedStatement prepStmt;
 
 		try {
-			//Connection
+			// Connection
 			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
 			c.setAutoCommit(false);
 			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
-			prepStmt = c.prepareStatement(
-					"DELETE FROM user_scores WHERE ID=?;");
+			prepStmt = c.prepareStatement("DELETE FROM user_scores WHERE ID=?;");
 
 			prepStmt.setInt(1, userScore.userScoreID);
 			prepStmt.executeUpdate();
@@ -315,6 +327,7 @@ public class QuestionServiceDatabaseConn {
 
 	/**
 	 * Return question categories from database.
+	 * 
 	 * @return
 	 */
 	String[] getCategories() {
@@ -325,57 +338,58 @@ public class QuestionServiceDatabaseConn {
 		String[] categoryData = null;
 
 		try {
-			//Connection
+			// Connection
 			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
 			c.setAutoCommit(false);
 			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			stmt = c.createStatement();
 
-			//Count rows
+			// Count rows
 			ResultSet rsRowCount = stmt.executeQuery("SELECT COUNT(*) FROM category_type_enum;");
 			int rowsCount = rsRowCount.getInt(1);
 
-			//Initialize array
+			// Initialize array
 			categoryData = new String[rowsCount];
 
-			//Actual query
+			// Actual query
 			ResultSet resultSet = stmt.executeQuery("SELECT category FROM category_type_enum;");
 
-			//Iterate over ResultSet and put each record into an array
-			while(resultSet.next()) {
+			// Iterate over ResultSet and put each record into an array
+			while (resultSet.next()) {
 				String category = resultSet.getString("category");
 				categoryData[resultSet.getRow() - 1] = category;
 			}
 
-			//Close connection gracefully.
+			// Close connection gracefully.
 			resultSet.close();
 			stmt.close();
 			c.close();
 
-			//Return filled category data.
-			//			return categoryData;
+			// Return filled category data.
+			// return categoryData;
 
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.err.println(e.getCause() + " " + e.getStackTrace());
 			System.exit(0);
 		}
-		//Return filled category data.
+		// Return filled category data.
 		return categoryData;
 	}
 
 	/**
-	 * Insert submitted user question into question_tmp table. 
+	 * Insert submitted user question into question_tmp table.
+	 * 
 	 * @param userQuestion
 	 */
 	void insertUserQuestion(Question userQuestion) {
 
 		String questionID = null;
 
-		//Insert user question into question_tmp
+		// Insert user question into question_tmp
 		try {
-			//Connection
+			// Connection
 			Connection c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
 			c.setAutoCommit(false);
 			c.createStatement().execute("PRAGMA foreign_keys = ON");
@@ -387,13 +401,15 @@ public class QuestionServiceDatabaseConn {
 			prepStmt.setString(2, userQuestion.getAuthor());
 			prepStmt.setString(3, userQuestion.getCategory());
 			/*
-			 * If user submitted image, set has_image column flag to 1(true).Otherwise its 0(false).
-			 * Also, in if block set image name - trimmed from full path - 
-			 * or - in else block - null if none image is provided .
+			 * If user submitted image, set has_image column flag to
+			 * 1(true).Otherwise its 0(false). Also, in if block set image name
+			 * - trimmed from full path - or - in else block - null if none
+			 * image is provided .
 			 */
-			if(userQuestion.getImageURL() != null) {
+			if (userQuestion.getImageURL() != null) {
 				prepStmt.setString(4, "1");
-				String trimmedImageURL = userQuestion.getImageURL().substring(userQuestion.getImageURL().lastIndexOf("/") +1); 
+				String trimmedImageURL = userQuestion.getImageURL()
+						.substring(userQuestion.getImageURL().lastIndexOf("/") + 1);
 				prepStmt.setString(5, trimmedImageURL);
 			} else {
 				prepStmt.setString(4, "0");
@@ -411,16 +427,17 @@ public class QuestionServiceDatabaseConn {
 			System.exit(0);
 		}
 
-		//Insert user-question answers into answers_tmp
+		// Insert user-question answers into answers_tmp
 		try {
-			//Connection
+			// Connection
 			Connection c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
 			c.setAutoCommit(false);
 			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			/*
-			 * Count rows from question_tmp to relate answers being now inserted into answers_tmp 
-			 * with appropriate question which was just inserted into questions_tmp.
+			 * Count rows from question_tmp to relate answers being now inserted
+			 * into answers_tmp with appropriate question which was just
+			 * inserted into questions_tmp.
 			 */
 			Statement stmt = c.createStatement();
 			ResultSet rsRowCount = stmt.executeQuery("SELECT COUNT(*) FROM questions_tmp;");
@@ -447,15 +464,16 @@ public class QuestionServiceDatabaseConn {
 			System.exit(0);
 		}
 
-		//Move uploaded image from /tmp to our pending storage.
-		if(userQuestion.getImageURL() != null) {
+		// Move uploaded image from /tmp to our pending storage.
+		if (userQuestion.getImageURL() != null) {
 			try {
 
 				FileUtils.moveFileToDirectory(
-						/* 
-						 * getImageURL resolves to full,absolute path of uploaded image
-						 * and was brought from servlet response after successful image
-						 * upload.So here we just use it to point to a source file.
+						/*
+						 * getImageURL resolves to full,absolute path of
+						 * uploaded image and was brought from servlet response
+						 * after successful image upload.So here we just use it
+						 * to point to a source file.
 						 */
 						FileUtils.getFile(userQuestion.getImageURL()),
 						FileUtils.getFile("quiz_resources/question_images_tmp/" + questionID), true);
@@ -467,21 +485,125 @@ public class QuestionServiceDatabaseConn {
 	}
 
 	/**
-	 * Trims white spaces and non-visible characters, checks for empty strings ("") 
-	 * and substrings strings (from 0 to 15) to be inserted to database.
+	 * SELECT answers_tmp.ID, answers_tmp.answer1,answers_tmp.answer2,
+	 * answers_tmp.answer3,answers_tmp.answer4,
+	 * answers_tmp.correct_answer,questions_tmp.question,
+	 * questions_tmp.author,questions_tmp.category,questions_tmp.has_image,
+	 * questions_tmp.image_url FROM answers_tmp LEFT JOIN questions_tmp ON
+	 * answers_tmp.questionID = questions_tmp.ID;
+	 * 
+	 * @return ArrayList <Question>
+	 */
+	ArrayList<Question> getTmpQuestions() {
+
+		Connection c;
+		Statement stmt;
+		/**
+		 * Two dimensional array. At first[i][0] position we'll store question
+		 * String, at second[i][1] image server url.
+		 */
+		String[][] questionsTmpData;
+		String[][] answerTmpData;
+		String[] correctAnswersTmpData;
+		String[] authorTmpData;
+		String[] categoryTmpData;
+		//The additional field alluding to getQuestions();
+		String[] IDTmpData;
+		/* Array to store our model. Is returned by getQuestion(). */
+		ArrayList<Question> questionsTmpArray = new ArrayList<Question>();
+
+		try {
+			// Connection
+			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
+			c.setAutoCommit(false);
+			c.createStatement().execute("PRAGMA foreign_keys = ON");
+			stmt = c.createStatement();
+
+			// Count rows
+			ResultSet rsRowCount = stmt.executeQuery("SELECT COUNT(*) FROM questions_tmp;");
+			int rowsCount = rsRowCount.getInt(1);
+
+			// Initialize arrays
+			questionsTmpData = new String[rowsCount][2];
+			answerTmpData = new String[rowsCount][4];
+			correctAnswersTmpData = new String[rowsCount];
+			authorTmpData = new String[rowsCount];
+			categoryTmpData = new String[rowsCount];
+			IDTmpData = new String[rowsCount];
+
+			// Actual query
+			ResultSet resultSet = stmt.executeQuery("SELECT answers_tmp.ID, answers_tmp.answer1,answers_tmp.answer2,"
+					+ "answers_tmp.answer3,answers_tmp.answer4,"
+					+ "answers_tmp.correct_answer,questions_tmp.question,questions_tmp.author,"
+					+ "questions_tmp.category,questions_tmp.has_image,questions_tmp.image_url FROM answers_tmp "
+					+ "LEFT JOIN questions_tmp ON answers_tmp.questionID = questions_tmp.ID; ");
+
+			while (resultSet.next()) {
+				// Get questions and save it to an Array
+				String question = resultSet.getString("question");
+				questionsTmpData[resultSet.getRow() - 1][0] = question;
+
+				boolean questionImg = resultSet.getBoolean("has_image");
+				if (questionImg != false) {
+					questionsTmpData[resultSet.getRow() - 1][1] = resultSet.getString("image_url");
+				}
+
+				// Get answers and save it to an Array
+				for (int i = 0; i < 4; i++) {
+					String answer = resultSet.getString("answer" + (i + 1));
+					answerTmpData[resultSet.getRow() - 1][i] = answer;
+				}
+				// Get correct answers array
+				correctAnswersTmpData[resultSet.getRow() - 1] = answerTmpData[resultSet.getRow() - 1][resultSet
+						.getInt("correct_answer")];
+				// Get author data
+				authorTmpData[resultSet.getRow() - 1] = resultSet.getString("author");
+				// Get category data
+				categoryTmpData[resultSet.getRow() - 1] = resultSet.getString("category");
+				// Get question table ID
+				IDTmpData[resultSet.getRow() - 1] = resultSet.getString("ID");
+			}
+			resultSet.close();
+			stmt.close();
+			c.close();
+
+			/*
+			 * After filling arrays with questions data, make models with them
+			 * and pack said models to an ArrayList in order to use it on
+			 * QuestionServiceImpl
+			 */
+			for (int i = 0; i < questionsTmpData.length; ++i) {
+				Question question = new Question(questionsTmpData[i][0], questionsTmpData[i][1], answerTmpData[i],
+						correctAnswersTmpData[i], authorTmpData[i], categoryTmpData[i],IDTmpData[i]);
+				questionsTmpArray.add(question);
+			}
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.exit(0);
+		}
+		return questionsTmpArray;
+	}
+
+	/**
+	 * Trims white spaces and non-visible characters, checks for empty strings
+	 * ("") and substrings strings (from 0 to 15) to be inserted to database.
+	 * 
 	 * @param stringToCut
 	 * @return cut string
 	 */
 	private String stringBarber(String stringToCut) {
-		/* Strings are constant; their values cannot be changed after they are created,
-		 * hence local assignments;*/
+		/*
+		 * Strings are constant; their values cannot be changed after they are
+		 * created, hence local assignments;
+		 */
 
-		//Removes all white-spaces and non-visible characters;
+		// Removes all white-spaces and non-visible characters;
 		String trimmedString = stringToCut.replaceAll("\\s+", "");
-		//User provided name but deletes it leaving us with empty string ("").
-		if(trimmedString == "") return null;
+		// User provided name but deletes it leaving us with empty string ("").
+		if (trimmedString == "")
+			return null;
 
-		if(trimmedString.length() > 15) {
+		if (trimmedString.length() > 15) {
 			String trimmedAndSubstringed = trimmedString.substring(0, 15);
 			return trimmedAndSubstringed;
 		}

@@ -52,12 +52,19 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements
 		questionServiceDBConn.deleteUserScore(userScore);
 	}
 	
+	@Override
 	public String[] getCategories() {
 		return questionServiceDBConn.getCategories();
 	}
 	
+	@Override
 	public void insertUserQuestion(Question userQuestion){
 		questionServiceDBConn.insertUserQuestion(userQuestion);
+	}
+	
+	@Override
+	public ArrayList<Question> getTmpQuestions() {
+		return questionServiceDBConn.getTmpQuestions();
 	}
 
 	//  @Override

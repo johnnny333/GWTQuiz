@@ -32,7 +32,7 @@ public class AddQuestionsActivity extends AbstractActivity implements
 			
 			@Override
 			public void onFailure(Throwable caught) {
-				GWT.log("Failed getCategories() RPC! ", caught);
+				GWT.log("Failed AddQuestionsActivity.getCategories() RPC! ", caught);
 			}
 		});
 	}

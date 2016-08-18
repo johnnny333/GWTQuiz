@@ -25,4 +25,6 @@ public interface QuestionService extends RemoteService {
 	public String[] getCategories();
 	
 	public void insertUserQuestion(Question userQuestion);
+
+	ArrayList<Question> getTmpQuestions();
 }

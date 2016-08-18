@@ -17,4 +17,6 @@ public interface AdminView extends IsWidget
 		void goTo(Place place);
 		
 	}
+
+	void setCategories(String[] categories);
 }
