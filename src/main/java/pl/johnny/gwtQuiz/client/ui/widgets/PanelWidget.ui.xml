@@ -25,11 +25,12 @@
 					<b:FormLabel text="Image"></b:FormLabel>
 					<b:Panel>
 						<b:PanelHeader dataToggle="COLLAPSE" dataParent="#accordion2"
-							dataTarget="#userQuestionImage" text="Question image">
+							dataTarget="#userQuestionImage" text="Question image" 
+							ui:field="imgPanelHeader">
 						</b:PanelHeader>
-						<b:PanelCollapse b:id="userQuestionImage">
+						<b:PanelCollapse b:id="userQuestionImage" ui:field="imgPanelCollapse">
 							<b:PanelBody>
-								<b:Image responsive="true" ui:field="userImage"></b:Image>
+								<b:Image responsive="true" url="" ui:field="userImage"></b:Image>
 							</b:PanelBody>
 						</b:PanelCollapse>
 					</b:Panel>

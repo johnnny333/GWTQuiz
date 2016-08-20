@@ -505,6 +505,7 @@ public class QuestionServiceDatabaseConn {
 		String[][] questionsTmpData;
 		String[][] answerTmpData;
 		String[] correctAnswersTmpData;
+		int[] correctAnswersIntData;
 		String[] authorTmpData;
 		String[] categoryTmpData;
 		//The additional field alluding to getQuestions();
@@ -527,6 +528,7 @@ public class QuestionServiceDatabaseConn {
 			questionsTmpData = new String[rowsCount][2];
 			answerTmpData = new String[rowsCount][4];
 			correctAnswersTmpData = new String[rowsCount];
+			correctAnswersIntData = new int[rowsCount];
 			authorTmpData = new String[rowsCount];
 			categoryTmpData = new String[rowsCount];
 			IDTmpData = new String[rowsCount];
@@ -553,9 +555,11 @@ public class QuestionServiceDatabaseConn {
 					String answer = resultSet.getString("answer" + (i + 1));
 					answerTmpData[resultSet.getRow() - 1][i] = answer;
 				}
-				// Get correct answers array
+				// Get correct answers array as string
 				correctAnswersTmpData[resultSet.getRow() - 1] = answerTmpData[resultSet.getRow() - 1][resultSet
 						.getInt("correct_answer")];
+				//Get correct answer as int
+				correctAnswersIntData[resultSet.getRow() - 1] = resultSet.getInt("correct_answer");
 				// Get author data
 				authorTmpData[resultSet.getRow() - 1] = resultSet.getString("author");
 				// Get category data
@@ -574,7 +578,7 @@ public class QuestionServiceDatabaseConn {
 			 */
 			for (int i = 0; i < questionsTmpData.length; ++i) {
 				Question question = new Question(questionsTmpData[i][0], questionsTmpData[i][1], answerTmpData[i],
-						correctAnswersTmpData[i], authorTmpData[i], categoryTmpData[i],IDTmpData[i]);
+						correctAnswersTmpData[i], correctAnswersIntData[i], authorTmpData[i], categoryTmpData[i], IDTmpData[i]);
 				questionsTmpArray.add(question);
 			}
 		} catch (Exception e) {

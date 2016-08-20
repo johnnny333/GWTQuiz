@@ -35,12 +35,30 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 		adminView.setPresenter(this);
 		containerWidget.setWidget(adminView.asWidget());
 		
-		// Put categories from database into ListBox in this activity view.
+		/* 
+		 * Set categories from database into field in AdminView. After successful upload of categories,
+		 * call database for temporary questions and hand them to AdminView.
+		 */
 		clientFactory.getQuestionsService().getCategories(new AsyncCallback<String[]>() {
 
 			@Override
 			public void onSuccess(String[] result) {
 				adminView.setCategories(result);
+				
+				//Get tmp questions
+				clientFactory.getQuestionsService().getTmpQuestions(new AsyncCallback<ArrayList<Question>>() {
+					
+					@Override
+					public void onSuccess(ArrayList<Question> result) {
+						GWT.log("getTmpQuestions: " + result.get(0).getCategory());
+						adminView.buildAndFillPanelsWithTmpQuestions(result);
+					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						GWT.log("Failed AdminActivity.getTmpQuestions() RPC! ", caught);
+					}
+				});
 			}
 
 			@Override
@@ -49,19 +67,7 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 			}
 		});
 
-		//Get tmp questions
-		clientFactory.getQuestionsService().getTmpQuestions(new AsyncCallback<ArrayList<Question>>() {
-			
-			@Override
-			public void onSuccess(ArrayList<Question> result) {
-				GWT.log("getTmpQuestions: " + result.get(0).getID());
-			}
-			
-			@Override
-			public void onFailure(Throwable caught) {
-				GWT.log("Failed AdminActivity.getTmpQuestions() RPC! ", caught);
-			}
-		});
+		
 	}
 
 	/**

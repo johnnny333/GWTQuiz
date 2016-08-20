@@ -22,42 +22,48 @@ public class PanelWidget extends Composite {
 
 	interface PanelWidgetUiBinder extends UiBinder<Widget, PanelWidget> {
 	}
-	
+
 	@UiField
 	PanelHeader header;
-	
+
 	@UiField
 	PanelCollapse panelCollapse;
-	
+
 	@UiField
 	ListBox userCategoryListBox;
-	
+
 	@UiField
 	PanelGroup userImagePanel;
-	
+
 	@UiField
 	Image userImage;
-	
+
 	@UiField
 	TextBox userQuestionField;
-	
+
 	@UiField
 	TextBox userAnswer1Field;
 
 	@UiField
 	TextBox userAnswer2Field;
-	
+
 	@UiField
 	TextBox userAnswer3Field;
-	
+
 	@UiField
 	TextBox userAnswer4Field;
-	
+
 	@UiField
 	ListBox userCorrectAnsListBox;
-	
+
 	@UiField
 	TextBox userAuthorField;
+	
+	@UiField 
+	PanelHeader imgPanelHeader;
+	
+	@UiField
+	PanelCollapse imgPanelCollapse;
 
 	public PanelWidget() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -65,39 +71,50 @@ public class PanelWidget extends Composite {
 
 	/**
 	 * Set text on a header and IDs on a header and collapse to wire them.
+	 * 
 	 * @param headerText
 	 */
-	public void setHeaderAndIDs(String questionID, String headerText){
+	public void setHeaderAndIDs(String questionID, String headerText) {
 		header.setText(questionID + ": " + headerText);
-		
+
 		header.setDataTarget("#" + questionID);
 		panelCollapse.setId(questionID);
 	}
-	
+
 	/**
 	 * Fill in question categories with data from database and select user
-	 * choice. 
-	 * @param categories String[]
-	 * @param selectedItem String
+	 * choice.
+	 * 
+	 * @param categories
+	 *            String[]
+	 * @param selectedItem
+	 *            String
 	 */
 	public void setUserCategoryListBox(String[] categories, String selectedItem) {
-		for(int i = 0; i < categories.length; i++) {
+		for (int i = 0; i < categories.length; i++) {
 			userCategoryListBox.addItem(categories[i], categories[i]);
-			
-			if(categories[i] == selectedItem){
+
+			if (categories[i] == selectedItem) {
 				userCategoryListBox.setItemSelected(i, true);
 			}
 		}
 	}
-	
+
 	/**
-	 * Set user image URL and show previously hidden panel group which hold 
-	 * image widget. 
-	 * @param userImageURL String
+	 * Set user image URL and show previously hidden panel group which hold
+	 * image widget.
+	 * 
+	 * @param userImageURL
+	 *            String
 	 */
-	public void setUserImage(String userImageURL) {
-		userImage.setUrl(userImageURL);
-		userImagePanel.setVisible(true);
+	public void setUserImage(String questionID , String userImageURL) {
+
+		if (userImageURL != null) {
+			imgPanelHeader.setDataTarget("#" + questionID + "userQuestionImage");
+			imgPanelCollapse.setId(questionID + "userQuestionImage");
+			userImage.setUrl("quiz_resources/question_images_tmp/" + questionID + "/" + userImageURL);
+			userImagePanel.setVisible(true);
+		}
 	}
 
 	public void setUserQuestionField(String userQuestion) {
@@ -120,8 +137,9 @@ public class PanelWidget extends Composite {
 		userAnswer4Field.setText(userAnswer4);
 	}
 
-	public void setUserCorrectAnsListBox(String userCorrectAns) {
-		userCorrectAnsListBox.setItemSelected(Integer.parseInt(userCorrectAns), true);
+	public void setUserCorrectAnsListBox(int userCorrectAns) {
+//		GWT.log("setUserCorrectAnsListBox" + userCorrectAns);
+		userCorrectAnsListBox.setItemSelected(userCorrectAns, true);
 	}
 
 	public void setUserAuthorField(String userAuthor) {

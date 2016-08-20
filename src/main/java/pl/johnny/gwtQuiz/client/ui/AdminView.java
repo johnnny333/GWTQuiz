@@ -1,7 +1,11 @@
 package pl.johnny.gwtQuiz.client.ui;
 
+import java.util.ArrayList;
+
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.ui.IsWidget;
+
+import pl.johnny.gwtQuiz.shared.Question;
 
 /**
  * View interface. Extends IsWidget so a view impl can easily provide
@@ -19,4 +23,6 @@ public interface AdminView extends IsWidget
 	}
 
 	void setCategories(String[] categories);
+
+	void buildAndFillPanelsWithTmpQuestions(ArrayList<Question> tmpQuestion);
 }

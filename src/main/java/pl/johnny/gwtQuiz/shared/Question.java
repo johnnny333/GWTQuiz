@@ -12,6 +12,7 @@ public class Question implements IsSerializable {
 	private String question;
 	private String[] answers;
 	private String correctAnsw;
+	private int correctAnswersInt;
 	private String authorData;
 	private String categoryData;
 	/** Image server url as String/ */
@@ -55,11 +56,12 @@ public class Question implements IsSerializable {
 	 * @param ID String
 	 */
 	public Question(String questionData,String questionImageData, String[] answers, String correctAnswersData, 
-			String authorData, String categoryData, String ID) {
+			int correctAnswersInt,String authorData, String categoryData, String ID) {
 		this.question = questionData;
 		this.questionImageData = questionImageData;
 		this.answers = answers;
 		this.correctAnsw = correctAnswersData;
+		this.correctAnswersInt = correctAnswersInt;
 		this.authorData = authorData;
 		this.categoryData = categoryData;
 		this.ID = ID;
@@ -95,6 +97,10 @@ public class Question implements IsSerializable {
 
 	public String getCorrectAnsw() {
 		return correctAnsw;
+	}
+	
+	public int getCorrectAnswersInt() {
+		return correctAnswersInt;
 	}
 
 	public String getAuthor() {
