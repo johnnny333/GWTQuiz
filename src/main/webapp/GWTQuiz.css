@@ -76,7 +76,7 @@ div#collapseOne tr:first-of-type > td {
 /* 	} */
 
 /* Center uploaded image */
-div#collapseOne img.img-rounded {
+ img.img-responsive {
 	margin: 0 auto;
 }
 

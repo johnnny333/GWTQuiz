@@ -30,7 +30,7 @@
 						</b:PanelHeader>
 						<b:PanelCollapse b:id="userQuestionImage" ui:field="imgPanelCollapse">
 							<b:PanelBody>
-								<b:Image responsive="true" url="" ui:field="userImage"></b:Image>
+								<b:Image responsive="true" type="ROUNDED" ui:field="userImage"></b:Image>
 							</b:PanelBody>
 						</b:PanelCollapse>
 					</b:Panel>
