@@ -17,7 +17,6 @@
 				<b:FormGroup ui:field="categorySelectFormGroup">
 					<b:FormLabel for="categoryListBox" text="Category"></b:FormLabel>
 					<b:ListBox b:id="categoryListBox" ui:field="userCategoryListBox">
-<!-- 						<g:item>Choose your question category...</g:item> -->
 					</b:ListBox>
 				</b:FormGroup>
 

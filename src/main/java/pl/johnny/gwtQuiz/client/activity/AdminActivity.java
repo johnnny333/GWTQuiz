@@ -21,6 +21,7 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 	// Used to obtain views, eventBus, placeController
 	// Alternatively, could be injected via GIN
 	private ClientFactory clientFactory;
+	private AdminView adminView;
 
 	public AdminActivity(AdminPlace place, final ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
@@ -31,14 +32,37 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 	 */
 	@Override
 	public void start(AcceptsOneWidget containerWidget, EventBus eventBus) {
-		final AdminView adminView = clientFactory.getAdminView();
+		adminView = clientFactory.getAdminView();
 		adminView.setPresenter(this);
 		containerWidget.setWidget(adminView.asWidget());
 		
-		/* 
-		 * Set categories from database into field in AdminView. After successful upload of categories,
-		 * call database for temporary questions and hand them to AdminView.
-		 */
+		fetchAndBuildPanelWithTmpQuestion();
+	}
+
+	/**
+	 * Ask user before stopping this activity
+	 */
+	@Override
+	public String mayStop() {
+		// return "The quiz is about to start!";
+		return null;
+	}
+
+	/**
+	 * Navigate to a new Place in the browser
+	 */
+	@Override
+	public void goTo(Place place) {
+		clientFactory.getPlaceController().goTo(place);
+	}
+	
+	/**
+	 * Set categories from database into field in AdminView. After successful upload of categories,
+	 * call database for temporary questions and hand them to AdminView.
+	 */
+	@Override
+	public void fetchAndBuildPanelWithTmpQuestion(){
+		
 		clientFactory.getQuestionsService().getCategories(new AsyncCallback<String[]>() {
 
 			@Override
@@ -66,24 +90,5 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 				GWT.log("Failed AdminActivity.getCategories() RPC! ", caught);
 			}
 		});
-
-		
-	}
-
-	/**
-	 * Ask user before stopping this activity
-	 */
-	@Override
-	public String mayStop() {
-		// return "The quiz is about to start!";
-		return null;
-	}
-
-	/**
-	 * Navigate to a new Place in the browser
-	 */
-	@Override
-	public void goTo(Place place) {
-		clientFactory.getPlaceController().goTo(place);
 	}
 }

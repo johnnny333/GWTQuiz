@@ -6,6 +6,11 @@
 	.important {
 		font-weight: bold;
 	}
+	
+	.icon {
+		margin-top: -13px;
+		cursor: pointer;
+	}
 	</ui:style>
 	<g:HTMLPanel>
 		<b:Container fluid="true">
@@ -15,6 +20,8 @@
 
 						<b:PanelHeader>
 							<b:Heading size="H4" text="User Questions" />
+							<b:Icon type="REFRESH" spin="false" pull="RIGHT" addStyleNames="{style.icon}" ui:field="refreshIcon"
+								title="Refesh temporary questions list."/>
 						</b:PanelHeader>
 
 						<b:PanelBody>

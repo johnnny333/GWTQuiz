@@ -5,12 +5,15 @@ package pl.johnny.gwtQuiz.client.ui;
 
 import java.util.ArrayList;
 
+import org.gwtbootstrap3.client.ui.Icon;
 import org.gwtbootstrap3.client.ui.PanelGroup;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.thirdparty.javascript.rhino.head.Undefined;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -26,6 +29,9 @@ public class AdminViewImpl extends Composite implements AdminView {
 
 	@UiField
 	PanelGroup panelGroup;
+	
+	@UiField
+	Icon refreshIcon;
 
 	private Presenter listener;
 	private String[] categories;
@@ -89,5 +95,11 @@ public class AdminViewImpl extends Composite implements AdminView {
 			if (panelGroup.getWidgetCount() < panelWidget.length)
 				panelGroup.add(panelWidget[i]);
 		}
+	}
+	
+	@UiHandler("refreshIcon")
+	void onRefreshIconClicked(ClickEvent e) {
+		panelGroup.clear();
+		listener.fetchAndBuildPanelWithTmpQuestion();
 	}
 }

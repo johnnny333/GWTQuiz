@@ -105,7 +105,7 @@ public class PanelWidget extends Composite {
 	 * image widget.
 	 * 
 	 * @param userImageURL
-	 *            String
+	 * @param questionID
 	 */
 	public void setUserImage(String questionID , String userImageURL) {
 
