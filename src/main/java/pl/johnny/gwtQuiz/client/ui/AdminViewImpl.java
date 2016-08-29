@@ -10,7 +10,6 @@ import org.gwtbootstrap3.client.ui.PanelGroup;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.thirdparty.javascript.rhino.head.Undefined;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -61,7 +60,7 @@ public class AdminViewImpl extends Composite implements AdminView {
 		PanelWidget[] panelWidget = new PanelWidget[tmpQuestion.size()];
 
 		for (int i = 0; i < panelWidget.length; i++) {
-			panelWidget[i] = new PanelWidget();
+			panelWidget[i] = new PanelWidget(listener);
 			panelWidget[i].setUserCategoryListBox(categories, tmpQuestion.get(i).getCategory());
 			panelWidget[i].setHeaderAndIDs(tmpQuestion.get(i).getID(), tmpQuestion.get(i).getQuestion());
 			panelWidget[i].setUserImage(tmpQuestion.get(i).getID(), tmpQuestion.get(i).getImageURL());
@@ -100,6 +99,6 @@ public class AdminViewImpl extends Composite implements AdminView {
 	@UiHandler("refreshIcon")
 	void onRefreshIconClicked(ClickEvent e) {
 		panelGroup.clear();
-		listener.fetchAndBuildPanelWithTmpQuestion();
+		listener.fetchAndBuildPanelWithTmpQuestions();
 	}
 }

@@ -22,7 +22,7 @@ public interface QuestionServiceAsync {
 
 	void getCategories(AsyncCallback<String[]> asyncCallback);
 
-	void insertUserQuestion(Question userQuestion, AsyncCallback<Void> asyncCallback);
+	void insertUserTmpQuestion(Question userQuestion, AsyncCallback<Void> asyncCallback);
 
 	void getTmpQuestions(AsyncCallback<ArrayList<Question>> asynchCallback);	
 }

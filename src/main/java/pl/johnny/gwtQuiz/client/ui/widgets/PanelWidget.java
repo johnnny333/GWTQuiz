@@ -3,6 +3,8 @@
  */
 package pl.johnny.gwtQuiz.client.ui.widgets;
 
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Form;
 import org.gwtbootstrap3.client.ui.Image;
 import org.gwtbootstrap3.client.ui.ListBox;
 import org.gwtbootstrap3.client.ui.PanelCollapse;
@@ -11,10 +13,15 @@ import org.gwtbootstrap3.client.ui.PanelHeader;
 import org.gwtbootstrap3.client.ui.TextBox;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+
+import pl.johnny.gwtQuiz.client.ui.AdminView.Presenter;
+import pl.johnny.gwtQuiz.shared.Question;
 
 public class PanelWidget extends Composite {
 
@@ -64,9 +71,21 @@ public class PanelWidget extends Composite {
 	
 	@UiField
 	PanelCollapse imgPanelCollapse;
+	
+	@UiField
+	Form form;
+	
+	@UiField
+	Button acceptQuestionButton;
+	
+	@UiField
+	Button deleteQuestionButton;
 
-	public PanelWidget() {
+	private Presenter listener;
+
+	public PanelWidget(Presenter listener) {
 		initWidget(uiBinder.createAndBindUi(this));
+		this.listener = listener;
 	}
 
 	/**
@@ -138,11 +157,39 @@ public class PanelWidget extends Composite {
 	}
 
 	public void setUserCorrectAnsListBox(int userCorrectAns) {
-//		GWT.log("setUserCorrectAnsListBox" + userCorrectAns);
 		userCorrectAnsListBox.setItemSelected(userCorrectAns, true);
 	}
 
 	public void setUserAuthorField(String userAuthor) {
 		userAuthorField.setText(userAuthor);
+	}
+	
+	@UiHandler("acceptQuestionButton")
+	void onAcceptQuestionButtonClicked(ClickEvent e){
+		
+		//Check for empty fields.
+		if(form.validate() == true ) {
+			GWT.log("Question validated!");
+			
+			//Fill question model with data from form.
+			String[] userAnswers = new String[] { userAnswer1Field.getValue(), userAnswer2Field.getValue(), userAnswer3Field.getValue(), userAnswer4Field.getValue() };
+			Question userQuestion = new Question(userQuestionField.getValue(), userImage.getUrl(), userAnswers,
+					userCorrectAnsListBox.getSelectedValue(), userAuthorField.getValue(), userCategoryListBox.getSelectedValue());
+			
+			//Send filled question model through RPC. 
+//			listener.acceptUserTmpQuestion(userQuestion);
+		}
+	}
+	
+	@UiHandler("deleteQuestionButton")
+	void onDeleteQuestionButtonClicked(ClickEvent e){
+		
+			String tmpQuestionID = panelCollapse.getId();
+			
+			GWT.log("Question is to be deleted ID! " + tmpQuestionID);
+			
+			//Send filled question model through RPC. 
+//			listener.deleteUserTmpQuestion(tmpQuestionID);
+
 	}
 }

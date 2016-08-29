@@ -11,8 +11,10 @@
 			dataTarget="#collapseOne" text="One" ui:field="header">
 		</b:PanelHeader>
 		<b:PanelCollapse b:id="collapseOne" ui:field="panelCollapse">
+				
 			<b:PanelBody>
-
+			
+			<b:Form ui:field="form">
 				<!-- Form! -->
 				<b:FormGroup ui:field="categorySelectFormGroup">
 					<b:FormLabel for="categoryListBox" text="Category"></b:FormLabel>
@@ -92,8 +94,14 @@
 						b:id="authorField" validateOnBlur="true" allowBlank="false" />
 				</b:FormGroup>
 <!-- 				END-OF-FORM -->
-
+</b:Form>
 			</b:PanelBody>
+			
+			<b:PanelFooter addStyleNames="text-center add-form-buttons">
+								<b:Button ui:field="acceptQuestionButton" type="SUCCESS">Accept Question</b:Button>
+								<b:Button ui:field="deleteQuestionButton" type="DANGER">Delete Question</b:Button>
+							</b:PanelFooter>
+			
 		</b:PanelCollapse>
 	</b:Panel>
 

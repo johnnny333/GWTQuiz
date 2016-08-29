@@ -36,7 +36,7 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 		adminView.setPresenter(this);
 		containerWidget.setWidget(adminView.asWidget());
 		
-		fetchAndBuildPanelWithTmpQuestion();
+		fetchAndBuildPanelWithTmpQuestions();
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 	 * call database for temporary questions and hand them to AdminView.
 	 */
 	@Override
-	public void fetchAndBuildPanelWithTmpQuestion(){
+	public void fetchAndBuildPanelWithTmpQuestions(){
 		
 		clientFactory.getQuestionsService().getCategories(new AsyncCallback<String[]>() {
 
@@ -90,5 +90,39 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 				GWT.log("Failed AdminActivity.getCategories() RPC! ", caught);
 			}
 		});
+	}
+	
+	@Override
+	public void acceptUserTmpQuestion(Question userQuestion) {
+		//TODO make 'acceptUserTmpQuestion' service...
+		clientFactory.getQuestionsService().insertUserTmpQuestion(userQuestion, new AsyncCallback<Void>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				GWT.log("insertUserQuestion failed", caught);
+			}
+
+			@Override
+			public void onSuccess(Void result) {
+				GWT.log("Question submitted");
+			}
+		});
+	}
+	
+	@Override
+	public void deleteUserTmpQuestion(String questionID) {
+		//TODO make 'deleteUserTmpQuestion' service...
+//		clientFactory.getQuestionsService().insertUserTmpQuestion(questionID, new AsyncCallback<Void>() {
+//
+//			@Override
+//			public void onFailure(Throwable caught) {
+//				GWT.log("insertUserQuestion failed", caught);
+//			}
+//
+//			@Override
+//			public void onSuccess(Void result) {
+//				GWT.log("Question submitted");
+//			}
+//		});
 	}
 }

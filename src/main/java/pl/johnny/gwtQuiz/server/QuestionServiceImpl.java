@@ -58,7 +58,7 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	@Override
-	public void insertUserQuestion(Question userQuestion){
+	public void insertUserTmpQuestion(Question userQuestion){
 		questionServiceDBConn.insertUserQuestion(userQuestion);
 	}
 	

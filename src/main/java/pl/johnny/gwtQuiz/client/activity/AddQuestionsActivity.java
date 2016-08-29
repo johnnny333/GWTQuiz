@@ -66,7 +66,7 @@ public class AddQuestionsActivity extends AbstractActivity implements
 
 	@Override
 	public void insertUserQuestion(Question userQuestion) {
-		clientFactory.getQuestionsService().insertUserQuestion(userQuestion, new AsyncCallback<Void>() {
+		clientFactory.getQuestionsService().insertUserTmpQuestion(userQuestion, new AsyncCallback<Void>() {
 
 			@Override
 			public void onFailure(Throwable caught) {

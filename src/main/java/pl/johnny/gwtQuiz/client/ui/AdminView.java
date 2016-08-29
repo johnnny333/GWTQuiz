@@ -20,7 +20,11 @@ public interface AdminView extends IsWidget
 	public interface Presenter {
 		void goTo(Place place);
 
-		void fetchAndBuildPanelWithTmpQuestion();
+		void fetchAndBuildPanelWithTmpQuestions();
+
+		void acceptUserTmpQuestion(Question userQuestion);
+
+		void deleteUserTmpQuestion(String questionID);
 		
 	}
 
