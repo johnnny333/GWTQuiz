@@ -66,6 +66,11 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements
 	public ArrayList<Question> getTmpQuestions() {
 		return questionServiceDBConn.getTmpQuestions();
 	}
+	
+	@Override
+	public void deleteUserTmpQuestion(String questionID){
+		questionServiceDBConn.deleteUserTmpQuestion(questionID);
+	}
 
 	//  @Override
 	//public Contact addContact(Contact contact) {

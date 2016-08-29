@@ -24,5 +24,7 @@ public interface QuestionServiceAsync {
 
 	void insertUserTmpQuestion(Question userQuestion, AsyncCallback<Void> asyncCallback);
 
-	void getTmpQuestions(AsyncCallback<ArrayList<Question>> asynchCallback);	
+	void getTmpQuestions(AsyncCallback<ArrayList<Question>> asynchCallback);
+
+	void deleteUserTmpQuestion(String questionID, AsyncCallback<Void> asyncCallback);	
 }

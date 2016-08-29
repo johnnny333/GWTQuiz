@@ -186,10 +186,9 @@ public class PanelWidget extends Composite {
 		
 			String tmpQuestionID = panelCollapse.getId();
 			
-			GWT.log("Question is to be deleted ID! " + tmpQuestionID);
+			GWT.log("Question is about to be deleted ID! " + tmpQuestionID);
 			
 			//Send filled question model through RPC. 
-//			listener.deleteUserTmpQuestion(tmpQuestionID);
-
+			listener.deleteUserTmpQuestion(tmpQuestionID);
 	}
 }

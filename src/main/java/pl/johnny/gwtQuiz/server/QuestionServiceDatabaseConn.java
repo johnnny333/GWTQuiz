@@ -437,7 +437,7 @@ public class QuestionServiceDatabaseConn {
 			/*
 			 * Count rows from question_tmp to relate answers being now inserted
 			 * into answers_tmp with appropriate question which was just
-			 * inserted into questions_tmp.
+			 * inserted into questions_tmp (this is backed by foreign key);
 			 */
 			Statement stmt = c.createStatement();
 			ResultSet rsRowCount = stmt.executeQuery("SELECT COUNT(*) FROM questions_tmp;");
@@ -586,6 +586,58 @@ public class QuestionServiceDatabaseConn {
 			System.exit(0);
 		}
 		return questionsTmpArray;
+	}
+	
+	/**
+	 * Deletes user question temporary and user answer temporary by their ID.
+	 * @param questionID
+	 */
+	void deleteUserTmpQuestion(String questionID) {
+
+		Connection c;
+		PreparedStatement prepStmt;
+
+		try {
+			// Connection
+			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
+			c.setAutoCommit(false);
+			c.createStatement().execute("PRAGMA foreign_keys = ON");
+
+			prepStmt = c.prepareStatement("DELETE FROM answers_tmp WHERE ID=?;");
+
+			prepStmt.setString(1, questionID);
+			prepStmt.executeUpdate();
+
+			prepStmt.close();
+			c.commit();
+			c.close();
+
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.err.println(e.getCause() + " " + e.getStackTrace());
+			System.exit(0);
+		}
+		
+		try {
+			// Connection
+			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
+			c.setAutoCommit(false);
+			c.createStatement().execute("PRAGMA foreign_keys = ON");
+
+			prepStmt = c.prepareStatement("DELETE FROM questions_tmp WHERE ID=?;");
+
+			prepStmt.setString(1, questionID);
+			prepStmt.executeUpdate();
+
+			prepStmt.close();
+			c.commit();
+			c.close();
+
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.err.println(e.getCause() + " " + e.getStackTrace());
+			System.exit(0);
+		}
 	}
 
 	/**

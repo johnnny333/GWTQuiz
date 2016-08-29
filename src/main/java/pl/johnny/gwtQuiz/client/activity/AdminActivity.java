@@ -112,17 +112,17 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 	@Override
 	public void deleteUserTmpQuestion(String questionID) {
 		//TODO make 'deleteUserTmpQuestion' service...
-//		clientFactory.getQuestionsService().insertUserTmpQuestion(questionID, new AsyncCallback<Void>() {
-//
-//			@Override
-//			public void onFailure(Throwable caught) {
-//				GWT.log("insertUserQuestion failed", caught);
-//			}
-//
-//			@Override
-//			public void onSuccess(Void result) {
-//				GWT.log("Question submitted");
-//			}
-//		});
+		clientFactory.getQuestionsService().deleteUserTmpQuestion(questionID, new AsyncCallback<Void>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				GWT.log("deleteUserTmpQuestion failed", caught);
+			}
+
+			@Override
+			public void onSuccess(Void result) {
+				GWT.log("deleteUserTmpQuestion succeded");
+			}
+		});
 	}
 }
