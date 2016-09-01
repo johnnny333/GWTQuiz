@@ -71,6 +71,11 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements
 	public void deleteUserTmpQuestion(String questionID){
 		questionServiceDBConn.deleteUserTmpQuestion(questionID);
 	}
+	
+	@Override
+	public void acceptUserTmpQuestion(Question acceptedQuestion,String tmpQuestionID){
+		questionServiceDBConn.acceptUserTmpQuestion(acceptedQuestion, tmpQuestionID);
+	}
 
 	//  @Override
 	//public Contact addContact(Contact contact) {

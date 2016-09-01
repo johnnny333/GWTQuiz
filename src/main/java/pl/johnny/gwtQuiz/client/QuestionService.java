@@ -29,4 +29,6 @@ public interface QuestionService extends RemoteService {
 	ArrayList<Question> getTmpQuestions();
 
 	void deleteUserTmpQuestion(String questionID);
+
+	void acceptUserTmpQuestion(Question acceptedQuestion, String tmpQuestionID);
 }

@@ -107,18 +107,18 @@ public class QuestionServiceDatabaseConn {
 							+ "questions.category,questions.has_image,questions.image_url FROM answers "
 							+ "LEFT JOIN questions ON answers.questionID = questions.ID; ");
 
-			while (resultSet.next()) {
+			while(resultSet.next()) {
 				// Get questions and save it to an Array
 				String question = resultSet.getString("question");
 				questionsData[resultSet.getRow() - 1][0] = question;
 
 				boolean questionImg = resultSet.getBoolean("has_image");
-				if (questionImg != false) {
+				if(questionImg != false) {
 					questionsData[resultSet.getRow() - 1][1] = resultSet.getString("image_url");
 				}
 
 				// Get answers and save it to an Array
-				for (int i = 0; i < 4; i++) {
+				for(int i = 0; i < 4; i++) {
 					String answer = resultSet.getString("answer" + (i + 1));
 					answersData[resultSet.getRow() - 1][i] = answer;
 				}
@@ -139,7 +139,7 @@ public class QuestionServiceDatabaseConn {
 			 * and pack said models to an ArrayList in order to use it on
 			 * QuestionServiceImpl
 			 */
-			for (int i = 0; i < questionsData.length; ++i) {
+			for(int i = 0; i < questionsData.length; ++i) {
 				Question question = new Question(questionsData[i][0], questionsData[i][1], answersData[i],
 						correctAnswersData[i], authorData[i], categoryData[i]);
 				questionsArray.add(question);
@@ -191,7 +191,7 @@ public class QuestionServiceDatabaseConn {
 					+ "is_editable, datetime(created_at, 'localtime') AS created_at"
 					+ " FROM user_scores ORDER BY user_score DESC ,created_at DESC;");
 
-			while (resultSet.next()) {
+			while(resultSet.next()) {
 				// Get user score ID and save it to an Array
 				userScoreID[resultSet.getRow() - 1] = resultSet.getInt("ID");
 				// Get user displays and save it to an Array
@@ -212,7 +212,7 @@ public class QuestionServiceDatabaseConn {
 			 * and pack said models to an ArrayList in order to use it on
 			 * QuestionServiceImpl
 			 */
-			for (int i = 0; i < userDisplay.length; ++i) {
+			for(int i = 0; i < userDisplay.length; ++i) {
 				UserScore userScore = new UserScore(userScoreID[i], userDisplay[i], userScores[i], isEditable[i],
 						usersScoresCreatedAt[i]);
 				userScoresArray.add(userScore);
@@ -276,11 +276,10 @@ public class QuestionServiceDatabaseConn {
 			 * User provided name but deletes all its chars leaving us with
 			 * empty string (""), so we delete this invalid record;
 			 */
-			if (stringBarber(checkedNameString) == null) {
+			if(stringBarber(checkedNameString) == null) {
 				deleteUserScore(userScore);
 				return;
-			}
-			;
+			} ;
 
 			prepStmt.setString(1, stringBarber(checkedNameString));
 			prepStmt.setBoolean(2, userScore.isEditable);
@@ -356,7 +355,7 @@ public class QuestionServiceDatabaseConn {
 			ResultSet resultSet = stmt.executeQuery("SELECT category FROM category_type_enum;");
 
 			// Iterate over ResultSet and put each record into an array
-			while (resultSet.next()) {
+			while(resultSet.next()) {
 				String category = resultSet.getString("category");
 				categoryData[resultSet.getRow() - 1] = category;
 			}
@@ -406,7 +405,7 @@ public class QuestionServiceDatabaseConn {
 			 * - trimmed from full path - or - in else block - null if none
 			 * image is provided .
 			 */
-			if (userQuestion.getImageURL() != null) {
+			if(userQuestion.getImageURL() != null) {
 				prepStmt.setString(4, "1");
 				String trimmedImageURL = userQuestion.getImageURL()
 						.substring(userQuestion.getImageURL().lastIndexOf("/") + 1);
@@ -465,7 +464,7 @@ public class QuestionServiceDatabaseConn {
 		}
 
 		// Move uploaded image from /tmp to our pending storage.
-		if (userQuestion.getImageURL() != null) {
+		if(userQuestion.getImageURL() != null) {
 			try {
 
 				FileUtils.moveFileToDirectory(
@@ -540,18 +539,18 @@ public class QuestionServiceDatabaseConn {
 					+ "questions_tmp.category,questions_tmp.has_image,questions_tmp.image_url FROM answers_tmp "
 					+ "LEFT JOIN questions_tmp ON answers_tmp.questionID = questions_tmp.ID; ");
 
-			while (resultSet.next()) {
+			while(resultSet.next()) {
 				// Get questions and save it to an Array
 				String question = resultSet.getString("question");
 				questionsTmpData[resultSet.getRow() - 1][0] = question;
 
 				boolean questionImg = resultSet.getBoolean("has_image");
-				if (questionImg != false) {
+				if(questionImg != false) {
 					questionsTmpData[resultSet.getRow() - 1][1] = resultSet.getString("image_url");
 				}
 
 				// Get answers and save it to an Array
-				for (int i = 0; i < 4; i++) {
+				for(int i = 0; i < 4; i++) {
 					String answer = resultSet.getString("answer" + (i + 1));
 					answerTmpData[resultSet.getRow() - 1][i] = answer;
 				}
@@ -576,7 +575,7 @@ public class QuestionServiceDatabaseConn {
 			 * and pack said models to an ArrayList in order to use it on
 			 * QuestionServiceImpl
 			 */
-			for (int i = 0; i < questionsTmpData.length; ++i) {
+			for(int i = 0; i < questionsTmpData.length; ++i) {
 				Question question = new Question(questionsTmpData[i][0], questionsTmpData[i][1], answerTmpData[i],
 						correctAnswersTmpData[i], correctAnswersIntData[i], authorTmpData[i], categoryTmpData[i], IDTmpData[i]);
 				questionsTmpArray.add(question);
@@ -587,7 +586,7 @@ public class QuestionServiceDatabaseConn {
 		}
 		return questionsTmpArray;
 	}
-	
+
 	/**
 	 * Deletes user question temporary and user answer temporary by their ID.
 	 * @param questionID
@@ -617,7 +616,7 @@ public class QuestionServiceDatabaseConn {
 			System.err.println(e.getCause() + " " + e.getStackTrace());
 			System.exit(0);
 		}
-		
+
 		try {
 			// Connection
 			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
@@ -639,6 +638,107 @@ public class QuestionServiceDatabaseConn {
 			System.exit(0);
 		}
 	}
+	
+	//TODO Deleting question from tmp.
+	void acceptUserTmpQuestion(Question userQuestion, String tmpQuestionID) {
+
+		Integer questionID = null;
+
+		// Insert user question into question_tmp
+		try {
+			// Connection
+			Connection c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
+			c.setAutoCommit(false);
+			c.createStatement().execute("PRAGMA foreign_keys = ON");
+
+			PreparedStatement prepStmt = c.prepareStatement(
+					"INSERT INTO questions (question,author,category,has_image,image_url) VALUES (?,?,?,?,?);");
+
+			prepStmt.setString(1, userQuestion.getQuestion());
+			prepStmt.setString(2, userQuestion.getAuthor());
+			prepStmt.setString(3, userQuestion.getCategory());
+
+			/* Get rows count from questions table to determine last inserted record ID. */
+			Statement stmt = c.createStatement();
+			ResultSet rsRowCount = stmt.executeQuery("SELECT COUNT(*) FROM questions;");
+			questionID = rsRowCount.getInt(1);
+
+			/*
+			 * If user submitted image, set has_image column flag to
+			 * 1(true).Otherwise its 0(false). Also, in if block set image name
+			 * - trimmed from full path - or - in else block - null if none
+			 * image is provided .
+			 */
+			if(userQuestion.getImageURL() != null) {
+				prepStmt.setString(4, "1");
+				String trimmedImageURL = userQuestion.getImageURL()
+						.substring(userQuestion.getImageURL().lastIndexOf("/") + 1);
+				prepStmt.setString(5, "quiz_resources/question_images/" + (questionID + 1) + "/" + trimmedImageURL);
+			} else {
+				//If there is no image, set has_image to 0 and image_url to null (which was handed in model).
+				prepStmt.setString(4, "0");
+				prepStmt.setString(5, userQuestion.getImageURL());
+			}
+			prepStmt.executeUpdate();
+
+			prepStmt.close();
+			c.commit();
+			c.close();
+
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.err.println(e.getCause() + " " + e.getStackTrace());
+			System.exit(0);
+		}
+
+		// Insert user-question answers into answers_tmp
+		try {
+			// Connection
+			Connection c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
+			c.setAutoCommit(false);
+			c.createStatement().execute("PRAGMA foreign_keys = ON");
+
+			PreparedStatement prepStmt = c.prepareStatement(
+					"INSERT INTO answers (questionID,answer1,answer2,answer3,answer4,correct_answer) VALUES (?,?,?,?,?,?);");
+
+			prepStmt.setInt(1, (questionID + 1));
+			prepStmt.setString(2, userQuestion.getAnswer(0));
+			prepStmt.setString(3, userQuestion.getAnswer(1));
+			prepStmt.setString(4, userQuestion.getAnswer(2));
+			prepStmt.setString(5, userQuestion.getAnswer(3));
+			prepStmt.setString(6, userQuestion.getCorrectAnsw());
+			prepStmt.executeUpdate();
+
+			prepStmt.close();
+			c.commit();
+			c.close();
+
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.err.println(e.getCause() + " " + e.getStackTrace());
+			System.exit(0);
+		}
+
+		// Move uploaded image from quiz_resources/question_images_tmp/{question_id}/{file_name} to our main storage.
+		if(userQuestion.getImageURL() != null) {
+			try {
+
+				FileUtils.moveFileToDirectory(
+						/*
+						 * getImageURL resolves to full,absolute path of
+						 * uploaded image and was brought from servlet response
+						 * after successful image upload.So here we just use it
+						 * to point to a source file.
+						 */
+						FileUtils.getFile(userQuestion.getImageURL()),
+						FileUtils.getFile("quiz_resources/question_images/" + (questionID + 1)), true);
+
+			} catch (IOException e) {
+				System.err.println(e);
+			}
+		}
+
+	}
 
 	/**
 	 * Trims white spaces and non-visible characters, checks for empty strings
@@ -656,10 +756,10 @@ public class QuestionServiceDatabaseConn {
 		// Removes all white-spaces and non-visible characters;
 		String trimmedString = stringToCut.replaceAll("\\s+", "");
 		// User provided name but deletes it leaving us with empty string ("").
-		if (trimmedString == "")
+		if(trimmedString == "")
 			return null;
 
-		if (trimmedString.length() > 15) {
+		if(trimmedString.length() > 15) {
 			String trimmedAndSubstringed = trimmedString.substring(0, 15);
 			return trimmedAndSubstringed;
 		}

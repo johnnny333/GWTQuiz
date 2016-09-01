@@ -22,7 +22,7 @@ public interface AdminView extends IsWidget
 
 		void fetchAndBuildPanelWithTmpQuestions();
 
-		void acceptUserTmpQuestion(Question userQuestion);
+		void acceptUserTmpQuestion(Question acceptedQuestion, String tmpQuestionID);
 
 		void deleteUserTmpQuestion(String questionID);
 		

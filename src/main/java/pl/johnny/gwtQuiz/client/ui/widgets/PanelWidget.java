@@ -171,13 +171,17 @@ public class PanelWidget extends Composite {
 		if(form.validate() == true ) {
 			GWT.log("Question validated!");
 			
+			//Check for the existence of image in form.
+			String userImageVar = null;
+			if(userImage.getUrl() != ""){userImageVar = userImage.getUrl();};
 			//Fill question model with data from form.
 			String[] userAnswers = new String[] { userAnswer1Field.getValue(), userAnswer2Field.getValue(), userAnswer3Field.getValue(), userAnswer4Field.getValue() };
-			Question userQuestion = new Question(userQuestionField.getValue(), userImage.getUrl(), userAnswers,
+			Question userQuestion = new Question(userQuestionField.getValue(), userImageVar, userAnswers,
 					userCorrectAnsListBox.getSelectedValue(), userAuthorField.getValue(), userCategoryListBox.getSelectedValue());
 			
+			GWT.log(userImage.getUrl());
 			//Send filled question model through RPC. 
-//			listener.acceptUserTmpQuestion(userQuestion);
+			listener.acceptUserTmpQuestion(userQuestion, panelCollapse.getId());
 		}
 	}
 	
