@@ -1,5 +1,6 @@
 package pl.johnny.gwtQuiz.server;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -637,8 +638,13 @@ public class QuestionServiceDatabaseConn {
 			System.err.println(e.getCause() + " " + e.getStackTrace());
 			System.exit(0);
 		}
+
+			//Delete question image.If there is none image,no exception will be thrown hence, deleteQuietly. 
+			FileUtils.deleteQuietly(new File("quiz_resources/question_images_tmp/" + questionID));
+
+
 	}
-	
+
 	//TODO Deleting question from tmp.
 	void acceptUserTmpQuestion(Question userQuestion, String tmpQuestionID) {
 
