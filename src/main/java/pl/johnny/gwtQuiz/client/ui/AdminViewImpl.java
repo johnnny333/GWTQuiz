@@ -5,8 +5,10 @@ package pl.johnny.gwtQuiz.client.ui;
 
 import java.util.ArrayList;
 
+import org.gwtbootstrap3.client.ui.Alert;
 import org.gwtbootstrap3.client.ui.Icon;
 import org.gwtbootstrap3.client.ui.PanelGroup;
+import org.gwtbootstrap3.client.ui.constants.AlertType;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -56,7 +58,12 @@ public class AdminViewImpl extends Composite implements AdminView {
 
 	@Override
 	public void buildAndFillPanelsWithTmpQuestions(ArrayList<Question> tmpQuestion) {
-
+		
+		Alert noQuestionAlert = new Alert("No user questions!");
+		noQuestionAlert.addStyleName("text-center");
+		noQuestionAlert.setType(AlertType.INFO);
+		if(tmpQuestion.size() == 0){panelGroup.add(noQuestionAlert);};
+		
 		PanelWidget[] panelWidget = new PanelWidget[tmpQuestion.size()];
 
 		for (int i = 0; i < panelWidget.length; i++) {
@@ -87,8 +94,6 @@ public class AdminViewImpl extends Composite implements AdminView {
 			
 			panelWidget[i].setUserCorrectAnsListBox(tmpQuestion.get(i).getCorrectAnswersInt());
 			panelWidget[i].setUserAuthorField(tmpQuestion.get(i).getAuthor());
-
-			GWT.log("panel group count: " + panelGroup.getWidgetCount());
 
 			// Avoid doubling widgets...
 			if (panelGroup.getWidgetCount() < panelWidget.length)

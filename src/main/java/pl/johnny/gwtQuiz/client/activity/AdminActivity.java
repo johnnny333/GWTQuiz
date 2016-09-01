@@ -67,6 +67,7 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 
 			@Override
 			public void onSuccess(String[] result) {
+				
 				adminView.setCategories(result);
 				
 				//Get tmp questions
@@ -74,7 +75,6 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 					
 					@Override
 					public void onSuccess(ArrayList<Question> result) {
-						GWT.log("getTmpQuestions: " + result.get(0).getCategory());
 						adminView.buildAndFillPanelsWithTmpQuestions(result);
 					}
 					
