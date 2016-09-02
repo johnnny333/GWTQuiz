@@ -62,7 +62,7 @@ public class AdminViewImpl extends Composite implements AdminView {
 		Alert noQuestionAlert = new Alert("No user questions!");
 		noQuestionAlert.addStyleName("text-center");
 		noQuestionAlert.setType(AlertType.INFO);
-		if(tmpQuestion.size() == 0){panelGroup.add(noQuestionAlert);};
+		if(tmpQuestion.size() == 0){panelGroup.clear();panelGroup.add(noQuestionAlert);};
 		
 		PanelWidget[] panelWidget = new PanelWidget[tmpQuestion.size()];
 
@@ -96,14 +96,19 @@ public class AdminViewImpl extends Composite implements AdminView {
 			panelWidget[i].setUserAuthorField(tmpQuestion.get(i).getAuthor());
 
 			// Avoid doubling widgets...
-			if (panelGroup.getWidgetCount() < panelWidget.length)
-				panelGroup.add(panelWidget[i]);
+			panelGroup.clear();
+			panelGroup.add(panelWidget[i]);
 		}
+	}
+	
+	@Override
+	public void refreshPanel() {
+		panelGroup.clear();
+		listener.fetchAndBuildPanelWithTmpQuestions();
 	}
 	
 	@UiHandler("refreshIcon")
 	void onRefreshIconClicked(ClickEvent e) {
-		panelGroup.clear();
-		listener.fetchAndBuildPanelWithTmpQuestions();
+		refreshPanel();
 	}
 }

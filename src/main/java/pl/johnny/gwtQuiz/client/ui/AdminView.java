@@ -31,4 +31,6 @@ public interface AdminView extends IsWidget
 	void setCategories(String[] categories);
 
 	void buildAndFillPanelsWithTmpQuestions(ArrayList<Question> tmpQuestion);
+
+	void refreshPanel();
 }

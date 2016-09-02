@@ -35,8 +35,9 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 		adminView = clientFactory.getAdminView();
 		adminView.setPresenter(this);
 		containerWidget.setWidget(adminView.asWidget());
-		
+
 		fetchAndBuildPanelWithTmpQuestions();
+		GWT.log("Started AdminiActivity!");
 	}
 
 	/**
@@ -100,12 +101,12 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 			@Override
 			public void onFailure(Throwable caught) {
 				GWT.log("acceptUserTmpQuestion failed", caught);
-				
 			}
 
 			@Override
 			public void onSuccess(Void result) {
-				GWT.log("acceptUserTmpQuestion succeded,");	
+				GWT.log("acceptUserTmpQuestion succeded,");
+				adminView.refreshPanel();
 			}
 		});
 	}
@@ -123,6 +124,7 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 			@Override
 			public void onSuccess(Void result) {
 				GWT.log("deleteUserTmpQuestion succeded");
+				adminView.refreshPanel();
 			}
 		});
 	}
