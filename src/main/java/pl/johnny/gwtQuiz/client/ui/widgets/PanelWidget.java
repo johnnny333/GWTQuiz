@@ -179,7 +179,6 @@ public class PanelWidget extends Composite {
 			Question userQuestion = new Question(userQuestionField.getValue(), userImageVar, userAnswers,
 					userCorrectAnsListBox.getSelectedValue(), userAuthorField.getValue(), userCategoryListBox.getSelectedValue());
 			
-			GWT.log(userImageVar);
 			//Send filled question model and its question id through RPC. 
 			listener.acceptUserTmpQuestion(userQuestion, panelCollapse.getId());
 		}
