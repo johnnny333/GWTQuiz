@@ -589,7 +589,7 @@ public class QuestionServiceDatabaseConn {
 	}
 
 	/**
-	 * Deletes user question temporary and user answer temporary by their ID.
+	 * Deletes temporary user question and temporary user answer by their ID.
 	 * @param questionID
 	 */
 	void deleteUserTmpQuestion(String questionID) {
@@ -645,7 +645,6 @@ public class QuestionServiceDatabaseConn {
 
 	}
 
-	//TODO Deleting question from tmp.
 	void acceptUserTmpQuestion(Question userQuestion, String tmpQuestionID) {
 
 		Integer questionID = null;
@@ -725,24 +724,27 @@ public class QuestionServiceDatabaseConn {
 			System.exit(0);
 		}
 
-		// Move uploaded image from quiz_resources/question_images_tmp/{question_id}/{file_name} to our main storage.
+		/* 
+		 * Move uploaded image from quiz_resources/question_images_tmp/{question_id}/{file_name} to our main storage.
+		 * After this, delete empty directory in quiz_resources/question_images_tmp.
+		 */
 		if(userQuestion.getImageURL() != null) {
 			try {
 
 				FileUtils.moveFileToDirectory(
-						/*
-						 * getImageURL resolves to full,absolute path of
-						 * uploaded image and was brought from servlet response
-						 * after successful image upload.So here we just use it
-						 * to point to a source file.
-						 */
-						FileUtils.getFile(userQuestion.getImageURL()),
+						
+						FileUtils.getFile("quiz_resources/question_images_tmp/" + tmpQuestionID + "/" + userQuestion.getImageURL()),
 						FileUtils.getFile("quiz_resources/question_images/" + (questionID + 1)), true);
+						
+						FileUtils.deleteDirectory(new File("quiz_resources/question_images_tmp/" + tmpQuestionID));
 
 			} catch (IOException e) {
 				System.err.println(e);
 			}
 		}
+		
+		//Finally delete this particular user question and answers from temporary tables.
+		deleteUserTmpQuestion(tmpQuestionID);
 
 	}
 

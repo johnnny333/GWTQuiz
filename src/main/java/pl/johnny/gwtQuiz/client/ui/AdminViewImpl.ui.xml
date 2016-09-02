@@ -11,6 +11,11 @@
 		margin-top: -13px;
 		cursor: pointer;
 	}
+	
+	.icon:ACTIVE {
+		color: #1070B5;
+	}
+
 	</ui:style>
 	<g:HTMLPanel>
 		<b:Container fluid="true">
