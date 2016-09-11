@@ -2,6 +2,10 @@ package pl.johnny.gwtQuiz.client;
 
 import java.util.ArrayList;
 
+import javax.validation.ConstraintViolationException;
+
+import org.hibernate.validator.engine.ValidationSupport;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import pl.johnny.gwtQuiz.shared.Question;
@@ -22,11 +26,18 @@ public interface QuestionServiceAsync {
 
 	void getCategories(AsyncCallback<String[]> asyncCallback);
 
-	void insertUserTmpQuestion(Question userQuestion, AsyncCallback<Void> asyncCallback);
+	void insertUserTmpQuestion(Question userQuestion, AsyncCallback<Void> asyncCallback) throws IllegalArgumentException,
+    ConstraintViolationException;
 
 	void getTmpQuestions(AsyncCallback<ArrayList<Question>> asynchCallback);
 
 	void deleteUserTmpQuestion(String questionID, AsyncCallback<Void> asyncCallback);
 
-	void acceptUserTmpQuestion(Question acceptedQuestion, String tmpQuestionID, AsyncCallback<Void> asyncCallback);	
+	void acceptUserTmpQuestion(Question acceptedQuestion, String tmpQuestionID, AsyncCallback<Void> asyncCallback);
+	
+	 /**
+	   * Force hibernate validator implementations to be available for
+	   * serialization.
+	   */
+	void dummy(AsyncCallback<ValidationSupport> callback);	
 }

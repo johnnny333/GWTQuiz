@@ -2,6 +2,10 @@ package pl.johnny.gwtQuiz.client;
 
 import java.util.ArrayList;
 
+import javax.validation.ConstraintViolationException;
+
+import org.hibernate.validator.engine.ValidationSupport;
+
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
@@ -21,14 +25,21 @@ public interface QuestionService extends RemoteService {
 	void updateUserScore(UserScore userScore);
 
 	void deleteUserScore(UserScore userScore);
-	
+
 	public String[] getCategories();
-	
-	public void insertUserTmpQuestion(Question userQuestion);
+
+	public void insertUserTmpQuestion(Question userQuestion)
+			throws IllegalArgumentException, ConstraintViolationException;
 
 	ArrayList<Question> getTmpQuestions();
 
 	void deleteUserTmpQuestion(String questionID);
 
 	void acceptUserTmpQuestion(Question acceptedQuestion, String tmpQuestionID);
+
+	/**
+	 * Force Hibernate validator implementations to be available for
+	 * serialization.
+	 */
+	ValidationSupport dummy();
 }

@@ -2,17 +2,35 @@ package pl.johnny.gwtQuiz.server;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.groups.Default;
+
+import org.hibernate.validator.engine.ValidationSupport;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import pl.johnny.gwtQuiz.client.QuestionService;
 import pl.johnny.gwtQuiz.shared.Question;
+import pl.johnny.gwtQuiz.shared.ServerGroup;
 import pl.johnny.gwtQuiz.shared.UserScore;
 
 @SuppressWarnings("serial")
 public class QuestionServiceImpl extends RemoteServiceServlet implements
 		QuestionService {
 	
+    private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    
+    @Override
+    public ValidationSupport dummy() {
+      return null;
+    }
+
 	private QuestionServiceDatabaseConn questionServiceDBConn;
 
 	public QuestionServiceImpl() {
@@ -58,7 +76,19 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	@Override
-	public void insertUserTmpQuestion(Question userQuestion){
+	public void insertUserTmpQuestion(Question userQuestion) throws IllegalArgumentException,
+    ConstraintViolationException {
+		
+		// Verify that the inputs is valid.
+	    Set<ConstraintViolation<Question>> violations = validator.validate(userQuestion,
+	        Default.class, ServerGroup.class);
+	    
+	    if (!violations.isEmpty()) {
+	      Set<ConstraintViolation<?>> temp = new HashSet<ConstraintViolation<?>>(
+	          violations);
+	      throw new ConstraintViolationException(temp);
+	    }
+		
 		questionServiceDBConn.insertUserQuestion(userQuestion);
 	}
 	
@@ -76,48 +106,4 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements
 	public void acceptUserTmpQuestion(Question acceptedQuestion,String tmpQuestionID){
 		questionServiceDBConn.acceptUserTmpQuestion(acceptedQuestion, tmpQuestionID);
 	}
-
-	//  @Override
-	//public Contact addContact(Contact contact) {
-	//    contact.setId(String.valueOf(contacts.size()));
-	//    contacts.put(contact.getId(), contact); 
-	//    return contact;
-	//  }
-	//
-	//  @Override
-	//public Contact updateContact(Contact contact) {
-	//    contacts.remove(contact.getId());
-	//    contacts.put(contact.getId(), contact); 
-	//    return contact;
-	//  }
-	//
-	//  @Override
-	//public Boolean deleteContact(String id) {
-	//    contacts.remove(id);
-	//    return true;
-	//  }
-
-	//  @Override
-	//public ArrayList<ContactDetails> deleteContacts(ArrayList<String> ids) {
-	//
-	//    for (int i = 0; i < ids.size(); ++i) {
-	//      deleteContact(ids.get(i));
-	//    }
-	//    
-	//    return getContactDetails();
-	//  }
-
-	//  @Override
-	//public ArrayList<ContactDetails> getContactDetails() {
-	//    ArrayList<ContactDetails> contactDetails = new ArrayList<ContactDetails>();
-	//    
-	//    Iterator<String> it = contacts.keySet().iterator();
-	//    while(it.hasNext()) { 
-	//      Contact contact = contacts.get(it.next());          
-	//      contactDetails.add(contact.getLightWeightContact());
-	//    }
-	//    
-	//    return contactDetails;
-	//  }
-
 }

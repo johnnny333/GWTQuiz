@@ -1,5 +1,10 @@
 package pl.johnny.gwtQuiz.client.activity;
 
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
@@ -12,24 +17,29 @@ import pl.johnny.gwtQuiz.client.place.AddQuestionsPlace;
 import pl.johnny.gwtQuiz.client.ui.AddQuestionsView;
 import pl.johnny.gwtQuiz.shared.Question;
 
-public class AddQuestionsActivity extends AbstractActivity implements
-	AddQuestionsView.Presenter {
+public class AddQuestionsActivity extends AbstractActivity implements AddQuestionsView.Presenter {
 	// Used to obtain views, eventBus, placeController
 	// Alternatively, could be injected via GIN
 	private ClientFactory clientFactory;
-	/**Field representing uploaded image name. If its null it means no image was uploaded. */
+	private AddQuestionsView addQuestionView;
+	
+	/**
+	 * Field representing uploaded image name. If its null it means no image was
+	 * uploaded.
+	 */
 	private String uploadedImagePath = null;
 
 	public AddQuestionsActivity(AddQuestionsPlace place, final ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
-		//Put categories from database into ListBox in this activity view.
+		addQuestionView = clientFactory.getAddQuestionsView();
+		// Put categories from database into ListBox in this activity view.
 		clientFactory.getQuestionsService().getCategories(new AsyncCallback<String[]>() {
-			
+
 			@Override
 			public void onSuccess(String[] result) {
-				clientFactory.getAddQuestionsView().setCategories(result);	
+				clientFactory.getAddQuestionsView().setCategories(result);
 			}
-			
+
 			@Override
 			public void onFailure(Throwable caught) {
 				GWT.log("Failed AddQuestionsActivity.getCategories() RPC! ", caught);
@@ -46,13 +56,13 @@ public class AddQuestionsActivity extends AbstractActivity implements
 		addQuestionView.setPresenter(this);
 		containerWidget.setWidget(addQuestionView.asWidget());
 	}
-	
+
 	/**
 	 * Ask user before stopping this activity
 	 */
 	@Override
 	public String mayStop() {
-//		return "The quiz is about to start!";
+		// return "The quiz is about to start!";
 		return null;
 	}
 
@@ -70,6 +80,28 @@ public class AddQuestionsActivity extends AbstractActivity implements
 
 			@Override
 			public void onFailure(Throwable caught) {
+				
+				//Catch Hibernate validation exception message.
+				if (caught instanceof ConstraintViolationException) {
+
+					ConstraintViolationException violationException = (ConstraintViolationException) caught;
+					Set<ConstraintViolation<?>> violations = violationException.getConstraintViolations();
+
+					StringBuffer sb = new StringBuffer();
+					for (ConstraintViolation<?> constraintViolation : violations) {
+						sb.append(constraintViolation.getPropertyPath().toString())
+								.append(":") //
+								.append(constraintViolation.getMessage())
+								.append("\n");
+					
+					addQuestionView.setServerErrorMessage(constraintViolation.getPropertyPath().toString(),  
+							constraintViolation.getMessage());
+
+					}
+					GWT.log("Author field message " + sb);
+					return;
+				}
+
 				GWT.log("insertUserQuestion failed", caught);
 			}
 
@@ -79,12 +111,12 @@ public class AddQuestionsActivity extends AbstractActivity implements
 			}
 		});
 	}
-	
+
 	@Override
 	public void setUploadedImageName(String uploadedImageName) {
 		this.uploadedImagePath = uploadedImageName;
 	}
-	
+
 	@Override
 	public String getUploadedImageName() {
 		return uploadedImagePath;

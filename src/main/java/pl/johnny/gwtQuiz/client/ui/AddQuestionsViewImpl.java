@@ -3,6 +3,7 @@ package pl.johnny.gwtQuiz.client.ui;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.Form;
 import org.gwtbootstrap3.client.ui.FormGroup;
+import org.gwtbootstrap3.client.ui.InlineHelpBlock;
 import org.gwtbootstrap3.client.ui.ListBox;
 import org.gwtbootstrap3.client.ui.TextBox;
 import org.gwtbootstrap3.client.ui.constants.ValidationState;
@@ -57,6 +58,10 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 	TextBox answer4Field;
 	@UiField
 	TextBox authorField;
+	@UiField
+	InlineHelpBlock authorInlineHelpBlock;
+	@UiField
+	FormGroup authorFormGroup;
 
 	public AddQuestionsViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -71,11 +76,11 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 		this.listener = listener;
 
 		/*
-		 * Add image widget to this view and hand instance of listener so it communicate 
-		 * with this view. 
+		 * Add image widget to this view and hand instance of listener so it
+		 * communicate with this view.
 		 */
 		GWT.log("Image widget count before: " + imageWidget.getWidgetCount());
-		if(imageWidget.getWidgetCount() < 1) {
+		if (imageWidget.getWidgetCount() < 1) {
 			imageWidget.add(new UploadWidget(listener));
 			GWT.log("In add()");
 		} else {
@@ -98,47 +103,48 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 		 * decreased by 1, but our non-updated condition in for loop would
 		 * remain the same, hence, we end up with IndexOutOfBounsException;
 		 */
-		while(listBoxLength != 1) {
+		while (listBoxLength != 1) {
 			int i = listBoxLength;
 			categoryListBox.removeItem(i - 1);
 			// Important - update total items count after remove()
 			listBoxLength = categoryListBox.getItemCount();
 		}
 
-		for(int i = 0; i < categories.length; i++) {
+		for (int i = 0; i < categories.length; i++) {
 			categoryListBox.addItem(categories[i]);
 		}
 	}
 
 	@UiHandler("formValidateButton")
 	public void onFormValidateClick(ClickEvent event) {
-		//		Check is form is properly filled. If yes, send new question model.Else, highlight unfilled fields.
-		if(form.validate() == true && categoryListBox.getSelectedValue() != "Choose your question category..."
+		// Check is form is properly filled. If yes, send new question
+		// model.Else, highlight unfilled fields.
+		if (form.validate() == true && categoryListBox.getSelectedValue() != "Choose your question category..."
 				&& correctAnsListBox.getSelectedValue() != "Which answer is correct?") {
 			GWT.log("Form validated!");
 
-			//Create user question model from filled fields
-			String[] userAnswers = new String[] { answer1Field.getValue(), answer2Field.getValue(), answer3Field.getValue(), answer4Field.getValue() };
+			// Create user question model from filled fields
+			String[] userAnswers = new String[] { answer1Field.getValue(), answer2Field.getValue(),
+					answer3Field.getValue(), answer4Field.getValue() };
 			Question userQuestion = new Question(questionField.getValue(), listener.getUploadedImageName(), userAnswers,
 					correctAnsListBox.getSelectedValue(), authorField.getValue(), categoryListBox.getSelectedValue());
 			// There goes RPC logic over activity...
 			listener.insertUserQuestion(userQuestion);
-			//After sending user question either with or without image, reset uploadedImageName to null (no image). 
-			//			listener.setUploadedImageName(null);
+			
 			formReset();
 
 		} else {
 			/*
-			 * GWTBootstrap3 already red-highlighted empty text fields, so here we only red-highlight selects
-			 * which are not validated natively.
+			 * GWTBootstrap3 already red-highlighted empty text fields, so here
+			 * we only red-highlight selects which are not validated natively.
 			 */
-			if(categoryListBox.getSelectedValue() == "Choose your question category...") {
+			if (categoryListBox.getSelectedValue() == "Choose your question category...") {
 				categorySelectFormGroup.setValidationState(ValidationState.ERROR);
 			} else {
 				categorySelectFormGroup.setValidationState(ValidationState.NONE);
 			}
 
-			if(correctAnsListBox.getSelectedValue() == "Which answer is correct?") {
+			if (correctAnsListBox.getSelectedValue() == "Which answer is correct?") {
 				correctAnsFormGroup.setValidationState(ValidationState.ERROR);
 			} else {
 				correctAnsFormGroup.setValidationState(ValidationState.NONE);
@@ -154,9 +160,10 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 	/** Reset all fields in addQuestionView */
 	public void formReset() {
 		/*
-		 * Reset removes all text-fields native error-highlight so we must manually remove them from non-native
-		 * selects(TextBox). Author field is saved to avoid users hassle of retyping their names on every another 
-		 * question submits. 
+		 * Reset removes all text-fields native error-highlight so we must
+		 * manually remove them from non-native selects(TextBox). Author field
+		 * is saved to avoid users hassle of retyping their names on every
+		 * another question submits.
 		 */
 		String authorValue = authorField.getValue();
 		form.reset();
@@ -166,14 +173,30 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 		correctAnsFormGroup.setValidationState(ValidationState.NONE);
 		correctAnsListBox.setItemSelected(0, true);
 
-		/* Here, we hide img tag with image we just uploaded AND set upload image name to null
-		 * so our picture is technically in the DOM but won't be submitted since our
-		 * AddQuestionActivity.uploadedImagePath is null. formReset() is called after 
-		 * onFormValidateClick(ClickEvent event)
-		 * and after onFormResetClick(ClickEvent event).
+		/*
+		 * Here, we hide img tag with image we just uploaded AND set upload
+		 * image name to null so our picture is technically in the DOM but won't
+		 * be submitted since our AddQuestionActivity.uploadedImagePath is null.
+		 * formReset() is called after onFormValidateClick(ClickEvent event) and
+		 * after onFormResetClick(ClickEvent event).
 		 */
 		listener.setUploadedImageName(null);
-		if(DOM.getElementById("recivedImage") != null)
+		if (DOM.getElementById("recivedImage") != null)
 			DOM.getElementById("recivedImage").setAttribute("style", "display:none");
+	}
+
+	@Override
+	public void setServerErrorMessage(String propertyPath, String errorMessage) {
+
+		switch (propertyPath) {
+		case "authorData":
+			authorFormGroup.setValidationState(ValidationState.ERROR);
+			authorInlineHelpBlock.setText(errorMessage);
+			break;
+
+		default:
+			GWT.log("Question Validation server error " + propertyPath + ": " + errorMessage);
+			break;
+		}
 	}
 }

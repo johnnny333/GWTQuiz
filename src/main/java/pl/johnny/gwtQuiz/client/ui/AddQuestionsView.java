@@ -43,4 +43,11 @@ public interface AddQuestionsView extends IsWidget
 		 */
 		String getUploadedImageName();
 	}
+	
+	/**
+	 * Display error message in a view.
+	 * @param propertyPath - used to determine to which field append error message.
+	 * @param errorMessage - actual error message.
+	 */
+	void setServerErrorMessage(String propertyPath, String errorMessage);
 }
