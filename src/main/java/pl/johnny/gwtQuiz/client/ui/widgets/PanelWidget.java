@@ -5,12 +5,15 @@ package pl.johnny.gwtQuiz.client.ui.widgets;
 
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.Form;
+import org.gwtbootstrap3.client.ui.FormGroup;
 import org.gwtbootstrap3.client.ui.Image;
+import org.gwtbootstrap3.client.ui.InlineHelpBlock;
 import org.gwtbootstrap3.client.ui.ListBox;
 import org.gwtbootstrap3.client.ui.PanelCollapse;
 import org.gwtbootstrap3.client.ui.PanelGroup;
 import org.gwtbootstrap3.client.ui.PanelHeader;
 import org.gwtbootstrap3.client.ui.TextBox;
+import org.gwtbootstrap3.client.ui.constants.ValidationState;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -65,21 +68,33 @@ public class PanelWidget extends Composite {
 
 	@UiField
 	TextBox userAuthorField;
-	
-	@UiField 
+
+	@UiField
 	PanelHeader imgPanelHeader;
-	
+
 	@UiField
 	PanelCollapse imgPanelCollapse;
-	
+
 	@UiField
 	Form form;
-	
+
 	@UiField
 	Button acceptQuestionButton;
-	
+
 	@UiField
 	Button deleteQuestionButton;
+	
+	@UiField
+	InlineHelpBlock questionInlineHelpBlock;
+	
+	@UiField
+	FormGroup questionFormGroup;
+	
+	@UiField
+	InlineHelpBlock authorInlineHelpBlock;
+	
+	@UiField
+	FormGroup authorFormGroup;
 
 	private Presenter listener;
 
@@ -126,7 +141,7 @@ public class PanelWidget extends Composite {
 	 * @param userImageURL
 	 * @param questionID
 	 */
-	public void setUserImage(String questionID , String userImageURL) {
+	public void setUserImage(String questionID, String userImageURL) {
 
 		if (userImageURL != null) {
 			imgPanelHeader.setDataTarget("#" + questionID + "userQuestionImage");
@@ -163,35 +178,63 @@ public class PanelWidget extends Composite {
 	public void setUserAuthorField(String userAuthor) {
 		userAuthorField.setText(userAuthor);
 	}
-	
+
 	@UiHandler("acceptQuestionButton")
-	void onAcceptQuestionButtonClicked(ClickEvent e){
-		
-		//Check for empty fields.
-		if(form.validate() == true ) {
+	void onAcceptQuestionButtonClicked(ClickEvent e) {
+
+		// Check for empty fields.
+		if (form.validate()) {
 			GWT.log("Question validated!");
-			
-			//Check for the existence of image in form. 
+
+			// Check for the existence of image in form.
 			String userImageVar = null;
-			if(userImage.getUrl() != ""){userImageVar = userImage.getUrl().substring(userImage.getUrl().lastIndexOf("/") + 1);;};
-			//Fill question model with data from form.
-			String[] userAnswers = new String[] { userAnswer1Field.getValue(), userAnswer2Field.getValue(), userAnswer3Field.getValue(), userAnswer4Field.getValue() };
+			if (userImage.getUrl() != "") {
+				userImageVar = userImage.getUrl().substring(userImage.getUrl().lastIndexOf("/") + 1);
+				;
+			}
+			;
+			// Fill question model with data from form.
+			String[] userAnswers = new String[] { userAnswer1Field.getValue(), userAnswer2Field.getValue(),
+					userAnswer3Field.getValue(), userAnswer4Field.getValue() };
 			Question userQuestion = new Question(userQuestionField.getValue(), userImageVar, userAnswers,
-					userCorrectAnsListBox.getSelectedValue(), userAuthorField.getValue(), userCategoryListBox.getSelectedValue());
-			
-			//Send filled question model and its question id through RPC. 
+					userCorrectAnsListBox.getSelectedValue(), userAuthorField.getValue(),
+					userCategoryListBox.getSelectedValue());
+
+			// Send filled question model and its question id through RPC.
 			listener.acceptUserTmpQuestion(userQuestion, panelCollapse.getId());
+
 		}
 	}
-	
+
 	@UiHandler("deleteQuestionButton")
-	void onDeleteQuestionButtonClicked(ClickEvent e){
-		
-			String tmpQuestionID = panelCollapse.getId();
-			
-			GWT.log("Question is about to be deleted ID! " + tmpQuestionID);
-			
-			//Send filled question model through RPC. 
-			listener.deleteUserTmpQuestion(tmpQuestionID);
+	void onDeleteQuestionButtonClicked(ClickEvent e) {
+
+		String tmpQuestionID = panelCollapse.getId();
+
+		GWT.log("Question is about to be deleted ID! " + tmpQuestionID);
+
+		// Send filled question model through RPC.
+		listener.deleteUserTmpQuestion(tmpQuestionID);
+	}
+
+	public void setServerErrorMessage(String propertyPath, String errorMessage) {
+
+		if (panelCollapse.isIn()) {
+
+			switch (propertyPath) {
+			case "authorData":
+				authorFormGroup.setValidationState(ValidationState.ERROR);
+				authorInlineHelpBlock.setText(errorMessage);
+				break;
+			case "question":
+				questionFormGroup.setValidationState(ValidationState.ERROR);
+				questionInlineHelpBlock.setText(errorMessage);
+				break;
+
+			default:
+				GWT.log("Accept Question Validation server error " + propertyPath + ": " + errorMessage);
+				break;
+			}
+		}
 	}
 }

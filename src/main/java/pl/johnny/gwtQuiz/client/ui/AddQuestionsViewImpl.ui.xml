@@ -58,9 +58,9 @@
 										</b:Panel>
 									</b:PanelGroup>
 
-									<b:FormGroup>
+									<b:FormGroup ui:field="questionFormGroup">
 										<b:FormLabel for="formName" text="Question"></b:FormLabel>
-										<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
+										<b:InlineHelpBlock ui:field="questionInlineHelpBlock" iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
 										<b:TextBox maxLength="50" placeholder="Fill in your question..."
 											b:id="formName" validateOnBlur="true" allowBlank="false"
 											ui:field="questionField" />
@@ -113,7 +113,7 @@
 										<b:FormLabel for="authorField" text="Author"></b:FormLabel>
 										<b:InlineHelpBlock ui:field="authorInlineHelpBlock" iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
 										<b:TextBox placeholder="Fill in your nick / name!"
-											ui:field="authorField"  maxLength="20" addStyleNames='{style.ansBut}'
+											ui:field="authorField" maxLength="20" addStyleNames='{style.ansBut}'
 											b:id="authorField" validateOnBlur="true" allowBlank="false" />
 									</b:FormGroup>
 								</b:PanelBody>

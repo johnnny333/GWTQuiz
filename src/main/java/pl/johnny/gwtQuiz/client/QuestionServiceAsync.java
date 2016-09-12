@@ -33,7 +33,8 @@ public interface QuestionServiceAsync {
 
 	void deleteUserTmpQuestion(String questionID, AsyncCallback<Void> asyncCallback);
 
-	void acceptUserTmpQuestion(Question acceptedQuestion, String tmpQuestionID, AsyncCallback<Void> asyncCallback);
+	void acceptUserTmpQuestion(Question acceptedQuestion, String tmpQuestionID, AsyncCallback<Void> asyncCallback) throws IllegalArgumentException,
+    ConstraintViolationException;
 	
 	 /**
 	   * Force hibernate validator implementations to be available for

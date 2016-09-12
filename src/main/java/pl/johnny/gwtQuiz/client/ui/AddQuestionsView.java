@@ -50,4 +50,6 @@ public interface AddQuestionsView extends IsWidget
 	 * @param errorMessage - actual error message.
 	 */
 	void setServerErrorMessage(String propertyPath, String errorMessage);
+
+	void formReset();
 }

@@ -1,26 +1,28 @@
-package pl.johnny.gwtQuiz.shared;
-
-import javax.validation.constraints.Size;
-
-
-import com.google.gwt.user.client.rpc.IsSerializable;
-
-import pl.johnny.gwtQuiz.shared.ServerConstraint;
-
 /**
  * Model Class.
  * @author jzarewicz
  *
  */
+package pl.johnny.gwtQuiz.shared;
+
+import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.Range;
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 @ServerConstraint(groups = ServerGroup.class)
 public class Question implements IsSerializable {
-
+	
+	@Size(min = 1, max = 50, groups = ServerGroup.class)
 	private String question;
+	
 	private String[] answers;
+	
 	private String correctAnsw;
+	
+	@Range(min = 0, max = 3, groups = ServerGroup.class)
 	private int correctAnswersInt;
 	
-	@Size(max = 20, groups = ServerGroup.class)
+	@Size(min = 1, max = 20, groups = ServerGroup.class)
 	private String authorData;
 	
 	private String categoryData;

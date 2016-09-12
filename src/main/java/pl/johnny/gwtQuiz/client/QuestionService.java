@@ -35,7 +35,8 @@ public interface QuestionService extends RemoteService {
 
 	void deleteUserTmpQuestion(String questionID);
 
-	void acceptUserTmpQuestion(Question acceptedQuestion, String tmpQuestionID);
+	void acceptUserTmpQuestion(Question acceptedQuestion, String tmpQuestionID) throws IllegalArgumentException,
+    ConstraintViolationException;
 
 	/**
 	 * Force Hibernate validator implementations to be available for

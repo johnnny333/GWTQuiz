@@ -103,7 +103,19 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	@Override
-	public void acceptUserTmpQuestion(Question acceptedQuestion,String tmpQuestionID){
+	public void acceptUserTmpQuestion(Question acceptedQuestion,String tmpQuestionID) throws IllegalArgumentException,
+    ConstraintViolationException {
+		
+		// Verify that the inputs is valid.
+	    Set<ConstraintViolation<Question>> violations = validator.validate(acceptedQuestion,
+	        Default.class, ServerGroup.class);
+	    
+	    if (!violations.isEmpty()) {
+	      Set<ConstraintViolation<?>> temp = new HashSet<ConstraintViolation<?>>(
+	          violations);
+	      throw new ConstraintViolationException(temp);
+	    }
+		
 		questionServiceDBConn.acceptUserTmpQuestion(acceptedQuestion, tmpQuestionID);
 	}
 }

@@ -62,6 +62,10 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 	InlineHelpBlock authorInlineHelpBlock;
 	@UiField
 	FormGroup authorFormGroup;
+	@UiField
+	InlineHelpBlock questionInlineHelpBlock;
+	@UiField
+	FormGroup questionFormGroup;
 
 	public AddQuestionsViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -131,8 +135,6 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 			// There goes RPC logic over activity...
 			listener.insertUserQuestion(userQuestion);
 			
-			formReset();
-
 		} else {
 			/*
 			 * GWTBootstrap3 already red-highlighted empty text fields, so here
@@ -158,6 +160,7 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 	}
 
 	/** Reset all fields in addQuestionView */
+	@Override
 	public void formReset() {
 		/*
 		 * Reset removes all text-fields native error-highlight so we must
@@ -192,6 +195,10 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 		case "authorData":
 			authorFormGroup.setValidationState(ValidationState.ERROR);
 			authorInlineHelpBlock.setText(errorMessage);
+			break;
+		case "question":
+			questionFormGroup.setValidationState(ValidationState.ERROR);
+			questionInlineHelpBlock.setText(errorMessage);
 			break;
 
 		default:

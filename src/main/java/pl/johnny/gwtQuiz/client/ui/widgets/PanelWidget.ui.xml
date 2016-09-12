@@ -11,97 +11,97 @@
 			dataTarget="#collapseOne" text="One" ui:field="header">
 		</b:PanelHeader>
 		<b:PanelCollapse b:id="collapseOne" ui:field="panelCollapse">
-				
+
 			<b:PanelBody>
-			
-			<b:Form ui:field="form">
-				<!-- Form! -->
-				<b:FormGroup ui:field="categorySelectFormGroup">
-					<b:FormLabel for="categoryListBox" text="Category"></b:FormLabel>
-					<b:ListBox b:id="categoryListBox" ui:field="userCategoryListBox">
-					</b:ListBox>
-				</b:FormGroup>
 
-				<b:PanelGroup b:id="accordion" visible="false" ui:field="userImagePanel">
-					<b:FormLabel text="Image"></b:FormLabel>
-					<b:Panel>
-						<b:PanelHeader dataToggle="COLLAPSE" dataParent="#accordion2"
-							dataTarget="#userQuestionImage" text="Question image" 
-							ui:field="imgPanelHeader">
-						</b:PanelHeader>
-						<b:PanelCollapse b:id="userQuestionImage" ui:field="imgPanelCollapse">
-							<b:PanelBody>
-								<b:Image responsive="true" type="ROUNDED" ui:field="userImage"></b:Image>
-							</b:PanelBody>
-						</b:PanelCollapse>
-					</b:Panel>
-				</b:PanelGroup>
+				<b:Form ui:field="form">
+					<!-- Form! -->
+					<b:FormGroup ui:field="categorySelectFormGroup">
+						<b:FormLabel for="categoryListBox" text="Category"></b:FormLabel>
+						<b:ListBox b:id="categoryListBox" ui:field="userCategoryListBox">
+						</b:ListBox>
+					</b:FormGroup>
 
-				<b:FormGroup>
-					<b:FormLabel for="formName" text="Question"></b:FormLabel>
-					<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
-					<b:TextBox maxLength="50" placeholder="Fill in your question..."
-						b:id="formName" validateOnBlur="true" allowBlank="false" ui:field="userQuestionField" />
-				</b:FormGroup>
+					<b:PanelGroup b:id="accordion" visible="false"
+						ui:field="userImagePanel">
+						<b:FormLabel text="Image"></b:FormLabel>
+						<b:Panel>
+							<b:PanelHeader dataToggle="COLLAPSE" dataParent="#accordion2"
+								dataTarget="#userQuestionImage" text="Question image" ui:field="imgPanelHeader">
+							</b:PanelHeader>
+							<b:PanelCollapse b:id="userQuestionImage"
+								ui:field="imgPanelCollapse">
+								<b:PanelBody>
+									<b:Image responsive="true" type="ROUNDED" ui:field="userImage"></b:Image>
+								</b:PanelBody>
+							</b:PanelCollapse>
+						</b:Panel>
+					</b:PanelGroup>
 
-				<b:FormGroup>
-					<b:FormLabel for="answer1" text="First answer"></b:FormLabel>
-					<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
-					<b:TextBox placeholder="Fill in your answer!" ui:field="userAnswer1Field"
-						maxLength="20" b:id="answer1"
-						validateOnBlur="true" allowBlank="false" />
-				</b:FormGroup>
+					<b:FormGroup ui:field="questionFormGroup">
+						<b:FormLabel for="questionField" text="Question"></b:FormLabel>
+						<b:InlineHelpBlock ui:field="questionInlineHelpBlock" iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
+						<b:TextBox maxLength="50" placeholder="Fill in your question..."
+							b:id="questionField" validateOnBlur="true" allowBlank="false"
+							ui:field="userQuestionField" />
+					</b:FormGroup>
 
-				<b:FormGroup>
-					<b:FormLabel for="answer2" text="Second answer"></b:FormLabel>
-					<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
-					<b:TextBox placeholder="Fill in your answer!" ui:field="userAnswer2Field"
-						maxLength="20" b:id="answer2"
-						validateOnBlur="true" allowBlank="false" />
-				</b:FormGroup>
+					<b:FormGroup>
+						<b:FormLabel for="answer1" text="First answer"></b:FormLabel>
+						<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
+						<b:TextBox placeholder="Fill in your answer!" ui:field="userAnswer1Field"
+							maxLength="20" b:id="answer1" validateOnBlur="true" allowBlank="false" />
+					</b:FormGroup>
 
-				<b:FormGroup>
-					<b:FormLabel for="answer3" text="Third answer"></b:FormLabel>
-					<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
-					<b:TextBox placeholder="Fill in your answer!" ui:field="userAnswer3Field"
-						maxLength="20" b:id="answer3"
-						validateOnBlur="true" allowBlank="false" />
-				</b:FormGroup>
+					<b:FormGroup>
+						<b:FormLabel for="answer2" text="Second answer"></b:FormLabel>
+						<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
+						<b:TextBox placeholder="Fill in your answer!" ui:field="userAnswer2Field"
+							maxLength="20" b:id="answer2" validateOnBlur="true" allowBlank="false" />
+					</b:FormGroup>
 
-				<b:FormGroup>
-					<b:FormLabel for="answer4" text="Fourth answer"></b:FormLabel>
-					<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
-					<b:TextBox placeholder="Fill in your answer!" ui:field="userAnswer4Field"
-						maxLength="20"  b:id="answer4"
-						validateOnBlur="true" allowBlank="false" />
-				</b:FormGroup>
+					<b:FormGroup>
+						<b:FormLabel for="answer3" text="Third answer"></b:FormLabel>
+						<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
+						<b:TextBox placeholder="Fill in your answer!" ui:field="userAnswer3Field"
+							maxLength="20" b:id="answer3" validateOnBlur="true" allowBlank="false" />
+					</b:FormGroup>
 
-				<b:FormGroup ui:field="correctAnsFormGroup">
-					<b:FormLabel for="correctAnsListBox" text="Which answer is correct?"></b:FormLabel>
-					<b:ListBox b:id="correctAnsListBox" ui:field="userCorrectAnsListBox">
-						<g:item value='0'>First</g:item>
-						<g:item value='1'>Second</g:item>
-						<g:item value='2'>Third</g:item>
-						<g:item value='3'>Fourth</g:item>
-					</b:ListBox>
-				</b:FormGroup>
+					<b:FormGroup>
+						<b:FormLabel for="answer4" text="Fourth answer"></b:FormLabel>
+						<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
+						<b:TextBox placeholder="Fill in your answer!" ui:field="userAnswer4Field"
+							maxLength="20" b:id="answer4" validateOnBlur="true" allowBlank="false" />
+					</b:FormGroup>
 
-				<b:FormGroup>
-					<b:FormLabel for="authorField" text="Author"></b:FormLabel>
-					<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
-					<b:TextBox placeholder="Fill in your nick / name!"
-						ui:field="userAuthorField" maxLength="20"
-						b:id="authorField" validateOnBlur="true" allowBlank="false" />
-				</b:FormGroup>
-<!-- 				END-OF-FORM -->
-</b:Form>
+					<b:FormGroup ui:field="correctAnsFormGroup">
+						<b:FormLabel for="correctAnsListBox" text="Which answer is correct?"></b:FormLabel>
+						<b:ListBox b:id="correctAnsListBox" ui:field="userCorrectAnsListBox">
+							<g:item value='0'>First</g:item>
+							<g:item value='1'>Second</g:item>
+							<g:item value='2'>Third</g:item>
+							<g:item value='3'>Fourth</g:item>
+						</b:ListBox>
+					</b:FormGroup>
+
+					<b:FormGroup ui:field="authorFormGroup">
+						<b:FormLabel for="authorField" text="Author"></b:FormLabel>
+						<b:InlineHelpBlock ui:field="authorInlineHelpBlock" iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
+						<b:TextBox placeholder="Fill in your nick / name!"
+							ui:field="userAuthorField" maxLength="20" b:id="authorField"
+							validateOnBlur="true" allowBlank="false" />
+					</b:FormGroup>
+					<!-- END-OF-FORM -->
+				</b:Form>
 			</b:PanelBody>
-			
+
 			<b:PanelFooter addStyleNames="text-center add-form-buttons">
-								<b:Button ui:field="acceptQuestionButton" type="SUCCESS">Accept Question</b:Button>
-								<b:Button ui:field="deleteQuestionButton" type="DANGER">Delete Question</b:Button>
-							</b:PanelFooter>
-			
+				<b:Button ui:field="acceptQuestionButton" type="SUCCESS">Accept
+					Question</b:Button>
+				<b:Button ui:field="deleteQuestionButton" type="DANGER">Delete
+					Question</b:Button>
+			</b:PanelFooter>
+
 		</b:PanelCollapse>
 	</b:Panel>
 

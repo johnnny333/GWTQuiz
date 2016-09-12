@@ -4,6 +4,10 @@
 package pl.johnny.gwtQuiz.client.activity;
 
 import java.util.ArrayList;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.core.shared.GWT;
@@ -15,6 +19,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import pl.johnny.gwtQuiz.client.ClientFactory;
 import pl.johnny.gwtQuiz.client.place.AdminPlace;
 import pl.johnny.gwtQuiz.client.ui.AdminView;
+import pl.johnny.gwtQuiz.client.ui.widgets.PanelWidget;
 import pl.johnny.gwtQuiz.shared.Question;
 
 public class AdminActivity extends AbstractActivity implements AdminView.Presenter {
@@ -56,29 +61,30 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 	public void goTo(Place place) {
 		clientFactory.getPlaceController().goTo(place);
 	}
-	
+
 	/**
-	 * Set categories from database into field in AdminView. After successful upload of categories,
-	 * call database for temporary questions and hand them to AdminView.
+	 * Set categories from database into field in AdminView. After successful
+	 * upload of categories, call database for temporary questions and hand them
+	 * to AdminView.
 	 */
 	@Override
-	public void fetchAndBuildPanelWithTmpQuestions(){
-		
+	public void fetchAndBuildPanelWithTmpQuestions() {
+
 		clientFactory.getQuestionsService().getCategories(new AsyncCallback<String[]>() {
 
 			@Override
 			public void onSuccess(String[] result) {
-				
+
 				adminView.setCategories(result);
-				
-				//Get tmp questions
+
+				// Get tmp questions
 				clientFactory.getQuestionsService().getTmpQuestions(new AsyncCallback<ArrayList<Question>>() {
-					
+
 					@Override
 					public void onSuccess(ArrayList<Question> result) {
 						adminView.buildAndFillPanelsWithTmpQuestions(result);
 					}
-					
+
 					@Override
 					public void onFailure(Throwable caught) {
 						GWT.log("Failed AdminActivity.getTmpQuestions() RPC! ", caught);
@@ -92,28 +98,55 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 			}
 		});
 	}
-	
+
 	@Override
 	public void acceptUserTmpQuestion(Question acceptedQuestion, String tmpQuestionID) {
-		//TODO make 'acceptUserTmpQuestion' service...
-		clientFactory.getQuestionsService().acceptUserTmpQuestion(acceptedQuestion, tmpQuestionID, new AsyncCallback<Void>() {
+		clientFactory.getQuestionsService().acceptUserTmpQuestion(acceptedQuestion, tmpQuestionID,
+				new AsyncCallback<Void>() {
 
-			@Override
-			public void onFailure(Throwable caught) {
-				GWT.log("acceptUserTmpQuestion failed", caught);
-			}
+					@Override
+					public void onFailure(Throwable caught) {
 
-			@Override
-			public void onSuccess(Void result) {
-				GWT.log("acceptUserTmpQuestion succeded,");
-				adminView.refreshPanel();
-			}
-		});
+						// Catch Hibernate validation exception message.
+						if (caught instanceof ConstraintViolationException) {
+
+							ConstraintViolationException violationException = (ConstraintViolationException) caught;
+							Set<ConstraintViolation<?>> violations = violationException.getConstraintViolations();
+
+							StringBuffer sb = new StringBuffer();
+							for (ConstraintViolation<?> constraintViolation : violations) {
+								sb.append(constraintViolation.getPropertyPath().toString()).append(":")
+										.append(constraintViolation.getMessage()).append("\n")
+										.append(constraintViolation.getRootBean());
+
+								GWT.log("acceptUserTmpQuestion hibernate " + sb);
+
+								PanelWidget[] panelWidgets = adminView.getPanelWidgets();
+
+								for (int i = 0; i < panelWidgets.length; i++) {
+									panelWidgets[i].setServerErrorMessage(
+											constraintViolation.getPropertyPath().toString(),
+											constraintViolation.getMessage());
+								}
+
+							}
+							GWT.log("insertUserQuestion On Failure hibernate " + sb);
+							return;
+						}
+
+						GWT.log("acceptUserTmpQuestion failed", caught);
+					}
+
+					@Override
+					public void onSuccess(Void result) {
+						GWT.log("acceptUserTmpQuestion succeded,");
+						adminView.refreshPanel();
+					}
+				});
 	}
-	
+
 	@Override
 	public void deleteUserTmpQuestion(String questionID) {
-		//TODO make 'deleteUserTmpQuestion' service...
 		clientFactory.getQuestionsService().deleteUserTmpQuestion(questionID, new AsyncCallback<Void>() {
 
 			@Override

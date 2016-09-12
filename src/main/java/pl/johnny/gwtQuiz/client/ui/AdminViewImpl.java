@@ -37,6 +37,8 @@ public class AdminViewImpl extends Composite implements AdminView {
 	private Presenter listener;
 	private String[] categories;
 
+	private PanelWidget[] panelWidgets;
+
 	public AdminViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
@@ -62,42 +64,44 @@ public class AdminViewImpl extends Composite implements AdminView {
 		Alert noQuestionAlert = new Alert("No user questions!");
 		noQuestionAlert.addStyleName("text-center");
 		noQuestionAlert.setType(AlertType.INFO);
-		if(tmpQuestion.size() == 0){panelGroup.clear();panelGroup.add(noQuestionAlert);};
+		if(tmpQuestion.size() == 0){panelGroup.clear();panelGroup.add(noQuestionAlert);return;};
 		
-		PanelWidget[] panelWidget = new PanelWidget[tmpQuestion.size()];
-
-		for (int i = 0; i < panelWidget.length; i++) {
-			panelWidget[i] = new PanelWidget(listener);
-			panelWidget[i].setUserCategoryListBox(categories, tmpQuestion.get(i).getCategory());
-			panelWidget[i].setHeaderAndIDs(tmpQuestion.get(i).getID(), tmpQuestion.get(i).getQuestion());
-			panelWidget[i].setUserImage(tmpQuestion.get(i).getID(), tmpQuestion.get(i).getImageURL());
-			panelWidget[i].setUserQuestionField(tmpQuestion.get(i).getQuestion());
+		panelWidgets = new PanelWidget[tmpQuestion.size()];
+		
+		// Avoid doubling widgets...
+		panelGroup.clear();
+		
+		for (int i = 0; i < panelWidgets.length; i++) {
+			
+			panelWidgets[i] = new PanelWidget(listener);
+			panelWidgets[i].setUserCategoryListBox(categories, tmpQuestion.get(i).getCategory());
+			panelWidgets[i].setHeaderAndIDs(tmpQuestion.get(i).getID(), tmpQuestion.get(i).getQuestion());
+			panelWidgets[i].setUserImage(tmpQuestion.get(i).getID(), tmpQuestion.get(i).getImageURL());
+			panelWidgets[i].setUserQuestionField(tmpQuestion.get(i).getQuestion());
 
 			for (int j = 0; j < tmpQuestion.get(i).getAnswers().length; j++) {
-				panelWidget[i].setUserAnswer1Field(tmpQuestion.get(i).getAnswer(j));
+				panelWidgets[i].setUserAnswer1Field(tmpQuestion.get(i).getAnswer(j));
 
 				switch (j) {
 				case 0:
-					panelWidget[i].setUserAnswer1Field(tmpQuestion.get(i).getAnswer(j));
+					panelWidgets[i].setUserAnswer1Field(tmpQuestion.get(i).getAnswer(j));
 					break;
 				case 1:
-					panelWidget[i].setUserAnswer2Field(tmpQuestion.get(i).getAnswer(j));
+					panelWidgets[i].setUserAnswer2Field(tmpQuestion.get(i).getAnswer(j));
 					break;
 				case 2:
-					panelWidget[i].setUserAnswer3Field(tmpQuestion.get(i).getAnswer(j));
+					panelWidgets[i].setUserAnswer3Field(tmpQuestion.get(i).getAnswer(j));
 					break;
 				case 3:
-					panelWidget[i].setUserAnswer4Field(tmpQuestion.get(i).getAnswer(j));
+					panelWidgets[i].setUserAnswer4Field(tmpQuestion.get(i).getAnswer(j));
 					break;
 				}
 			}
 			
-			panelWidget[i].setUserCorrectAnsListBox(tmpQuestion.get(i).getCorrectAnswersInt());
-			panelWidget[i].setUserAuthorField(tmpQuestion.get(i).getAuthor());
-
-			// Avoid doubling widgets...
-			panelGroup.clear();
-			panelGroup.add(panelWidget[i]);
+			panelWidgets[i].setUserCorrectAnsListBox(tmpQuestion.get(i).getCorrectAnswersInt());
+			panelWidgets[i].setUserAuthorField(tmpQuestion.get(i).getAuthor());
+ 
+			panelGroup.add(panelWidgets[i]);
 		}
 	}
 	
@@ -110,5 +114,10 @@ public class AdminViewImpl extends Composite implements AdminView {
 	@UiHandler("refreshIcon")
 	void onRefreshIconClicked(ClickEvent e) {
 		refreshPanel();
+	}
+	
+	@Override
+	public PanelWidget[] getPanelWidgets() {
+		return panelWidgets;
 	}
 }
