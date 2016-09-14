@@ -10,6 +10,8 @@ import pl.johnny.gwtQuiz.client.ui.AdminView;
 import pl.johnny.gwtQuiz.client.ui.AdminViewImpl;
 import pl.johnny.gwtQuiz.client.ui.HighScoresView;
 import pl.johnny.gwtQuiz.client.ui.HighScoresViewImpl;
+import pl.johnny.gwtQuiz.client.ui.LoginView;
+import pl.johnny.gwtQuiz.client.ui.LoginViewImp;
 import pl.johnny.gwtQuiz.client.ui.MainMenuView;
 import pl.johnny.gwtQuiz.client.ui.MainMenuViewImpl;
 import pl.johnny.gwtQuiz.client.ui.NavBarView;
@@ -31,6 +33,7 @@ public class ClientFactoryImpl implements ClientFactory
 	private static final AddQuestionsView addQuestionsView = new AddQuestionsViewImpl();
 	private static final AdminView adminView = new AdminViewImpl();
 	private final QuestionServiceAsync questionService = GWT.create(QuestionService.class);
+	private static final LoginView loginView = new LoginViewImp();
 
 
 	@Override
@@ -87,5 +90,10 @@ public class ClientFactoryImpl implements ClientFactory
 	@Override
 	public AdminView getAdminView() {
 		return adminView;
+	}
+
+	@Override
+	public LoginView getLoginView() {
+		return loginView;
 	}
 }

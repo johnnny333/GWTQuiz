@@ -9,6 +9,7 @@ import pl.johnny.gwtQuiz.client.ClientFactory;
 import pl.johnny.gwtQuiz.client.place.AddQuestionsPlace;
 import pl.johnny.gwtQuiz.client.place.AdminPlace;
 import pl.johnny.gwtQuiz.client.place.HighScoresPlace;
+import pl.johnny.gwtQuiz.client.place.LoginPlace;
 import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
 import pl.johnny.gwtQuiz.client.place.QuestionPlace;
 import pl.johnny.gwtQuiz.client.ui.NavBarView;
@@ -47,6 +48,11 @@ public class NavBarActivity extends AbstractActivity implements
 	}
 	
 	public NavBarActivity(AdminPlace place, ClientFactory clientFactory) {
+		this.place = place;
+		this.clientFactory = clientFactory;
+	}
+	
+	public NavBarActivity(LoginPlace place, ClientFactory clientFactory) {
 		this.place = place;
 		this.clientFactory = clientFactory;
 	}

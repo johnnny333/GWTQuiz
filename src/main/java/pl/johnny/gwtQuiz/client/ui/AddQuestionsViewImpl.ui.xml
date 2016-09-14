@@ -121,9 +121,8 @@
 
 
 							<b:PanelFooter addStyleNames="text-center add-form-buttons">
-								<b:Button ui:field="formValidateButton" type="SUCCESS">Submit
-									question</b:Button>
-								<b:Button ui:field="formResetButton" type="DANGER">Reset form</b:Button>
+								<b:Button ui:field="formValidateButton" type="SUCCESS" text="Submit question"></b:Button>
+								<b:Button ui:field="formResetButton" type="DANGER" text="Reset form"></b:Button>
 							</b:PanelFooter>
 
 						</b:Panel>

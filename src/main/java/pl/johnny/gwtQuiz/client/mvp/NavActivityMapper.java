@@ -5,10 +5,12 @@ import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;
 
 import pl.johnny.gwtQuiz.client.ClientFactory;
+import pl.johnny.gwtQuiz.client.activity.LoginActivity;
 import pl.johnny.gwtQuiz.client.activity.NavBarActivity;
 import pl.johnny.gwtQuiz.client.place.AddQuestionsPlace;
 import pl.johnny.gwtQuiz.client.place.AdminPlace;
 import pl.johnny.gwtQuiz.client.place.HighScoresPlace;
+import pl.johnny.gwtQuiz.client.place.LoginPlace;
 import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
 import pl.johnny.gwtQuiz.client.place.QuestionPlace;
 
@@ -49,6 +51,9 @@ public class NavActivityMapper implements ActivityMapper {
 
 		else if(place instanceof AdminPlace)
 			return new NavBarActivity((AdminPlace) place, clientFactory);
+		
+		else if(place instanceof LoginPlace)
+			return new NavBarActivity((LoginPlace) place, clientFactory);
 
 		return null;
 	}
