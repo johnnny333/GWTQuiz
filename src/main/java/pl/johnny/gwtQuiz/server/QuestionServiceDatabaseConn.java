@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import org.apache.commons.io.FileUtils;
 
 import pl.johnny.gwtQuiz.shared.Question;
+import pl.johnny.gwtQuiz.shared.User;
 import pl.johnny.gwtQuiz.shared.UserScore;
 
 /**
@@ -639,9 +640,8 @@ public class QuestionServiceDatabaseConn {
 			System.exit(0);
 		}
 
-			//Delete question image.If there is none image,no exception will be thrown hence, deleteQuietly. 
-			FileUtils.deleteQuietly(new File("quiz_resources/question_images_tmp/" + questionID));
-
+		//Delete question image.If there is none image,no exception will be thrown hence, deleteQuietly. 
+		FileUtils.deleteQuietly(new File("quiz_resources/question_images_tmp/" + questionID));
 
 	}
 
@@ -732,20 +732,56 @@ public class QuestionServiceDatabaseConn {
 			try {
 
 				FileUtils.moveFileToDirectory(
-						
+
 						FileUtils.getFile("quiz_resources/question_images_tmp/" + tmpQuestionID + "/" + userQuestion.getImageURL()),
 						FileUtils.getFile("quiz_resources/question_images/" + (questionID + 1)), true);
-						
-						FileUtils.deleteDirectory(new File("quiz_resources/question_images_tmp/" + tmpQuestionID));
+
+				FileUtils.deleteDirectory(new File("quiz_resources/question_images_tmp/" + tmpQuestionID));
 
 			} catch (IOException e) {
 				System.err.println(e);
 			}
 		}
-		
+
 		//Finally delete this particular user question and answers from temporary tables.
 		deleteUserTmpQuestion(tmpQuestionID);
 
+	}
+	
+	/**
+	 * Get user password by given email.
+	 * @param user
+	 * @return
+	 */
+	String getUser(User user) {
+
+		String passwordData = null;
+
+		try {
+			// Connection
+			Connection c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
+			c.setAutoCommit(false);
+			c.createStatement().execute("PRAGMA foreign_keys = ON");
+
+			PreparedStatement prepStmt = c.prepareStatement(
+					"SELECT password from users WHERE email= ?;");
+
+			prepStmt.setString(1, user.email);
+			ResultSet rs = prepStmt.executeQuery();
+			
+			passwordData = rs.getString(1);
+
+			prepStmt.close();
+			c.commit();
+			c.close();
+
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.err.println(e.getCause() + " " + e.getStackTrace());
+			System.exit(0);
+		}
+		// Return user password.
+		return passwordData;
 	}
 
 	/**

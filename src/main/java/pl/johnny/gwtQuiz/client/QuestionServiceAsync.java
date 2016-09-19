@@ -9,6 +9,7 @@ import org.hibernate.validator.engine.ValidationSupport;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import pl.johnny.gwtQuiz.shared.Question;
+import pl.johnny.gwtQuiz.shared.User;
 import pl.johnny.gwtQuiz.shared.UserScore;
 
 public interface QuestionServiceAsync {
@@ -40,5 +41,7 @@ public interface QuestionServiceAsync {
 	   * Force hibernate validator implementations to be available for
 	   * serialization.
 	   */
-	void dummy(AsyncCallback<ValidationSupport> callback);	
+	void dummy(AsyncCallback<ValidationSupport> callback);
+
+	void loginUser(User user, AsyncCallback<Boolean> asyncCallback);	
 }

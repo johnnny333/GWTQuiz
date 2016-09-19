@@ -23,12 +23,12 @@
 									<b:FormGroup>
 										<b:FormLabel for="username" text="User"></b:FormLabel>
 										<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE" />
-										<b:TextBox b:id="username" ui:field="username" />
+										<b:TextBox b:id="username" ui:field="username" allowBlank="false" maxLength="20"/>
 									</b:FormGroup>
 									<b:FormGroup>
 										<b:FormLabel for="password" text="Password"></b:FormLabel>
 										<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE" />
-										<b:Input type="PASSWORD" ui:field="password" b:id="password" />
+										<b:Input type="PASSWORD" ui:field="password" b:id="password" allowBlank="false" maxLength="20"/>
 									</b:FormGroup>
 								</b:FieldSet>
 							</b:Form>
@@ -37,8 +37,7 @@
 
 						<b:PanelFooter addStyleNames="text-center add-form-buttons">
 
-							<b:Button ui:field="acceptQuestionButton" type="PRIMARY" text="Login"></b:Button>
-<!-- 							<b:Button ui:field="deleteQuestionButton" type="DANGER" text="Delete Question"></b:Button> -->
+							<b:Button ui:field="loginButton" type="PRIMARY" text="Log in"></b:Button>
 
 						</b:PanelFooter>
 					</b:Panel>
