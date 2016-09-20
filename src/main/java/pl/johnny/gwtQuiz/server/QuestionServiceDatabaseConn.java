@@ -769,7 +769,11 @@ public class QuestionServiceDatabaseConn {
 			prepStmt.setString(1, user.email);
 			ResultSet rs = prepStmt.executeQuery();
 			
+			if(rs != null){
 			passwordData = rs.getString(1);
+			} else {
+				return "No user";
+			}
 
 			prepStmt.close();
 			c.commit();
@@ -778,7 +782,7 @@ public class QuestionServiceDatabaseConn {
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.err.println(e.getCause() + " " + e.getStackTrace());
-			System.exit(0);
+//			System.exit(0);
 		}
 		// Return user password.
 		return passwordData;

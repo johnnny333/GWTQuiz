@@ -2,7 +2,6 @@ package pl.johnny.gwtQuiz.client;
 
 import java.util.ArrayList;
 
-import javax.security.auth.login.FailedLoginException;
 import javax.validation.ConstraintViolationException;
 
 import org.hibernate.validator.engine.ValidationSupport;
@@ -46,5 +45,5 @@ public interface QuestionService extends RemoteService {
 	 */
 	ValidationSupport dummy();
 
-	boolean loginUser(User user) throws NullPointerException, FailedLoginException;
+	boolean loginUser(User user) throws NullPointerException;
 }

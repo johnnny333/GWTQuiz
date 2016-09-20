@@ -1,6 +1,8 @@
 package pl.johnny.gwtQuiz.client.ui;
 
 import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Form;
+import org.gwtbootstrap3.client.ui.Input;
 import org.gwtbootstrap3.client.ui.TextBox;
 
 import com.google.gwt.core.client.GWT;
@@ -11,7 +13,9 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
-public class LoginViewImp extends Composite implements LoginView{
+import pl.johnny.gwtQuiz.shared.User;
+
+public class LoginViewImp extends Composite implements LoginView {
 
 	private static LoginViewImpUiBinder uiBinder = GWT.create(LoginViewImpUiBinder.class);
 
@@ -19,15 +23,18 @@ public class LoginViewImp extends Composite implements LoginView{
 	}
 
 	private Presenter listener;
-	
+
 	@UiField
 	Button loginButton;
-	
+
 	@UiField
-	TextBox password;
-	
+	Input password;
+
 	@UiField
-	TextBox username;
+	TextBox email;
+
+	@UiField
+	Form form;
 
 	public LoginViewImp() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -37,13 +44,17 @@ public class LoginViewImp extends Composite implements LoginView{
 	public void setPresenter(Presenter listener) {
 		this.listener = listener;
 	}
-	
+
 	@UiHandler("loginButton")
 	void onLoginButtonClicked(ClickEvent e) {
-		
-		
-		if (listener != null) {
-//			listener.loginUser();;
+
+		if(form.validate()) {
+
+			GWT.log("LoginViewImpl validated");
+
+			if(listener != null) {
+				listener.loginUser(new User(email.getValue(), password.getValue()));
+			}
 		}
 	}
 }

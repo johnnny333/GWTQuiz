@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.security.auth.login.FailedLoginException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
@@ -118,20 +117,22 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements
 					violations);
 			throw new ConstraintViolationException(temp);
 		}
-
 		questionServiceDBConn.acceptUserTmpQuestion(acceptedQuestion, tmpQuestionID);
 	}
 
 	@Override
-	public boolean loginUser(User user) throws NullPointerException, FailedLoginException {
+	public boolean loginUser(User user) throws NullPointerException {
 
 		if(user.email == null){throw new NullPointerException("No given mail in QuestionServiceImpl.loginUser()");}
 		
 		String password = user.password/*(get password from incoming JSON or GWT-RPC request)*/;
+		
+		if(questionServiceDBConn.getUser(user) == "No user"){return false;}; 
 		String hashFromDB = questionServiceDBConn.getUser(user); /*(obtain password hash from user's db entry)*/;
+		
 		boolean valid = BCrypt.checkpw(password, hashFromDB);
 
-		if(valid) { return true; }else {throw new FailedLoginException("QuestionServiceImpl.loginUser() failed.");}
+		if(valid) { return true; }else {return false;}
 
 		//		if ( valid ) generateSessionIDAndSendItBackToClient(); 
 		//		else sendErrorToClient("Wrong Username or Password.");

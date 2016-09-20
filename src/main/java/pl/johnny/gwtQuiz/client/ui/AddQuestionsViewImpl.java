@@ -120,10 +120,10 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 	}
 
 	@UiHandler("formValidateButton")
-	public void onFormValidateClick(ClickEvent event) {
+	public void onFormSubmitClick(ClickEvent event) {
 		// Check is form is properly filled. If yes, send new question
 		// model.Else, highlight unfilled fields.
-		if (form.validate() == true && categoryListBox.getSelectedValue() != "Choose your question category..."
+		if (form.validate() && categoryListBox.getSelectedValue() != "Choose your question category..."
 				&& correctAnsListBox.getSelectedValue() != "Which answer is correct?") {
 			GWT.log("Form validated!");
 

@@ -4,16 +4,19 @@
 package pl.johnny.gwtQuiz.client.activity;
 
 import com.google.gwt.activity.shared.AbstractActivity;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 import pl.johnny.gwtQuiz.client.ClientFactory;
 import pl.johnny.gwtQuiz.client.place.LoginPlace;
 import pl.johnny.gwtQuiz.client.ui.LoginView;
+import pl.johnny.gwtQuiz.shared.User;
 
 public class LoginActivity extends AbstractActivity implements LoginView.Presenter {
-	
+
 	// Used to obtain views, eventBus, placeController
 	// Alternatively, could be injected via GIN
 	private ClientFactory clientFactory;
@@ -46,5 +49,23 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
 	@Override
 	public void goTo(Place place) {
 		clientFactory.getPlaceController().goTo(place);
+	}
+
+	@Override
+	public void loginUser(User user) {
+		GWT.log("In LoginActivity " + user);
+
+		clientFactory.getQuestionsService().loginUser(user, new AsyncCallback<Boolean>() {
+
+			@Override
+			public void onSuccess(Boolean result) {
+				GWT.log("LoginActivity.loginUser() suceeded " + result);
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				GWT.log("LoginActivity.loginUser() failed");
+			}
+		});
 	}
 }

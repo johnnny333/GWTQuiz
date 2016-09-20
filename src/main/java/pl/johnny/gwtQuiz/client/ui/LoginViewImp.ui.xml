@@ -18,17 +18,17 @@
 
 						<b:PanelBody>
 
-							<b:Form>
+							<b:Form ui:field="form">
 								<b:FieldSet>
 									<b:FormGroup>
 										<b:FormLabel for="username" text="User"></b:FormLabel>
 										<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE" />
-										<b:TextBox b:id="username" ui:field="username" allowBlank="false" maxLength="20"/>
+										<b:TextBox b:id="username" ui:field="email" validateOnBlur="true" allowBlank="false" maxLength="20"/>
 									</b:FormGroup>
 									<b:FormGroup>
 										<b:FormLabel for="password" text="Password"></b:FormLabel>
 										<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE" />
-										<b:Input type="PASSWORD" ui:field="password" b:id="password" allowBlank="false" maxLength="20"/>
+										<b:Input type="PASSWORD" min="3" ui:field="password" validateOnBlur="true" b:id="password" allowBlank="false" maxLength="20"/>
 									</b:FormGroup>
 								</b:FieldSet>
 							</b:Form>
