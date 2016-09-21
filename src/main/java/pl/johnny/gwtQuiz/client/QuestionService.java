@@ -2,6 +2,7 @@ package pl.johnny.gwtQuiz.client;
 
 import java.util.ArrayList;
 
+import javax.security.auth.login.FailedLoginException;
 import javax.validation.ConstraintViolationException;
 
 import org.hibernate.validator.engine.ValidationSupport;
@@ -44,6 +45,15 @@ public interface QuestionService extends RemoteService {
 	 * serialization.
 	 */
 	ValidationSupport dummy();
-
-	boolean loginUser(User user) throws NullPointerException;
+	
+	/**
+	 * Check for user in database and if exist, check for password validity.
+	 * 
+	 * @param user model which contains user mail and password.
+	 * @return true if user exist and provided password is valid.
+	 * @throws IllegalArgumentException thrown if user email field is blank.
+	 * @throws pl.johnny.gwtQuiz.shared.FailedLoginException thrown if either provided 
+	 * user mail was not found or password was invalid.
+	 */
+	boolean loginUser(User user) throws IllegalArgumentException, pl.johnny.gwtQuiz.shared.FailedLoginException;
 }

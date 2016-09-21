@@ -11,8 +11,10 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 import pl.johnny.gwtQuiz.client.ClientFactory;
+import pl.johnny.gwtQuiz.client.place.AdminPlace;
 import pl.johnny.gwtQuiz.client.place.LoginPlace;
 import pl.johnny.gwtQuiz.client.ui.LoginView;
+import pl.johnny.gwtQuiz.shared.FailedLoginException;
 import pl.johnny.gwtQuiz.shared.User;
 
 public class LoginActivity extends AbstractActivity implements LoginView.Presenter {
@@ -20,6 +22,7 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
 	// Used to obtain views, eventBus, placeController
 	// Alternatively, could be injected via GIN
 	private ClientFactory clientFactory;
+	private LoginView loginView;
 
 	public LoginActivity(LoginPlace place, final ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
@@ -30,7 +33,7 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
 	 */
 	@Override
 	public void start(AcceptsOneWidget containerWidget, EventBus eventBus) {
-		LoginView loginView = clientFactory.getLoginView();
+		loginView = clientFactory.getLoginView();
 		loginView.setPresenter(this);
 		containerWidget.setWidget(loginView.asWidget());
 	}
@@ -53,18 +56,24 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
 
 	@Override
 	public void loginUser(User user) {
-		GWT.log("In LoginActivity " + user);
 
 		clientFactory.getQuestionsService().loginUser(user, new AsyncCallback<Boolean>() {
 
 			@Override
 			public void onSuccess(Boolean result) {
-				GWT.log("LoginActivity.loginUser() suceeded " + result);
+				goTo(new AdminPlace(""));
 			}
 
 			@Override
 			public void onFailure(Throwable caught) {
-				GWT.log("LoginActivity.loginUser() failed");
+				
+				if (caught instanceof FailedLoginException) {
+					
+					loginView.setServerErrorMessage( ((FailedLoginException)caught).getSymbol() );
+					
+					return;
+				}
+				GWT.log("LoginActivity.loginUser() failed",caught);
 			}
 		});
 	}

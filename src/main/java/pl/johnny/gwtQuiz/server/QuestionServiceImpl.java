@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.security.auth.login.FailedLoginException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
@@ -23,8 +24,7 @@ import pl.johnny.gwtQuiz.shared.User;
 import pl.johnny.gwtQuiz.shared.UserScore;
 
 @SuppressWarnings("serial")
-public class QuestionServiceImpl extends RemoteServiceServlet implements
-		QuestionService {
+public class QuestionServiceImpl extends RemoteServiceServlet implements QuestionService {
 
 	private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
@@ -78,16 +78,15 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public void insertUserTmpQuestion(Question userQuestion) throws IllegalArgumentException,
-			ConstraintViolationException {
+	public void insertUserTmpQuestion(Question userQuestion)
+			throws IllegalArgumentException, ConstraintViolationException {
 
 		// Verify that the inputs is valid.
-		Set<ConstraintViolation<Question>> violations = validator.validate(userQuestion,
-				Default.class, ServerGroup.class);
+		Set<ConstraintViolation<Question>> violations = validator.validate(userQuestion, Default.class,
+				ServerGroup.class);
 
-		if(!violations.isEmpty()) {
-			Set<ConstraintViolation<?>> temp = new HashSet<ConstraintViolation<?>>(
-					violations);
+		if (!violations.isEmpty()) {
+			Set<ConstraintViolation<?>> temp = new HashSet<ConstraintViolation<?>>(violations);
 			throw new ConstraintViolationException(temp);
 		}
 
@@ -105,37 +104,29 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public void acceptUserTmpQuestion(Question acceptedQuestion, String tmpQuestionID) throws IllegalArgumentException,
-			ConstraintViolationException {
+	public void acceptUserTmpQuestion(Question acceptedQuestion, String tmpQuestionID)
+			throws IllegalArgumentException, ConstraintViolationException {
 
 		// Verify that the inputs is valid.
-		Set<ConstraintViolation<Question>> violations = validator.validate(acceptedQuestion,
-				Default.class, ServerGroup.class);
+		Set<ConstraintViolation<Question>> violations = validator.validate(acceptedQuestion, Default.class,
+				ServerGroup.class);
 
-		if(!violations.isEmpty()) {
-			Set<ConstraintViolation<?>> temp = new HashSet<ConstraintViolation<?>>(
-					violations);
+		if (!violations.isEmpty()) {
+			Set<ConstraintViolation<?>> temp = new HashSet<ConstraintViolation<?>>(violations);
 			throw new ConstraintViolationException(temp);
 		}
 		questionServiceDBConn.acceptUserTmpQuestion(acceptedQuestion, tmpQuestionID);
 	}
 
 	@Override
-	public boolean loginUser(User user) throws NullPointerException {
+	public boolean loginUser(User user) throws IllegalArgumentException, pl.johnny.gwtQuiz.shared.FailedLoginException {
 
-		if(user.email == null){throw new NullPointerException("No given mail in QuestionServiceImpl.loginUser()");}
-		
-		String password = user.password/*(get password from incoming JSON or GWT-RPC request)*/;
-		
-		if(questionServiceDBConn.getUser(user) == "No user"){return false;}; 
+		if(user.email.trim() == null){throw new IllegalArgumentException("No given mail in QuestionServiceImpl.loginUser()");}
+				
+		if(questionServiceDBConn.getUser(user) == "No such user"){throw new pl.johnny.gwtQuiz.shared.FailedLoginException("No such user");}; 
 		String hashFromDB = questionServiceDBConn.getUser(user); /*(obtain password hash from user's db entry)*/;
-		
-		boolean valid = BCrypt.checkpw(password, hashFromDB);
 
-		if(valid) { return true; }else {return false;}
-
-		//		if ( valid ) generateSessionIDAndSendItBackToClient(); 
-		//		else sendErrorToClient("Wrong Username or Password.");
+		if(BCrypt.checkpw(user.password, hashFromDB)){ return true; }else{throw new pl.johnny.gwtQuiz.shared.FailedLoginException("Bad password");}
 
 	};
 }
