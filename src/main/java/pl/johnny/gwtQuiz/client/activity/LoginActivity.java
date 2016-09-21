@@ -3,10 +3,13 @@
  */
 package pl.johnny.gwtQuiz.client.activity;
 
+import java.util.Date;
+
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
@@ -57,10 +60,17 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
 	@Override
 	public void loginUser(User user) {
 
-		clientFactory.getQuestionsService().loginUser(user, new AsyncCallback<Boolean>() {
+		clientFactory.getQuestionsService().loginUser(user, new AsyncCallback<String>() {
 
 			@Override
-			public void onSuccess(Boolean result) {
+			public void onSuccess(String result) {
+				GWT.log("LoginActivity.loginUser() " + result);
+				
+				//Set cookie for 1 day expiry.
+                final long DURATION = 1000 * 60 * 60 * 24 * 1;
+                Date expires = new Date(System.currentTimeMillis() + DURATION);
+                Cookies.setCookie("gwtQuizCookie", result, expires, null, "/", false);
+				
 				goTo(new AdminPlace(""));
 			}
 

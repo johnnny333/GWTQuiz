@@ -42,7 +42,6 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 		containerWidget.setWidget(adminView.asWidget());
 
 		fetchAndBuildPanelWithTmpQuestions();
-		GWT.log("Started AdminiActivity!");
 	}
 
 	/**

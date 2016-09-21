@@ -43,5 +43,5 @@ public interface QuestionServiceAsync {
 	   */
 	void dummy(AsyncCallback<ValidationSupport> callback);
 
-	void loginUser(User user, AsyncCallback<Boolean> asyncCallback);	
+	void loginUser(User user, AsyncCallback<String> asyncCallback);	
 }

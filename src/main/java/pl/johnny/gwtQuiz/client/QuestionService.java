@@ -55,5 +55,5 @@ public interface QuestionService extends RemoteService {
 	 * @throws pl.johnny.gwtQuiz.shared.FailedLoginException thrown if either provided 
 	 * user mail was not found or password was invalid.
 	 */
-	boolean loginUser(User user) throws IllegalArgumentException, pl.johnny.gwtQuiz.shared.FailedLoginException;
+	String loginUser(User user) throws IllegalArgumentException, pl.johnny.gwtQuiz.shared.FailedLoginException;
 }

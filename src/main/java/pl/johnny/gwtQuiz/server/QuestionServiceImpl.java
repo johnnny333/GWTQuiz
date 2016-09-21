@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.security.auth.login.FailedLoginException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
@@ -119,14 +121,24 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 	}
 
 	@Override
-	public boolean loginUser(User user) throws IllegalArgumentException, pl.johnny.gwtQuiz.shared.FailedLoginException {
+	public String loginUser(User user) throws IllegalArgumentException, pl.johnny.gwtQuiz.shared.FailedLoginException {
 
-		if(user.email.trim() == null){throw new IllegalArgumentException("No given mail in QuestionServiceImpl.loginUser()");}
-				
-		if(questionServiceDBConn.getUser(user) == "No such user"){throw new pl.johnny.gwtQuiz.shared.FailedLoginException("No such user");}; 
-		String hashFromDB = questionServiceDBConn.getUser(user); /*(obtain password hash from user's db entry)*/;
+		if (user.email.trim() == null) {
+			throw new IllegalArgumentException("No given mail in QuestionServiceImpl.loginUser()");
+		}
+		
+		//Saved in a variable to avoid duplicated database calling.
+		String hashedPasswordFromDB = questionServiceDBConn.getUser(user);
+		
+		if (hashedPasswordFromDB == "No such user") {
+			throw new pl.johnny.gwtQuiz.shared.FailedLoginException("No such user");
+		}
 
-		if(BCrypt.checkpw(user.password, hashFromDB)){ return true; }else{throw new pl.johnny.gwtQuiz.shared.FailedLoginException("Bad password");}
-
+		if (BCrypt.checkpw(user.password, hashedPasswordFromDB)) {
+			//Get session id.
+			return this.getThreadLocalRequest().getSession(true).getId();
+		} else {
+			throw new pl.johnny.gwtQuiz.shared.FailedLoginException("Bad password");
+		}
 	};
 }
