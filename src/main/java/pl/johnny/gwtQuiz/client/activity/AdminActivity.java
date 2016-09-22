@@ -13,11 +13,13 @@ import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 import pl.johnny.gwtQuiz.client.ClientFactory;
 import pl.johnny.gwtQuiz.client.place.AdminPlace;
+import pl.johnny.gwtQuiz.client.place.LoginPlace;
 import pl.johnny.gwtQuiz.client.ui.AdminView;
 import pl.johnny.gwtQuiz.client.ui.widgets.PanelWidget;
 import pl.johnny.gwtQuiz.shared.Question;
@@ -37,6 +39,29 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 	 */
 	@Override
 	public void start(AcceptsOneWidget containerWidget, EventBus eventBus) {
+		
+		/**
+		 * Check for session cookie and if exist, validate it on server.
+		 * If validation passed, let user stay into AdmininPlace.
+		 * Otherwise, redirect him into LoginPlace.
+		 */
+		String cookieSessionID = Cookies.getCookie("gwtQuizCookie");
+		if (cookieSessionID == null){goTo(new LoginPlace(""));return;}
+		else{clientFactory.getQuestionsService().validateSession(cookieSessionID, new AsyncCallback<Boolean>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				GWT.log("AdminActivity.validateSession() failed",caught);
+				return;
+			}
+
+			@Override
+			public void onSuccess(Boolean result) {
+				GWT.log("AdminActivity " + result);
+				if(!result){goTo(new LoginPlace(""));}
+			}
+		});};
+		
 		adminView = clientFactory.getAdminView();
 		adminView.setPresenter(this);
 		containerWidget.setWidget(adminView.asWidget());

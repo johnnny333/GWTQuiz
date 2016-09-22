@@ -17,6 +17,8 @@ import javax.validation.groups.Default;
 import org.hibernate.validator.engine.ValidationSupport;
 import org.mindrot.jbcrypt.BCrypt;
 
+import com.google.gwt.dev.ModuleTabPanel.Session;
+import com.google.gwt.thirdparty.guava.common.base.Objects;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import pl.johnny.gwtQuiz.client.QuestionService;
@@ -141,4 +143,9 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 			throw new pl.johnny.gwtQuiz.shared.FailedLoginException("Bad password");
 		}
 	};
+	
+	@Override
+	public boolean validateSession(String sessionID) {
+		if(this.getThreadLocalRequest().getSession().getId().equals(sessionID)){return true;}else{return false;} 
+	}
 }
