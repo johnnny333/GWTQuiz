@@ -21,7 +21,7 @@ public class NavBarActivity extends AbstractActivity implements
 	private ClientFactory clientFactory;
 	/** On what activity application is */
 	private Place place;
-	
+
 	/**
 	 * Constructor is overloaded because NavActivityMapper inserts strict typed places.
 	 * I could upcast it to Place here, but thus disables correct type-checking of 'instanceof'
@@ -36,22 +36,23 @@ public class NavBarActivity extends AbstractActivity implements
 		this.place = place;
 		this.clientFactory = clientFactory;
 	}
-//
+
+	//
 	public NavBarActivity(HighScoresPlace place, ClientFactory clientFactory) {
 		this.place = place;
 		this.clientFactory = clientFactory;
 	}
-	
+
 	public NavBarActivity(AddQuestionsPlace place, ClientFactory clientFactory) {
 		this.place = place;
 		this.clientFactory = clientFactory;
 	}
-	
+
 	public NavBarActivity(AdminPlace place, ClientFactory clientFactory) {
 		this.place = place;
 		this.clientFactory = clientFactory;
 	}
-	
+
 	public NavBarActivity(LoginPlace place, ClientFactory clientFactory) {
 		this.place = place;
 		this.clientFactory = clientFactory;
@@ -65,15 +66,24 @@ public class NavBarActivity extends AbstractActivity implements
 		NavBarView navBarView = clientFactory.getNavBarView();
 		navBarView.setPresenter(this);
 		containerWidget.setWidget(navBarView.asWidget());
-		
-		//Detect on what activity application is at and adjust view accordingly.
-		if(place instanceof MainMenuPlace )navBarView.setAnchorListItemActive(0);
-		else if(place instanceof QuestionPlace )navBarView.setAnchorListItemActive(1);
-		else if(place instanceof HighScoresPlace )navBarView.setAnchorListItemActive(2);
-		else if(place instanceof AddQuestionsPlace )navBarView.setAnchorListItemActive(3);
 
+		//Detect on what activity application is at and adjust view accordingly.
+		if(place instanceof MainMenuPlace)
+			navBarView.setAnchorListItemActive(0);
+		else if(place instanceof QuestionPlace)
+			navBarView.setAnchorListItemActive(1);
+		else if(place instanceof HighScoresPlace)
+			navBarView.setAnchorListItemActive(2);
+		else if(place instanceof AddQuestionsPlace) navBarView.setAnchorListItemActive(3);
+
+		//Set user email on NavBar anchor button if cookie is valid and user email is present.
+		if(clientFactory.getSessionCookieAndUserEmail()[0] != null && clientFactory.getSessionCookieAndUserEmail()[1] != null) {
+				navBarView.setUserEmailOnAnchor(clientFactory.getSessionCookieAndUserEmail()[1]);
+		} else {
+			navBarView.setUserEmailOnAnchor("Log in");
+		}
 	}
-	
+
 	/**
 	 * Ask user before stopping this activity
 	 */

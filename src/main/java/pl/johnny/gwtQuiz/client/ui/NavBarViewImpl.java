@@ -1,7 +1,7 @@
 package pl.johnny.gwtQuiz.client.ui;
 
+import org.gwtbootstrap3.client.ui.AnchorButton;
 import org.gwtbootstrap3.client.ui.AnchorListItem;
-import org.gwtbootstrap3.client.ui.Navbar;
 import org.gwtbootstrap3.client.ui.NavbarBrand;
 import org.gwtbootstrap3.client.ui.NavbarCollapse;
 
@@ -32,6 +32,7 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 	@UiField AnchorListItem highScoreAnchor;
 	@UiField AnchorListItem addQuestionsAnchor;
 	@UiField NavbarCollapse navBarCollapse;
+	@UiField AnchorButton anchorButton; 
 
 	public NavBarViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -101,5 +102,10 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 			case 3 : anchorListItems[2].setActive(true);
 			break;
 		}
+	}
+	
+	@Override
+	public void setUserEmailOnAnchor(String userEmail){
+		anchorButton.setText(userEmail);
 	}
 }

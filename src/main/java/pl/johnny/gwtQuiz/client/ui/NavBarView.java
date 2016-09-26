@@ -18,4 +18,6 @@ public interface NavBarView extends IsWidget
 	}
 
 	void setAnchorListItemActive(int whichAnchorToHighlight);
+
+	void setUserEmailOnAnchor(String userEmail);
 }
