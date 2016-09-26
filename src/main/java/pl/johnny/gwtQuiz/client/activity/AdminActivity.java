@@ -38,14 +38,13 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 	 * Invoked by the ActivityManager to start a new Activity
 	 */
 	@Override
-	public void start(AcceptsOneWidget containerWidget, EventBus eventBus) {
-		
+	public void start(AcceptsOneWidget containerWidget, EventBus eventBus) {		
 		/**
 		 * Check for session cookie and if exist, validate it on server.
 		 * If validation passed, let user stay into AdmininPlace.
 		 * Otherwise, redirect him into LoginPlace.
 		 */
-		String cookieSessionID = Cookies.getCookie("gwtQuizCookie");
+		String cookieSessionID = clientFactory.getSessionCookie();
 		if (cookieSessionID == null){goTo(new LoginPlace(""));return;}
 		else{clientFactory.getQuestionsService().validateSession(cookieSessionID, new AsyncCallback<Boolean>() {
 

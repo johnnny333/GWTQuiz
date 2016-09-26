@@ -130,13 +130,13 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 		}
 		
 		//Saved in a variable to avoid duplicated database calling.
-		String hashedPasswordFromDB = questionServiceDBConn.getUser(user);
+		String[] hashedPasswordFromDB = questionServiceDBConn.getUser(user);
 		
-		if (hashedPasswordFromDB == "No such user") {
+		if (hashedPasswordFromDB[0] == "No such user") {
 			throw new pl.johnny.gwtQuiz.shared.FailedLoginException("No such user");
 		}
 
-		if (BCrypt.checkpw(user.password, hashedPasswordFromDB)) {
+		if (BCrypt.checkpw(user.password, hashedPasswordFromDB[1])) {
 			//Get session id.
 			return this.getThreadLocalRequest().getSession(true).getId();
 		} else {

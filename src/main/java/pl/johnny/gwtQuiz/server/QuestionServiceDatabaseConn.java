@@ -764,29 +764,33 @@ public class QuestionServiceDatabaseConn {
 	 * @param user
 	 * @return
 	 */
-	String getUser(User user) {
+	String[] getUser(User user) {
 
-		String passwordData = null;
+		String passwordData[] = null;
 
 		try {
 			// Connection
 			Connection c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
 			c.setAutoCommit(false);
 			c.createStatement().execute("PRAGMA foreign_keys = ON");
-
-			PreparedStatement prepStmt = c.prepareStatement("SELECT password from users WHERE email= ?;");
+			
+			PreparedStatement prepStmt = c.prepareStatement("SELECT email,password from users WHERE email= ?;");
 
 			prepStmt.setString(1, user.email);
 			ResultSet rs = prepStmt.executeQuery();
 			
+			//Initialize array for data.
+			passwordData = new String[rs.getMetaData().getColumnCount()];
+			
 			//Check if there are any results.
 			if (!rs.isBeforeFirst() ) {    
 			    System.out.println("No such user");
-			    return "No such user";
+			    return new String[]{"No such user"};
 			} 
-
+			
 			while (rs.next()) {
-				passwordData = rs.getString(1);
+				passwordData[0] = rs.getString(1);
+				passwordData[1] = rs.getString(2);
 			}
 
 			prepStmt.close();

@@ -8,19 +8,34 @@
 
 	<b:Navbar>
 		<b:NavbarHeader>
-			<b:NavbarBrand ui:field="navBarBrand" icon="QUESTION_CIRCLE" text="GWT Quiz"></b:NavbarBrand>
+			<b:NavbarBrand ui:field="navBarBrand" icon="QUESTION_CIRCLE"
+				text="GWT Quiz"></b:NavbarBrand>
 			<b:NavbarCollapseButton dataTarget="#navbar-collapse" />
 		</b:NavbarHeader>
 
 		<b:NavbarCollapse b:id="navbar-collapse" ui:field="navBarCollapse">
 
 			<b:NavbarNav>
-				<b:AnchorListItem ui:field="newGameAnchor" icon="PLAY_CIRCLE" text="New Game"></b:AnchorListItem>
-				<b:AnchorListItem ui:field="highScoreAnchor" icon="LIST_ALT" text="High Scores"></b:AnchorListItem>
-				<b:AnchorListItem ui:field="addQuestionsAnchor" icon="PLUS_CIRCLE" text="Add Questions"></b:AnchorListItem>				
+				<b:AnchorListItem ui:field="newGameAnchor" icon="PLAY_CIRCLE"
+					text="New Game"></b:AnchorListItem>
+				<b:AnchorListItem ui:field="highScoreAnchor" icon="LIST_ALT"
+					text="High Scores"></b:AnchorListItem>
+				<b:AnchorListItem ui:field="addQuestionsAnchor"
+					icon="PLUS_CIRCLE" text="Add Questions"></b:AnchorListItem>
+			</b:NavbarNav>
+
+
+			<b:NavbarNav pull="RIGHT">
+
+				<b:ListDropDown>
+					<b:AnchorButton icon="USER" dataToggle="DROPDOWN">Dropdown</b:AnchorButton>
+					<b:DropDownMenu>
+						<b:AnchorListItem text="Log out"></b:AnchorListItem>
+					</b:DropDownMenu>
+				</b:ListDropDown>
+
 			</b:NavbarNav>
 
 		</b:NavbarCollapse>
 	</b:Navbar>
-
 </ui:UiBinder> 
