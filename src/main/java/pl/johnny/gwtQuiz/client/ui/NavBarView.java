@@ -18,6 +18,13 @@ public interface NavBarView extends IsWidget
 	}
 
 	void setAnchorListItemActive(int whichAnchorToHighlight);
-
-	void setUserEmailOnAnchor(String userEmail);
+	
+	/**
+	 * If user is logged in, set his email on navbar anchor and show 
+	 * dropdown menu with logout option. Otherwise, display "Log in" and hide
+	 * dropdown menu. 
+	 * @param userEmail
+	 * @param isLoggedIn
+	 */
+	void setNavBarAnchor(String userEmail, boolean isLoggedIn);
 }

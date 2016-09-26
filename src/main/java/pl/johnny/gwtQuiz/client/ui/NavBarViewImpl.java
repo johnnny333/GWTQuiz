@@ -2,6 +2,7 @@ package pl.johnny.gwtQuiz.client.ui;
 
 import org.gwtbootstrap3.client.ui.AnchorButton;
 import org.gwtbootstrap3.client.ui.AnchorListItem;
+import org.gwtbootstrap3.client.ui.DropDownMenu;
 import org.gwtbootstrap3.client.ui.NavbarBrand;
 import org.gwtbootstrap3.client.ui.NavbarCollapse;
 
@@ -15,6 +16,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import pl.johnny.gwtQuiz.client.place.AddQuestionsPlace;
 import pl.johnny.gwtQuiz.client.place.HighScoresPlace;
+import pl.johnny.gwtQuiz.client.place.LoginPlace;
 import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
 import pl.johnny.gwtQuiz.client.place.QuestionPlace;
 
@@ -33,6 +35,8 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 	@UiField AnchorListItem addQuestionsAnchor;
 	@UiField NavbarCollapse navBarCollapse;
 	@UiField AnchorButton anchorButton; 
+	@UiField DropDownMenu dropDownMenu;
+	@UiField AnchorListItem logOutAnchorListItem;
 
 	public NavBarViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -105,7 +109,21 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 	}
 	
 	@Override
-	public void setUserEmailOnAnchor(String userEmail){
+	public void setNavBarAnchor(String userEmail, boolean isLoggedIn){
 		anchorButton.setText(userEmail);
+		anchorButton.setToggleCaret(isLoggedIn);
+		dropDownMenu.setVisible(isLoggedIn);
+	}
+	
+	@UiHandler("anchorButton")
+	void onAnchorButtonClicked(ClickEvent e) {
+		if (listener != null && anchorButton.getText() == "Log in") {
+			listener.goTo(new LoginPlace(""));
+		}
+	}
+	
+	@UiHandler("logOutAnchorListItem")
+	void onlogOutAnchorListItemClicked(ClickEvent e){
+		GWT.log("logOutAnchorListItem clicked");
 	}
 }

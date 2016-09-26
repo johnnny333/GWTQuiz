@@ -78,9 +78,9 @@ public class NavBarActivity extends AbstractActivity implements
 
 		//Set user email on NavBar anchor button if cookie is valid and user email is present.
 		if(clientFactory.getSessionCookieAndUserEmail()[0] != null && clientFactory.getSessionCookieAndUserEmail()[1] != null) {
-				navBarView.setUserEmailOnAnchor(clientFactory.getSessionCookieAndUserEmail()[1]);
+				navBarView.setNavBarAnchor(clientFactory.getSessionCookieAndUserEmail()[1], true);
 		} else {
-			navBarView.setUserEmailOnAnchor("Log in");
+			navBarView.setNavBarAnchor("Log in", false);
 		}
 	}
 

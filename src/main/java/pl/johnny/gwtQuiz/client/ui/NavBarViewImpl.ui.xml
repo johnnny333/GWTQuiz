@@ -28,9 +28,10 @@
 			<b:NavbarNav pull="RIGHT">
 
 				<b:ListDropDown>
-					<b:AnchorButton icon="USER" dataToggle="DROPDOWN" text="Log in" ui:field="anchorButton"></b:AnchorButton>
-					<b:DropDownMenu>
-						<b:AnchorListItem text="Log out"></b:AnchorListItem>
+					<b:AnchorButton toggleCaret="false" icon="USER" dataToggle="DROPDOWN" 
+						text="Log in" ui:field="anchorButton"></b:AnchorButton>
+					<b:DropDownMenu visible="false" ui:field="dropDownMenu">
+						<b:AnchorListItem text="Log out" ui:field="logOutAnchorListItem"></b:AnchorListItem>
 					</b:DropDownMenu>
 				</b:ListDropDown>
 
