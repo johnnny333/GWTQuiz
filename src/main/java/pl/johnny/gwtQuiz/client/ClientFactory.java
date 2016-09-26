@@ -24,5 +24,9 @@ public interface ClientFactory
 	AddQuestionsView getAddQuestionsView();
 	AdminView getAdminView();
 	LoginView getLoginView();
-	String getSessionCookie();
+	
+	/** @return String[0] = sessionID , String[1] user email. */
+	String[] getSessionCookieAndUserEmail();
+	
+	void setUserEmail(String userEmail);
 }

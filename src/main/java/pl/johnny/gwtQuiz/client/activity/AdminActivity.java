@@ -13,7 +13,6 @@ import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
-import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
@@ -44,9 +43,9 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 		 * If validation passed, let user stay into AdmininPlace.
 		 * Otherwise, redirect him into LoginPlace.
 		 */
-		String cookieSessionID = clientFactory.getSessionCookie();
-		if (cookieSessionID == null){goTo(new LoginPlace(""));return;}
-		else{clientFactory.getQuestionsService().validateSession(cookieSessionID, new AsyncCallback<Boolean>() {
+		String[] cookieSessionID = clientFactory.getSessionCookieAndUserEmail();
+		if (cookieSessionID[0] == null){goTo(new LoginPlace(""));return;}
+		else{clientFactory.getQuestionsService().validateSession(cookieSessionID[0], new AsyncCallback<Boolean>() {
 
 			@Override
 			public void onFailure(Throwable caught) {

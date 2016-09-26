@@ -34,6 +34,7 @@ public class ClientFactoryImpl implements ClientFactory
 	private static final AddQuestionsView addQuestionsView = new AddQuestionsViewImpl();
 	private static final AdminView adminView = new AdminViewImpl();
 	private final QuestionServiceAsync questionService = GWT.create(QuestionService.class);
+	private static String userEmail;
 	private static final LoginView loginView = new LoginViewImp();
 
 
@@ -99,7 +100,12 @@ public class ClientFactoryImpl implements ClientFactory
 	}
 	
 	@Override
-	public String getSessionCookie(){
-		return Cookies.getCookie("gwtQuizCookie");
+	public String[] getSessionCookieAndUserEmail(){
+		return new String[]{Cookies.getCookie("gwtQuizCookie"), userEmail};
+	}
+	
+	@Override
+	public void setUserEmail(String userEmail){
+		ClientFactoryImpl.userEmail = userEmail;
 	}
 }

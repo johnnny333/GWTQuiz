@@ -5,9 +5,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.security.auth.login.FailedLoginException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
@@ -17,8 +14,6 @@ import javax.validation.groups.Default;
 import org.hibernate.validator.engine.ValidationSupport;
 import org.mindrot.jbcrypt.BCrypt;
 
-import com.google.gwt.dev.ModuleTabPanel.Session;
-import com.google.gwt.thirdparty.guava.common.base.Objects;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import pl.johnny.gwtQuiz.client.QuestionService;
@@ -123,7 +118,7 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 	}
 
 	@Override
-	public String loginUser(User user) throws IllegalArgumentException, pl.johnny.gwtQuiz.shared.FailedLoginException {
+	public String[] loginUser(User user) throws IllegalArgumentException, pl.johnny.gwtQuiz.shared.FailedLoginException {
 
 		if (user.email.trim() == null) {
 			throw new IllegalArgumentException("No given mail in QuestionServiceImpl.loginUser()");
@@ -137,8 +132,8 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 		}
 
 		if (BCrypt.checkpw(user.password, hashedPasswordFromDB[1])) {
-			//Get session id.
-			return this.getThreadLocalRequest().getSession(true).getId();
+			//Send session id and email as response.
+			return new String[]{this.getThreadLocalRequest().getSession(true).getId(), hashedPasswordFromDB[0]};
 		} else {
 			throw new pl.johnny.gwtQuiz.shared.FailedLoginException("Bad password");
 		}
