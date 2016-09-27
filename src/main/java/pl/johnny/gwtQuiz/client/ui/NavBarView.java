@@ -15,6 +15,8 @@ public interface NavBarView extends IsWidget
 
 	public interface Presenter {
 		void goTo(Place place);
+
+		void logOutUser();
 	}
 
 	void setAnchorListItemActive(int whichAnchorToHighlight);

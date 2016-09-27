@@ -60,20 +60,18 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
 	@Override
 	public void loginUser(User user) {
 
-		clientFactory.getQuestionsService().loginUser(user, new AsyncCallback<String[]>() {
+		clientFactory.getQuestionsService().loginUser(user, new AsyncCallback<String>() {
 
 			@Override
-			public void onSuccess(String[] result) {
+			public void onSuccess(String result) {
 				
-				GWT.log("LoginActivity.loginUser() session id " + result[0] + " user email: " + result[1]);
+				GWT.log("LoginActivity.loginUser() session id " + result);
 				
 				//Set cookie for 1 day expiry.
                 final long DURATION = 1000 * 60 * 60 * 24 * 1;
                 Date expires = new Date(System.currentTimeMillis() + DURATION);
-                Cookies.setCookie("gwtQuizCookie", result[0], expires, null, "/", false);
-               
-                clientFactory.setUserEmail(result[1]);
-				
+                Cookies.setCookie("gwtQuizCookie", result, expires, null, "/", false);
+               				
 				goTo(new AdminPlace(""));
 			}
 

@@ -1,11 +1,15 @@
 package pl.johnny.gwtQuiz.client.activity;
 
 import com.google.gwt.activity.shared.AbstractActivity;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
+import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 import pl.johnny.gwtQuiz.client.ClientFactory;
+import pl.johnny.gwtQuiz.client.QuestionService;
 import pl.johnny.gwtQuiz.client.place.AddQuestionsPlace;
 import pl.johnny.gwtQuiz.client.place.AdminPlace;
 import pl.johnny.gwtQuiz.client.place.HighScoresPlace;
@@ -14,8 +18,7 @@ import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
 import pl.johnny.gwtQuiz.client.place.QuestionPlace;
 import pl.johnny.gwtQuiz.client.ui.NavBarView;
 
-public class NavBarActivity extends AbstractActivity implements
-		NavBarView.Presenter {
+public class NavBarActivity extends AbstractActivity implements NavBarView.Presenter {
 	// Used to obtain views, eventBus, placeController
 	// Alternatively, could be injected via GIN
 	private ClientFactory clientFactory;
@@ -23,9 +26,10 @@ public class NavBarActivity extends AbstractActivity implements
 	private Place place;
 
 	/**
-	 * Constructor is overloaded because NavActivityMapper inserts strict typed places.
-	 * I could upcast it to Place here, but thus disables correct type-checking of 'instanceof'
-	 * in start() method. Hence overloaded constructor with all types of Places.
+	 * Constructor is overloaded because NavActivityMapper inserts strict typed
+	 * places. I could upcast it to Place here, but thus disables correct
+	 * type-checking of 'instanceof' in start() method. Hence overloaded
+	 * constructor with all types of Places.
 	 */
 	public NavBarActivity(Place place, ClientFactory clientFactory) {
 		this.place = place;
@@ -63,25 +67,39 @@ public class NavBarActivity extends AbstractActivity implements
 	 */
 	@Override
 	public void start(AcceptsOneWidget containerWidget, EventBus eventBus) {
-		NavBarView navBarView = clientFactory.getNavBarView();
+		final NavBarView navBarView = clientFactory.getNavBarView();
 		navBarView.setPresenter(this);
 		containerWidget.setWidget(navBarView.asWidget());
 
-		//Detect on what activity application is at and adjust view accordingly.
-		if(place instanceof MainMenuPlace)
+		// Detect on what activity application is at and adjust view
+		// accordingly.
+		if (place instanceof MainMenuPlace)
 			navBarView.setAnchorListItemActive(0);
-		else if(place instanceof QuestionPlace)
+		else if (place instanceof QuestionPlace)
 			navBarView.setAnchorListItemActive(1);
-		else if(place instanceof HighScoresPlace)
+		else if (place instanceof HighScoresPlace)
 			navBarView.setAnchorListItemActive(2);
-		else if(place instanceof AddQuestionsPlace) navBarView.setAnchorListItemActive(3);
+		else if (place instanceof AddQuestionsPlace)
+			navBarView.setAnchorListItemActive(3);
 
-		//Set user email on NavBar anchor button if cookie is valid and user email is present.
-		if(clientFactory.getSessionCookieAndUserEmail()[0] != null && clientFactory.getSessionCookieAndUserEmail()[1] != null) {
-				navBarView.setNavBarAnchor(clientFactory.getSessionCookieAndUserEmail()[1], true);
-		} else {
-			navBarView.setNavBarAnchor("Log in", false);
-		}
+		// Set user email on NavBar anchor button if returned from db.
+		clientFactory.getQuestionsService().validateSession(clientFactory.getSession(), new AsyncCallback<String>() {
+
+			@Override
+			public void onSuccess(String result) {
+				if (result != null) {
+					navBarView.setNavBarAnchor(result, true);
+				} else {
+					navBarView.setNavBarAnchor(result, false);
+				}
+				;
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				GWT.log("NavBarActivity failed", caught);
+			}
+		});
 	}
 
 	/**
@@ -98,5 +116,26 @@ public class NavBarActivity extends AbstractActivity implements
 	@Override
 	public void goTo(Place place) {
 		clientFactory.getPlaceController().goTo(place);
+	}
+
+	@Override
+	public void logOutUser() {
+		clientFactory.getQuestionsService().logOutUser(clientFactory.getSession(), new AsyncCallback<Boolean>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				GWT.log("NavBarActivity.logOutUser() failed", caught);
+			}
+
+			@Override
+			public void onSuccess(Boolean result) {
+				if (result) {
+					Cookies.removeCookie("gwtQuizCookie");
+					goTo(new MainMenuPlace(""));
+				} else {
+					GWT.log("Issue with log out in NavBarActivity.logOutUser()");
+				}
+			}
+		});
 	}
 }

@@ -54,7 +54,7 @@ public interface QuestionService extends RemoteService {
 	 * user mail was not found or password was invalid.
 	 * @return (is user is valid) String[0] = sessionID, String[1] = user email.
 	 */
-	String[] loginUser(User user) throws IllegalArgumentException, pl.johnny.gwtQuiz.shared.FailedLoginException;
+	String loginUser(User user) throws IllegalArgumentException, pl.johnny.gwtQuiz.shared.FailedLoginException;
 	
 	/**
 	 * Check for session validity.
@@ -62,5 +62,7 @@ public interface QuestionService extends RemoteService {
 	 * @param sessionID
 	 * @return true if session is valid, false otherwise.
 	 */
-	boolean validateSession(String sessionID);
+	String validateSession(String sessionID);
+
+	boolean logOutUser(String sessionID);
 }

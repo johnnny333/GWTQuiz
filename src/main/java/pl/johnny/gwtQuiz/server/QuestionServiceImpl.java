@@ -118,29 +118,49 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 	}
 
 	@Override
-	public String[] loginUser(User user) throws IllegalArgumentException, pl.johnny.gwtQuiz.shared.FailedLoginException {
+	public String loginUser(User user) throws IllegalArgumentException, pl.johnny.gwtQuiz.shared.FailedLoginException {
 
 		if (user.email.trim() == null) {
 			throw new IllegalArgumentException("No given mail in QuestionServiceImpl.loginUser()");
 		}
-		
-		//Saved in a variable to avoid duplicated database calling.
-		String[] hashedPasswordFromDB = questionServiceDBConn.getUser(user);
-		
-		if (hashedPasswordFromDB[0] == "No such user") {
+
+		// Saved in a variable to avoid duplicated database calling.
+		String[] userAndhashedPasswordFromDB = questionServiceDBConn.getUser(user);
+
+		if (userAndhashedPasswordFromDB[0] == "No such user") {
 			throw new pl.johnny.gwtQuiz.shared.FailedLoginException("No such user");
 		}
 
-		if (BCrypt.checkpw(user.password, hashedPasswordFromDB[1])) {
-			//Send session id and email as response.
-			return new String[]{this.getThreadLocalRequest().getSession(true).getId(), hashedPasswordFromDB[0]};
+		if (BCrypt.checkpw(user.password, userAndhashedPasswordFromDB[1])) {
+			// Save user in a session.
+			this.getThreadLocalRequest().getSession(true).setAttribute("userEmail", user.email);
+			// Send session id and email as response.
+			return this.getThreadLocalRequest().getSession(true).getId();
 		} else {
 			throw new pl.johnny.gwtQuiz.shared.FailedLoginException("Bad password");
 		}
 	};
-	
+
 	@Override
-	public boolean validateSession(String sessionID) {
-		if(this.getThreadLocalRequest().getSession().getId().equals(sessionID)){return true;}else{return false;} 
+	public String validateSession(String sessionID) {
+
+		String userEmail = (String) this.getThreadLocalRequest().getSession().getAttribute("userEmail");
+
+		if (this.getThreadLocalRequest().getSession().getId().equals(sessionID) && userEmail != null) {
+			return userEmail;
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public boolean logOutUser(String sessionID) {
+
+		if (this.getThreadLocalRequest().getSession().getId().equals(sessionID)) {
+			this.getThreadLocalRequest().getSession().invalidate();
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

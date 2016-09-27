@@ -110,20 +110,23 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 	
 	@Override
 	public void setNavBarAnchor(String userEmail, boolean isLoggedIn){
-		anchorButton.setText(userEmail);
+		
+		if(userEmail == null){userEmail = "Log in";};
+		
+		anchorButton.setText(" " + userEmail);
 		anchorButton.setToggleCaret(isLoggedIn);
 		dropDownMenu.setVisible(isLoggedIn);
 	}
 	
 	@UiHandler("anchorButton")
 	void onAnchorButtonClicked(ClickEvent e) {
-		if (listener != null && anchorButton.getText() == "Log in") {
+		if (listener != null && anchorButton.getText() == " Log in") {
 			listener.goTo(new LoginPlace(""));
 		}
 	}
 	
 	@UiHandler("logOutAnchorListItem")
 	void onlogOutAnchorListItemClicked(ClickEvent e){
-		GWT.log("logOutAnchorListItem clicked");
+		listener.logOutUser();
 	}
 }

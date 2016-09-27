@@ -43,7 +43,9 @@ public interface QuestionServiceAsync {
 	   */
 	void dummy(AsyncCallback<ValidationSupport> callback);
 
-	void loginUser(User user, AsyncCallback<String[]> asyncCallback);
+	void loginUser(User user, AsyncCallback<String> asyncCallback);
 
-	void validateSession(String sessionID, AsyncCallback<Boolean> asyncCallback);	
+	void validateSession(String sessionID, AsyncCallback<String> asyncCallback);
+
+	void logOutUser(String sessionID, AsyncCallback<Boolean> asyncCallback);	
 }

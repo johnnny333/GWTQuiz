@@ -1,5 +1,7 @@
 package pl.johnny.gwtQuiz.shared;
 
+import org.hibernate.validator.constraints.Email;
+
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class User implements IsSerializable{

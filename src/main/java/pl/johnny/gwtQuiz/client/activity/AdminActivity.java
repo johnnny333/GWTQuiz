@@ -43,9 +43,9 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 		 * If validation passed, let user stay into AdmininPlace.
 		 * Otherwise, redirect him into LoginPlace.
 		 */
-		String[] cookieSessionID = clientFactory.getSessionCookieAndUserEmail();
-		if (cookieSessionID[0] == null){goTo(new LoginPlace(""));return;}
-		else{clientFactory.getQuestionsService().validateSession(cookieSessionID[0], new AsyncCallback<Boolean>() {
+		String cookieSessionID = clientFactory.getSession();
+		if (cookieSessionID == null){goTo(new LoginPlace(""));return;}
+		else{clientFactory.getQuestionsService().validateSession(cookieSessionID, new AsyncCallback<String>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -54,9 +54,9 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 			}
 
 			@Override
-			public void onSuccess(Boolean result) {
+			public void onSuccess(String result) {
 				GWT.log("AdminActivity " + result);
-				if(!result){goTo(new LoginPlace(""));}
+				if(result == null){goTo(new LoginPlace(""));}
 			}
 		});};
 		
