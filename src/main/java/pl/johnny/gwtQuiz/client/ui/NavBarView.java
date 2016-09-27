@@ -29,4 +29,6 @@ public interface NavBarView extends IsWidget
 	 * @param isLoggedIn
 	 */
 	void setNavBarAnchor(String userEmail, boolean isLoggedIn);
+
+	void toogleVisibilityOfAdminPanelAnchor(boolean toggler);
 }

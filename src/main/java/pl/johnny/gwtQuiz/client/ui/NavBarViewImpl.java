@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
 import pl.johnny.gwtQuiz.client.place.AddQuestionsPlace;
+import pl.johnny.gwtQuiz.client.place.AdminPlace;
 import pl.johnny.gwtQuiz.client.place.HighScoresPlace;
 import pl.johnny.gwtQuiz.client.place.LoginPlace;
 import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
@@ -37,6 +38,7 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 	@UiField AnchorButton anchorButton; 
 	@UiField DropDownMenu dropDownMenu;
 	@UiField AnchorListItem logOutAnchorListItem;
+	@UiField AnchorListItem adminPanelAnchor;
 
 	public NavBarViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -80,10 +82,17 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 		}
 	}
 	
+	@UiHandler("adminPanelAnchor")
+	void onadminPanelAnchorClicked(ClickEvent e){
+		if (listener != null) {
+			listener.goTo(new AdminPlace(""));
+		}
+	}
+	
 	@Override
 	public void setAnchorListItemActive(int whichAnchorToHighlight){
 		AnchorListItem[] anchorListItems = new AnchorListItem[]{newGameAnchor,highScoreAnchor,
-				addQuestionsAnchor};
+				addQuestionsAnchor, adminPanelAnchor};
 		
 		/*
 		 * Reset all nav bar anchors and navBarBrand (which don't have setActive() to non-active 
@@ -104,6 +113,9 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 			break;
 			
 			case 3 : anchorListItems[2].setActive(true);
+			break;
+			
+			case 4 : anchorListItems[3].setActive(true);
 			break;
 		}
 	}
@@ -128,5 +140,10 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 	@UiHandler("logOutAnchorListItem")
 	void onlogOutAnchorListItemClicked(ClickEvent e){
 		listener.logOutUser();
+	}
+	
+	@Override
+	public void toogleVisibilityOfAdminPanelAnchor(boolean toggler){
+		adminPanelAnchor.setVisible(toggler);
 	}
 }

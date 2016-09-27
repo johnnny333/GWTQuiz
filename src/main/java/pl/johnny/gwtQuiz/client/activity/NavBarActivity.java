@@ -81,6 +81,8 @@ public class NavBarActivity extends AbstractActivity implements NavBarView.Prese
 			navBarView.setAnchorListItemActive(2);
 		else if (place instanceof AddQuestionsPlace)
 			navBarView.setAnchorListItemActive(3);
+		else if (place instanceof AdminPlace)
+			navBarView.setAnchorListItemActive(4);
 
 		// Set user email on NavBar anchor button if returned from db.
 		clientFactory.getQuestionsService().validateSession(clientFactory.getSession(), new AsyncCallback<String>() {
@@ -89,10 +91,11 @@ public class NavBarActivity extends AbstractActivity implements NavBarView.Prese
 			public void onSuccess(String result) {
 				if (result != null) {
 					navBarView.setNavBarAnchor(result, true);
+					navBarView.toogleVisibilityOfAdminPanelAnchor(true);
 				} else {
 					navBarView.setNavBarAnchor(result, false);
+					navBarView.toogleVisibilityOfAdminPanelAnchor(false);
 				}
-				;
 			}
 
 			@Override
