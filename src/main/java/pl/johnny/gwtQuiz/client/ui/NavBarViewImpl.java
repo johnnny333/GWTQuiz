@@ -12,6 +12,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import pl.johnny.gwtQuiz.client.place.AddQuestionsPlace;
@@ -125,14 +126,14 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 		
 		if(userEmail == null){userEmail = "Log in";};
 		
-		anchorButton.setText(" " + userEmail);
+		anchorButton.setText(userEmail);
 		anchorButton.setToggleCaret(isLoggedIn);
 		dropDownMenu.setVisible(isLoggedIn);
 	}
 	
 	@UiHandler("anchorButton")
 	void onAnchorButtonClicked(ClickEvent e) {
-		if (listener != null && anchorButton.getText() == " Log in") {
+		if (listener != null && anchorButton.getText() == "Log in") {
 			listener.goTo(new LoginPlace(""));
 		}
 	}

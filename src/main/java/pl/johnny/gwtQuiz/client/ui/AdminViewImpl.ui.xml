@@ -8,49 +8,54 @@
 	}
 	
 	.icon {
-		margin-top: -13px;
+		margin-top: -7px;
 		cursor: pointer;
 	}
 	
 	.icon:ACTIVE {
 		color: #1070B5;
 	}
-
 	</ui:style>
 	<g:HTMLPanel>
 		<b:Container fluid="true">
 			<b:Row>
 				<b:Column size="SM_12">
-					<b:Panel>
 
-						<b:PanelHeader>
-							<b:Heading size="H4" text="User Questions" />
-							<b:Icon type="REFRESH" spin="false" pull="RIGHT" addStyleNames="{style.icon}" ui:field="refreshIcon"
-								title="Refesh temporary questions list."/>
-						</b:PanelHeader>
+					<b:NavTabs>
+						<b:TabListItem active="true" dataTarget="#tab4"
+							text="User Questions" />
+						<b:TabListItem dataTarget="#tab5" text="Categories" />
+					</b:NavTabs>
 
-						<b:PanelBody>
+					<b:TabContent>
+						<b:TabPane fade="true" in="true" active="true" b:id="tab4">
+							<b:Panel>
 
-							<b:PanelGroup b:id="accordion" ui:field="panelGroup">
+								<b:PanelHeader>
+									<!-- <b:Heading size="H4" text="User Questions" /> -->
+									<b:Icon type="REFRESH" spin="false" addStyleNames="{style.icon}"
+										ui:field="refreshIcon" title="Refesh temporary questions list." />
+								</b:PanelHeader>
 
-								<!-- TO RECONSTRUCT -->
-<!-- 								<b:Panel> -->
-<!-- 									<b:PanelHeader dataToggle="COLLAPSE" dataParent="#accordion" -->
-<!-- 										dataTarget="#collapseOne" text="One"> -->
-<!-- 									</b:PanelHeader> -->
-<!-- 									<b:PanelCollapse b:id="collapseOne"> -->
-<!-- 										<b:PanelBody></b:PanelBody> -->
-<!-- 									</b:PanelCollapse> -->
-<!-- 								</b:Panel> -->
-								<!-- END TO RECONSTRUCT -->
+								<b:PanelBody>
 
-							</b:PanelGroup>
+									<b:PanelGroup b:id="accordion" ui:field="panelGroup">
 
-						</b:PanelBody>
+									</b:PanelGroup>
 
-						<b:PanelFooter></b:PanelFooter>
+								</b:PanelBody>
 
-					</b:Panel>
+								<b:PanelFooter></b:PanelFooter>
+
+							</b:Panel>
+						</b:TabPane>
+						<b:TabPane fade="true" b:id="tab5">
+							<g:HTMLPanel ui:field="categoriesTableContainer"></g:HTMLPanel>
+						</b:TabPane>
+
+					</b:TabContent>
+
+
 				</b:Column>
 			</b:Row>
 		</b:Container>

@@ -70,25 +70,17 @@ div#collapseOne tr:first-of-type > td {
 	padding-top: 0px;
 }
 
-/* Reset padding on last row */
-/* div#collapseOne tr:nth-child(4) > td { */
-/* 	padding-bottom: 0px; */
-/* 	} */
-
 /* Center uploaded image */
  img.img-responsive {
 	margin: 0 auto;
 }
 
-/*Hide rows with unused drop div and upload counter in <= 760px view */ 
-@media screen and (max-width: 768px) {
-   div#collapseOne tr:nth-child(n+4):nth-child(-n+5) {
-/*         background-color: lightgreen; */
-/* 		display: none; */
-    }
-}
-/*====================END= UPLOAD WIDGET ==================*/
+/*====================END=UPLOAD WIDGET ==================*/
 
 div.add-form-buttons > button {
+	margin-right: 5px;
+}
+
+#navbar-collapse span.caret {
 	margin-right: 5px;
 }
