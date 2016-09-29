@@ -84,3 +84,15 @@ div.add-form-buttons > button {
 #navbar-collapse span.caret {
 	margin-right: 5px;
 }
+
+#tab5 > div > div > div:nth-child(1) input[type="text"] {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: -1px;
+	border: none;
+	border-top: 1px solid #DDDDDD;
+}
+
+#tab5 > div > div > div:nth-child(1) > div:nth-child(odd) > input[type="text"]{
+	background-color: #F9F9F9;
+}

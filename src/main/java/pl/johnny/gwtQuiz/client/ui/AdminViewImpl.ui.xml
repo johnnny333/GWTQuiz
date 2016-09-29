@@ -15,6 +15,11 @@
 	.icon:ACTIVE {
 		color: #1070B5;
 	}
+	
+	.categories-table-container {
+		text-align: center;
+		padding: 10px;
+	}
 	</ui:style>
 	<g:HTMLPanel>
 		<b:Container fluid="true">
@@ -50,7 +55,7 @@
 							</b:Panel>
 						</b:TabPane>
 						<b:TabPane fade="true" b:id="tab5">
-							<g:HTMLPanel ui:field="categoriesTableContainer"></g:HTMLPanel>
+							<g:HTMLPanel styleName="{style.categories-table-container}" ui:field="categoriesTableContainer"></g:HTMLPanel>
 						</b:TabPane>
 
 					</b:TabContent>
