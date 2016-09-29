@@ -92,6 +92,14 @@ div.add-form-buttons > button {
 	border-top: 1px solid #DDDDDD;
 }
 
-#tab5 > div > div > div:nth-child(1) > div:nth-child(odd) input[type="text"]{
+#tab5 > div > div > div > div:nth-child(1) > div:nth-child(odd) input[type="text"]{
 	background-color: #F9F9F9;
+}
+
+#tab5 > div > div > div > div:nth-child(1) > div:nth-child(odd) input[type="text"]:FOCUS{
+	background-color: #d9edf7;
+}
+
+#tab5 > div > div > div:nth-child(1) input[type="text"]:FOCUS {
+	background: #d9edf7;
 }
