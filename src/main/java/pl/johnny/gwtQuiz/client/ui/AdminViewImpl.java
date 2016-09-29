@@ -13,8 +13,15 @@ import org.gwtbootstrap3.client.ui.Icon;
 import org.gwtbootstrap3.client.ui.PanelGroup;
 import org.gwtbootstrap3.client.ui.TextBox;
 import org.gwtbootstrap3.client.ui.constants.AlertType;
+import org.gwtbootstrap3.client.ui.constants.IconType;
 import org.gwtbootstrap3.client.ui.constants.Pull;
+import org.gwtbootstrap3.client.ui.gwt.ButtonCell;
 
+import com.google.gwt.cell.client.Cell;
+import com.google.gwt.cell.client.CompositeCell;
+import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.HasCell;
+import com.google.gwt.cell.client.ImageCell;
 import com.google.gwt.cell.client.TextInputCell;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
@@ -144,18 +151,57 @@ public class AdminViewImpl extends Composite implements AdminView {
 	
 
 	public void buildCategoriesTable() {
+		
+		//first make a list to store the cells, you want to combine
+		final ArrayList<HasCell> cellsArrayList = new ArrayList<HasCell>();
+
+		//then define the cells and add them to the list    
+		HasCell textInputCell = new HasCell(){
+		    @Override
+		    public Cell getCell() {
+		        return new TextInputCell();
+		    }
+
+		    @Override
+		    public FieldUpdater getFieldUpdater() {
+		        return null;
+		    }
+
+		    @Override
+		    public Object getValue(Object object) {
+		        return object;
+		    }
+		};
+		cellsArrayList.add(textInputCell);
+
+
+		HasCell buttonCell = new HasCell(){
+
+		    @Override
+		    public Cell getCell() {
+		        return new ButtonCell();
+		    }
+
+		    @Override
+		    public FieldUpdater getFieldUpdater() {
+		        return null;
+		    }
+
+		    @Override
+		    public Object getValue(Object object) {
+		        return object;
+		    }
+		};
+//		cellsArrayList.add(buttonCell);
+		
 		/**
 		   * The list of data to display.
 		   */
 		final List<String> DAYS = Arrays.asList("Sunday", "Monday",
 				"Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
-		
-
-		// Create a cell that will interact with a value updater.
-		TextInputCell inputCell = new TextInputCell();
 
 		// Create a CellList that uses the cell.
-		CellList<String> cellList = new CellList<String>(inputCell);
+		CellList<String> cellList = new CellList<String>(new CompositeCell(cellsArrayList));
 		cellList.addStyleName("categories-table-container");
 		
 		// Create a list data provider.
@@ -199,7 +245,7 @@ public class AdminViewImpl extends Composite implements AdminView {
 	    final TextBox valueBox = new TextBox();
 	    valueBox.getElement().getStyle().setMarginTop(10, Unit.PX);
 	    valueBox.getElement().getStyle().setMarginBottom(10, Unit.PX);
-	    valueBox.getElement().getStyle().setWidth(90.0, Unit.PCT);
+	    valueBox.getElement().getStyle().setWidth(100.0, Unit.PCT);
 	    valueBox.setPlaceholder("Enter new category");
 	    
 	    //Add new category value on pressed enter key button.
@@ -209,7 +255,7 @@ public class AdminViewImpl extends Composite implements AdminView {
 			public void onKeyDown(KeyDownEvent event) {
 				if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
 					//Return if no value is provided.
-			    	if(valueBox.getText().trim() == "")return;  
+			    	if(valueBox.getText().trim() == "" || valueBox.getText().trim().length() > 20)return;  
 			        // Get the value from the text box.
 			        String newValue = valueBox.getText();
 
@@ -225,7 +271,7 @@ public class AdminViewImpl extends Composite implements AdminView {
 	      @Override
 		public void onClick(ClickEvent event) {
 	    	//Return if no value is provided.
-	    	if(valueBox.getText().trim() == "")return;  
+	    	if(valueBox.getText().trim() == "" || valueBox.getText().trim().length() > 20)return;  
 	        // Get the value from the text box.
 	        String newValue = valueBox.getText();
 
@@ -236,7 +282,7 @@ public class AdminViewImpl extends Composite implements AdminView {
 	      }
 	    });
 	    
-	    Button removeButton = new Button(" X ", new ClickHandler() {
+	    Button removeButton = new Button("", new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
@@ -244,6 +290,7 @@ public class AdminViewImpl extends Composite implements AdminView {
 			}
 		});
 	    removeButton.setPull(Pull.RIGHT);
+	    removeButton.setIcon(IconType.TRASH);
 		
 		// Add it to the root panel.
 		categoriesTableContainer.add(cellList);

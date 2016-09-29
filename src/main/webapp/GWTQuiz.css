@@ -86,13 +86,12 @@ div.add-form-buttons > button {
 }
 
 #tab5 > div > div > div:nth-child(1) input[type="text"] {
-	width: 90%;
-	padding: 10px;
-	margin-bottom: -1px;
+	width: 100%;
+	padding: 5px;
 	border: none;
 	border-top: 1px solid #DDDDDD;
 }
 
-#tab5 > div > div > div:nth-child(1) > div:nth-child(odd) > input[type="text"]{
+#tab5 > div > div > div:nth-child(1) > div:nth-child(odd) input[type="text"]{
 	background-color: #F9F9F9;
 }
