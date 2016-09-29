@@ -86,7 +86,7 @@ div.add-form-buttons > button {
 }
 
 #tab5 > div > div > div:nth-child(1) input[type="text"] {
-	width: 100%;
+	width: 90%;
 	padding: 10px;
 	margin-bottom: -1px;
 	border: none;

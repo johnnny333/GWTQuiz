@@ -17,7 +17,7 @@
 	}
 	
 	.categories-table-container {
-		text-align: center;
+<!-- 		text-align: center; -->
 		padding: 10px;
 	}
 	</ui:style>

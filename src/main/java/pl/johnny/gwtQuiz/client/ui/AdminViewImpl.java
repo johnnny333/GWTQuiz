@@ -8,14 +8,22 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.gwtbootstrap3.client.ui.Alert;
+import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.Icon;
 import org.gwtbootstrap3.client.ui.PanelGroup;
+import org.gwtbootstrap3.client.ui.TextBox;
 import org.gwtbootstrap3.client.ui.constants.AlertType;
+import org.gwtbootstrap3.client.ui.constants.Pull;
 
 import com.google.gwt.cell.client.TextInputCell;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -24,6 +32,9 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.NoSelectionModel;
+import com.google.gwt.view.client.SelectionChangeEvent;
 
 import pl.johnny.gwtQuiz.client.ui.widgets.PanelWidget;
 import pl.johnny.gwtQuiz.shared.Question;
@@ -130,6 +141,7 @@ public class AdminViewImpl extends Composite implements AdminView {
 	public PanelWidget[] getPanelWidgets() {
 		return panelWidgets;
 	}
+	
 
 	public void buildCategoriesTable() {
 		/**
@@ -137,6 +149,7 @@ public class AdminViewImpl extends Composite implements AdminView {
 		   */
 		final List<String> DAYS = Arrays.asList("Sunday", "Monday",
 				"Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
+		
 
 		// Create a cell that will interact with a value updater.
 		TextInputCell inputCell = new TextInputCell();
@@ -144,6 +157,31 @@ public class AdminViewImpl extends Composite implements AdminView {
 		// Create a CellList that uses the cell.
 		CellList<String> cellList = new CellList<String>(inputCell);
 		cellList.addStyleName("categories-table-container");
+		
+		// Create a list data provider.
+	    final ListDataProvider<String> dataProvider = new ListDataProvider<String>();
+	    
+	    // Add the cellList to the dataProvider.
+	    dataProvider.addDataDisplay(cellList);
+	    
+	    // Get the underlying list from data dataProvider.
+	    final List<String> list = dataProvider.getList();
+	    
+	    list.addAll(DAYS);
+	   final String[] cat = new String[1];
+	    
+	 // Add a selection model to handle user selection.
+	    final NoSelectionModel<String> selectionModel = new NoSelectionModel<String>();
+	    cellList.setSelectionModel(selectionModel);
+	    selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+	      @Override
+		public void onSelectionChange(SelectionChangeEvent event) {
+	        String selected = selectionModel.getLastSelectedObject();
+	        if (selected != null) {
+	          cat[0] = selected;
+	        }
+	      }
+	    });
 		
 		// Create a value updater that will be called when the value in a cell
 		// changes.
@@ -156,18 +194,63 @@ public class AdminViewImpl extends Composite implements AdminView {
 
 		// Add the value updater to the cellList.
 		cellList.setValueUpdater(valueUpdater);
-
-		// Set the total row count. This isn't strictly necessary, but it affects
-		// paging calculations, so its good habit to keep the row count up to date.
-		cellList.setRowCount(DAYS.size(), true);
-
-		// Push the data into the widget.
-		cellList.setRowData(0, DAYS);
 		
-		GWT.log(DAYS.get(1));		
+		// Create a form to add values to the data provider.
+	    final TextBox valueBox = new TextBox();
+	    valueBox.getElement().getStyle().setMarginTop(10, Unit.PX);
+	    valueBox.getElement().getStyle().setMarginBottom(10, Unit.PX);
+	    valueBox.getElement().getStyle().setWidth(90.0, Unit.PCT);
+	    valueBox.setPlaceholder("Enter new category");
+	    
+	    //Add new category value on pressed enter key button.
+	    valueBox.addKeyDownHandler(new KeyDownHandler() {
+			
+			@Override
+			public void onKeyDown(KeyDownEvent event) {
+				if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					//Return if no value is provided.
+			    	if(valueBox.getText().trim() == "")return;  
+			        // Get the value from the text box.
+			        String newValue = valueBox.getText();
+
+			        // Add the value to the list. The dataProvider will update the cellList.
+			        list.add(newValue);
+			        //Clear valueBox after value has been submitted.
+			        valueBox.clear();
+	           }
+			}
+		});
+	    
+	    Button addButton = new Button("Add value", new ClickHandler() {
+	      @Override
+		public void onClick(ClickEvent event) {
+	    	//Return if no value is provided.
+	    	if(valueBox.getText().trim() == "")return;  
+	        // Get the value from the text box.
+	        String newValue = valueBox.getText();
+
+	        // Add the value to the list. The dataProvider will update the cellList.
+	        list.add(newValue);
+	        //Clear valueBox after value has been submitted.
+	        valueBox.clear();
+	      }
+	    });
+	    
+	    Button removeButton = new Button(" X ", new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				list.remove(cat[0]);
+			}
+		});
+	    removeButton.setPull(Pull.RIGHT);
 		
 		// Add it to the root panel.
 		categoriesTableContainer.add(cellList);
 
+		//Add controls
+		categoriesTableContainer.add(valueBox);
+		categoriesTableContainer.add(addButton);
+		categoriesTableContainer.add(removeButton);
 	}
 }
