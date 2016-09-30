@@ -55,7 +55,6 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 
 			@Override
 			public void onSuccess(String result) {
-				GWT.log("AdminActivity " + result);
 				if(result == null){goTo(new LoginPlace(""));}
 			}
 		});};
@@ -97,7 +96,7 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 			@Override
 			public void onSuccess(String[] result) {
 
-				adminView.setCategories(result);
+				adminView.buildCategoriesCellList(result);
 
 				// Get tmp questions
 				clientFactory.getQuestionsService().getTmpQuestions(new AsyncCallback<ArrayList<Question>>() {

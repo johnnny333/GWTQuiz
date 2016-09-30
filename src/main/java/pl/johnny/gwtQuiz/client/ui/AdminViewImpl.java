@@ -45,7 +45,6 @@ public class AdminViewImpl extends Composite implements AdminView {
 
 	public AdminViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
-		categoriesTableContainer.add(new CategoriesTable());
 	}
 
 	@Override
@@ -124,5 +123,11 @@ public class AdminViewImpl extends Composite implements AdminView {
 	@Override
 	public PanelWidget[] getPanelWidgets() {
 		return panelWidgets;
+	}
+	
+	@Override
+	public void buildCategoriesCellList(String[] categories){
+		categoriesTableContainer.clear();
+		categoriesTableContainer.add(new CategoriesTable(categories));
 	}
 }

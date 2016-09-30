@@ -36,4 +36,6 @@ public interface AdminView extends IsWidget
 	void refreshPanel();
 
 	PanelWidget[] getPanelWidgets();
+
+	void buildCategoriesCellList(String[] categories);
 }

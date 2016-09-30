@@ -17,6 +17,7 @@ import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.HasCell;
 import com.google.gwt.cell.client.TextInputCell;
 import com.google.gwt.cell.client.ValueUpdater;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -33,7 +34,7 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 
 public class CategoriesTable extends Composite {
 
-	public CategoriesTable() {
+	public CategoriesTable(String[] categories) {
 		
 		//first make a list to store the cells, you want to combine
 				final ArrayList<HasCell> cellsArrayList = new ArrayList<HasCell>();
@@ -80,9 +81,8 @@ public class CategoriesTable extends Composite {
 				/**
 				   * The list of data to display.
 				   */
-				final List<String> DAYS = Arrays.asList("Sunday", "Monday",
-						"Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
-
+				final List<String> DAYS = Arrays.asList(categories);
+				
 				// Create a CellList that uses the cell.
 				CellList<String> cellList = new CellList<String>(new CompositeCell(cellsArrayList));
 				cellList.addStyleName("categories-table-container");
