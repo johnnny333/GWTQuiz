@@ -84,7 +84,6 @@ public class AdminViewImpl extends Composite implements AdminView {
 			panelWidgets[i].setUserQuestionField(tmpQuestion.get(i).getQuestion());
 
 			for(int j = 0; j < tmpQuestion.get(i).getAnswers().length; j++) {
-				panelWidgets[i].setUserAnswer1Field(tmpQuestion.get(i).getAnswer(j));
 
 				switch(j) {
 					case 0:

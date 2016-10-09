@@ -192,7 +192,7 @@ public class PanelWidget extends Composite {
 				userImageVar = userImage.getUrl().substring(userImage.getUrl().lastIndexOf("/") + 1);
 				;
 			}
-			;
+			
 			// Fill question model with data from form.
 			String[] userAnswers = new String[] { userAnswer1Field.getValue(), userAnswer2Field.getValue(),
 					userAnswer3Field.getValue(), userAnswer4Field.getValue() };
