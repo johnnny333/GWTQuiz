@@ -108,8 +108,9 @@ public class QuestionServiceDatabaseConn {
 			ResultSet resultSet = stmt
 					.executeQuery("SELECT answers.answer1,answers.answer2,answers.answer3,answers.answer4,"
 							+ "answers.correct_answer,questions.question,questions.author,"
-							+ "questions.category,questions.has_image,questions.image_url FROM answers "
-							+ "LEFT JOIN questions ON answers.questionID = questions.ID; ");
+							+ "questions.has_image,questions.image_url, category_type_enum.category FROM answers "
+							+ "LEFT JOIN questions ON answers.questionID = questions.ID " 
+							+ "LEFT JOIN category_type_enum ON questions.category_id = category_type_enum.id; ");
 
 			while (resultSet.next()) {
 				// Get questions and save it to an Array
@@ -397,7 +398,7 @@ public class QuestionServiceDatabaseConn {
 			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			PreparedStatement prepStmt = c.prepareStatement(
-					"INSERT INTO questions_tmp (question,author,category,has_image,image_url) VALUES (?,?,?,?,?);");
+					"INSERT INTO questions_tmp (question,author,category_id,has_image,image_url) VALUES (?,?,?,?,?);");
 
 			prepStmt.setString(1, userQuestion.getQuestion());
 			prepStmt.setString(2, userQuestion.getAuthor());
@@ -426,7 +427,6 @@ public class QuestionServiceDatabaseConn {
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.err.println(e.getCause() + " " + e.getStackTrace());
-			System.exit(0);
 		}
 
 		// Insert user-question answers into answers_tmp
@@ -539,8 +539,9 @@ public class QuestionServiceDatabaseConn {
 			ResultSet resultSet = stmt.executeQuery("SELECT answers_tmp.ID, answers_tmp.answer1,answers_tmp.answer2,"
 					+ "answers_tmp.answer3,answers_tmp.answer4,"
 					+ "answers_tmp.correct_answer,questions_tmp.question,questions_tmp.author,"
-					+ "questions_tmp.category,questions_tmp.has_image,questions_tmp.image_url FROM answers_tmp "
-					+ "LEFT JOIN questions_tmp ON answers_tmp.questionID = questions_tmp.ID; ");
+					+ "questions_tmp.has_image,questions_tmp.image_url, category_type_enum.category FROM answers_tmp "
+					+ "LEFT JOIN questions_tmp ON answers_tmp.questionID = questions_tmp.ID "
+					+ "LEFT JOIN category_type_enum ON questions_tmp.category_id = category_type_enum.id; ");
 
 			while (resultSet.next()) {
 				// Get questions and save it to an Array
@@ -586,7 +587,6 @@ public class QuestionServiceDatabaseConn {
 			}
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
-			System.exit(0);
 		}
 		return questionsTmpArray;
 	}
@@ -640,7 +640,6 @@ public class QuestionServiceDatabaseConn {
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.err.println(e.getCause() + " " + e.getStackTrace());
-			System.exit(0);
 		}
 
 		// Delete question image.If there is none image,no exception will be
@@ -661,7 +660,7 @@ public class QuestionServiceDatabaseConn {
 			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			PreparedStatement prepStmt = c.prepareStatement(
-					"INSERT INTO questions (question,author,category,has_image,image_url) VALUES (?,?,?,?,?);");
+					"INSERT INTO questions (question,author,category_id,has_image,image_url) VALUES (?,?,?,?,?);");
 
 			prepStmt.setString(1, userQuestion.getQuestion());
 			prepStmt.setString(2, userQuestion.getAuthor());
@@ -701,7 +700,6 @@ public class QuestionServiceDatabaseConn {
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.err.println(e.getCause() + " " + e.getStackTrace());
-			System.exit(0);
 		}
 
 		// Insert user-question answers into answers_tmp
@@ -729,7 +727,6 @@ public class QuestionServiceDatabaseConn {
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.err.println(e.getCause() + " " + e.getStackTrace());
-			System.exit(0);
 		}
 
 		/*

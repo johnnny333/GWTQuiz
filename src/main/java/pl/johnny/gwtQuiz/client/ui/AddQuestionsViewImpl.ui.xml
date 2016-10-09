@@ -142,7 +142,7 @@
 				<g:HTML text="Your question was sent to moderation."></g:HTML>
 			</b:ModalBody>
 			<b:ModalFooter addStyleNames='{style.center}'>
-				<b:Button type="DANGER" dataDismiss="MODAL" icon="REMOVE" text="Close"></b:Button>
+				<b:Button type="SUCCESS" dataDismiss="MODAL" icon="REMOVE" text="Close"></b:Button>
 			</b:ModalFooter>
 		</b:Modal>
 

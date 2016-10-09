@@ -126,7 +126,7 @@ public class PanelWidget extends Composite {
 	 */
 	public void setUserCategoryListBox(String[] categories, String selectedItem) {
 		for (int i = 0; i < categories.length; i++) {
-			userCategoryListBox.addItem(categories[i], categories[i]);
+			userCategoryListBox.addItem(categories[i], String.valueOf(i + 1));
 
 			if (categories[i] == selectedItem) {
 				userCategoryListBox.setItemSelected(i, true);

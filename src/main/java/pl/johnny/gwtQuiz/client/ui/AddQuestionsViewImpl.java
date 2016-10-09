@@ -118,7 +118,7 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 		}
 
 		for (int i = 0; i < categories.length; i++) {
-			categoryListBox.addItem(categories[i]);
+			categoryListBox.addItem(categories[i], String.valueOf(i + 1));
 		}
 	}
 
