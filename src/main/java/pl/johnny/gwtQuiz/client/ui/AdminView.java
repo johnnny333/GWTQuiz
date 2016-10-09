@@ -32,6 +32,8 @@ public interface AdminView extends IsWidget
 		void addCategory(String newCategory);
 
 		void deleteCategory(String categoryToDelete, final List<String> list, final String selectedCategory);
+
+		void updateCategory(String updatedCategory, int categoryID);
 		
 	}
 

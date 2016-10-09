@@ -51,5 +51,7 @@ public interface QuestionServiceAsync {
 
 	void insertNewCategory(String newCategory, AsyncCallback<Void> asyncCallback);
 
-	void deleteCategory(String categoryToDelete, AsyncCallback<Void> asyncCallback);	
+	void deleteCategory(String categoryToDelete, AsyncCallback<Void> asyncCallback);
+
+	void updateCategory(String updatedCategory, int categoryID, AsyncCallback<Void> callback);	
 }

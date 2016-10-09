@@ -108,9 +108,9 @@ public class QuestionServiceDatabaseConn {
 			ResultSet resultSet = stmt
 					.executeQuery("SELECT answers.answer1,answers.answer2,answers.answer3,answers.answer4,"
 							+ "answers.correct_answer,questions.question,questions.author,"
-							+ "questions.has_image,questions.image_url, category_type_enum.category FROM answers "
+							+ "questions.has_image,questions.image_url, categories.category FROM answers "
 							+ "LEFT JOIN questions ON answers.questionID = questions.ID " 
-							+ "LEFT JOIN category_type_enum ON questions.category_id = category_type_enum.id; ");
+							+ "LEFT JOIN categories ON questions.category_id = categories.id; ");
 
 			while (resultSet.next()) {
 				// Get questions and save it to an Array
@@ -349,14 +349,14 @@ public class QuestionServiceDatabaseConn {
 			stmt = c.createStatement();
 
 			// Count rows
-			ResultSet rsRowCount = stmt.executeQuery("SELECT COUNT(*) FROM category_type_enum;");
+			ResultSet rsRowCount = stmt.executeQuery("SELECT COUNT(*) FROM categories;");
 			int rowsCount = rsRowCount.getInt(1);
 
 			// Initialize array
 			categoryData = new String[rowsCount];
 
 			// Actual query
-			ResultSet resultSet = stmt.executeQuery("SELECT category FROM category_type_enum;");
+			ResultSet resultSet = stmt.executeQuery("SELECT category FROM categories;");
 
 			// Iterate over ResultSet and put each record into an array
 			while (resultSet.next()) {
@@ -539,9 +539,9 @@ public class QuestionServiceDatabaseConn {
 			ResultSet resultSet = stmt.executeQuery("SELECT answers_tmp.ID, answers_tmp.answer1,answers_tmp.answer2,"
 					+ "answers_tmp.answer3,answers_tmp.answer4,"
 					+ "answers_tmp.correct_answer,questions_tmp.question,questions_tmp.author,"
-					+ "questions_tmp.has_image,questions_tmp.image_url, category_type_enum.category FROM answers_tmp "
+					+ "questions_tmp.has_image,questions_tmp.image_url, categories.category FROM answers_tmp "
 					+ "LEFT JOIN questions_tmp ON answers_tmp.questionID = questions_tmp.ID "
-					+ "LEFT JOIN category_type_enum ON questions_tmp.category_id = category_type_enum.id; ");
+					+ "LEFT JOIN categories ON questions_tmp.category_id = categories.id; ");
 
 			while (resultSet.next()) {
 				// Get questions and save it to an Array
@@ -816,7 +816,7 @@ public class QuestionServiceDatabaseConn {
 			c.setAutoCommit(false);
 			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
-			prepStmt = c.prepareStatement("INSERT INTO category_type_enum VALUES (?);");
+			prepStmt = c.prepareStatement("INSERT INTO categories (category) VALUES (?);");
 
 			prepStmt.setString(1, newCategory);
 			prepStmt.executeUpdate();
@@ -843,10 +843,11 @@ public class QuestionServiceDatabaseConn {
 			c.setAutoCommit(true);
 			c.createStatement().execute("PRAGMA foreign_keys = ON;");
 
-			prepStmt = c.prepareStatement("DELETE FROM category_type_enum WHERE category=?;");
+			prepStmt = c.prepareStatement("DELETE FROM categories WHERE category=?;");
 
 			prepStmt.setString(1, categoryToDelete);
 			prepStmt.executeUpdate();
+			
 		} catch (Exception e) {
 
 			if (e.getMessage().equals("[SQLITE_CONSTRAINT]  Abort due to constraint violation (FOREIGN KEY constraint failed)")) {
@@ -859,8 +860,36 @@ public class QuestionServiceDatabaseConn {
 		} finally {
 			
 			prepStmt.close();
-			// c.commit();
 			c.close();
+		}
+	}
+	
+	void updateCategory(String updatedCategory, int categoryID) {
+
+		Connection c = null;
+		PreparedStatement prepStmt = null;
+
+		try {
+			// Connection
+			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
+			// Non transaction.
+			c.setAutoCommit(false);
+			c.createStatement().execute("PRAGMA foreign_keys = ON;");
+
+			prepStmt = c.prepareStatement("UPDATE categories SET category = ? WHERE id = ?;");
+
+			prepStmt.setString(1, updatedCategory);
+			prepStmt.setInt(2, categoryID);
+			prepStmt.executeUpdate();
+			
+			prepStmt.close();
+			c.commit();
+			c.close();
+			
+		} catch (Exception e) {
+
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.err.println(e.getCause() + " " + e.getStackTrace());	
 		}
 	}
 

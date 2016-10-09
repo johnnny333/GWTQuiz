@@ -65,6 +65,10 @@ div#accordion div:nth-child(odd) div.panel-heading {
 	background-color: #f9f9f9;
 }
 
+div#accordion div div.panel-heading:HOVER {
+	background-color: #f5f5f5;
+}
+
 /* Center content in every cells in collapse */
 div#collapseOne td {
 	text-align: center;
@@ -101,7 +105,11 @@ div.add-form-buttons > button {
 	background-color: #F9F9F9;
 }
 
-#tab5 > div > div > div > div:nth-child(1) > div:nth-child(odd) input[type="text"]:FOCUS{
+#tab5 > div > div > div > div:nth-child(1) > div input[type="text"]:HOVER{
+	background-color: #f5f5f5;
+}
+
+#tab5 > div > div > div > div:nth-child(1) > div input[type="text"]:FOCUS{
 	background-color: #d9edf7;
 }
 

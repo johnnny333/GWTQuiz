@@ -180,4 +180,9 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 			throw new SQLConstraintException(e.getMessage());
 		}
 	}
+	
+	@Override
+	public void updateCategory(String updatedCategory, int categoryID) {
+		questionServiceDBConn.updateCategory(updatedCategory, categoryID);
+	}
 }

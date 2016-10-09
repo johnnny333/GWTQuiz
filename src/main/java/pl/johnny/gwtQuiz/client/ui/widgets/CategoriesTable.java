@@ -53,7 +53,8 @@ public class CategoriesTable extends Composite {
 					@Override
 					public void update(int index, String object, String value) {
 						GWT.log("New Value " + value + " index " + index);
-
+						//Update record on database.
+						listener.updateCategory(value, index + 1);
 					}
 				};
 			}

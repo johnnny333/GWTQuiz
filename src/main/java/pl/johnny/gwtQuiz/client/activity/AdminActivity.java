@@ -229,4 +229,20 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 			}
 		});
 	}
+	
+	@Override
+	public void updateCategory(String updatedCategory, int categoryID){
+		clientFactory.getQuestionsService().updateCategory(updatedCategory, categoryID, new AsyncCallback<Void>() {
+			
+			@Override
+			public void onSuccess(Void result) {
+				GWT.log("Category updated successfully in AdminActivity.updateCategory()");
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				GWT.log("AdminActivity.updateCategory() failed", caught);
+			}
+		});
+	}
 }

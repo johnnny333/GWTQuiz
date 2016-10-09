@@ -71,4 +71,6 @@ public interface QuestionService extends RemoteService {
 	void insertNewCategory(String newCategory);
 
 	void deleteCategory(String categoryToDelete) throws SQLConstraintException;
+
+	void updateCategory(String updatedCategory, int categoryID);
 }
