@@ -5,6 +5,7 @@ import org.gwtbootstrap3.client.ui.Form;
 import org.gwtbootstrap3.client.ui.FormGroup;
 import org.gwtbootstrap3.client.ui.InlineHelpBlock;
 import org.gwtbootstrap3.client.ui.ListBox;
+import org.gwtbootstrap3.client.ui.Modal;
 import org.gwtbootstrap3.client.ui.TextBox;
 import org.gwtbootstrap3.client.ui.constants.ValidationState;
 
@@ -66,6 +67,8 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 	InlineHelpBlock questionInlineHelpBlock;
 	@UiField
 	FormGroup questionFormGroup;
+	@UiField
+	Modal confirmationModal;
 
 	public AddQuestionsViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -134,7 +137,7 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 					correctAnsListBox.getSelectedValue(), authorField.getValue(), categoryListBox.getSelectedValue());
 			// There goes RPC logic over activity...
 			listener.insertUserQuestion(userQuestion);
-			
+
 		} else {
 			/*
 			 * GWTBootstrap3 already red-highlighted empty text fields, so here
@@ -205,5 +208,10 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 			GWT.log("Question Validation server error " + propertyPath + ": " + errorMessage);
 			break;
 		}
+	}
+
+	@Override
+	public void showConfirmationModal() {
+		confirmationModal.show();
 	}
 }

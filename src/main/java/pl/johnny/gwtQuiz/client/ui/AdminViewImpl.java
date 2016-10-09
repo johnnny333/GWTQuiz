@@ -128,6 +128,6 @@ public class AdminViewImpl extends Composite implements AdminView {
 	@Override
 	public void buildCategoriesCellList(String[] categories){
 		categoriesTableContainer.clear();
-		categoriesTableContainer.add(new CategoriesTable(categories));
+		categoriesTableContainer.add(new CategoriesTable(categories, listener));
 	}
 }

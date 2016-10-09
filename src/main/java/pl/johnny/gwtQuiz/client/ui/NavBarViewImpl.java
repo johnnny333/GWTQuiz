@@ -78,7 +78,7 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 	@UiHandler("addQuestionsAnchor")
 	void onAddQuestionsAnchorClicked(ClickEvent e) {
 		if (listener != null) {
-			listener.goTo(new AddQuestionsPlace("HighScores"));
+			listener.goTo(new AddQuestionsPlace(""));
 			navBarCollapse.hide();
 		}
 	}

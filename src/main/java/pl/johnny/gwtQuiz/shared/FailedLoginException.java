@@ -15,14 +15,14 @@ public class FailedLoginException extends Exception implements Serializable {
 	private String symbol;
 
     public FailedLoginException() {
+    	super();
     }
 
-    public FailedLoginException(String symbol) {
-        this.symbol = symbol;
+    public FailedLoginException(String message) {
+        super(message);
     }
-
-    public String getSymbol() {
-        return this.symbol;
-    }
-
+    
+    public FailedLoginException(Exception e) {
+		super(e);
+	}
 }

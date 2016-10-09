@@ -52,4 +52,6 @@ public interface AddQuestionsView extends IsWidget
 	void setServerErrorMessage(String propertyPath, String errorMessage);
 
 	void formReset();
+
+	void showConfirmationModal();
 }

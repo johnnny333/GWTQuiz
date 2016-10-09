@@ -1,5 +1,6 @@
 package pl.johnny.gwtQuiz.client;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.validation.ConstraintViolationException;
@@ -10,6 +11,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import pl.johnny.gwtQuiz.shared.Question;
+import pl.johnny.gwtQuiz.shared.SQLConstraintException;
 import pl.johnny.gwtQuiz.shared.User;
 import pl.johnny.gwtQuiz.shared.UserScore;
 
@@ -65,4 +67,8 @@ public interface QuestionService extends RemoteService {
 	String validateSession(String sessionID);
 
 	boolean logOutUser(String sessionID);
+
+	void insertNewCategory(String newCategory);
+
+	void deleteCategory(String categoryToDelete) throws SQLConstraintException;
 }

@@ -108,6 +108,7 @@ public class AddQuestionsActivity extends AbstractActivity implements AddQuestio
 			@Override
 			public void onSuccess(Void result) {
 				GWT.log("Question submitted");
+				addQuestionView.showConfirmationModal();
 				addQuestionView.formReset();
 			}
 		});

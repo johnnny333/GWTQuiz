@@ -47,5 +47,9 @@ public interface QuestionServiceAsync {
 
 	void validateSession(String sessionID, AsyncCallback<String> asyncCallback);
 
-	void logOutUser(String sessionID, AsyncCallback<Boolean> asyncCallback);	
+	void logOutUser(String sessionID, AsyncCallback<Boolean> asyncCallback);
+
+	void insertNewCategory(String newCategory, AsyncCallback<Void> asyncCallback);
+
+	void deleteCategory(String categoryToDelete, AsyncCallback<Void> asyncCallback);	
 }

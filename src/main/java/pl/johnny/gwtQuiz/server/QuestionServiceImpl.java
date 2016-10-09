@@ -1,5 +1,6 @@
 package pl.johnny.gwtQuiz.server;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -18,6 +19,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import pl.johnny.gwtQuiz.client.QuestionService;
 import pl.johnny.gwtQuiz.shared.Question;
+import pl.johnny.gwtQuiz.shared.SQLConstraintException;
 import pl.johnny.gwtQuiz.shared.ServerGroup;
 import pl.johnny.gwtQuiz.shared.User;
 import pl.johnny.gwtQuiz.shared.UserScore;
@@ -161,6 +163,22 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 			return true;
 		} else {
 			return false;
+		}
+	}
+
+	@Override
+	public void insertNewCategory(String newCategory) {
+		questionServiceDBConn.insertNewCategory(newCategory);
+	}
+
+	@Override
+	public void deleteCategory(String categoryToDelete) throws SQLConstraintException{
+		
+		//Execute delete and if constraint occcures, throw exception to the client.
+		try {
+			questionServiceDBConn.deleteCategory(categoryToDelete);
+		} catch (Exception e) {
+			throw new SQLConstraintException(e.getMessage());
 		}
 	}
 }

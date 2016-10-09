@@ -80,7 +80,7 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
 				
 				if (caught instanceof FailedLoginException) {
 					
-					loginView.setServerErrorMessage( ((FailedLoginException)caught).getSymbol() );
+					loginView.setServerErrorMessage( caught.getMessage() );
 					
 					return;
 				}

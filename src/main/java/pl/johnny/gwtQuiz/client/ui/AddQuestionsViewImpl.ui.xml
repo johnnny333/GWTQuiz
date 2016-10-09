@@ -29,7 +29,7 @@
 
 							<b:PanelHeader>
 
-								<b:Heading size="H4" text="Add Question"/>
+								<b:Heading size="H4" text="Add Question" />
 
 							</b:PanelHeader>
 
@@ -60,7 +60,8 @@
 
 									<b:FormGroup ui:field="questionFormGroup">
 										<b:FormLabel for="formName" text="Question"></b:FormLabel>
-										<b:InlineHelpBlock ui:field="questionInlineHelpBlock" iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
+										<b:InlineHelpBlock ui:field="questionInlineHelpBlock"
+											iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
 										<b:TextBox maxLength="50" placeholder="Fill in your question..."
 											b:id="formName" validateOnBlur="true" allowBlank="false"
 											ui:field="questionField" />
@@ -101,7 +102,7 @@
 									<b:FormGroup ui:field="correctAnsFormGroup">
 										<b:FormLabel for="correctAnsListBox" text="Which answer is correct?"></b:FormLabel>
 										<b:ListBox b:id="correctAnsListBox" ui:field="correctAnsListBox">
-											<g:item >Which answer is correct?</g:item>
+											<g:item>Which answer is correct?</g:item>
 											<g:item value='0'>First</g:item>
 											<g:item value='1'>Second</g:item>
 											<g:item value='2'>Third</g:item>
@@ -111,7 +112,8 @@
 
 									<b:FormGroup ui:field="authorFormGroup">
 										<b:FormLabel for="authorField" text="Author"></b:FormLabel>
-										<b:InlineHelpBlock ui:field="authorInlineHelpBlock" iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
+										<b:InlineHelpBlock ui:field="authorInlineHelpBlock"
+											iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
 										<b:TextBox placeholder="Fill in your nick / name!"
 											ui:field="authorField" maxLength="20" addStyleNames='{style.ansBut}'
 											b:id="authorField" validateOnBlur="true" allowBlank="false" />
@@ -121,8 +123,10 @@
 
 
 							<b:PanelFooter addStyleNames="text-center add-form-buttons">
-								<b:Button ui:field="formValidateButton" type="SUCCESS" text="Submit question"></b:Button>
-								<b:Button ui:field="formResetButton" type="DANGER" text="Reset form"></b:Button>
+								<b:Button ui:field="formValidateButton" type="SUCCESS"
+									text="Submit question"></b:Button>
+								<b:Button ui:field="formResetButton" type="DANGER"
+									text="Reset form"></b:Button>
 							</b:PanelFooter>
 
 						</b:Panel>
@@ -131,6 +135,16 @@
 				</b:Column>
 			</b:Row>
 		</b:Container>
+
+		<b:Modal title="Question submitted" closable="false" fade="true" ui:field="confirmationModal"
+			dataBackdrop="STATIC" dataKeyboard="true" b:id="myModal">
+			<b:ModalBody>
+				<g:HTML text="Your question was sent to moderation."></g:HTML>
+			</b:ModalBody>
+			<b:ModalFooter addStyleNames='{style.center}'>
+				<b:Button type="DANGER" dataDismiss="MODAL" icon="REMOVE" text="Close"></b:Button>
+			</b:ModalFooter>
+		</b:Modal>
 
 	</g:HTMLPanel>
 </ui:UiBinder> 

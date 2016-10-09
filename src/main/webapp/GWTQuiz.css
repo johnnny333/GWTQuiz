@@ -60,6 +60,11 @@ div#accordion div.panel-heading {
 	color: #555;
 }
 
+/* Color odd rows in user question list */
+div#accordion div:nth-child(odd) div.panel-heading {
+	background-color: #f9f9f9;
+}
+
 /* Center content in every cells in collapse */
 div#collapseOne td {
 	text-align: center;

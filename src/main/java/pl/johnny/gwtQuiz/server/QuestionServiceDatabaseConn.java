@@ -6,11 +6,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
 import org.apache.commons.io.FileUtils;
 
+import pl.johnny.gwtQuiz.shared.FailedLoginException;
 import pl.johnny.gwtQuiz.shared.Question;
 import pl.johnny.gwtQuiz.shared.User;
 import pl.johnny.gwtQuiz.shared.UserScore;
@@ -773,21 +775,21 @@ public class QuestionServiceDatabaseConn {
 			Connection c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
 			c.setAutoCommit(false);
 			c.createStatement().execute("PRAGMA foreign_keys = ON");
-			
+
 			PreparedStatement prepStmt = c.prepareStatement("SELECT email,password from users WHERE email= ?;");
 
 			prepStmt.setString(1, user.email);
 			ResultSet rs = prepStmt.executeQuery();
-			
-			//Initialize array for data.
+
+			// Initialize array for data.
 			passwordData = new String[rs.getMetaData().getColumnCount()];
-			
-			//Check if there are any results.
-			if (!rs.isBeforeFirst() ) {    
-			    System.out.println("No such user");
-			    return new String[]{"No such user"};
-			} 
-			
+
+			// Check if there are any results.
+			if (!rs.isBeforeFirst()) {
+				System.out.println("No such user");
+				return new String[] { "No such user" };
+			}
+
 			while (rs.next()) {
 				passwordData[0] = rs.getString(1);
 				passwordData[1] = rs.getString(2);
@@ -804,6 +806,65 @@ public class QuestionServiceDatabaseConn {
 		}
 		// Return user password.
 		return passwordData;
+	}
+
+	void insertNewCategory(String newCategory) {
+
+		Connection c;
+		PreparedStatement prepStmt;
+
+		try {
+			// Connection
+			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
+			c.setAutoCommit(false);
+			c.createStatement().execute("PRAGMA foreign_keys = ON");
+
+			prepStmt = c.prepareStatement("INSERT INTO category_type_enum VALUES (?);");
+
+			prepStmt.setString(1, newCategory);
+			prepStmt.executeUpdate();
+
+			prepStmt.close();
+			c.commit();
+			c.close();
+
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.err.println(e.getCause() + " " + e.getStackTrace());
+		}
+	}
+
+	void deleteCategory(String categoryToDelete) throws SQLException {
+
+		Connection c = null;
+		PreparedStatement prepStmt = null;
+
+		try {
+			// Connection
+			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
+			// Non transaction.
+			c.setAutoCommit(true);
+			c.createStatement().execute("PRAGMA foreign_keys = ON;");
+
+			prepStmt = c.prepareStatement("DELETE FROM category_type_enum WHERE category=?;");
+
+			prepStmt.setString(1, categoryToDelete);
+			prepStmt.executeUpdate();
+		} catch (Exception e) {
+
+			if (e.getMessage().equals("[SQLITE_CONSTRAINT]  Abort due to constraint violation (FOREIGN KEY constraint failed)")) {
+				throw new SQLException("[SQLITE_CONSTRAINT]");
+			}
+
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.err.println(e.getCause() + " " + e.getStackTrace());
+			
+		} finally {
+			
+			prepStmt.close();
+			// c.commit();
+			c.close();
+		}
 	}
 
 	/**

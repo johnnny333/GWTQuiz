@@ -97,8 +97,9 @@
 				<h:Hr></h:Hr>
 			</b:ModalBody>
 			<b:ModalFooter addStyleNames='{style.center}'>
-				<b:Button type="DANGER" dataDismiss="MODAL" ui:field="modalCloseBtn" icon="REMOVE">Close</b:Button>
+				<b:Button type="DANGER" dataDismiss="MODAL" ui:field="modalCloseBtn" icon="REMOVE" text="Close"></b:Button>
 			</b:ModalFooter>
 		</b:Modal>
+		
 	</g:HTMLPanel>
 </ui:UiBinder> 

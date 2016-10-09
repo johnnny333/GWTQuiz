@@ -4,6 +4,7 @@
 package pl.johnny.gwtQuiz.client.activity;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -15,6 +16,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.sun.xml.internal.txw2.IllegalAnnotationException;
 
 import pl.johnny.gwtQuiz.client.ClientFactory;
 import pl.johnny.gwtQuiz.client.place.AdminPlace;
@@ -22,6 +24,7 @@ import pl.johnny.gwtQuiz.client.place.LoginPlace;
 import pl.johnny.gwtQuiz.client.ui.AdminView;
 import pl.johnny.gwtQuiz.client.ui.widgets.PanelWidget;
 import pl.johnny.gwtQuiz.shared.Question;
+import pl.johnny.gwtQuiz.shared.SQLConstraintException;
 
 public class AdminActivity extends AbstractActivity implements AdminView.Presenter {
 	// Used to obtain views, eventBus, placeController
@@ -37,28 +40,34 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 	 * Invoked by the ActivityManager to start a new Activity
 	 */
 	@Override
-	public void start(AcceptsOneWidget containerWidget, EventBus eventBus) {		
+	public void start(AcceptsOneWidget containerWidget, EventBus eventBus) {
 		/**
-		 * Check for session cookie and if exist, validate it on server.
-		 * If validation passed, let user stay into AdmininPlace.
-		 * Otherwise, redirect him into LoginPlace.
+		 * Check for session cookie and if exist, validate it on server. If
+		 * validation passed, let user stay into AdmininPlace. Otherwise,
+		 * redirect him into LoginPlace.
 		 */
 		String cookieSessionID = clientFactory.getSession();
-		if (cookieSessionID == null){goTo(new LoginPlace(""));return;}
-		else{clientFactory.getQuestionsService().validateSession(cookieSessionID, new AsyncCallback<String>() {
+		if (cookieSessionID == null) {
+			goTo(new LoginPlace(""));
+			return;
+		} else {
+			clientFactory.getQuestionsService().validateSession(cookieSessionID, new AsyncCallback<String>() {
 
-			@Override
-			public void onFailure(Throwable caught) {
-				GWT.log("AdminActivity.validateSession() failed",caught);
-				return;
-			}
+				@Override
+				public void onFailure(Throwable caught) {
+					GWT.log("AdminActivity.validateSession() failed", caught);
+					return;
+				}
 
-			@Override
-			public void onSuccess(String result) {
-				if(result == null){goTo(new LoginPlace(""));}
-			}
-		});};
-		
+				@Override
+				public void onSuccess(String result) {
+					if (result == null) {
+						goTo(new LoginPlace(""));
+					}
+				}
+			});
+		}
+
 		adminView = clientFactory.getAdminView();
 		adminView.setPresenter(this);
 		containerWidget.setWidget(adminView.asWidget());
@@ -95,7 +104,8 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 
 			@Override
 			public void onSuccess(String[] result) {
-
+				
+				adminView.setCategories(result);
 				adminView.buildCategoriesCellList(result);
 
 				// Get tmp questions
@@ -179,6 +189,43 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 			public void onSuccess(Void result) {
 				GWT.log("deleteUserTmpQuestion succeded");
 				adminView.refreshPanel();
+			}
+		});
+	}
+
+	@Override
+	public void addCategory(String newCategory) {
+		clientFactory.getQuestionsService().insertNewCategory(newCategory, new AsyncCallback<Void>() {
+
+			@Override
+			public void onSuccess(Void result) {
+				GWT.log("Category added successfully in AdminActivity.addCategory()");
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				GWT.log("AdminActivity.addCategory() failed", caught);
+			}
+		});
+	}
+
+	@Override
+	public void deleteCategory(String categoryToDelete, final List<String> list, final String selectedCategory) {
+		clientFactory.getQuestionsService().deleteCategory(categoryToDelete, new AsyncCallback<Void>() {
+
+			@Override
+			public void onSuccess(Void result) {
+				GWT.log("Category deleted successfully in AdminActivity.addCategory()");
+				list.remove(selectedCategory);
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+
+				if (caught instanceof SQLConstraintException && caught.getMessage().equals("[SQLITE_CONSTRAINT]")) {
+					GWT.log("[SQLITE_CONSTRAINT] catched in AdminActivity || " + caught.getMessage());
+				}
+				GWT.log("AdminActivity.deleteCategory() failed", caught);
 			}
 		});
 	}
