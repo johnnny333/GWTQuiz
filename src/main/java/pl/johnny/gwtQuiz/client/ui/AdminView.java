@@ -3,12 +3,13 @@ package pl.johnny.gwtQuiz.client.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.gwtbootstrap3.client.ui.Alert;
+
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.ui.IsWidget;
 
 import pl.johnny.gwtQuiz.client.ui.widgets.PanelWidget;
 import pl.johnny.gwtQuiz.shared.Question;
-import pl.johnny.gwtQuiz.shared.SQLConstraintException;
 
 /**
  * View interface. Extends IsWidget so a view impl can easily provide
@@ -29,9 +30,9 @@ public interface AdminView extends IsWidget
 
 		void deleteUserTmpQuestion(String questionID);
 
-		void addCategory(String newCategory);
+		void addCategory(String newCategory, final List<String> list);
 
-		void deleteCategory(String categoryToDelete, final List<String> list, final String selectedCategory);
+		void removeCategory(String categoryToDelete, final List<String> list, Alert contraintAlert);
 
 		void updateCategory(String updatedCategory, int categoryID);
 		

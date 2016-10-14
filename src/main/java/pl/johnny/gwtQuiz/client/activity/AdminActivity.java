@@ -10,13 +10,15 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
+import org.gwtbootstrap3.client.ui.Alert;
+
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
-import com.sun.xml.internal.txw2.IllegalAnnotationException;
 
 import pl.johnny.gwtQuiz.client.ClientFactory;
 import pl.johnny.gwtQuiz.client.place.AdminPlace;
@@ -194,12 +196,15 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 	}
 
 	@Override
-	public void addCategory(String newCategory) {
+	public void addCategory(final String newCategory, final List<String> list) {
 		clientFactory.getQuestionsService().insertNewCategory(newCategory, new AsyncCallback<Void>() {
 
 			@Override
 			public void onSuccess(Void result) {
 				GWT.log("Category added successfully in AdminActivity.addCategory()");
+				/*On success, update categoriesTable list to reflect change in data source.
+				The dataProvider will update the cellList. */
+				list.add(newCategory);
 			}
 
 			@Override
@@ -210,13 +215,15 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 	}
 
 	@Override
-	public void deleteCategory(String categoryToDelete, final List<String> list, final String selectedCategory) {
+	public void removeCategory(final String categoryToDelete, final List<String> list, final Alert constraintAlert) {
 		clientFactory.getQuestionsService().deleteCategory(categoryToDelete, new AsyncCallback<Void>() {
 
 			@Override
 			public void onSuccess(Void result) {
 				GWT.log("Category deleted successfully in AdminActivity.addCategory()");
-				list.remove(selectedCategory);
+				/*On success, update categoriesTable list to reflect change in data source.
+				The dataProvider will update the cellList. */
+				list.remove(categoryToDelete);
 			}
 
 			@Override
@@ -224,6 +231,12 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 
 				if (caught instanceof SQLConstraintException && caught.getMessage().equals("[SQLITE_CONSTRAINT]")) {
 					GWT.log("[SQLITE_CONSTRAINT] catched in AdminActivity || " + caught.getMessage());
+					constraintAlert.removeStyleName(org.gwtbootstrap3.client.ui.constants.Styles.ALERT_DISMISSABLE);
+					constraintAlert.getElement().getStyle().setDisplay(Display.BLOCK);
+					
+					GWT.log(constraintAlert.toString());
+
+					constraintAlert.setVisible(true);
 				}
 				GWT.log("AdminActivity.deleteCategory() failed", caught);
 			}

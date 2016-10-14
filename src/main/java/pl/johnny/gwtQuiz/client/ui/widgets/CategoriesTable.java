@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.gwtbootstrap3.client.ui.Alert;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.TextBox;
 import org.gwtbootstrap3.client.ui.constants.IconType;
@@ -38,6 +39,12 @@ public class CategoriesTable extends Composite {
 
 		// first make a list to store the cells, you want to combine
 		final ArrayList<HasCell> cellsArrayList = new ArrayList<HasCell>();
+		
+		// Create a list data provider.
+		final ListDataProvider<String> dataProvider = new ListDataProvider<String>();
+
+				// Get the underlying list from data dataProvider.
+		final List<String> list = dataProvider.getList();
 
 		// then define the cells and add them to the list
 		HasCell textInputCell = new HasCell() {
@@ -88,22 +95,16 @@ public class CategoriesTable extends Composite {
 		/**
 		 * The list of data to display.
 		 */
-		final List<String> DAYS = Arrays.asList(categories);
+		final List<String> categoriesList = Arrays.asList(categories);
 
 		// Create a CellList that uses the cell.
 		CellList<String> cellList = new CellList<String>(new CompositeCell(cellsArrayList));
 		cellList.addStyleName("categories-table-container");
-
-		// Create a list data provider.
-		final ListDataProvider<String> dataProvider = new ListDataProvider<String>();
-
+		
 		// Add the cellList to the dataProvider.
 		dataProvider.addDataDisplay(cellList);
 
-		// Get the underlying list from data dataProvider.
-		final List<String> list = dataProvider.getList();
-
-		list.addAll(DAYS);
+		list.addAll(categoriesList);
 
 		/** We use array here as a hack to avoid enclosing type error */
 		final String[] selectedCategory = new String[1];
@@ -174,14 +175,19 @@ public class CategoriesTable extends Composite {
 				String newCategoryValue = valueBox.getText();
 
 				// Add new category into the database.
-				listener.addCategory(newCategoryValue);
-
-				// Add the value to the list. The dataProvider will update the cellList.
-				list.add(newCategoryValue);
+				listener.addCategory(newCategoryValue, list);
+				
 				// Clear valueBox after value has been submitted.
 				valueBox.clear();
 			}
 		});
+		
+		final Alert constraintAlert = new Alert("Selected category is in use and cannot be deleted.");
+		constraintAlert.setPull(Pull.RIGHT);
+		constraintAlert.setFade(true);
+		constraintAlert.setDismissable(true);
+		constraintAlert.setVisible(false);
+		
 
 		Button removeButton = new Button("", new ClickHandler() {
 
@@ -189,25 +195,26 @@ public class CategoriesTable extends Composite {
 			public void onClick(ClickEvent event) {
 
 				GWT.log("Deleted category " + selectedCategory[0]);
+				constraintAlert.setVisible(false);
 
 				// Delete selected category from database.
-				listener.deleteCategory(selectedCategory[0],list,selectedCategory[0]);
-
+				listener.removeCategory(selectedCategory[0],list,constraintAlert);
 			}
 		});
+		
 		removeButton.setPull(Pull.RIGHT);
 		removeButton.setIcon(IconType.TRASH);
 
 		// Add it to the flowPanel
-		FlowPanel container = new FlowPanel();
+		final FlowPanel container = new FlowPanel();
 		container.add(cellList);
 
 		// Add controls
 		container.add(valueBox);
 		container.add(addButton);
-
 		container.add(removeButton);
-
+		container.add(constraintAlert);
+		
 		// Wrap container by Composite.
 		initWidget(container);
 	}
