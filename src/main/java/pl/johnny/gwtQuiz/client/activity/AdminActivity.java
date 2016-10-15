@@ -102,10 +102,10 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 	@Override
 	public void fetchAndBuildPanelWithTmpQuestions() {
 
-		clientFactory.getQuestionsService().getCategories(new AsyncCallback<String[]>() {
+		clientFactory.getQuestionsService().getCategories(new AsyncCallback<String[][]>() {
 
 			@Override
-			public void onSuccess(String[] result) {
+			public void onSuccess(String[][] result) {
 				
 				adminView.setCategories(result);
 				adminView.buildCategoriesCellList(result);
@@ -244,18 +244,38 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 	}
 	
 	@Override
-	public void updateCategory(String updatedCategory, int categoryID){
-		clientFactory.getQuestionsService().updateCategory(updatedCategory, categoryID, new AsyncCallback<Void>() {
+	public void updateCategory(final String updatedCategory, final String oldCategoryValue, 
+			final int indexOnListOfUpdatedCategory, final List<String> categoriesDatabProviderList){
+		
+		
+		clientFactory.getQuestionsService().getCategory(oldCategoryValue, new AsyncCallback<String[][]>() {
 			
 			@Override
-			public void onSuccess(Void result) {
-				GWT.log("Category updated successfully in AdminActivity.updateCategory()");
+			public void onSuccess(String[][] result) {
+								
+				clientFactory.getQuestionsService().updateCategory(updatedCategory, Integer.parseInt(result[0][0]), new AsyncCallback<Void>() {
+					
+					@Override
+					public void onSuccess(Void result) {
+						GWT.log("Category updated successfully in AdminActivity.updateCategory()");
+						categoriesDatabProviderList.set(indexOnListOfUpdatedCategory, updatedCategory);
+					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						GWT.log("AdminActivity.updateCategory() failed", caught);
+					}
+				});
+				
 			}
 			
 			@Override
 			public void onFailure(Throwable caught) {
-				GWT.log("AdminActivity.updateCategory() failed", caught);
+				GWT.log("AdminActivity.getCategory() failed", caught);
+				
 			}
 		});
+		
+		
 	}
 }

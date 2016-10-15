@@ -73,8 +73,13 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 	}
 
 	@Override
-	public String[] getCategories() {
+	public String[][] getCategories() {
 		return questionServiceDBConn.getCategories();
+	}
+	
+	@Override
+	public String[][] getCategory(String category) {
+		return questionServiceDBConn.getCategory(category);
 	}
 
 	@Override

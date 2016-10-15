@@ -33,10 +33,10 @@ public class AddQuestionsActivity extends AbstractActivity implements AddQuestio
 		this.clientFactory = clientFactory;
 		addQuestionView = clientFactory.getAddQuestionsView();
 		// Put categories from database into ListBox in this activity view.
-		clientFactory.getQuestionsService().getCategories(new AsyncCallback<String[]>() {
+		clientFactory.getQuestionsService().getCategories(new AsyncCallback<String[][]>() {
 
 			@Override
-			public void onSuccess(String[] result) {
+			public void onSuccess(String[][] result) {
 				clientFactory.getAddQuestionsView().setCategories(result);
 			}
 

@@ -39,7 +39,7 @@ public class AdminViewImpl extends Composite implements AdminView {
 	HTMLPanel categoriesTableContainer;
 
 	private Presenter listener;
-	private String[] categories;
+	private String[][] categories;
 
 	private PanelWidget[] panelWidgets;
 
@@ -53,7 +53,7 @@ public class AdminViewImpl extends Composite implements AdminView {
 	}
 
 	@Override
-	public void setCategories(String[] categories) {
+	public void setCategories(String[][] categories) {
 
 		this.categories = categories;
 	}
@@ -125,7 +125,7 @@ public class AdminViewImpl extends Composite implements AdminView {
 	}
 	
 	@Override
-	public void buildCategoriesCellList(String[] categories){
+	public void buildCategoriesCellList(String[][] categories){
 		categoriesTableContainer.clear();
 		categoriesTableContainer.add(new CategoriesTable(categories, listener));
 	}

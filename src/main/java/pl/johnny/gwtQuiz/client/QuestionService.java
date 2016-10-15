@@ -28,8 +28,16 @@ public interface QuestionService extends RemoteService {
 	void updateUserScore(UserScore userScore);
 
 	void deleteUserScore(UserScore userScore);
-
-	public String[] getCategories();
+	
+	/**
+	 * {"1", "Geografia},
+	 * {"2", "Muzyka"},
+	 * {"3", "Polityka"}
+	 * @return String[][]
+	 */
+	public String[][] getCategories();
+	
+	public String[][] getCategory(String category);
 
 	public void insertUserTmpQuestion(Question userQuestion)
 			throws IllegalArgumentException, ConstraintViolationException;
@@ -73,4 +81,5 @@ public interface QuestionService extends RemoteService {
 	void deleteCategory(String categoryToDelete) throws SQLConstraintException;
 
 	void updateCategory(String updatedCategory, int categoryID);
+
 }

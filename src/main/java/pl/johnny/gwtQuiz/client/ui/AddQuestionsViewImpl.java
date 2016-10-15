@@ -98,7 +98,7 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 	}
 
 	@Override
-	public void setCategories(String[] categories) {
+	public void setCategories(String[][] categories) {
 		// Set first ListBox.listItem disabled so it acts as a placeholder.
 		categoryListBox.getElement().getFirstChildElement().setAttribute("disabled", "disabled");
 
@@ -118,7 +118,7 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 		}
 
 		for (int i = 0; i < categories.length; i++) {
-			categoryListBox.addItem(categories[i], String.valueOf(i + 1));
+			categoryListBox.addItem(categories[i][1], categories[i][0]);
 		}
 	}
 

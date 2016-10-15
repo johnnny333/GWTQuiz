@@ -18,7 +18,7 @@ public interface AddQuestionsView extends IsWidget
 	/**
 	 * Sets categories in ListBox.
 	 */
-	void setCategories(String[] categories);
+	void setCategories(String[][] categories);
 
 	public interface Presenter {
 		void goTo(Place place);

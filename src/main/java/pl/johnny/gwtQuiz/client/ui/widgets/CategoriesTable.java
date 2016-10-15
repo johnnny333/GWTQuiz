@@ -35,7 +35,7 @@ import pl.johnny.gwtQuiz.client.ui.AdminView.Presenter;
 
 public class CategoriesTable extends Composite {
 
-	public CategoriesTable(String[] categories, final Presenter listener) {
+	public CategoriesTable(String[][] categories, final Presenter listener) {
 
 		// first make a list to store the cells, you want to combine
 		final ArrayList<HasCell> cellsArrayList = new ArrayList<HasCell>();
@@ -44,7 +44,7 @@ public class CategoriesTable extends Composite {
 		final ListDataProvider<String> dataProvider = new ListDataProvider<String>();
 
 				// Get the underlying list from data dataProvider.
-		final List<String> list = dataProvider.getList();
+		final List<String> dataProviderList = dataProvider.getList();
 
 		// then define the cells and add them to the list
 		HasCell textInputCell = new HasCell() {
@@ -59,9 +59,11 @@ public class CategoriesTable extends Composite {
 
 					@Override
 					public void update(int index, String object, String value) {
-						GWT.log("New Value " + value + " index " + index);
+						GWT.log("Categories Tables list " + dataProviderList.get(index));
+						String oldCategoryValue = dataProviderList.get(index);
 						//Update record on database.
-						listener.updateCategory(value, index + 1);
+						listener.updateCategory(value, oldCategoryValue, index, dataProviderList);
+						
 					}
 				};
 			}
@@ -95,7 +97,12 @@ public class CategoriesTable extends Composite {
 		/**
 		 * The list of data to display.
 		 */
-		final List<String> categoriesList = Arrays.asList(categories);
+		String[] categoriesList = new String[categories.length];
+		
+		for(int i = 0; i < categories.length;i++ ){
+			categoriesList[i] = categories[i][1];
+		}
+		final List<String> categoriesListForCellList = Arrays.asList(categoriesList);
 
 		// Create a CellList that uses the cell.
 		CellList<String> cellList = new CellList<String>(new CompositeCell(cellsArrayList));
@@ -104,7 +111,7 @@ public class CategoriesTable extends Composite {
 		// Add the cellList to the dataProvider.
 		dataProvider.addDataDisplay(cellList);
 
-		list.addAll(categoriesList);
+		dataProviderList.addAll(categoriesListForCellList);
 
 		/** We use array here as a hack to avoid enclosing type error */
 		final String[] selectedCategory = new String[1];
@@ -158,7 +165,7 @@ public class CategoriesTable extends Composite {
 
 					// Add the value to the list. The dataProvider will update
 					// the cellList.
-					list.add(newValue);
+					dataProviderList.add(newValue);
 					// Clear valueBox after value has been submitted.
 					valueBox.clear();
 				}
@@ -175,7 +182,7 @@ public class CategoriesTable extends Composite {
 				String newCategoryValue = valueBox.getText();
 
 				// Add new category into the database.
-				listener.addCategory(newCategoryValue, list);
+				listener.addCategory(newCategoryValue, dataProviderList);
 				
 				// Clear valueBox after value has been submitted.
 				valueBox.clear();
@@ -198,7 +205,7 @@ public class CategoriesTable extends Composite {
 				constraintAlert.setVisible(false);
 
 				// Delete selected category from database.
-				listener.removeCategory(selectedCategory[0],list,constraintAlert);
+				listener.removeCategory(selectedCategory[0],dataProviderList,constraintAlert);
 			}
 		});
 		

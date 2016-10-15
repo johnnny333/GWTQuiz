@@ -333,12 +333,19 @@ public class QuestionServiceDatabaseConn {
 	 * 
 	 * @return
 	 */
-	String[] getCategories() {
+	String[][] getCategories() {
 
 		Connection c;
 		Statement stmt;
-
-		String[] categoryData = null;
+		
+		/**
+		 * Structure is as follows:
+		 * {"1", "Geografia},
+		 * {"2", "Muzyka"},
+		 * {"3", "Polityka"},
+		 * ...
+		 */
+		String[][] categoryData = null;
 
 		try {
 			// Connection
@@ -353,15 +360,15 @@ public class QuestionServiceDatabaseConn {
 			int rowsCount = rsRowCount.getInt(1);
 
 			// Initialize array
-			categoryData = new String[rowsCount];
+			categoryData = new String[rowsCount][2];
 
 			// Actual query
-			ResultSet resultSet = stmt.executeQuery("SELECT category FROM categories;");
+			ResultSet resultSet = stmt.executeQuery("SELECT id, category FROM categories;");
 
 			// Iterate over ResultSet and put each record into an array
 			while (resultSet.next()) {
-				String category = resultSet.getString("category");
-				categoryData[resultSet.getRow() - 1] = category;
+				categoryData[resultSet.getRow() - 1][0] = resultSet.getString("id");
+				categoryData[resultSet.getRow() - 1][1] = resultSet.getString("category");
 			}
 
 			// Close connection gracefully.
@@ -375,9 +382,44 @@ public class QuestionServiceDatabaseConn {
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.err.println(e.getCause() + " " + e.getStackTrace());
-			System.exit(0);
 		}
 		// Return filled category data.
+		return categoryData;
+	}
+	
+	String[][] getCategory(String category) {
+		
+		String[][] categoryData = null;
+
+		try {
+			// Connection
+			Connection c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
+			c.setAutoCommit(false);
+			c.createStatement().execute("PRAGMA foreign_keys = ON");
+			
+			// Initialize array
+			categoryData = new String[1][2];
+
+			PreparedStatement prepStmt = c.prepareStatement("SELECT id,category FROM categories WHERE category = ?;");
+			prepStmt.setString(1, category);
+			ResultSet rs = prepStmt.executeQuery();
+
+			while (rs.next()) {
+				categoryData[0][0] = rs.getString("id");
+				categoryData[0][1] = rs.getString("category");
+			}
+			
+			System.out.println("categoryData " + categoryData[0][0] + " " + categoryData[0][1]);
+
+			prepStmt.close();
+			c.commit();
+			c.close();
+
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.err.println(e.getCause() + " " + e.getStackTrace());
+		}
+		// Return user password.
 		return categoryData;
 	}
 

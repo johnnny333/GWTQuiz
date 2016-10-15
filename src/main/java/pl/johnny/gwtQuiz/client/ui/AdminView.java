@@ -34,11 +34,11 @@ public interface AdminView extends IsWidget
 
 		void removeCategory(String categoryToDelete, final List<String> list, Alert contraintAlert);
 
-		void updateCategory(String updatedCategory, int categoryID);
+		void updateCategory(String updatedCategory, String oldCategoryValue, int indexOnListOfUpdatedCategory, List<String> categoriesDatabProviderList);
 		
 	}
 
-	void setCategories(String[] categories);
+	void setCategories(String[][] categories);
 
 	void buildAndFillPanelsWithTmpQuestions(ArrayList<Question> tmpQuestion);
 
@@ -46,5 +46,5 @@ public interface AdminView extends IsWidget
 
 	PanelWidget[] getPanelWidgets();
 
-	void buildCategoriesCellList(String[] categories);
+	void buildCategoriesCellList(String[][] categories);
 }

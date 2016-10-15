@@ -24,8 +24,21 @@ public interface QuestionServiceAsync {
 	void updateUserScore(UserScore userScore, AsyncCallback<Void> asyncCallback);
 
 	void deleteUserScore(UserScore userScore, AsyncCallback<Void> asyncCallback);
-
-	void getCategories(AsyncCallback<String[]> asyncCallback);
+	
+	/**
+	 * {"1", "Geografia},
+	 * {"2", "Muzyka"},
+	 * {"3", "Polityka"}
+	 * @return String[][]
+	 */
+	void getCategories(AsyncCallback<String[][]> asyncCallback);
+	
+	/**
+	 * Returns single entity containing category and id. 
+	 * @param category e.g {"3", "Polityka"}
+	 * @param callback
+	 */
+	void getCategory(String category, AsyncCallback<String[][]> callback);	
 
 	void insertUserTmpQuestion(Question userQuestion, AsyncCallback<Void> asyncCallback) throws IllegalArgumentException,
     ConstraintViolationException;
@@ -53,5 +66,6 @@ public interface QuestionServiceAsync {
 
 	void deleteCategory(String categoryToDelete, AsyncCallback<Void> asyncCallback);
 
-	void updateCategory(String updatedCategory, int categoryID, AsyncCallback<Void> callback);	
+	void updateCategory(String updatedCategory, int categoryID, AsyncCallback<Void> callback);
+
 }
