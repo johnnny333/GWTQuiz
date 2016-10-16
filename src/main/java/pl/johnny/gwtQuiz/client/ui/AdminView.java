@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.gwtbootstrap3.client.ui.Alert;
+import org.gwtbootstrap3.client.ui.Modal;
 
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -32,7 +33,7 @@ public interface AdminView extends IsWidget
 
 		void addCategory(String newCategory, final List<String> list);
 
-		void removeCategory(String categoryToDelete, final List<String> list, Alert contraintAlert);
+		void removeCategory(String categoryToDelete, final List<String> list, Modal contraintModal);
 
 		void updateCategory(String updatedCategory, String oldCategoryValue, int indexOnListOfUpdatedCategory, List<String> categoriesDatabProviderList);
 		

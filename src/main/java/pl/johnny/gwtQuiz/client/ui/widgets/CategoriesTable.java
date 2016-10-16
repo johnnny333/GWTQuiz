@@ -6,7 +6,12 @@ import java.util.List;
 
 import org.gwtbootstrap3.client.ui.Alert;
 import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Icon;
+import org.gwtbootstrap3.client.ui.Modal;
+import org.gwtbootstrap3.client.ui.ModalBody;
+import org.gwtbootstrap3.client.ui.ModalFooter;
 import org.gwtbootstrap3.client.ui.TextBox;
+import org.gwtbootstrap3.client.ui.constants.ButtonType;
 import org.gwtbootstrap3.client.ui.constants.IconType;
 import org.gwtbootstrap3.client.ui.constants.Pull;
 import org.gwtbootstrap3.client.ui.gwt.ButtonCell;
@@ -18,6 +23,7 @@ import com.google.gwt.cell.client.HasCell;
 import com.google.gwt.cell.client.TextInputCell;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.TextAlign;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -27,6 +33,7 @@ import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.NoSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -59,7 +66,6 @@ public class CategoriesTable extends Composite {
 
 					@Override
 					public void update(int index, String object, String value) {
-						GWT.log("Categories Tables list " + dataProviderList.get(index));
 						String oldCategoryValue = dataProviderList.get(index);
 						//Update record on database.
 						listener.updateCategory(value, oldCategoryValue, index, dataProviderList);
@@ -136,7 +142,7 @@ public class CategoriesTable extends Composite {
 		ValueUpdater<String> valueUpdater = new ValueUpdater<String>() {
 			@Override
 			public void update(String newValue) {
-				// GWT.log("You typed: " + newValue);
+//				 GWT.log("You typed: " + newValue);
 			}
 		};
 
@@ -189,11 +195,35 @@ public class CategoriesTable extends Composite {
 			}
 		});
 		
-		final Alert constraintAlert = new Alert("Selected category is in use and cannot be deleted.");
-		constraintAlert.setPull(Pull.RIGHT);
-		constraintAlert.setFade(true);
-		constraintAlert.setDismissable(true);
-		constraintAlert.setVisible(false);
+//		final Alert constraintAlert = new Alert("Selected category is in use and cannot be deleted.");
+//		constraintAlert.setPull(Pull.RIGHT);
+//		constraintAlert.setFade(true);
+//		constraintAlert.setDismissable(true);
+//		constraintAlert.setVisible(false);
+		
+		//Modal settings.
+		final Modal modal = new Modal();
+		modal.setVisible(false);
+		modal.setClosable(false);
+		modal.setFade(true);
+		modal.setTitle("Deletion problem");
+		ModalBody modalBody = new ModalBody();
+		Label modalBodyText = new Label("Selected category is used by one of the questions and thus cannot be deleted.");
+		modalBody.add(modalBodyText);
+		modal.add(modalBody);
+		
+		ModalFooter modalFooter = new ModalFooter();
+		Button okBtn = new Button("OK");
+		okBtn.setType(ButtonType.PRIMARY);
+		okBtn.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				 modal.hide();
+			}
+		});
+		modalFooter.getElement().getStyle().setTextAlign(TextAlign.CENTER);
+        modalFooter.add(okBtn);
+        modal.add(modalFooter);
 		
 
 		Button removeButton = new Button("", new ClickHandler() {
@@ -202,10 +232,10 @@ public class CategoriesTable extends Composite {
 			public void onClick(ClickEvent event) {
 
 				GWT.log("Deleted category " + selectedCategory[0]);
-				constraintAlert.setVisible(false);
+//				constraintAlert.setVisible(false);
 
 				// Delete selected category from database.
-				listener.removeCategory(selectedCategory[0],dataProviderList,constraintAlert);
+				listener.removeCategory(selectedCategory[0],dataProviderList,modal);
 			}
 		});
 		
@@ -220,7 +250,8 @@ public class CategoriesTable extends Composite {
 		container.add(valueBox);
 		container.add(addButton);
 		container.add(removeButton);
-		container.add(constraintAlert);
+//		container.add(constraintAlert);
+		container.add(modal);
 		
 		// Wrap container by Composite.
 		initWidget(container);

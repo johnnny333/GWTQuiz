@@ -409,8 +409,6 @@ public class QuestionServiceDatabaseConn {
 				categoryData[0][1] = rs.getString("category");
 			}
 			
-			System.out.println("categoryData " + categoryData[0][0] + " " + categoryData[0][1]);
-
 			prepStmt.close();
 			c.commit();
 			c.close();

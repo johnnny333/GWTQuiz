@@ -11,6 +11,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
 import org.gwtbootstrap3.client.ui.Alert;
+import org.gwtbootstrap3.client.ui.Modal;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.core.shared.GWT;
@@ -215,7 +216,7 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 	}
 
 	@Override
-	public void removeCategory(final String categoryToDelete, final List<String> list, final Alert constraintAlert) {
+	public void removeCategory(final String categoryToDelete, final List<String> list, final Modal constraintModal) {
 		clientFactory.getQuestionsService().deleteCategory(categoryToDelete, new AsyncCallback<Void>() {
 
 			@Override
@@ -231,12 +232,8 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 
 				if (caught instanceof SQLConstraintException && caught.getMessage().equals("[SQLITE_CONSTRAINT]")) {
 					GWT.log("[SQLITE_CONSTRAINT] catched in AdminActivity || " + caught.getMessage());
-					constraintAlert.removeStyleName(org.gwtbootstrap3.client.ui.constants.Styles.ALERT_DISMISSABLE);
-					constraintAlert.getElement().getStyle().setDisplay(Display.BLOCK);
-					
-					GWT.log(constraintAlert.toString());
 
-					constraintAlert.setVisible(true);
+					constraintModal.show();
 				}
 				GWT.log("AdminActivity.deleteCategory() failed", caught);
 			}
