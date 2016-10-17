@@ -1,22 +1,33 @@
 package pl.johnny.gwtQuiz.client.ui;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.Form;
 import org.gwtbootstrap3.client.ui.FormGroup;
 import org.gwtbootstrap3.client.ui.InlineHelpBlock;
 import org.gwtbootstrap3.client.ui.ListBox;
 import org.gwtbootstrap3.client.ui.Modal;
+import org.gwtbootstrap3.client.ui.Panel;
+import org.gwtbootstrap3.client.ui.PanelBody;
 import org.gwtbootstrap3.client.ui.TextBox;
+import org.gwtbootstrap3.client.ui.base.ComplexWidget;
 import org.gwtbootstrap3.client.ui.constants.ValidationState;
+import org.gwtbootstrap3.client.ui.form.validator.HasValidators;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.HasOneWidget;
+import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
 import pl.johnny.gwtQuiz.client.ui.widgets.UploadWidget;
@@ -70,6 +81,9 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 	@UiField
 	Modal confirmationModal;
 
+	@UiField
+	PanelBody panelBodyInsideForm;
+
 	public AddQuestionsViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
 
@@ -89,7 +103,6 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 		GWT.log("Image widget count before: " + imageWidget.getWidgetCount());
 		if (imageWidget.getWidgetCount() < 1) {
 			imageWidget.add(new UploadWidget(listener));
-			GWT.log("In add()");
 		} else {
 			imageWidget.remove(0);
 			imageWidget.add(new UploadWidget(listener));
@@ -124,15 +137,23 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 
 	@UiHandler("formValidateButton")
 	public void onFormSubmitClick(ClickEvent event) {
-		// Check is form is properly filled. If yes, send new question
-		// model.Else, highlight unfilled fields.
+
+		/*
+		 * Check is form is properly filled. If yes, send new question
+		 * model.Else, highlight unfilled fields.
+		 */
 		if (form.validate() && categoryListBox.getSelectedValue() != "Choose your question category..."
 				&& correctAnsListBox.getSelectedValue() != "Which answer is correct?") {
-			GWT.log("Form validated!");
+			
+			//Trim and escape HTML on TextBox Fields.
+			for (HasValidators<?> child : getChildrenWithValidators(form)) {
+				((TextBox) child).setText(SafeHtmlUtils.htmlEscape(((TextBox) child).getValue().trim()));
+			}
 
 			// Create user question model from filled fields
 			String[] userAnswers = new String[] { answer1Field.getValue(), answer2Field.getValue(),
 					answer3Field.getValue(), answer4Field.getValue() };
+
 			Question userQuestion = new Question(questionField.getValue(), listener.getUploadedImageName(), userAnswers,
 					correctAnsListBox.getSelectedValue(), authorField.getValue(), categoryListBox.getSelectedValue());
 			// There goes RPC logic over activity...
@@ -213,5 +234,30 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 	@Override
 	public void showConfirmationModal() {
 		confirmationModal.show();
+	}
+
+	/**
+	 * Get this forms child input elements with validators.
+	 *
+	 * @param widget
+	 *            the widget
+	 * @return the children with validators
+	 */
+	protected List<HasValidators<?>> getChildrenWithValidators(Widget widget) {
+		List<HasValidators<?>> result = new ArrayList<HasValidators<?>>();
+		if (widget != null) {
+			if (widget instanceof HasValidators<?>) {
+				result.add((HasValidators<?>) widget);
+			}
+			if (widget instanceof HasOneWidget) {
+				result.addAll(getChildrenWithValidators(((HasOneWidget) widget).getWidget()));
+			}
+			if (widget instanceof HasWidgets) {
+				for (Widget child : (HasWidgets) widget) {
+					result.addAll(getChildrenWithValidators(child));
+				}
+			}
+		}
+		return result;
 	}
 }

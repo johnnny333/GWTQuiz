@@ -35,7 +35,7 @@
 
 							<b:Form ui:field="form">
 
-								<b:PanelBody>
+								<b:PanelBody ui:field="panelBodyInsideForm">
 
 									<b:FormGroup ui:field="categorySelectFormGroup">
 										<b:FormLabel for="categoryListBox" text="Category"></b:FormLabel>
@@ -59,11 +59,11 @@
 									</b:PanelGroup>
 
 									<b:FormGroup ui:field="questionFormGroup">
-										<b:FormLabel for="formName" text="Question"></b:FormLabel>
+										<b:FormLabel for="questionField" text="Question"></b:FormLabel>
 										<b:InlineHelpBlock ui:field="questionInlineHelpBlock"
 											iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
 										<b:TextBox maxLength="50" placeholder="Fill in your question..."
-											b:id="formName" validateOnBlur="true" allowBlank="false"
+											b:id="questionField" validateOnBlur="true" allowBlank="false"
 											ui:field="questionField" />
 									</b:FormGroup>
 

@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.gwtbootstrap3.client.ui.Alert;
 import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.Icon;
 import org.gwtbootstrap3.client.ui.Modal;
 import org.gwtbootstrap3.client.ui.ModalBody;
 import org.gwtbootstrap3.client.ui.ModalFooter;
@@ -22,7 +20,6 @@ import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.HasCell;
 import com.google.gwt.cell.client.TextInputCell;
 import com.google.gwt.cell.client.ValueUpdater;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.TextAlign;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -30,6 +27,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -46,11 +44,11 @@ public class CategoriesTable extends Composite {
 
 		// first make a list to store the cells, you want to combine
 		final ArrayList<HasCell> cellsArrayList = new ArrayList<HasCell>();
-		
+
 		// Create a list data provider.
 		final ListDataProvider<String> dataProvider = new ListDataProvider<String>();
 
-				// Get the underlying list from data dataProvider.
+		// Get the underlying list from data dataProvider.
 		final List<String> dataProviderList = dataProvider.getList();
 
 		// then define the cells and add them to the list
@@ -67,9 +65,9 @@ public class CategoriesTable extends Composite {
 					@Override
 					public void update(int index, String object, String value) {
 						String oldCategoryValue = dataProviderList.get(index);
-						//Update record on database.
-						listener.updateCategory(value, oldCategoryValue, index, dataProviderList);
-						
+						// Update record on database.
+						listener.updateCategory(SafeHtmlUtils.htmlEscape(value.trim()), oldCategoryValue, index, dataProviderList);
+
 					}
 				};
 			}
@@ -104,8 +102,8 @@ public class CategoriesTable extends Composite {
 		 * The list of data to display.
 		 */
 		String[] categoriesList = new String[categories.length];
-		
-		for(int i = 0; i < categories.length;i++ ){
+
+		for (int i = 0; i < categories.length; i++) {
 			categoriesList[i] = categories[i][1];
 		}
 		final List<String> categoriesListForCellList = Arrays.asList(categoriesList);
@@ -113,7 +111,7 @@ public class CategoriesTable extends Composite {
 		// Create a CellList that uses the cell.
 		CellList<String> cellList = new CellList<String>(new CompositeCell(cellsArrayList));
 		cellList.addStyleName("categories-table-container");
-		
+
 		// Add the cellList to the dataProvider.
 		dataProvider.addDataDisplay(cellList);
 
@@ -142,7 +140,7 @@ public class CategoriesTable extends Composite {
 		ValueUpdater<String> valueUpdater = new ValueUpdater<String>() {
 			@Override
 			public void update(String newValue) {
-//				 GWT.log("You typed: " + newValue);
+				// GWT.log("You typed: " + newValue);
 			}
 		};
 
@@ -181,64 +179,50 @@ public class CategoriesTable extends Composite {
 		Button addButton = new Button("Add Category", new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				// Return if no value is provided.
-				if (valueBox.getText().trim() == "" || valueBox.getText().trim().length() > 20)
-					return;
-				// Get the value from the text box.
-				String newCategoryValue = valueBox.getText();
-
-				// Add new category into the database.
-				listener.addCategory(newCategoryValue, dataProviderList);
+				String sanitizedValue = SafeHtmlUtils.htmlEscape(valueBox.getText().trim());
 				
-				// Clear valueBox after value has been submitted.
+				if (sanitizedValue == "" || sanitizedValue.length() > 20)
+					return; 
+				
+				listener.addCategory(sanitizedValue, dataProviderList);
 				valueBox.clear();
 			}
 		});
-		
-//		final Alert constraintAlert = new Alert("Selected category is in use and cannot be deleted.");
-//		constraintAlert.setPull(Pull.RIGHT);
-//		constraintAlert.setFade(true);
-//		constraintAlert.setDismissable(true);
-//		constraintAlert.setVisible(false);
-		
-		//Modal settings.
+
+		// Modal settings.
 		final Modal modal = new Modal();
 		modal.setVisible(false);
 		modal.setClosable(false);
 		modal.setFade(true);
 		modal.setTitle("Deletion problem");
 		ModalBody modalBody = new ModalBody();
-		Label modalBodyText = new Label("Selected category is used by one of the questions and thus cannot be deleted.");
+		Label modalBodyText = new Label(
+				"Selected category is used by one of the questions and thus cannot be deleted.");
 		modalBody.add(modalBodyText);
 		modal.add(modalBody);
-		
+
 		ModalFooter modalFooter = new ModalFooter();
 		Button okBtn = new Button("OK");
 		okBtn.setType(ButtonType.PRIMARY);
 		okBtn.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				 modal.hide();
+				modal.hide();
 			}
 		});
 		modalFooter.getElement().getStyle().setTextAlign(TextAlign.CENTER);
-        modalFooter.add(okBtn);
-        modal.add(modalFooter);
-		
+		modalFooter.add(okBtn);
+		modal.add(modalFooter);
 
 		Button removeButton = new Button("", new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
-
-				GWT.log("Deleted category " + selectedCategory[0]);
-//				constraintAlert.setVisible(false);
-
 				// Delete selected category from database.
-				listener.removeCategory(selectedCategory[0],dataProviderList,modal);
+				listener.removeCategory(selectedCategory[0], dataProviderList, modal);
 			}
 		});
-		
+
 		removeButton.setPull(Pull.RIGHT);
 		removeButton.setIcon(IconType.TRASH);
 
@@ -250,9 +234,8 @@ public class CategoriesTable extends Composite {
 		container.add(valueBox);
 		container.add(addButton);
 		container.add(removeButton);
-//		container.add(constraintAlert);
 		container.add(modal);
-		
+
 		// Wrap container by Composite.
 		initWidget(container);
 	}
