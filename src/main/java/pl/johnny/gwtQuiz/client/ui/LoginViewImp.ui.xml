@@ -11,38 +11,100 @@
 			<b:Row>
 				<b:Column size="SM_12">
 
-					<b:Panel>
-						<b:PanelHeader>
-							<b:Heading size="H3" text="Admin Login" />
-						</b:PanelHeader>
+					<b:NavTabs>
+						<b:TabListItem active="true" dataTarget="#loginTab"
+							text="Log in" />
+						<b:TabListItem dataTarget="#registerTab" text="Register" />
+					</b:NavTabs>
 
-						<b:PanelBody>
+					<b:TabContent>
+<!-- 					Login tab -->
+						<b:TabPane fade="true" in="true" active="true" b:id="loginTab">
 
-							<b:Form ui:field="form">
-								<b:FieldSet>
-									<b:FormGroup ui:field="userMailFormGroup">
-										<b:FormLabel for="usermail" text="User"></b:FormLabel>
-										<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE" ui:field="userEmailInlineHelpBlock" />
-										<b:TextBox b:id="usermail" ui:field="email" validateOnBlur="true" allowBlank="false" maxLength="20"/>
-									</b:FormGroup>
-									<b:FormGroup ui:field="passwordFormGroup">
-										<b:FormLabel for="password" text="Password"></b:FormLabel>
-										<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE" ui:field="passwordInlineHelpBlock" />
-										<b:Input type="PASSWORD" min="3" ui:field="password" validateOnBlur="true" b:id="password" allowBlank="false" maxLength="20"/>
-									</b:FormGroup>
-								</b:FieldSet>
-							</b:Form>
+							<b:Panel>
+								<b:PanelHeader>
+									<b:Heading size="H3" text="Admin Login" />
+								</b:PanelHeader>
 
-						</b:PanelBody>
+								<b:PanelBody>
 
-						<b:PanelFooter addStyleNames="text-center add-form-buttons">
+									<b:Form ui:field="form">
+										<b:FieldSet>
+											<b:FormGroup ui:field="userMailFormGroup">
+												<b:FormLabel for="usermail" text="User"></b:FormLabel>
+												<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"
+													ui:field="userEmailInlineHelpBlock" />
+												<b:TextBox b:id="usermail" ui:field="email"
+													validateOnBlur="true" allowBlank="false" maxLength="20" />
+											</b:FormGroup>
+											<b:FormGroup ui:field="passwordFormGroup">
+												<b:FormLabel for="password" text="Password"></b:FormLabel>
+												<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"
+													ui:field="passwordInlineHelpBlock" />
+												<b:Input type="PASSWORD" min="3" ui:field="password"
+													validateOnBlur="true" b:id="password" allowBlank="false"
+													maxLength="20" />
+											</b:FormGroup>
+										</b:FieldSet>
+									</b:Form>
 
-							<b:Button ui:field="loginButton" type="PRIMARY" text="Log in"></b:Button>
+								</b:PanelBody>
 
-						</b:PanelFooter>
-					</b:Panel>
+								<b:PanelFooter addStyleNames="text-center add-form-buttons">
+
+									<b:Button ui:field="loginButton" type="PRIMARY" text="Log in"></b:Button>
+
+								</b:PanelFooter>
+							</b:Panel>
+
+						</b:TabPane>
+
+<!-- 						Register tab -->
+						<b:TabPane fade="true" b:id="registerTab">
+							
+							<b:Panel>
+								<b:PanelHeader>
+									<b:Heading size="H3" text="Register" />
+								</b:PanelHeader>
+
+								<b:PanelBody>
+
+									<b:Form ui:field="formRegister">
+										<b:FieldSet>
+											<b:FormGroup ui:field="userRegisterMailFormGroup">
+												<b:FormLabel for="usermail" text="User"></b:FormLabel>
+												<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"
+													ui:field="userRegisterEmailInlineHelpBlock" />
+												<b:TextBox b:id="usermail" ui:field="emailRegiste"
+													validateOnBlur="true" allowBlank="false" maxLength="20" />
+											</b:FormGroup>
+											
+											<b:FormGroup ui:field="passwordRegisterFormGroup">
+												<b:FormLabel for="password" text="Password"></b:FormLabel>
+												<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"
+													ui:field="passwordRegisterInlineHelpBlock" />
+												<b:Input type="PASSWORD" min="3" ui:field="passwordRegister"
+													validateOnBlur="true" b:id="password" allowBlank="false"
+													maxLength="20" />
+											</b:FormGroup>
+											
+										</b:FieldSet>
+									</b:Form>
+
+								</b:PanelBody>
+
+								<b:PanelFooter addStyleNames="text-center add-form-buttons">
+
+									<b:Button ui:field="loginButtonRegister" type="PRIMARY" text="Log in"></b:Button>
+
+								</b:PanelFooter>
+							</b:Panel>
+							
+							
+						</b:TabPane>
 
 
+					</b:TabContent>
 				</b:Column>
 			</b:Row>
 		</b:Container>

@@ -33,6 +33,7 @@
 					</b:NavTabs>
 
 					<b:TabContent>
+<!-- 					First tab -->
 						<b:TabPane fade="true" in="true" active="true" b:id="tab4">
 							<b:Panel>
 
@@ -54,12 +55,13 @@
 
 							</b:Panel>
 						</b:TabPane>
+						
+<!-- 						Second tab -->
 						<b:TabPane fade="true" b:id="tab5">
 							<g:HTMLPanel styleName="{style.categories-table-container}" ui:field="categoriesTableContainer"></g:HTMLPanel>
 						</b:TabPane>
 
 					</b:TabContent>
-
 
 				</b:Column>
 			</b:Row>
