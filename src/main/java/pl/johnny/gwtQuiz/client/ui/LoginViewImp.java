@@ -97,6 +97,9 @@ public class LoginViewImp extends Composite implements LoginView {
 	
 	@UiField
 	InlineHelpBlock userRegisterEmailInlineHelpBlock;
+	
+//	@UiField
+//	ToggleSwitch passwordToogleHelpBlock;
 
 	public LoginViewImp() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -196,4 +199,9 @@ public class LoginViewImp extends Composite implements LoginView {
 				break;
 		}
 	}
+	
+//	@UiHandler("passwordToogleHelpBlock")
+//	public void onpasswordToogleHelpBlockClick(ClickEvent event) {
+//		GWT.log("passwordToogleHelpBlock clicked");
+//	}
 }

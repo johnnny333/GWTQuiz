@@ -17,6 +17,10 @@
 	
 	<!-- GWT Bootstrap 3 -->
 	<inherits name="org.gwtbootstrap3.GwtBootstrap3"/>
+	
+	<!-- GWT Bootstrap 3 ToogleSwitch-->
+	<inherits name="org.gwtbootstrap3.extras.toggleswitch.ToggleSwitch"/>
+	
 	<!--Moxieapps uploader-->
 	<inherits name="org.moxieapps.gwt.uploader.Uploader" />
 	<set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
@@ -53,8 +57,6 @@
 <!--     <when-type-is -->
 <!--       class="com.google.gwt.validation.client.UserValidationMessagesResolver" /> -->
 <!--   </replace-with> -->
-
-	
 
 	<!-- allow Super Dev Mode -->
 	<add-linker name="xsiframe" />
