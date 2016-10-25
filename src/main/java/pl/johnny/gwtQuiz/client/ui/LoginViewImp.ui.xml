@@ -14,7 +14,7 @@
 					<b:NavTabs>
 						<b:TabListItem active="true" dataTarget="#loginTab"
 							text="Log in" />
-						<b:TabListItem dataTarget="#registerTab" text="Register" />
+						<b:TabListItem dataTarget="#registerTab" text="Sign up" />
 					</b:NavTabs>
 
 					<b:TabContent>
@@ -58,7 +58,6 @@
 							</b:Panel>
 
 						</b:TabPane>
-
 <!-- 						Register tab -->
 						<b:TabPane fade="true" b:id="registerTab">
 							
@@ -72,11 +71,11 @@
 									<b:Form ui:field="formRegister">
 										<b:FieldSet>
 											<b:FormGroup ui:field="userRegisterMailFormGroup">
-												<b:FormLabel for="usermail" text="User"></b:FormLabel>
+												<b:FormLabel for="usermail" text="Email"></b:FormLabel>
 												<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"
 													ui:field="userRegisterEmailInlineHelpBlock" />
-												<b:TextBox b:id="usermail" ui:field="emailRegiste"
-													validateOnBlur="true" allowBlank="false" maxLength="20" />
+												<b:Input b:id="usermail" ui:field="emailRegister"
+													validateOnBlur="true" type="EMAIL" allowBlank="false" maxLength="20" />
 											</b:FormGroup>
 											
 											<b:FormGroup ui:field="passwordRegisterFormGroup">
@@ -88,6 +87,15 @@
 													maxLength="20" />
 											</b:FormGroup>
 											
+											<b:FormGroup ui:field="passwordRetypeRegisterFormGroup">
+												<b:FormLabel for="passwordRetype" text="Retype password"></b:FormLabel>
+												<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"
+													ui:field="passwordRetypeRegisterInlineHelpBlock" />
+												<b:Input type="PASSWORD" min="3" ui:field="passwordRetypeRegister"
+													validateOnBlur="true" b:id="passwordRetype" allowBlank="false"
+													maxLength="20" />
+											</b:FormGroup>
+											
 										</b:FieldSet>
 									</b:Form>
 
@@ -95,14 +103,12 @@
 
 								<b:PanelFooter addStyleNames="text-center add-form-buttons">
 
-									<b:Button ui:field="loginButtonRegister" type="PRIMARY" text="Log in"></b:Button>
+									<b:Button ui:field="registerButton" type="PRIMARY" text="Sign up"></b:Button>
 
 								</b:PanelFooter>
 							</b:Panel>
-							
-							
+														
 						</b:TabPane>
-
 
 					</b:TabContent>
 				</b:Column>

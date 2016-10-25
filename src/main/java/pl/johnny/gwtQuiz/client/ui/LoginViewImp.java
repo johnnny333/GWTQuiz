@@ -3,11 +3,9 @@ package pl.johnny.gwtQuiz.client.ui;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.Form;
 import org.gwtbootstrap3.client.ui.FormGroup;
-import org.gwtbootstrap3.client.ui.Icon;
 import org.gwtbootstrap3.client.ui.InlineHelpBlock;
 import org.gwtbootstrap3.client.ui.Input;
 import org.gwtbootstrap3.client.ui.TextBox;
-import org.gwtbootstrap3.client.ui.constants.IconType;
 import org.gwtbootstrap3.client.ui.constants.ValidationState;
 
 import com.google.gwt.core.client.GWT;
@@ -29,6 +27,8 @@ public class LoginViewImp extends Composite implements LoginView {
 
 	private Presenter listener;
 
+	// Login fields
+
 	@UiField
 	Button loginButton;
 
@@ -40,18 +40,35 @@ public class LoginViewImp extends Composite implements LoginView {
 
 	@UiField
 	Form form;
-	
+
 	@UiField
 	FormGroup userMailFormGroup;
-	
+
 	@UiField
 	FormGroup passwordFormGroup;
-	
+
 	@UiField
 	InlineHelpBlock userEmailInlineHelpBlock;
-	
+
 	@UiField
 	InlineHelpBlock passwordInlineHelpBlock;
+
+	// Register fields
+
+	@UiField
+	Button registerButton;
+
+	@UiField
+	Form formRegister;
+
+	@UiField
+	Input emailRegister;
+
+	@UiField
+	Input passwordRegister;
+
+	@UiField
+	Input passwordRetypeRegister;
 
 	public LoginViewImp() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -64,17 +81,37 @@ public class LoginViewImp extends Composite implements LoginView {
 
 	@UiHandler("loginButton")
 	void onLoginButtonClicked(ClickEvent e) {
-		
-		if(form.validate()) {
 
-			if(listener != null) {
-				listener.loginUser(new User(email.getValue(), password.getValue()));
+		if (form.validate() && listener != null) {
+			listener.loginUser(new User(email.getValue(), password.getValue()));
+		}
+	}
+	
+	//Register Validation
+	@UiHandler("registerButton")
+	void onRegisterButtonClicked(ClickEvent e) {
+
+		// Check if fields are not empty.
+		if (formRegister.validate() && listener != null) {
+			
+//			if(HibernateValidation){
+//				
+//			}else{
+//				
+//			}
+			
+			// Check if "Password" and "Retype Password" are the same
+			if (passwordRegister.getText().equals(passwordRetypeRegister.getText())) {
+				GWT.log("Ok nygga,that look neat");
+			} else {
+				GWT.log("Passwords are not the same nigga");
+				// TODO display error to user
 			}
 		}
 	}
 
 	@Override
-	public void setServerErrorMessage(String errorMessage) {
+	public void setLoginServerErrorMessage(String errorMessage) {
 		switch (errorMessage) {
 		case "No such user":
 			userMailFormGroup.setValidationState(ValidationState.ERROR);

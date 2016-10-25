@@ -25,5 +25,5 @@ public interface LoginView extends IsWidget
 
 	}
 
-	void setServerErrorMessage(String errorMessage);
+	void setLoginServerErrorMessage(String errorMessage);
 }
