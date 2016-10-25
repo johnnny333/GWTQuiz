@@ -12,7 +12,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import pl.johnny.gwtQuiz.client.place.AddQuestionsPlace;
@@ -84,7 +83,7 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 	}
 	
 	@UiHandler("adminPanelAnchor")
-	void onadminPanelAnchorClicked(ClickEvent e){
+	void onAdminPanelAnchorClicked(ClickEvent e){
 		if (listener != null) {
 			listener.goTo(new AdminPlace(""));
 		}
@@ -124,23 +123,25 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 	@Override
 	public void setNavBarAnchor(String userEmail, boolean isLoggedIn){
 		
-		if(userEmail == null){userEmail = "Log in";};
+		if(userEmail == null){userEmail = "Log in / Sign up";};
 		
 		anchorButton.setText(userEmail);
 		anchorButton.setToggleCaret(isLoggedIn);
-		dropDownMenu.setVisible(isLoggedIn);
+		dropDownMenu.setVisible(isLoggedIn);		
 	}
 	
 	@UiHandler("anchorButton")
 	void onAnchorButtonClicked(ClickEvent e) {
-		if (listener != null && anchorButton.getText() == "Log in") {
+		if (listener != null && anchorButton.getText() == "Log in / Sign up") {
 			listener.goTo(new LoginPlace(""));
+			navBarCollapse.hide();
 		}
 	}
 	
 	@UiHandler("logOutAnchorListItem")
 	void onlogOutAnchorListItemClicked(ClickEvent e){
 		listener.logOutUser();
+		navBarCollapse.hide();
 	}
 	
 	@Override

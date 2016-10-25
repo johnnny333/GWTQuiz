@@ -1,3 +1,6 @@
+/**
+ * @author jzarewicz
+ */
 package pl.johnny.gwtQuiz.client.ui;
 
 import java.util.Set;
@@ -76,6 +79,24 @@ public class LoginViewImp extends Composite implements LoginView {
 
 	@UiField
 	Input passwordRetypeRegister;
+	
+	@UiField
+	InlineHelpBlock passwordRegisterInlineHelpBlock;
+	
+	@UiField 
+	InlineHelpBlock passwordRetypeRegisterInlineHelpBlock;
+	
+	@UiField
+	FormGroup passwordRegisterFormGroup;
+	
+	@UiField
+	FormGroup passwordRetypeRegisterFormGroup;
+	
+	@UiField
+	FormGroup userRegisterMailFormGroup;
+	
+	@UiField
+	InlineHelpBlock userRegisterEmailInlineHelpBlock;
 
 	public LoginViewImp() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -114,10 +135,33 @@ public class LoginViewImp extends Composite implements LoginView {
 				if(!violations.isEmpty()) {
 					StringBuffer errorMessage = new StringBuffer();
 					for(ConstraintViolation<User> constraintViolation : violations) {
-						if(errorMessage.length() == 0) {
-							errorMessage.append('\n');
+//						if(errorMessage.length() == 0) {
+//							errorMessage.append('\n');
+//						}
+//						errorMessage.append(constraintViolation.getMessage() + "| source: " + constraintViolation.getPropertyPath());
+						
+						switch(constraintViolation.getPropertyPath().toString()) {
+							case "password":
+								
+								passwordRegisterFormGroup.setValidationState(ValidationState.ERROR);
+//								passwordRetypeRegisterFormGroup.setValidationState(ValidationState.ERROR);
+								passwordRegisterInlineHelpBlock.setText(constraintViolation.getMessage());
+								
+								break;
+								
+							case "email":
+								
+								userRegisterMailFormGroup.setValidationState(ValidationState.ERROR);
+								userRegisterEmailInlineHelpBlock.setText(constraintViolation.getMessage());
+								
+								break;
+
+							default:
+								
+								GWT.log("Client side Hibernate Validation exception in LoginViewImpl.");
+								
+								break;
 						}
-						errorMessage.append(constraintViolation.getMessage() + "| source: " + constraintViolation.getPropertyPath());
 					}
 					GWT.log(errorMessage.toString());
 					return;
@@ -127,8 +171,10 @@ public class LoginViewImp extends Composite implements LoginView {
 					//TODO send validated user to server over RPC.
 				}
 			} else {
-				GWT.log("Passwords are not the same nigga");
-				// TODO display error to user
+				//Display error message in a appropriate fields.
+				passwordRegisterFormGroup.setValidationState(ValidationState.ERROR);
+				passwordRetypeRegisterFormGroup.setValidationState(ValidationState.ERROR);
+				passwordRetypeRegisterInlineHelpBlock.setText("Passwords are not the same.");
 			}
 		}
 	}
