@@ -98,46 +98,39 @@ public class LoginViewImp extends Composite implements LoginView {
 	@UiHandler("registerButton")
 	void onRegisterButtonClicked(ClickEvent e) {
 
-		GWT.log("email " + emailRegister.getValue() + " password " + passwordRegister.getValue());
-		
-		Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-		
-		User usernew = new User(emailRegister.getValue(), passwordRegister.getValue());
-		
-		Set<ConstraintViolation<User>> violations = validator.validate(usernew, Default.class);
+		//Check if fields are non-empty.
+		if(formRegister.validate() && listener != null) {
+			//Form is non-empty. Now Check if typed passwords are the same.
+			if(passwordRegister.getText().equals(passwordRetypeRegister.getText())) {
+				//Passwords are the same,now commence Hibernate client Validation.
 
-		if(!violations.isEmpty()) {
-			StringBuffer errorMessage = new StringBuffer();
-		      for (ConstraintViolation<User> constraintViolation : violations) {
-		        if (errorMessage.length() == 0) {
-		          errorMessage.append('\n');
-		        }
-		        errorMessage.append(constraintViolation.getMessage());
-		      }
-		      GWT.log(errorMessage.toString());
-		      return;
-			
-		} else {
-			GWT.log("Hibernate validation OK");
+				GWT.log("email " + emailRegister.getValue() + " password " + passwordRegister.getValue());
+
+				Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+
+				Set<ConstraintViolation<User>> violations = validator.
+						validate(new User(emailRegister.getValue(), passwordRegister.getValue()), Default.class);
+
+				if(!violations.isEmpty()) {
+					StringBuffer errorMessage = new StringBuffer();
+					for(ConstraintViolation<User> constraintViolation : violations) {
+						if(errorMessage.length() == 0) {
+							errorMessage.append('\n');
+						}
+						errorMessage.append(constraintViolation.getMessage() + "| source: " + constraintViolation.getPropertyPath());
+					}
+					GWT.log(errorMessage.toString());
+					return;
+
+				} else {
+					GWT.log("Hibernate validation OK");
+					//TODO send validated user to server over RPC.
+				}
+			} else {
+				GWT.log("Passwords are not the same nigga");
+				// TODO display error to user
+			}
 		}
-
-		//		// Check if fields are not empty.
-		//		if (formRegister.validate() && listener != null) {
-		//			
-		////			if(HibernateValidation){
-		////				
-		////			}else{
-		////				
-		////			}
-		//			
-		//			// Check if "Password" and "Retype Password" are the same
-		//			if (passwordRegister.getText().equals(passwordRetypeRegister.getText())) {
-		//				GWT.log("Ok nygga,that look neat");
-		//			} else {
-		//				GWT.log("Passwords are not the same nigga");
-		//				// TODO display error to user
-		//			}
-		//		}
 	}
 
 	@Override

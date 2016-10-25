@@ -11,14 +11,16 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 public class User implements IsSerializable{
 	
 	@NotEmpty
+	@Pattern(regexp ="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.(?:[a-zA-Z]{2,6})$",
+						message = "Not a well-formed email address client")
 	@Email(groups = ServerGroup.class)
 	public String email;
 	
 	@NotEmpty
-	@Size(min=8)
-	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@$!%*?&])[A-Za-z\\d$@$!%*?&]", 
-				message="Password must contain at least 1 Uppercase Alphabet, " 
-				+ "1 Lowercase Alphabet, 1 Number and 1 Special Character:", groups = ServerGroup.class) //And minimum 8 characters
+	@Size(min=8, message = "size must be minimum or equal to 8 chars")
+	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@$!%*?&])[A-Za-z\\d$@$!%*?&]{8,}", 
+				message="Password must contain at least one UPPERCASE letter, " 
+				+ "at least one lowercase letter,at least one number and at least one special character: $@$!%*?& ") //And minimum 8 characters
 	public String password;
 	
 	/**
