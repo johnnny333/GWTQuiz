@@ -71,10 +71,10 @@
 									<b:Form ui:field="formRegister">
 										<b:FieldSet>
 											<b:FormGroup ui:field="userRegisterMailFormGroup">
-												<b:FormLabel for="usermail" text="Email"></b:FormLabel>
+												<b:FormLabel for="usermailRegister" text="Email"></b:FormLabel>
 												<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"
 													ui:field="userRegisterEmailInlineHelpBlock" />
-												<b:Input b:id="usermail" ui:field="emailRegister"
+												<b:Input b:id="usermailRegister" ui:field="emailRegister"
 													validateOnBlur="true" type="EMAIL" allowBlank="false" maxLength="20" />
 											</b:FormGroup>
 											

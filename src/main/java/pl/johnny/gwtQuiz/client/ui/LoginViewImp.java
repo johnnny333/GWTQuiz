@@ -1,5 +1,12 @@
 package pl.johnny.gwtQuiz.client.ui;
 
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.groups.Default;
+
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.Form;
 import org.gwtbootstrap3.client.ui.FormGroup;
@@ -82,49 +89,72 @@ public class LoginViewImp extends Composite implements LoginView {
 	@UiHandler("loginButton")
 	void onLoginButtonClicked(ClickEvent e) {
 
-		if (form.validate() && listener != null) {
+		if(form.validate() && listener != null) {
 			listener.loginUser(new User(email.getValue(), password.getValue()));
 		}
 	}
-	
+
 	//Register Validation
 	@UiHandler("registerButton")
 	void onRegisterButtonClicked(ClickEvent e) {
 
-		// Check if fields are not empty.
-		if (formRegister.validate() && listener != null) {
+		GWT.log("email " + emailRegister.getValue() + " password " + passwordRegister.getValue());
+		
+		Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+		
+		User usernew = new User(emailRegister.getValue(), passwordRegister.getValue());
+		
+		Set<ConstraintViolation<User>> violations = validator.validate(usernew, Default.class);
+
+		if(!violations.isEmpty()) {
+			StringBuffer errorMessage = new StringBuffer();
+		      for (ConstraintViolation<User> constraintViolation : violations) {
+		        if (errorMessage.length() == 0) {
+		          errorMessage.append('\n');
+		        }
+		        errorMessage.append(constraintViolation.getMessage());
+		      }
+		      GWT.log(errorMessage.toString());
+		      return;
 			
-//			if(HibernateValidation){
-//				
-//			}else{
-//				
-//			}
-			
-			// Check if "Password" and "Retype Password" are the same
-			if (passwordRegister.getText().equals(passwordRetypeRegister.getText())) {
-				GWT.log("Ok nygga,that look neat");
-			} else {
-				GWT.log("Passwords are not the same nigga");
-				// TODO display error to user
-			}
+		} else {
+			GWT.log("Hibernate validation OK");
 		}
+
+		//		// Check if fields are not empty.
+		//		if (formRegister.validate() && listener != null) {
+		//			
+		////			if(HibernateValidation){
+		////				
+		////			}else{
+		////				
+		////			}
+		//			
+		//			// Check if "Password" and "Retype Password" are the same
+		//			if (passwordRegister.getText().equals(passwordRetypeRegister.getText())) {
+		//				GWT.log("Ok nygga,that look neat");
+		//			} else {
+		//				GWT.log("Passwords are not the same nigga");
+		//				// TODO display error to user
+		//			}
+		//		}
 	}
 
 	@Override
 	public void setLoginServerErrorMessage(String errorMessage) {
-		switch (errorMessage) {
-		case "No such user":
-			userMailFormGroup.setValidationState(ValidationState.ERROR);
-			userEmailInlineHelpBlock.setText(errorMessage);
-			break;
-		case "Bad password":
-			passwordFormGroup.setValidationState(ValidationState.ERROR);
-			passwordInlineHelpBlock.setText(errorMessage);
-			break;
+		switch(errorMessage) {
+			case "No such user":
+				userMailFormGroup.setValidationState(ValidationState.ERROR);
+				userEmailInlineHelpBlock.setText(errorMessage);
+				break;
+			case "Bad password":
+				passwordFormGroup.setValidationState(ValidationState.ERROR);
+				passwordInlineHelpBlock.setText(errorMessage);
+				break;
 
-		default:
-			GWT.log("LoginViewImpl.setServerErrorMessage error " + errorMessage);
-			break;
+			default:
+				GWT.log("LoginViewImpl.setServerErrorMessage error " + errorMessage);
+				break;
 		}
 	}
 }
