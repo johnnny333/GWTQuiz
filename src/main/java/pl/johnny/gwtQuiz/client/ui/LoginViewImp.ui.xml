@@ -14,8 +14,9 @@
 
 					<b:NavTabs>
 						<b:TabListItem active="true" dataTarget="#loginTab"
-							text="Log in" />
-						<b:TabListItem dataTarget="#registerTab" text="Sign up" />
+							text="Log in" ui:field="loginTab"/>
+						<b:TabListItem dataTarget="#registerTab" text="Sign up" 
+							ui:field="signUpTab"/>
 					</b:NavTabs>
 
 					<b:TabContent>
@@ -97,8 +98,8 @@
 													maxLength="20" />
 											</b:FormGroup>
 											
-											<b:HelpBlock text="Show password" ui:field="passwordToogleHelpBlock"></b:HelpBlock>
-											<b3:ToggleSwitch size="MINI"/>
+											<b:HelpBlock text="Show passwords" ></b:HelpBlock>
+											<b3:ToggleSwitch ui:field="passwordToogleSwitch" size="MINI"/>
 											
 										</b:FieldSet>
 									</b:Form>

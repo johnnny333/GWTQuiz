@@ -18,7 +18,7 @@ public interface LoginView extends IsWidget
 	public interface Presenter {
 		void goTo(Place place);
 		
-		/*
+		/**
 		 * Check provided credentials with server.
 		 */
 		void loginUser(User user);
@@ -26,4 +26,10 @@ public interface LoginView extends IsWidget
 	}
 
 	void setLoginServerErrorMessage(String errorMessage);
+	
+	/**
+	 * Displays appropriate tab on LoginView taken from place tokenName.
+	 * @param tabToSelect
+	 */
+	void selectTab(String tabToSelect);
 }

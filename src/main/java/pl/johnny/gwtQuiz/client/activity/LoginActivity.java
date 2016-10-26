@@ -26,8 +26,10 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
 	// Alternatively, could be injected via GIN
 	private ClientFactory clientFactory;
 	private LoginView loginView;
+	private LoginPlace place;
 
 	public LoginActivity(LoginPlace place, final ClientFactory clientFactory) {
+		this.place = place;
 		this.clientFactory = clientFactory;
 	}
 
@@ -39,6 +41,8 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
 		loginView = clientFactory.getLoginView();
 		loginView.setPresenter(this);
 		containerWidget.setWidget(loginView.asWidget());
+		
+		loginView.selectTab(place.getTokenName());
 	}
 
 	/**

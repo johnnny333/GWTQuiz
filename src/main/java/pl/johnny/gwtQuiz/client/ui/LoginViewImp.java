@@ -15,11 +15,17 @@ import org.gwtbootstrap3.client.ui.Form;
 import org.gwtbootstrap3.client.ui.FormGroup;
 import org.gwtbootstrap3.client.ui.InlineHelpBlock;
 import org.gwtbootstrap3.client.ui.Input;
+import org.gwtbootstrap3.client.ui.NavTabs;
+import org.gwtbootstrap3.client.ui.TabListItem;
 import org.gwtbootstrap3.client.ui.TextBox;
+import org.gwtbootstrap3.client.ui.constants.InputType;
 import org.gwtbootstrap3.client.ui.constants.ValidationState;
+import org.gwtbootstrap3.extras.toggleswitch.client.ui.ToggleSwitch;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -37,6 +43,12 @@ public class LoginViewImp extends Composite implements LoginView {
 
 	private Presenter listener;
 
+	@UiField
+	TabListItem loginTab;
+	
+	@UiField
+	TabListItem signUpTab;
+	
 	// Login fields
 
 	@UiField
@@ -79,91 +91,104 @@ public class LoginViewImp extends Composite implements LoginView {
 
 	@UiField
 	Input passwordRetypeRegister;
-	
+
 	@UiField
 	InlineHelpBlock passwordRegisterInlineHelpBlock;
-	
-	@UiField 
+
+	@UiField
 	InlineHelpBlock passwordRetypeRegisterInlineHelpBlock;
-	
+
 	@UiField
 	FormGroup passwordRegisterFormGroup;
-	
+
 	@UiField
 	FormGroup passwordRetypeRegisterFormGroup;
-	
+
 	@UiField
 	FormGroup userRegisterMailFormGroup;
-	
+
 	@UiField
 	InlineHelpBlock userRegisterEmailInlineHelpBlock;
-	
-//	@UiField
-//	ToggleSwitch passwordToogleHelpBlock;
+
+	@UiField
+	ToggleSwitch passwordToogleSwitch;
 
 	public LoginViewImp() {
 		initWidget(uiBinder.createAndBindUi(this));
+		
+		//Show/Hide password input values on toggle.
+		passwordToogleSwitch.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+			
+			@Override
+			public void onValueChange(ValueChangeEvent<Boolean> event) {
+				if(event.getValue()){
+					passwordRegister.setType(InputType.TEXT);
+					passwordRetypeRegister.setType(InputType.TEXT);
+				}else {
+					passwordRegister.setType(InputType.PASSWORD);
+					passwordRetypeRegister.setType(InputType.PASSWORD);
+				}
+			}
+		});
 	}
 
 	@Override
 	public void setPresenter(Presenter listener) {
 		this.listener = listener;
 	}
-
+	
+	//Login logic
 	@UiHandler("loginButton")
 	void onLoginButtonClicked(ClickEvent e) {
 
-		if(form.validate() && listener != null) {
+		if (form.validate() && listener != null) {
 			listener.loginUser(new User(email.getValue(), password.getValue()));
 		}
 	}
 
-	//Register Validation
+	// Register Validation
 	@UiHandler("registerButton")
 	void onRegisterButtonClicked(ClickEvent e) {
 
-		//Check if fields are non-empty.
-		if(formRegister.validate() && listener != null) {
-			//Form is non-empty. Now Check if typed passwords are the same.
-			if(passwordRegister.getText().equals(passwordRetypeRegister.getText())) {
-				//Passwords are the same,now commence Hibernate client Validation.
+		// Check if fields are non-empty.
+		if (formRegister.validate() && listener != null) {
+			// Form is non-empty. Now Check if typed passwords are the same.
+			if (passwordRegister.getText().equals(passwordRetypeRegister.getText())) {
+				// Passwords are the same,now commence Hibernate client
+				// Validation.
 
 				GWT.log("email " + emailRegister.getValue() + " password " + passwordRegister.getValue());
 
 				Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
-				Set<ConstraintViolation<User>> violations = validator.
-						validate(new User(emailRegister.getValue(), passwordRegister.getValue()), Default.class);
+				Set<ConstraintViolation<User>> violations = validator
+						.validate(new User(emailRegister.getValue(), passwordRegister.getValue()), Default.class);
 
-				if(!violations.isEmpty()) {
+				if (!violations.isEmpty()) {
 					StringBuffer errorMessage = new StringBuffer();
-					for(ConstraintViolation<User> constraintViolation : violations) {
-//						if(errorMessage.length() == 0) {
-//							errorMessage.append('\n');
-//						}
-//						errorMessage.append(constraintViolation.getMessage() + "| source: " + constraintViolation.getPropertyPath());
-						
-						switch(constraintViolation.getPropertyPath().toString()) {
-							case "password":
-								
-								passwordRegisterFormGroup.setValidationState(ValidationState.ERROR);
-//								passwordRetypeRegisterFormGroup.setValidationState(ValidationState.ERROR);
-								passwordRegisterInlineHelpBlock.setText(constraintViolation.getMessage());
-								
-								break;
-								
-							case "email":
-								
-								userRegisterMailFormGroup.setValidationState(ValidationState.ERROR);
-								userRegisterEmailInlineHelpBlock.setText(constraintViolation.getMessage());
-								
-								break;
+					for (ConstraintViolation<User> constraintViolation : violations) {
 
-							default:
-								
-								GWT.log("Client side Hibernate Validation exception in LoginViewImpl.");
-								
-								break;
+						switch (constraintViolation.getPropertyPath().toString()) {
+						case "password":
+
+							passwordRegisterFormGroup.setValidationState(ValidationState.ERROR);
+							// passwordRetypeRegisterFormGroup.setValidationState(ValidationState.ERROR);
+							passwordRegisterInlineHelpBlock.setText(constraintViolation.getMessage());
+
+							break;
+
+						case "email":
+
+							userRegisterMailFormGroup.setValidationState(ValidationState.ERROR);
+							userRegisterEmailInlineHelpBlock.setText(constraintViolation.getMessage());
+
+							break;
+
+						default:
+
+							GWT.log("Client side Hibernate Validation exception in LoginViewImpl.");
+
+							break;
 						}
 					}
 					GWT.log(errorMessage.toString());
@@ -171,10 +196,10 @@ public class LoginViewImp extends Composite implements LoginView {
 
 				} else {
 					GWT.log("Hibernate validation OK");
-					//TODO send validated user to server over RPC.
+					// TODO send validated user to server over RPC.
 				}
 			} else {
-				//Display error message in a appropriate fields.
+				// Display error message in a appropriate fields.
 				passwordRegisterFormGroup.setValidationState(ValidationState.ERROR);
 				passwordRetypeRegisterFormGroup.setValidationState(ValidationState.ERROR);
 				passwordRetypeRegisterInlineHelpBlock.setText("Passwords are not the same.");
@@ -184,24 +209,38 @@ public class LoginViewImp extends Composite implements LoginView {
 
 	@Override
 	public void setLoginServerErrorMessage(String errorMessage) {
-		switch(errorMessage) {
-			case "No such user":
-				userMailFormGroup.setValidationState(ValidationState.ERROR);
-				userEmailInlineHelpBlock.setText(errorMessage);
-				break;
-			case "Bad password":
-				passwordFormGroup.setValidationState(ValidationState.ERROR);
-				passwordInlineHelpBlock.setText(errorMessage);
-				break;
+		switch (errorMessage) {
+		case "No such user":
+			userMailFormGroup.setValidationState(ValidationState.ERROR);
+			userEmailInlineHelpBlock.setText(errorMessage);
+			break;
+		case "Bad password":
+			passwordFormGroup.setValidationState(ValidationState.ERROR);
+			passwordInlineHelpBlock.setText(errorMessage);
+			break;
 
-			default:
-				GWT.log("LoginViewImpl.setServerErrorMessage error " + errorMessage);
-				break;
+		default:
+			GWT.log("LoginViewImpl.setServerErrorMessage error " + errorMessage);
+			break;
 		}
 	}
 	
-//	@UiHandler("passwordToogleHelpBlock")
-//	public void onpasswordToogleHelpBlockClick(ClickEvent event) {
-//		GWT.log("passwordToogleHelpBlock clicked");
-//	}
+	@Override
+	public void selectTab(String tabToSelect){
+		
+		switch (tabToSelect) {
+		case "SignUp":
+			
+			signUpTab.showTab();
+			break;
+			
+		case "Login":
+			
+			loginTab.showTab();
+			break;
+
+		default:
+			break;
+		}
+	}
 }

@@ -3,6 +3,7 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
 	xmlns:h="urn:import:org.gwtbootstrap3.client.ui.html">
 	<ui:style>
+	
 	</ui:style>
 
 	<b:Navbar>
@@ -21,17 +22,20 @@
 					text="High Scores"></b:AnchorListItem>
 				<b:AnchorListItem ui:field="addQuestionsAnchor"
 					icon="PLUS_CIRCLE" text="Add Questions"></b:AnchorListItem>
-				<b:AnchorListItem ui:field="adminPanelAnchor"
-					icon="COGS" text="Admin Panel"></b:AnchorListItem>
+				<b:AnchorListItem ui:field="adminPanelAnchor" icon="COGS"
+					text="Admin Panel"></b:AnchorListItem>
 			</b:NavbarNav>
 
 
 			<b:NavbarNav pull="RIGHT">
 
+				<b:AnchorListItem ui:field="signUpAnchor" icon="SIGN_IN"
+					text="Sign up"></b:AnchorListItem>
+
 				<b:ListDropDown>
-					<b:AnchorButton toggleCaret="false" icon="USER" 
-						dataToggle="DROPDOWN" text="Log in" ui:field="anchorButton" ></b:AnchorButton>
-					<b:DropDownMenu visible="false" ui:field="dropDownMenu" >
+					<b:AnchorButton toggleCaret="false" icon="USER"
+						dataToggle="DROPDOWN" text="Log in" ui:field="anchorButton"></b:AnchorButton>
+					<b:DropDownMenu visible="false" ui:field="dropDownMenu">
 						<b:AnchorListItem text="Log out" ui:field="logOutAnchorListItem"></b:AnchorListItem>
 					</b:DropDownMenu>
 				</b:ListDropDown>

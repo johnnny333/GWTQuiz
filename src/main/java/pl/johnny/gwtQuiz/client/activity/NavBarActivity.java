@@ -83,6 +83,8 @@ public class NavBarActivity extends AbstractActivity implements NavBarView.Prese
 			navBarView.setAnchorListItemActive(3);
 		else if (place instanceof AdminPlace)
 			navBarView.setAnchorListItemActive(4);
+		else if (place instanceof LoginPlace)
+			navBarView.setAnchorListItemActive(5);
 
 		// Set user email on NavBar anchor button if returned from db.
 		clientFactory.getQuestionsService().validateSession(clientFactory.getSession(), new AsyncCallback<String>() {

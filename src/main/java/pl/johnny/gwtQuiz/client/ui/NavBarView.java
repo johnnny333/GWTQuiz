@@ -23,8 +23,8 @@ public interface NavBarView extends IsWidget
 	
 	/**
 	 * If user is logged in, set his email on navbar anchor and show 
-	 * dropdown menu with logout option. Otherwise, display "Log in" and hide
-	 * dropdown menu. 
+	 * dropdown menu with logout option, AddQuestion Anchor and hide SignUp Anchor. 
+	 * Otherwise, display "Log in", "SignUp" and hide dropdown menu. 
 	 * @param userEmail
 	 * @param isLoggedIn
 	 */
