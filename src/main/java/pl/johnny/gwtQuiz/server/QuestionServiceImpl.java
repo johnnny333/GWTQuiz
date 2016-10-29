@@ -125,9 +125,10 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 
 	@Override
 	public String loginUser(User user) throws IllegalArgumentException, pl.johnny.gwtQuiz.shared.FailedLoginException {
-
-		if (user.email.trim() == null) {
-			throw new IllegalArgumentException("No given mail in QuestionServiceImpl.loginUser()");
+		
+		//Check if fields are non 0 length.
+		if (user.email.trim().isEmpty() || user.password.trim().isEmpty()) {
+			throw new IllegalArgumentException("No given mail or password in QuestionServiceImpl.loginUser()");
 		}
 
 		// Saved in a variable to avoid duplicated database calling.
@@ -189,5 +190,23 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 	@Override
 	public void updateCategory(String updatedCategory, int categoryID) {
 		questionServiceDBConn.updateCategory(updatedCategory, categoryID);
+	}
+	
+	@Override
+	public void insertNewUser(User newUser) throws IllegalArgumentException, SQLConstraintException{
+		
+		//Check if fields are non 0 length.
+		if (newUser.email.trim().isEmpty() || newUser.password.trim().isEmpty()) {
+			throw new IllegalArgumentException("No given mail or password in QuestionServiceImpl.loginUser()");
+		}
+		
+		//Encrypt new user password and update user password from plain text to hashed 
+		newUser.password = BCrypt.hashpw(newUser.password, BCrypt.gensalt());
+		//Hand user model to database...
+		try {
+			questionServiceDBConn.insertNewUser(newUser);
+		} catch (Exception e) {
+			throw new SQLConstraintException(e.getMessage());
+		}
 	}
 }

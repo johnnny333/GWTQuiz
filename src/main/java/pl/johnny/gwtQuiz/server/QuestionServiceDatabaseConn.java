@@ -813,7 +813,7 @@ public class QuestionServiceDatabaseConn {
 			c.setAutoCommit(false);
 			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
-			PreparedStatement prepStmt = c.prepareStatement("SELECT email,password from users WHERE email= ?;");
+			PreparedStatement prepStmt = c.prepareStatement("SELECT email,password,type from users WHERE email= ?;");
 
 			prepStmt.setString(1, user.email);
 			ResultSet rs = prepStmt.executeQuery();
@@ -830,6 +830,7 @@ public class QuestionServiceDatabaseConn {
 			while (rs.next()) {
 				passwordData[0] = rs.getString(1);
 				passwordData[1] = rs.getString(2);
+				passwordData[2] = rs.getString(3);
 			}
 
 			prepStmt.close();
@@ -890,7 +891,7 @@ public class QuestionServiceDatabaseConn {
 			
 		} catch (Exception e) {
 
-			if (e.getMessage().equals("[SQLITE_CONSTRAINT]  Abort due to constraint violation (FOREIGN KEY constraint failed)")) {
+			if (((SQLException) e).getErrorCode() == 19) {
 				throw new SQLException("[SQLITE_CONSTRAINT]");
 			}
 
@@ -931,6 +932,55 @@ public class QuestionServiceDatabaseConn {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.err.println(e.getCause() + " " + e.getStackTrace());	
 		}
+	}
+	
+	/**
+	 * Try to insert new user into 'users' table. If user email already exist catch error 
+	 * and hand it to service.
+	 * @param newUser model which contain user information.
+	 */
+	void insertNewUser(User newUser)  throws SQLException {
+
+		Connection c;
+		PreparedStatement prepStmt;
+
+		try {
+			// Connection
+			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
+			c.setAutoCommit(false);
+			c.createStatement().execute("PRAGMA foreign_keys = ON");
+			
+			prepStmt = c.prepareStatement("INSERT INTO users (email,password, type) VALUES (?, ?, 1);");
+
+			prepStmt.setString(1, newUser.email);
+			prepStmt.setString(2, newUser.password);
+			prepStmt.executeUpdate();
+
+			prepStmt.close();
+			c.commit();
+			c.close();
+
+		} catch (Exception e) {
+
+//			if (e.getMessage().contains("UNIQUE constraint failed")) {
+//				System.err.println("Canonical name of SQL Error: " + 
+//						"Canonical " + e.getClass().getCanonicalName() + " | name " + e.getClass().getName());
+//				throw new SQLException("UNIQUE constraint failed");
+//			}
+			
+			//SQLite error codes: https://www.sqlite.org/c3ref/c_abort.html
+			if (((SQLException) e).getErrorCode() == 19) {
+				System.err.println("Canonical name of SQL Error: " + 
+						"Canonical " + e.getClass().getCanonicalName() + " | name " + e.getClass().getName() + 
+						" ((SQLException) e).getErrorCode(); " + ((SQLException) e).getErrorCode() + 
+						" |SQL error message " + e.getMessage());
+
+				throw new SQLException("UNIQUE constraint failed");
+			}
+
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.err.println(e.getCause() + " " + e.getStackTrace());
+		} 
 	}
 
 	/**

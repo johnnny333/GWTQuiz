@@ -8,6 +8,11 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
+/**
+ * User model which contains user email and password.
+ * @author jzarewicz
+ *
+ */
 public class User implements IsSerializable{
 	
 	@NotEmpty

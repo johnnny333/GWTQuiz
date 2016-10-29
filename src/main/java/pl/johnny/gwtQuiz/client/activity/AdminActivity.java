@@ -221,7 +221,7 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 
 			@Override
 			public void onSuccess(Void result) {
-				GWT.log("Category deleted successfully in AdminActivity.addCategory()");
+				GWT.log("Category deleted successfully in AdminActivity.removeCategory()");
 				/*On success, update categoriesTable list to reflect change in data source.
 				The dataProvider will update the cellList. */
 				list.remove(categoryToDelete);

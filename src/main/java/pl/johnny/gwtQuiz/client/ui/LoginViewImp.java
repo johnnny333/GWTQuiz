@@ -196,7 +196,9 @@ public class LoginViewImp extends Composite implements LoginView {
 
 				} else {
 					GWT.log("Hibernate validation OK");
-					// TODO send validated user to server over RPC.
+					
+					listener.registerUser(new User(emailRegister.getValue(), passwordRegister.getValue()));
+					
 				}
 			} else {
 				// Display error message in a appropriate fields.
@@ -209,6 +211,7 @@ public class LoginViewImp extends Composite implements LoginView {
 
 	@Override
 	public void setLoginServerErrorMessage(String errorMessage) {
+		
 		switch (errorMessage) {
 		case "No such user":
 			userMailFormGroup.setValidationState(ValidationState.ERROR);

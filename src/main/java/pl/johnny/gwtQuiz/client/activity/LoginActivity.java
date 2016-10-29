@@ -18,6 +18,7 @@ import pl.johnny.gwtQuiz.client.place.AdminPlace;
 import pl.johnny.gwtQuiz.client.place.LoginPlace;
 import pl.johnny.gwtQuiz.client.ui.LoginView;
 import pl.johnny.gwtQuiz.shared.FailedLoginException;
+import pl.johnny.gwtQuiz.shared.SQLConstraintException;
 import pl.johnny.gwtQuiz.shared.User;
 
 public class LoginActivity extends AbstractActivity implements LoginView.Presenter {
@@ -41,7 +42,7 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
 		loginView = clientFactory.getLoginView();
 		loginView.setPresenter(this);
 		containerWidget.setWidget(loginView.asWidget());
-		
+
 		loginView.selectTab(place.getTokenName());
 	}
 
@@ -68,27 +69,50 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
 
 			@Override
 			public void onSuccess(String result) {
-				
+
 				GWT.log("LoginActivity.loginUser() session id " + result);
-				
-				//Set cookie for 1 day expiry.
-                final long DURATION = 1000 * 60 * 60 * 24 * 1;
-                Date expires = new Date(System.currentTimeMillis() + DURATION);
-                Cookies.setCookie("gwtQuizCookie", result, expires, null, "/", false);
-               				
+
+				// Set cookie for 1 day expiry.
+				final long DURATION = 1000 * 60 * 60 * 24 * 1;
+				Date expires = new Date(System.currentTimeMillis() + DURATION);
+				Cookies.setCookie("gwtQuizCookie", result, expires, null, "/", false);
+
 				goTo(new AdminPlace(""));
 			}
 
 			@Override
 			public void onFailure(Throwable caught) {
-				
+
 				if (caught instanceof FailedLoginException) {
-					
-					loginView.setLoginServerErrorMessage( caught.getMessage() );
-					
+
+					loginView.setLoginServerErrorMessage(caught.getMessage());
+
 					return;
 				}
-				GWT.log("LoginActivity.loginUser() failed",caught);
+				GWT.log("LoginActivity.loginUser() failed", caught);
+			}
+		});
+	}
+
+	@Override
+	public void registerUser(User newUser) {
+		clientFactory.getQuestionsService().insertNewUser(newUser, new AsyncCallback<Void>() {
+
+			@Override
+			public void onSuccess(Void result) {
+				GWT.log("registerUser succeded in LoginActivity.registerUser()");
+
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+
+				if (caught instanceof SQLConstraintException) {
+//					loginView.setLoginServerErrorMessage(caught.getMessage());
+					GWT.log("SQLConstraintException in LoginActivity.registerUSer() " + caught.getMessage());
+					return;
+				}
+				GWT.log("LoginActivity.registerUser() failed", caught);
 			}
 		});
 	}

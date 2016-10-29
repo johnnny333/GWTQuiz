@@ -62,7 +62,8 @@ public interface QuestionService extends RemoteService {
 	 * @throws IllegalArgumentException thrown if user email field is blank.
 	 * @throws pl.johnny.gwtQuiz.shared.FailedLoginException thrown if either provided 
 	 * user mail was not found or password was invalid.
-	 * @return (is user is valid) String[0] = sessionID, String[1] = user email.
+	 * @return (is user is valid) String[0] = email, String[1] = user email,
+	 * String[2] = type - user type determines user privileges in an app.
 	 */
 	String loginUser(User user) throws IllegalArgumentException, pl.johnny.gwtQuiz.shared.FailedLoginException;
 	
@@ -81,5 +82,7 @@ public interface QuestionService extends RemoteService {
 	void deleteCategory(String categoryToDelete) throws SQLConstraintException;
 
 	void updateCategory(String updatedCategory, int categoryID);
+
+	void insertNewUser(User newUser) throws IllegalArgumentException, SQLConstraintException;
 
 }
