@@ -95,20 +95,21 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
 	}
 
 	@Override
-	public void registerUser(User newUser) {
+	public void registerUser(final User newUser) {
 		clientFactory.getQuestionsService().insertNewUser(newUser, new AsyncCallback<Void>() {
 
 			@Override
 			public void onSuccess(Void result) {
 				GWT.log("registerUser succeded in LoginActivity.registerUser()");
-
+				//After successful register, take new user to AdminPlace.
+				loginUser(newUser);
 			}
 
 			@Override
 			public void onFailure(Throwable caught) {
 
 				if (caught instanceof SQLConstraintException) {
-//					loginView.setLoginServerErrorMessage(caught.getMessage());
+					loginView.setLoginServerErrorMessage(caught.getMessage());
 					GWT.log("SQLConstraintException in LoginActivity.registerUSer() " + caught.getMessage());
 					return;
 				}

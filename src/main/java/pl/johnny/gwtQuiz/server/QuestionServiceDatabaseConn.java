@@ -890,7 +890,8 @@ public class QuestionServiceDatabaseConn {
 			prepStmt.executeUpdate();
 			
 		} catch (Exception e) {
-
+			
+			//SQLite error codes: https://www.sqlite.org/c3ref/c_abort.html
 			if (((SQLException) e).getErrorCode() == 19) {
 				throw new SQLException("[SQLITE_CONSTRAINT]");
 			}
@@ -941,8 +942,8 @@ public class QuestionServiceDatabaseConn {
 	 */
 	void insertNewUser(User newUser)  throws SQLException {
 
-		Connection c;
-		PreparedStatement prepStmt;
+		Connection c = null;
+		PreparedStatement prepStmt = null;
 
 		try {
 			// Connection
@@ -956,31 +957,21 @@ public class QuestionServiceDatabaseConn {
 			prepStmt.setString(2, newUser.password);
 			prepStmt.executeUpdate();
 
-			prepStmt.close();
-			c.commit();
-			c.close();
 
 		} catch (Exception e) {
-
-//			if (e.getMessage().contains("UNIQUE constraint failed")) {
-//				System.err.println("Canonical name of SQL Error: " + 
-//						"Canonical " + e.getClass().getCanonicalName() + " | name " + e.getClass().getName());
-//				throw new SQLException("UNIQUE constraint failed");
-//			}
 			
 			//SQLite error codes: https://www.sqlite.org/c3ref/c_abort.html
 			if (((SQLException) e).getErrorCode() == 19) {
-				System.err.println("Canonical name of SQL Error: " + 
-						"Canonical " + e.getClass().getCanonicalName() + " | name " + e.getClass().getName() + 
-						" ((SQLException) e).getErrorCode(); " + ((SQLException) e).getErrorCode() + 
-						" |SQL error message " + e.getMessage());
-
-				throw new SQLException("UNIQUE constraint failed");
+				throw new SQLException("User already exist");
 			}
 
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.err.println(e.getCause() + " " + e.getStackTrace());
-		} 
+		
+		} finally {
+			prepStmt.close();
+			c.close();
+		}
 	}
 
 	/**

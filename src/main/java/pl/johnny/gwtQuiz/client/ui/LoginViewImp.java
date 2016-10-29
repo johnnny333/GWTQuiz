@@ -181,13 +181,11 @@ public class LoginViewImp extends Composite implements LoginView {
 
 							userRegisterMailFormGroup.setValidationState(ValidationState.ERROR);
 							userRegisterEmailInlineHelpBlock.setText(constraintViolation.getMessage());
-
 							break;
 
 						default:
 
 							GWT.log("Client side Hibernate Validation exception in LoginViewImpl.");
-
 							break;
 						}
 					}
@@ -217,9 +215,16 @@ public class LoginViewImp extends Composite implements LoginView {
 			userMailFormGroup.setValidationState(ValidationState.ERROR);
 			userEmailInlineHelpBlock.setText(errorMessage);
 			break;
+			
 		case "Bad password":
 			passwordFormGroup.setValidationState(ValidationState.ERROR);
 			passwordInlineHelpBlock.setText(errorMessage);
+			break;
+			
+		case "User already exist":
+			userRegisterMailFormGroup.setValidationState(ValidationState.ERROR);
+			userRegisterEmailInlineHelpBlock.setText(errorMessage + "! Use different email to register.");
+			
 			break;
 
 		default:

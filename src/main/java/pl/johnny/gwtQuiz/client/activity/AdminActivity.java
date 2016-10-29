@@ -244,7 +244,6 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 	public void updateCategory(final String updatedCategory, final String oldCategoryValue, 
 			final int indexOnListOfUpdatedCategory, final List<String> categoriesDatabProviderList){
 		
-		
 		clientFactory.getQuestionsService().getCategory(oldCategoryValue, new AsyncCallback<String[][]>() {
 			
 			@Override
@@ -263,16 +262,12 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 						GWT.log("AdminActivity.updateCategory() failed", caught);
 					}
 				});
-				
 			}
 			
 			@Override
 			public void onFailure(Throwable caught) {
 				GWT.log("AdminActivity.getCategory() failed", caught);
-				
 			}
 		});
-		
-		
 	}
 }
