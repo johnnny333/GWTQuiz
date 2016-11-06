@@ -34,4 +34,10 @@ public interface LoginView extends IsWidget
 	 * @param tabToSelect
 	 */
 	void selectTab(String tabToSelect);
+	
+	/**
+	 * Clears form input values.
+	 * @param formToReset 0 to reset login form, 1 to reset register form.
+	 */
+	void resetLoginForms(int formToReset);
 }

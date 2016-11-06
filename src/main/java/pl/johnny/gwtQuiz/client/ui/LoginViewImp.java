@@ -61,7 +61,7 @@ public class LoginViewImp extends Composite implements LoginView {
 	TextBox email;
 
 	@UiField
-	Form form;
+	Form formLogin;
 
 	@UiField
 	FormGroup userMailFormGroup;
@@ -141,8 +141,8 @@ public class LoginViewImp extends Composite implements LoginView {
 	@UiHandler("loginButton")
 	void onLoginButtonClicked(ClickEvent e) {
 
-		if (form.validate() && listener != null) {
-			listener.loginUser(new User(email.getValue(), password.getValue()));
+		if (formLogin.validate() && listener != null) {
+			listener.loginUser(new User(email.getValue().trim(), password.getValue().trim()));
 		}
 	}
 
@@ -162,7 +162,7 @@ public class LoginViewImp extends Composite implements LoginView {
 				Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
 				Set<ConstraintViolation<User>> violations = validator
-						.validate(new User(emailRegister.getValue(), passwordRegister.getValue()), Default.class);
+						.validate(new User(emailRegister.getValue().trim(), passwordRegister.getValue()), Default.class);
 
 				if (!violations.isEmpty()) {
 					StringBuffer errorMessage = new StringBuffer();
@@ -194,9 +194,7 @@ public class LoginViewImp extends Composite implements LoginView {
 
 				} else {
 					GWT.log("Hibernate validation OK");
-					
 					listener.registerUser(new User(emailRegister.getValue(), passwordRegister.getValue()));
-					
 				}
 			} else {
 				// Display error message in a appropriate fields.
@@ -247,6 +245,22 @@ public class LoginViewImp extends Composite implements LoginView {
 			loginTab.showTab();
 			break;
 
+		default:
+			break;
+		}
+	}
+	
+	@Override
+	public void resetLoginForms(int formToReset){
+		switch (formToReset) {
+		case 0:
+			formLogin.reset();
+			break;
+			
+		case 1:
+			formRegister.reset();
+			break;
+			
 		default:
 			break;
 		}

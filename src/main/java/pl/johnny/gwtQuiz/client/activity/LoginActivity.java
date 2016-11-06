@@ -76,7 +76,8 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
 				final long DURATION = 1000 * 60 * 60 * 24 * 1;
 				Date expires = new Date(System.currentTimeMillis() + DURATION);
 				Cookies.setCookie("gwtQuizCookie", result, expires, null, "/", false);
-
+				
+				loginView.resetLoginForms(0);
 				goTo(new AdminPlace(""));
 			}
 
@@ -84,9 +85,7 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
 			public void onFailure(Throwable caught) {
 
 				if (caught instanceof FailedLoginException) {
-
 					loginView.setLoginServerErrorMessage(caught.getMessage());
-
 					return;
 				}
 				GWT.log("LoginActivity.loginUser() failed", caught);
@@ -102,6 +101,7 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
 			public void onSuccess(Void result) {
 				GWT.log("registerUser succeded in LoginActivity.registerUser()");
 				//After successful register, take new user to AdminPlace.
+				loginView.resetLoginForms(1);
 				loginUser(newUser);
 			}
 

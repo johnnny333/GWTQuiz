@@ -30,7 +30,7 @@
 
 								<b:PanelBody>
 
-									<b:Form ui:field="form">
+									<b:Form ui:field="formLogin">
 										<b:FieldSet>
 											<b:FormGroup ui:field="userMailFormGroup">
 												<b:FormLabel for="usermail" text="User"></b:FormLabel>

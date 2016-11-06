@@ -948,7 +948,7 @@ public class QuestionServiceDatabaseConn {
 		try {
 			// Connection
 			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
-			c.setAutoCommit(false);
+			c.setAutoCommit(true);
 			c.createStatement().execute("PRAGMA foreign_keys = ON");
 			
 			prepStmt = c.prepareStatement("INSERT INTO users (email,password, type) VALUES (?, ?, 1);");

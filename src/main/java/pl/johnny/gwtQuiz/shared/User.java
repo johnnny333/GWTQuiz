@@ -23,9 +23,9 @@ public class User implements IsSerializable{
 	
 	@NotEmpty
 	@Size(min=8, message = "size must be minimum or equal to 8 chars")
-	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@$!%*?&])[A-Za-z\\d$@$!%*?&]{8,}", 
-				message="Password must be equal or at least 8 chars long, contain at least one UPPERCASE letter, " 
-				+ "at least one lowercase letter,at least one number and at least one special character: $@$!%*?& ") //And minimum 8 characters
+	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,}", 
+				message="Password must be at least 8 chars long, contain at least one UPPERCASE letter, " 
+				+ "at least one lowercase letter, and at least one number.") //And minimum 8 characters
 	public String password;
 	
 	/**
