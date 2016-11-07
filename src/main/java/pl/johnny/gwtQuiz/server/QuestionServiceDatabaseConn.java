@@ -798,10 +798,10 @@ public class QuestionServiceDatabaseConn {
 	}
 
 	/**
-	 * Get user password by given email.
+	 * Get user email,password and type by given email.
 	 * 
 	 * @param user
-	 * @return
+	 * @return [0] = email, [1] = password, [2] type; 
 	 */
 	String[] getUser(User user) {
 
@@ -810,7 +810,7 @@ public class QuestionServiceDatabaseConn {
 		try {
 			// Connection
 			Connection c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
-			c.setAutoCommit(false);
+//			c.setAutoCommit(false);
 			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			PreparedStatement prepStmt = c.prepareStatement("SELECT email,password,type from users WHERE email= ?;");
@@ -834,7 +834,7 @@ public class QuestionServiceDatabaseConn {
 			}
 
 			prepStmt.close();
-			c.commit();
+//			c.commit();
 			c.close();
 
 		} catch (Exception e) {

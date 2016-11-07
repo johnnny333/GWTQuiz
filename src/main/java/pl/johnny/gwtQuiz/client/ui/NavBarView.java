@@ -23,12 +23,11 @@ public interface NavBarView extends IsWidget
 	
 	/**
 	 * If user is logged in, set his email on navbar anchor and show 
-	 * dropdown menu with logout option, AddQuestion Anchor and hide SignUp Anchor. 
+	 * dropdown menu with logout option, AddQuestion Anchor and hide SignUp Anchor.
+	 * Moreover, if super user (0) is logged in, show AdminAnchor.
 	 * Otherwise, display "Log in", "SignUp" and hide dropdown menu. 
 	 * @param userEmail
 	 * @param isLoggedIn
 	 */
-	void setNavBarAnchor(String userEmail, boolean isLoggedIn);
-
-	void toogleVisibilityOfAdminPanelAnchor(boolean toggler);
+	void setNavBarAnchorsVisibility(String[][] result, boolean isLoggedIn);
 }

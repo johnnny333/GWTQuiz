@@ -55,9 +55,9 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 
 	public NavBarViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
-		
+
 		anchorButton.addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
 				signUpAnchor.setActive(false);
@@ -123,7 +123,7 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 		for (int i = 0; i < anchorListItems.length; i++) {
 			anchorListItems[i].setActive(false);
 		}
-		
+
 		navBarBrand.getElement().getStyle().setProperty("backgroundColor", "#F8F8F8");
 
 		switch (whichAnchorToHighlight) {
@@ -154,17 +154,28 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 	}
 
 	@Override
-	public void setNavBarAnchor(String userEmail, boolean isLoggedIn) {
+	public void setNavBarAnchorsVisibility(String[][] userData, boolean isLoggedIn) {
 
-		if (userEmail == null) {
-			userEmail = "Log in";
+		if (userData != null) {
+			anchorButton.setText(userData[0][0]);
+		} else {
+			anchorButton.setText("Log in");
 		}
 
-		anchorButton.setText(userEmail);
 		anchorButton.setToggleCaret(isLoggedIn);
 		dropDownMenu.setVisible(isLoggedIn);
 		addQuestionsAnchor.setVisible(isLoggedIn);
 		signUpAnchor.setVisible(!isLoggedIn);
+
+		/* Display Admin Panel anchor only for user with super administrative
+		privileges (IOW - 0). */
+		if (isLoggedIn && Integer.parseInt(userData[0][1]) == 0) {
+			adminPanelAnchor.setVisible(isLoggedIn);
+		} else if (isLoggedIn && Integer.parseInt(userData[0][1]) == 1) {
+			adminPanelAnchor.setVisible(!isLoggedIn);
+		} else {
+			adminPanelAnchor.setVisible(isLoggedIn);
+		}
 	}
 
 	@UiHandler("anchorButton")
@@ -187,10 +198,5 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 			listener.goTo(new LoginPlace("SignUp"));
 			navBarCollapse.hide();
 		}
-	}
-
-	@Override
-	public void toogleVisibilityOfAdminPanelAnchor(boolean toggler) {
-		adminPanelAnchor.setVisible(toggler);
 	}
 }

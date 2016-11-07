@@ -23,7 +23,7 @@
 				<b:AnchorListItem ui:field="addQuestionsAnchor"
 					icon="PLUS_CIRCLE" text="Add Questions"></b:AnchorListItem>
 				<b:AnchorListItem ui:field="adminPanelAnchor" icon="COGS"
-					text="Admin Panel"></b:AnchorListItem>
+					text="Admin Panel" visible="false"></b:AnchorListItem>
 			</b:NavbarNav>
 
 

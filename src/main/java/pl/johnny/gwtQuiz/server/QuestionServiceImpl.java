@@ -132,30 +132,41 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 		}
 
 		// Saved in a variable to avoid duplicated database calling.
-		String[] userAndhashedPasswordFromDB = questionServiceDBConn.getUser(user);
+		String[] selectedUser = questionServiceDBConn.getUser(user);
 
-		if (userAndhashedPasswordFromDB[0] == "No such user") {
+		if (selectedUser[0] == "No such user") {
 			throw new pl.johnny.gwtQuiz.shared.FailedLoginException("No such user");
 		}
 
-		if (BCrypt.checkpw(user.password, userAndhashedPasswordFromDB[1])) {
-			// Save user in a session.
-			this.getThreadLocalRequest().getSession(true).setAttribute("userEmail", user.email);
-			// Send session id and email as response.
-			return this.getThreadLocalRequest().getSession(true).getId();
+		if (BCrypt.checkpw(user.password, selectedUser[1])) {
+			// Save user email and type as String[] in a session.
+			
+			String[][] userData = new String[1][2];
+			userData[0][0] = selectedUser[0];
+			userData[0][1] = selectedUser[2];
+			
+			this.getThreadLocalRequest().getSession().setAttribute("userEmailAndType", userData);
+			
+			// Return session id.
+			return this.getThreadLocalRequest().getSession().getId();
 		} else {
 			throw new pl.johnny.gwtQuiz.shared.FailedLoginException("Bad password");
 		}
 	};
 
 	@Override
-	public String validateSession(String sessionID) {
+	public String[][] validateSession(String sessionID) {
 
-		String userEmail = (String) this.getThreadLocalRequest().getSession().getAttribute("userEmail");
-
-		if (this.getThreadLocalRequest().getSession().getId().equals(sessionID) && userEmail != null) {
-			return userEmail;
-		} else {
+		String[][] sessionUser = (String[][]) this.getThreadLocalRequest().getSession(true).getAttribute("userEmailAndType");
+		
+		if (this.getThreadLocalRequest().getSession().getId().equals(sessionID) ) {
+//			System.out.println("Type in validateSession: " + sessionUser[0][1]);
+			
+			return sessionUser;
+		} 
+		else {
+			
+//			System.out.println("Type in validateSession null: " + sessionUser[0][1]);
 			return null;
 		}
 	}
@@ -167,6 +178,7 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 			this.getThreadLocalRequest().getSession().invalidate();
 			return true;
 		} else {
+			this.getThreadLocalRequest().getSession().invalidate();
 			return false;
 		}
 	}

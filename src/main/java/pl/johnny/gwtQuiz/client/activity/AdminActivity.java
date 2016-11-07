@@ -54,7 +54,7 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 			goTo(new LoginPlace(""));
 			return;
 		} else {
-			clientFactory.getQuestionsService().validateSession(cookieSessionID, new AsyncCallback<String>() {
+			clientFactory.getQuestionsService().validateSession(cookieSessionID, new AsyncCallback<String[][]>() {
 
 				@Override
 				public void onFailure(Throwable caught) {
@@ -63,7 +63,7 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 				}
 
 				@Override
-				public void onSuccess(String result) {
+				public void onSuccess(String[][] result) {
 					if (result == null) {
 						goTo(new LoginPlace(""));
 					}

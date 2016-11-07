@@ -87,19 +87,16 @@ public class NavBarActivity extends AbstractActivity implements NavBarView.Prese
 			navBarView.setAnchorListItemActive(5);
 
 		// Set user email on NavBar anchor button if returned from db.
-		clientFactory.getQuestionsService().validateSession(clientFactory.getSession(), new AsyncCallback<String>() {
+		clientFactory.getQuestionsService().validateSession(clientFactory.getSession(), new AsyncCallback<String[][]>() {
 
 			@Override
-			public void onSuccess(String result) {
-				if (result != null) {
-					navBarView.setNavBarAnchor(result, true);
-					navBarView.toogleVisibilityOfAdminPanelAnchor(true);
+			public void onSuccess(String result[][]) {
+				if (result != null) {					
+					navBarView.setNavBarAnchorsVisibility(result, true);
 				} else {
-					navBarView.setNavBarAnchor(result, false);
-					navBarView.toogleVisibilityOfAdminPanelAnchor(false);
+					navBarView.setNavBarAnchorsVisibility(result, false);
 				}
 			}
-
 			@Override
 			public void onFailure(Throwable caught) {
 				GWT.log("NavBarActivity failed", caught);
