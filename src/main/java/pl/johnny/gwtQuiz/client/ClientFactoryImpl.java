@@ -101,7 +101,7 @@ public class ClientFactoryImpl implements ClientFactory
 	}
 
 	@Override
-	public String getSession() {
+	public String getCookie() {
 		return Cookies.getCookie("gwtQuizCookie");
 	}
 }

@@ -22,6 +22,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 import pl.johnny.gwtQuiz.client.ClientFactory;
+import pl.johnny.gwtQuiz.client.place.AddQuestionsPlace;
 import pl.johnny.gwtQuiz.client.place.AdminPlace;
 import pl.johnny.gwtQuiz.client.place.LoginPlace;
 import pl.johnny.gwtQuiz.client.ui.AdminView;
@@ -49,7 +50,7 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 		 * validation passed, let user stay into AdmininPlace. Otherwise,
 		 * redirect him into LoginPlace.
 		 */
-		String cookieSessionID = clientFactory.getSession();
+		String cookieSessionID = clientFactory.getCookie();
 		if (cookieSessionID == null) {
 			goTo(new LoginPlace(""));
 			return;
@@ -64,8 +65,15 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 
 				@Override
 				public void onSuccess(String[][] result) {
+					/* 
+					 * If user is not logged, restrict access to AdminActicity,
+					 * else if user is not a super user(0) but a normal user(1)
+					 * also restrict access to AdminActivity.
+					 */
 					if (result == null) {
 						goTo(new LoginPlace(""));
+					} else if(Integer.parseInt(result[0][1]) == 1) {
+						goTo(new AddQuestionsPlace(""));
 					}
 				}
 			});

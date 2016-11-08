@@ -62,7 +62,7 @@ public interface QuestionServiceAsync {
 	 * Return session assigned to user and his type.
 	 * @param sessionID 
 	 * @param asyncCallback
-	 * @return [0][0] - user email, [0][1] user type or null if there is no user assigned to session.
+	 * @return [0][0] - user email, [0][1] user type. Result is Null if there is no user assigned to session.
 	 */
 	void validateSession(String sessionID, AsyncCallback<String[][]> asyncCallback);
 

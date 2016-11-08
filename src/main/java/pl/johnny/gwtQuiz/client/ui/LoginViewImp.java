@@ -251,13 +251,13 @@ public class LoginViewImp extends Composite implements LoginView {
 	}
 	
 	@Override
-	public void resetLoginForms(int formToReset){
+	public void resetLoginForms(LoginForm formToReset){
 		switch (formToReset) {
-		case 0:
+		case FORM_LOGIN:
 			formLogin.reset();
 			break;
 			
-		case 1:
+		case FORM_REGISTER:
 			formRegister.reset();
 			break;
 			

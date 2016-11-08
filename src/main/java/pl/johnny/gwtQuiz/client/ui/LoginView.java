@@ -37,7 +37,15 @@ public interface LoginView extends IsWidget
 	
 	/**
 	 * Clears form input values.
-	 * @param formToReset 0 to reset login form, 1 to reset register form.
+	 * @param types from LoginForm Enum;
 	 */
-	void resetLoginForms(int formToReset);
+	void resetLoginForms(LoginForm formToReset);
+	
+	/**
+	 * @see resetLoginForms(LoginForm formToReset); 
+	 * @author jzarewicz
+	 */
+	public enum LoginForm {
+		FORM_LOGIN, FORM_REGISTER
+	}
 }

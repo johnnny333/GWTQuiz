@@ -87,7 +87,7 @@ public class NavBarActivity extends AbstractActivity implements NavBarView.Prese
 			navBarView.setAnchorListItemActive(5);
 
 		// Set user email on NavBar anchor button if returned from db.
-		clientFactory.getQuestionsService().validateSession(clientFactory.getSession(), new AsyncCallback<String[][]>() {
+		clientFactory.getQuestionsService().validateSession(clientFactory.getCookie(), new AsyncCallback<String[][]>() {
 
 			@Override
 			public void onSuccess(String result[][]) {
@@ -122,7 +122,7 @@ public class NavBarActivity extends AbstractActivity implements NavBarView.Prese
 
 	@Override
 	public void logOutUser() {
-		clientFactory.getQuestionsService().logOutUser(clientFactory.getSession(), new AsyncCallback<Boolean>() {
+		clientFactory.getQuestionsService().logOutUser(clientFactory.getCookie(), new AsyncCallback<Boolean>() {
 
 			@Override
 			public void onFailure(Throwable caught) {

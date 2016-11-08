@@ -24,5 +24,5 @@ public interface ClientFactory
 	AddQuestionsView getAddQuestionsView();
 	AdminView getAdminView();
 	LoginView getLoginView();
-	String getSession();
+	String getCookie();
 }

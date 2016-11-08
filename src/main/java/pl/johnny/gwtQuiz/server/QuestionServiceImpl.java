@@ -160,13 +160,9 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 		String[][] sessionUser = (String[][]) this.getThreadLocalRequest().getSession(true).getAttribute("userEmailAndType");
 		
 		if (this.getThreadLocalRequest().getSession().getId().equals(sessionID) ) {
-//			System.out.println("Type in validateSession: " + sessionUser[0][1]);
-			
 			return sessionUser;
 		} 
 		else {
-			
-//			System.out.println("Type in validateSession null: " + sessionUser[0][1]);
 			return null;
 		}
 	}

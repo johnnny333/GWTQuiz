@@ -17,6 +17,7 @@ import pl.johnny.gwtQuiz.client.ClientFactory;
 import pl.johnny.gwtQuiz.client.place.AdminPlace;
 import pl.johnny.gwtQuiz.client.place.LoginPlace;
 import pl.johnny.gwtQuiz.client.ui.LoginView;
+import pl.johnny.gwtQuiz.client.ui.LoginView.LoginForm;
 import pl.johnny.gwtQuiz.shared.FailedLoginException;
 import pl.johnny.gwtQuiz.shared.SQLConstraintException;
 import pl.johnny.gwtQuiz.shared.User;
@@ -77,7 +78,7 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
 				Date expires = new Date(System.currentTimeMillis() + DURATION);
 				Cookies.setCookie("gwtQuizCookie", result, expires, null, "/", false);
 				
-				loginView.resetLoginForms(0);
+				loginView.resetLoginForms(LoginForm.FORM_LOGIN);
 				goTo(new AdminPlace(""));
 			}
 
@@ -101,7 +102,7 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
 			public void onSuccess(Void result) {
 				GWT.log("registerUser succeded in LoginActivity.registerUser()");
 				//After successful register, take new user to AdminPlace.
-				loginView.resetLoginForms(1);
+				loginView.resetLoginForms(LoginForm.FORM_REGISTER);
 				loginUser(newUser);
 			}
 
