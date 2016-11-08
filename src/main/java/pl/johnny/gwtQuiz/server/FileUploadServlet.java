@@ -35,7 +35,9 @@ public class FileUploadServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-
+		
+		resp.setContentType("multipart/form-data; charset=utf-8");
+		
 		//Check if a request has multipart content - e.g has image - and if not, return.
 		if(!ServletFileUpload.isMultipartContent(req)) return;
 
@@ -134,6 +136,9 @@ public class FileUploadServlet extends HttpServlet {
 			JSONObject obj = new JSONObject();
 			obj.put("base64EncodedString", base64EncodedImageString);
 			obj.put("pathToFile", newFile.toString());
+			
+			System.out.println("Filename in Upload servlet: " + newFile);
+			System.out.println("resp.getContentType();" + resp.getContentType());
 			
 			//Send JSON over the servlet response.
 			out.println(obj);
