@@ -65,9 +65,10 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 
 				@Override
 				public void onSuccess(String[][] result) {
-					/* 
-					 * If user is not logged, restrict access to AdminActicity,
-					 * else if user is not a super user(0) but a normal user(1)
+					/** 
+					 * If user is not logged (IOW don't have his user cookie but other user cookie exist
+					 * in browser e.g user spoofed cookie) restrict access to AdminActicity.
+					 * Else if user is not a super user(0) but a normal user(1)
 					 * also restrict access to AdminActivity.
 					 */
 					if (result == null) {

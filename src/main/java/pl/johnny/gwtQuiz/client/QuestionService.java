@@ -71,7 +71,7 @@ public interface QuestionService extends RemoteService {
 	 * Check for session validity.
 	 * 
 	 * @param sessionID
-	 * @return true if session is valid, false otherwise.
+	 * @return User Email and Type if session is valid, null otherwise.
 	 */
 	String[][] validateSession(String sessionID);
 

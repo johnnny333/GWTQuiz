@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 import pl.johnny.gwtQuiz.client.ClientFactory;
 import pl.johnny.gwtQuiz.client.place.AddQuestionsPlace;
+import pl.johnny.gwtQuiz.client.place.LoginPlace;
 import pl.johnny.gwtQuiz.client.ui.AddQuestionsView;
 import pl.johnny.gwtQuiz.shared.Question;
 
@@ -52,6 +53,38 @@ public class AddQuestionsActivity extends AbstractActivity implements AddQuestio
 	 */
 	@Override
 	public void start(AcceptsOneWidget containerWidget, EventBus eventBus) {
+		
+		/**
+		 * Check for session cookie and if exist, validate it on server. If
+		 * validation passed, let user stay into AddQuestionPlace. Otherwise,
+		 * redirect him into LoginPlace.
+		 */
+		String cookieSessionID = clientFactory.getCookie();
+		if (cookieSessionID == null) {
+			goTo(new LoginPlace(""));
+			return;
+		}else {
+			clientFactory.getQuestionsService().validateSession(cookieSessionID, new AsyncCallback<String[][]>() {
+
+				@Override
+				public void onFailure(Throwable caught) {
+					GWT.log("AddQuestionsActivity.validateSession() failed", caught);
+					return;
+				}
+
+				@Override
+				public void onSuccess(String[][] result) {
+					/** 
+					 * If user is not logged (IOW don't have his user cookie but other user cookie exist
+					 * in browser e.g user spoofed cookie) restrict access to AdminActicity.
+					 */
+					if (result == null) {
+						goTo(new LoginPlace(""));
+					}
+				}
+			});
+		}
+		
 		AddQuestionsView addQuestionView = clientFactory.getAddQuestionsView();
 		addQuestionView.setPresenter(this);
 		containerWidget.setWidget(addQuestionView.asWidget());

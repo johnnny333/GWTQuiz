@@ -116,7 +116,7 @@ public class UploadWidget extends Composite {
 						StringBuilder sb = new StringBuilder();
 						sb
 								//                    	.append("File ")
-								//                    		.append(uploadSuccessEvent.getFile().getName())  
+								                    		.append(uploadSuccessEvent.getFile().getName())  
 								//                        .append(" (")  
 								//                        .append(NumberFormat.getDecimalFormat().format(uploadSuccessEvent.getFile().getSize() / 1024))  
 								//                        .append(" KB)")  
