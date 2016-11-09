@@ -23,6 +23,7 @@ public class AddQuestionsActivity extends AbstractActivity implements AddQuestio
 	// Alternatively, could be injected via GIN
 	private ClientFactory clientFactory;
 	private AddQuestionsView addQuestionView;
+	private AddQuestionsView.Presenter addQuestionViewPresenter = this;
 	
 	/**
 	 * Field representing uploaded image name. If its null it means no image was
@@ -33,26 +34,13 @@ public class AddQuestionsActivity extends AbstractActivity implements AddQuestio
 	public AddQuestionsActivity(AddQuestionsPlace place, final ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
 		addQuestionView = clientFactory.getAddQuestionsView();
-		// Put categories from database into ListBox in this activity view.
-		clientFactory.getQuestionsService().getCategories(new AsyncCallback<String[][]>() {
-
-			@Override
-			public void onSuccess(String[][] result) {
-				clientFactory.getAddQuestionsView().setCategories(result);
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				GWT.log("Failed AddQuestionsActivity.getCategories() RPC! ", caught);
-			}
-		});
 	}
 
 	/**
 	 * Invoked by the ActivityManager to start a new Activity
 	 */
 	@Override
-	public void start(AcceptsOneWidget containerWidget, EventBus eventBus) {
+	public void start(final AcceptsOneWidget containerWidget, EventBus eventBus) {
 		
 		/**
 		 * Check for session cookie and if exist, validate it on server. If
@@ -80,14 +68,31 @@ public class AddQuestionsActivity extends AbstractActivity implements AddQuestio
 					 */
 					if (result == null) {
 						goTo(new LoginPlace(""));
+					} else {
+						/**
+						 * If proper user is logged in - initialize view.
+						 * .......
+						 * Put categories from database into ListBox in this activity view
+						 */
+						clientFactory.getQuestionsService().getCategories(new AsyncCallback<String[][]>() {
+
+							@Override
+							public void onSuccess(String[][] result) {
+								AddQuestionsView addQuestionView = clientFactory.getAddQuestionsView();
+								addQuestionView.setPresenter(addQuestionViewPresenter);
+								containerWidget.setWidget(addQuestionView.asWidget());
+								addQuestionView.setCategories(result);
+							}
+
+							@Override
+							public void onFailure(Throwable caught) {
+								GWT.log("Failed AddQuestionsActivity.getCategories() RPC! ", caught);
+							}
+						});
 					}
 				}
 			});
 		}
-		
-		AddQuestionsView addQuestionView = clientFactory.getAddQuestionsView();
-		addQuestionView.setPresenter(this);
-		containerWidget.setWidget(addQuestionView.asWidget());
 	}
 
 	/**

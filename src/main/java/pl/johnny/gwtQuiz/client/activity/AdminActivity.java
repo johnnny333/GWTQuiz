@@ -75,7 +75,7 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 						goTo(new LoginPlace(""));
 					} else if(Integer.parseInt(result[0][1]) == 1) {
 						goTo(new AddQuestionsPlace(""));
-					}
+					}//TODO deffer ui logic  else{}
 				}
 			});
 		}
