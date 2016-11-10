@@ -135,7 +135,9 @@ public class NavBarActivity extends AbstractActivity implements NavBarView.Prese
 					Cookies.removeCookie("gwtQuizCookieUser");
 					goTo(new MainMenuPlace(""));
 				} else {
-					GWT.log("Issue with log out in NavBarActivity.logOutUser()");
+					GWT.log("No user session found");
+					Cookies.removeCookie("gwtQuizCookieUser");
+					goTo(new MainMenuPlace(""));
 				}
 			}
 		});
