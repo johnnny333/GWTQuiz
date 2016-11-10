@@ -101,7 +101,7 @@ public class ClientFactoryImpl implements ClientFactory
 
 	@Override
 	public String getCookie() {
-		GWT.log("Cookie: " + Cookies.getCookie("gwtQuizCookie"));
-		return Cookies.getCookie("gwtQuizCookie");
+		GWT.log("Cookie: " + Cookies.getCookie("gwtQuizCookieUser").split(",")[1]);
+		return Cookies.getCookie("gwtQuizCookieUser").split(",")[0];
 	}
 }
