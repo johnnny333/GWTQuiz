@@ -1,6 +1,5 @@
 package pl.johnny.gwtQuiz.client;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.validation.ConstraintViolationException;
@@ -65,7 +64,7 @@ public interface QuestionService extends RemoteService {
 	 * @return (is user is valid) String[0] = email, String[1] = user email,
 	 * String[2] = type - user type determines user privileges in an app.
 	 */
-	String loginUser(User user) throws IllegalArgumentException, pl.johnny.gwtQuiz.shared.FailedLoginException;
+	String[][] loginUser(User user) throws IllegalArgumentException, pl.johnny.gwtQuiz.shared.FailedLoginException;
 	
 	/**
 	 * Check for session validity.

@@ -124,7 +124,7 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 	}
 
 	@Override
-	public String loginUser(User user) throws IllegalArgumentException, pl.johnny.gwtQuiz.shared.FailedLoginException {
+	public String[][] loginUser(User user) throws IllegalArgumentException, pl.johnny.gwtQuiz.shared.FailedLoginException {
 		
 		//Check if fields are non 0 length.
 		if (user.email.trim().isEmpty() || user.password.trim().isEmpty()) {
@@ -148,7 +148,7 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 			this.getThreadLocalRequest().getSession().setAttribute("userEmailAndType", userData);
 			
 			// Return session id.
-			return this.getThreadLocalRequest().getSession().getId();
+			return new String[][]{{ this.getThreadLocalRequest().getSession().getId(), selectedUser[0] }};
 		} else {
 			throw new pl.johnny.gwtQuiz.shared.FailedLoginException("Bad password");
 		}

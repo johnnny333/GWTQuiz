@@ -56,7 +56,7 @@ public interface QuestionServiceAsync {
 	   */
 	void dummy(AsyncCallback<ValidationSupport> callback);
 
-	void loginUser(User user, AsyncCallback<String> asyncCallback);
+	void loginUser(User user, AsyncCallback<String[][]> asyncCallback);
 	
 	/**
 	 * Return session assigned to user and his type.

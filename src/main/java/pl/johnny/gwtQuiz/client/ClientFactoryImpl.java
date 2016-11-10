@@ -3,7 +3,6 @@ package pl.johnny.gwtQuiz.client;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.user.client.Cookies;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.web.bindery.event.shared.EventBus;
 
 import pl.johnny.gwtQuiz.client.ui.AddQuestionsView;
@@ -102,6 +101,7 @@ public class ClientFactoryImpl implements ClientFactory
 
 	@Override
 	public String getCookie() {
+		GWT.log("Cookie: " + Cookies.getCookie("gwtQuizCookie"));
 		return Cookies.getCookie("gwtQuizCookie");
 	}
 }
