@@ -10,18 +10,17 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
-import org.gwtbootstrap3.client.ui.Alert;
 import org.gwtbootstrap3.client.ui.Modal;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.core.shared.GWT;
-import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 import pl.johnny.gwtQuiz.client.ClientFactory;
+import pl.johnny.gwtQuiz.client.ClientFactory.CookieType;
 import pl.johnny.gwtQuiz.client.place.AddQuestionsPlace;
 import pl.johnny.gwtQuiz.client.place.AdminPlace;
 import pl.johnny.gwtQuiz.client.place.LoginPlace;
@@ -50,7 +49,7 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 		 * validation passed, let user stay into AdmininPlace. Otherwise,
 		 * redirect him into LoginPlace.
 		 */
-		String cookieSessionID = clientFactory.getCookie();
+		String cookieSessionID = clientFactory.getCookie(CookieType.SESSION_ID);
 		if (cookieSessionID == null) {
 			goTo(new LoginPlace(""));
 			return;

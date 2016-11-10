@@ -13,6 +13,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 import pl.johnny.gwtQuiz.client.ClientFactory;
+import pl.johnny.gwtQuiz.client.ClientFactory.CookieType;
 import pl.johnny.gwtQuiz.client.place.AddQuestionsPlace;
 import pl.johnny.gwtQuiz.client.place.LoginPlace;
 import pl.johnny.gwtQuiz.client.ui.AddQuestionsView;
@@ -47,7 +48,7 @@ public class AddQuestionsActivity extends AbstractActivity implements AddQuestio
 		 * validation passed, let user stay into AddQuestionPlace. Otherwise,
 		 * redirect him into LoginPlace.
 		 */
-		String cookieSessionID = clientFactory.getCookie();
+		String cookieSessionID = clientFactory.getCookie(CookieType.SESSION_ID);
 		if (cookieSessionID == null) {
 			goTo(new LoginPlace(""));
 			return;

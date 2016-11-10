@@ -24,5 +24,9 @@ public interface ClientFactory
 	AddQuestionsView getAddQuestionsView();
 	AdminView getAdminView();
 	LoginView getLoginView();
-	String getCookie();
+	String getCookie(CookieType cookieType);
+	
+	public enum CookieType {
+		SESSION_ID, USER_EMAIL
+	}
 }

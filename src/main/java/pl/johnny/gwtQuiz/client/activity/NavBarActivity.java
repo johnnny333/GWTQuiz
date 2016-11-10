@@ -9,7 +9,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 import pl.johnny.gwtQuiz.client.ClientFactory;
-import pl.johnny.gwtQuiz.client.QuestionService;
+import pl.johnny.gwtQuiz.client.ClientFactory.CookieType;
 import pl.johnny.gwtQuiz.client.place.AddQuestionsPlace;
 import pl.johnny.gwtQuiz.client.place.AdminPlace;
 import pl.johnny.gwtQuiz.client.place.HighScoresPlace;
@@ -87,7 +87,7 @@ public class NavBarActivity extends AbstractActivity implements NavBarView.Prese
 			navBarView.setAnchorListItemActive(5);
 
 		// Set user email on NavBar anchor button if returned from db.
-		clientFactory.getQuestionsService().validateSession(clientFactory.getCookie(), new AsyncCallback<String[][]>() {
+		clientFactory.getQuestionsService().validateSession(clientFactory.getCookie(CookieType.SESSION_ID), new AsyncCallback<String[][]>() {
 
 			@Override
 			public void onSuccess(String result[][]) {
@@ -122,7 +122,7 @@ public class NavBarActivity extends AbstractActivity implements NavBarView.Prese
 
 	@Override
 	public void logOutUser() {
-		clientFactory.getQuestionsService().logOutUser(clientFactory.getCookie(), new AsyncCallback<Boolean>() {
+		clientFactory.getQuestionsService().logOutUser(clientFactory.getCookie(CookieType.SESSION_ID), new AsyncCallback<Boolean>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -132,7 +132,7 @@ public class NavBarActivity extends AbstractActivity implements NavBarView.Prese
 			@Override
 			public void onSuccess(Boolean result) {
 				if (result) {
-					Cookies.removeCookie("gwtQuizCookie");
+					Cookies.removeCookie("gwtQuizCookieUser");
 					goTo(new MainMenuPlace(""));
 				} else {
 					GWT.log("Issue with log out in NavBarActivity.logOutUser()");

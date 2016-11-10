@@ -77,7 +77,7 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
 				final long DURATION = 1000 * 60 * 60 * 24 * 1;
 				Date expires = new Date(System.currentTimeMillis() + DURATION);
 //				Cookies.setCookie("gwtQuizCookie", result[0][0], expires, null, "/", false);
-				Cookies.setCookie("gwtQuizCookie", result[0][0], expires, null, "/", false);
+//				Cookies.setCookie("gwtQuizCookie", result[0][0], expires, null, "/", false);
 				Cookies.setCookie("gwtQuizCookieUser", result[0][0] + "," +result[0][1], expires, null, "/", false);
 				
 				loginView.resetLoginForms(LoginForm.FORM_LOGIN);

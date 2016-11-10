@@ -22,8 +22,7 @@ import pl.johnny.gwtQuiz.client.ui.QuestionViewImpl;
 import pl.johnny.gwtQuiz.client.ui.widgets.HighScoreCellTableView;
 import pl.johnny.gwtQuiz.client.ui.widgets.HighScoreCellTableViewImpl;
 
-public class ClientFactoryImpl implements ClientFactory
-{
+public class ClientFactoryImpl implements ClientFactory {
 	private static final EventBus eventBus = new com.google.web.bindery.event.shared.SimpleEventBus();
 	private static final PlaceController placeController = new PlaceController(eventBus);
 	private static final MainMenuView mainMenuView = new MainMenuViewImpl();
@@ -37,40 +36,33 @@ public class ClientFactoryImpl implements ClientFactory
 	private static String userEmail;
 	private static final LoginView loginView = new LoginViewImp();
 
-
 	@Override
-	public EventBus getEventBus()
-	{
+	public EventBus getEventBus() {
 		return eventBus;
 	}
 
 	@Override
-	public MainMenuView getMainMenuView()
-	{
+	public MainMenuView getMainMenuView() {
 		return mainMenuView;
 	}
 
 	@Override
-	public PlaceController getPlaceController()
-	{
+	public PlaceController getPlaceController() {
 		return placeController;
 	}
 
 	@Override
-	public QuestionView getQuestionView()
-	{
+	public QuestionView getQuestionView() {
 		return questionView;
 	}
-	
+
 	@Override
-	public HighScoreCellTableView getHighScoreCellTableView()
-	{
+	public HighScoreCellTableView getHighScoreCellTableView() {
 		return highScoreCellTableView;
 	}
-	
+
 	@Override
-	public HighScoresView getHighScoreView()
-	{
+	public HighScoresView getHighScoreView() {
 		return highScoreView;
 	}
 
@@ -100,8 +92,30 @@ public class ClientFactoryImpl implements ClientFactory
 	}
 
 	@Override
-	public String getCookie() {
-		GWT.log("Cookie: " + Cookies.getCookie("gwtQuizCookieUser").split(",")[1]);
-		return Cookies.getCookie("gwtQuizCookieUser").split(",")[0];
+	public String getCookie(CookieType cookieType) {
+		
+		GWT.log("Cookie length: " + Cookies.getCookie("gwtQuizCookieUser"));
+
+		if(Cookies.getCookie("gwtQuizCookieUser") != null) {
+
+			String cookie = null;
+
+			switch(cookieType) {
+				case SESSION_ID:
+					cookie = Cookies.getCookie("gwtQuizCookieUser").split(",")[0];
+					break;
+
+				case USER_EMAIL:
+					cookie = Cookies.getCookie("gwtQuizCookieUser").split(",")[1];
+					break;
+
+				default:
+					break;
+			}
+
+			return cookie;
+		} else {
+			return null;
+		}
 	}
 }
