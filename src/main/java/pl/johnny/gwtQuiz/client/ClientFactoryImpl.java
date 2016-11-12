@@ -33,7 +33,6 @@ public class ClientFactoryImpl implements ClientFactory {
 	private static final AddQuestionsView addQuestionsView = new AddQuestionsViewImpl();
 	private static final AdminView adminView = new AdminViewImpl();
 	private final QuestionServiceAsync questionService = GWT.create(QuestionService.class);
-	private static String userEmail;
 	private static final LoginView loginView = new LoginViewImp();
 
 	@Override
@@ -94,28 +93,39 @@ public class ClientFactoryImpl implements ClientFactory {
 	@Override
 	public String getCookie(CookieType cookieType) {
 		
-		GWT.log("Cookie length: " + Cookies.getCookie("gwtQuizCookieUser"));
-
 		if(Cookies.getCookie("gwtQuizCookieUser") != null) {
 
 			String cookie = null;
 
 			switch(cookieType) {
 				case SESSION_ID:
-					cookie = Cookies.getCookie("gwtQuizCookieUser").split(",")[0];
+					cookie = base64Decode(Cookies.getCookie("gwtQuizCookieUser")).split(",")[0];
 					break;
 
 				case USER_EMAIL:
-					cookie = Cookies.getCookie("gwtQuizCookieUser").split(",")[1];
+					cookie = base64Decode(Cookies.getCookie("gwtQuizCookieUser")).split(",")[1];
+					break;
+					
+				case USER_TYPE:
+					cookie = base64Decode(Cookies.getCookie("gwtQuizCookieUser")).split(",")[2];
 					break;
 
 				default:
 					break;
 			}
-
 			return cookie;
 		} else {
 			return null;
 		}
 	}
+	
+	@Override
+	public native String base64Encode(String stringToEncode) /*-{
+	  return window.btoa(stringToEncode);
+	}-*/;
+	
+	@Override
+	public native String base64Decode(String stringToDecode) /*-{
+	  return window.atob(stringToDecode);
+	}-*/;
 }

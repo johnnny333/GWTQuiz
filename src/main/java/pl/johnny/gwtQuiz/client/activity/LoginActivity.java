@@ -3,6 +3,7 @@
  */
 package pl.johnny.gwtQuiz.client.activity;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 import com.google.gwt.activity.shared.AbstractActivity;
@@ -12,6 +13,7 @@ import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.gwt.user.server.Base64Utils;
 
 import pl.johnny.gwtQuiz.client.ClientFactory;
 import pl.johnny.gwtQuiz.client.place.AdminPlace;
@@ -75,10 +77,9 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
 
 				// Set cookie for 1 day expiry.
 				final long DURATION = 1000 * 60 * 60 * 24 * 1;
-				Date expires = new Date(System.currentTimeMillis() + DURATION);
-//				Cookies.setCookie("gwtQuizCookie", result[0][0], expires, null, "/", false);
-//				Cookies.setCookie("gwtQuizCookie", result[0][0], expires, null, "/", false);
-				Cookies.setCookie("gwtQuizCookieUser", result[0][0] + "," +result[0][1], expires, null, "/", false);
+				Date expires = new Date(System.currentTimeMillis() + DURATION);				
+				String cookieInBase64 = clientFactory.base64Encode( (result[0][0] + "," + result[0][1] + "," + result[0][2]) );
+				Cookies.setCookie("gwtQuizCookieUser", cookieInBase64 , expires, null, "/", false);
 				
 				loginView.resetLoginForms(LoginForm.FORM_LOGIN);
 				goTo(new AdminPlace(""));

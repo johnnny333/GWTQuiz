@@ -141,14 +141,14 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 		if (BCrypt.checkpw(user.password, selectedUser[1])) {
 			// Save user email and type as String[] in a session.
 			
-			String[][] userData = new String[1][2];
-			userData[0][0] = selectedUser[0];
-			userData[0][1] = selectedUser[2];
+			String[][] userEmailAndType = new String[1][2];
+			userEmailAndType[0][0] = selectedUser[0];
+			userEmailAndType[0][1] = selectedUser[2];
 			
-			this.getThreadLocalRequest().getSession().setAttribute("userEmailAndType", userData);
+			this.getThreadLocalRequest().getSession().setAttribute("userEmailAndType", userEmailAndType);
 			
 			// Return session id.
-			return new String[][]{{ this.getThreadLocalRequest().getSession().getId(), selectedUser[0] }};
+			return new String[][]{{ this.getThreadLocalRequest().getSession().getId(), selectedUser[0],  selectedUser[2] }};
 		} else {
 			throw new pl.johnny.gwtQuiz.shared.FailedLoginException("Bad password");
 		}

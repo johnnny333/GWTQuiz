@@ -81,7 +81,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 			@Override
 			public void onNewQuestion(NewQuestionEvent event) {
 				//Start a new instance of timer on every question.
-				//timerForProgressBar(25);
+				timerForProgressBar(25);
 				currentQuestionInt = event.getCurrentQuestionInt();
 				if(questionsArrayList != null) {
 					questionView.setShowModal(false);

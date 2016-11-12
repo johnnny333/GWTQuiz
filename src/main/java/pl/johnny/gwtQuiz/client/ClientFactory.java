@@ -27,6 +27,9 @@ public interface ClientFactory
 	String getCookie(CookieType cookieType);
 	
 	public enum CookieType {
-		SESSION_ID, USER_EMAIL
+		SESSION_ID, USER_EMAIL, USER_TYPE
 	}
+	
+	String base64Encode(String stringToEncode);
+	String base64Decode(String stringToDecode);
 }
