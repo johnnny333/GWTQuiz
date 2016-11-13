@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.servlet.http.Cookie;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
@@ -76,7 +77,7 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 	public String[][] getCategories() {
 		return questionServiceDBConn.getCategories();
 	}
-	
+
 	@Override
 	public String[][] getCategory(String category) {
 		return questionServiceDBConn.getCategory(category);
@@ -124,45 +125,65 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 	}
 
 	@Override
-	public String[][] loginUser(User user) throws IllegalArgumentException, pl.johnny.gwtQuiz.shared.FailedLoginException {
-		
-		//Check if fields are non 0 length.
+	public String[][] loginUser(User user)
+			throws IllegalArgumentException, pl.johnny.gwtQuiz.shared.FailedLoginException {
+
+		// Check if fields are non 0 length.
 		if (user.email.trim().isEmpty() || user.password.trim().isEmpty()) {
 			throw new IllegalArgumentException("No given mail or password in QuestionServiceImpl.loginUser()");
 		}
 
-		// Saved in a variable to avoid duplicated database calling.
+		/**
+		 * [0] - user email, [1] - user password, [2] - user type. Saved in a
+		 * variable to avoid duplicated database calling.
+		 */
 		String[] selectedUser = questionServiceDBConn.getUser(user);
 
 		if (selectedUser[0] == "No such user") {
-			throw new pl.johnny.gwtQuiz.shared.FailedLoginException("No such user");
+			throw new pl.johnny.gwtQuiz.shared.FailedLoginException(selectedUser[0]);
 		}
 
 		if (BCrypt.checkpw(user.password, selectedUser[1])) {
-			// Save user email and type as String[] in a session.
 			
-			String[][] userEmailAndType = new String[1][2];
-			userEmailAndType[0][0] = selectedUser[0];
-			userEmailAndType[0][1] = selectedUser[2];
-			
-			this.getThreadLocalRequest().getSession().setAttribute("userEmailAndType", userEmailAndType);
-			
+			Cookie cookie = new Cookie("user", selectedUser[0]);
+			// Expire the cookie in five minutes (5 * 60)
+			cookie.setMaxAge(300);
+			this.getThreadLocalResponse().addCookie(cookie);
+
+			this.getThreadLocalRequest().getSession().setAttribute("userEmailAndType",
+					new String[][] { { selectedUser[0], selectedUser[2] } });
+
 			// Return session id.
-			return new String[][]{{ this.getThreadLocalRequest().getSession().getId(), selectedUser[0],  selectedUser[2] }};
+			return new String[][] {
+					{ this.getThreadLocalRequest().getSession().getId(), selectedUser[0], selectedUser[2] } };
 		} else {
 			throw new pl.johnny.gwtQuiz.shared.FailedLoginException("Bad password");
 		}
 	};
 
 	@Override
-	public String[][] validateSession(String sessionID) {
+	public String[][] validateSession(String sessionID, String userEmailFromCookie) {
 
-		String[][] sessionUser = (String[][]) this.getThreadLocalRequest().getSession(true).getAttribute("userEmailAndType");
-		
-		if (this.getThreadLocalRequest().getSession().getId().equals(sessionID) ) {
-			return sessionUser;
-		} 
-		else {
+		if (this.getThreadLocalRequest().getSession().getId().equals(sessionID)) {
+			return (String[][]) this.getThreadLocalRequest().getSession(true).getAttribute("userEmailAndType");
+
+		} else if (userEmailFromCookie != null) {
+
+			for (Cookie serverCookies : this.getThreadLocalRequest().getCookies()) {
+				String[] selectedUser = null;
+
+				if (serverCookies.getValue().equals(userEmailFromCookie)) {
+					selectedUser = questionServiceDBConn.getUser(new User(serverCookies.getValue(), null));
+					
+					System.out.println("Cookie name: " + serverCookies.getName());
+					System.out.println("Cookie value: " + serverCookies.getValue());
+					System.out.println("Cookie lifetime: " + serverCookies.getMaxAge());
+					
+					return new String[][] { { selectedUser[0], selectedUser[2] } };
+				}
+			}
+			return null;
+		} else {
 			return null;
 		}
 	}
@@ -185,32 +206,34 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 	}
 
 	@Override
-	public void deleteCategory(String categoryToDelete) throws SQLConstraintException{
-		
-		//Execute delete and if constraint occcures, throw exception to the client.
+	public void deleteCategory(String categoryToDelete) throws SQLConstraintException {
+
+		// Execute delete and if constraint occcures, throw exception to the
+		// client.
 		try {
 			questionServiceDBConn.deleteCategory(categoryToDelete);
 		} catch (Exception e) {
 			throw new SQLConstraintException(e.getMessage());
 		}
 	}
-	
+
 	@Override
 	public void updateCategory(String updatedCategory, int categoryID) {
 		questionServiceDBConn.updateCategory(updatedCategory, categoryID);
 	}
-	
+
 	@Override
-	public void insertNewUser(User newUser) throws IllegalArgumentException, SQLConstraintException{
-		
-		//Check if fields are non 0 length.
+	public void insertNewUser(User newUser) throws IllegalArgumentException, SQLConstraintException {
+
+		// Check if fields are non 0 length.
 		if (newUser.email.trim().isEmpty() || newUser.password.trim().isEmpty()) {
 			throw new IllegalArgumentException("No given mail or password in QuestionServiceImpl.loginUser()");
 		}
-		
-		//Encrypt new user password and update user password from plain text to hashed 
+
+		// Encrypt new user password and update user password from plain text to
+		// hashed
 		newUser.password = BCrypt.hashpw(newUser.password, BCrypt.gensalt());
-		//Hand user model to database...
+		// Hand user model to database...
 		try {
 			questionServiceDBConn.insertNewUser(newUser);
 		} catch (Exception e) {

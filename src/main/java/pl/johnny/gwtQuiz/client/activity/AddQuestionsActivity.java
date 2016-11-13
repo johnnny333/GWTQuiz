@@ -53,7 +53,8 @@ public class AddQuestionsActivity extends AbstractActivity implements AddQuestio
 			goTo(new LoginPlace(""));
 			return;
 		}else {
-			clientFactory.getQuestionsService().validateSession(cookieSessionID, new AsyncCallback<String[][]>() {
+			clientFactory.getQuestionsService().validateSession(cookieSessionID, clientFactory.getCookie(CookieType.USER_EMAIL), 
+					new AsyncCallback<String[][]>() {
 
 				@Override
 				public void onFailure(Throwable caught) {

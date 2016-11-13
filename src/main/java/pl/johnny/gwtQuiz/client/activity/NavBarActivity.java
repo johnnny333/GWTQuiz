@@ -87,7 +87,8 @@ public class NavBarActivity extends AbstractActivity implements NavBarView.Prese
 			navBarView.setAnchorListItemActive(5);
 
 		// Set user email on NavBar anchor button if returned from db.
-		clientFactory.getQuestionsService().validateSession(clientFactory.getCookie(CookieType.SESSION_ID), new AsyncCallback<String[][]>() {
+		clientFactory.getQuestionsService().validateSession(clientFactory.getCookie(CookieType.SESSION_ID),clientFactory.getCookie(CookieType.USER_EMAIL),
+				new AsyncCallback<String[][]>() {
 
 			@Override
 			public void onSuccess(String result[][]) {

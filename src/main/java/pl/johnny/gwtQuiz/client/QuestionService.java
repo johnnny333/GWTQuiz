@@ -72,7 +72,7 @@ public interface QuestionService extends RemoteService {
 	 * @param sessionID
 	 * @return User Email and Type if session is valid, null otherwise.
 	 */
-	String[][] validateSession(String sessionID);
+	String[][] validateSession(String sessionID, String userEmail);
 
 	boolean logOutUser(String sessionID);
 
