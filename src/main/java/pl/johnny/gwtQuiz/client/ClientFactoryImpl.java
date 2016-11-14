@@ -109,6 +109,11 @@ public class ClientFactoryImpl implements ClientFactory {
 				case USER_TYPE:
 					cookie = base64Decode(Cookies.getCookie("gwtQuizCookieUser")).split(",")[2];
 					break;
+					
+				case UUID:
+					cookie = base64Decode(Cookies.getCookie("gwtQuizCookieUser")).split(",")[3];
+					GWT.log("UUID: " + cookie);
+					break;
 
 				default:
 					break;

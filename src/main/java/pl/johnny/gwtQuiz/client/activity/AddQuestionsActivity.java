@@ -53,7 +53,7 @@ public class AddQuestionsActivity extends AbstractActivity implements AddQuestio
 			goTo(new LoginPlace("LoginIn"));
 			return;
 		}else {
-			clientFactory.getQuestionsService().validateSession(cookieSessionID, clientFactory.getCookie(CookieType.USER_EMAIL), 
+			clientFactory.getQuestionsService().validateSession(cookieSessionID, clientFactory.getCookie(CookieType.UUID), 
 					new AsyncCallback<String[][]>() {
 
 				@Override

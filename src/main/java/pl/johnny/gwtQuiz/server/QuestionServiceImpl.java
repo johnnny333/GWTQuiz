@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.servlet.http.Cookie;
 import javax.validation.ConstraintViolation;
@@ -145,9 +146,13 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 
 		if (BCrypt.checkpw(user.password, selectedUser[1])) {
 			
-			Cookie cookie = new Cookie("user", selectedUser[0]);
-			// Expire the cookie in five minutes (5 * 60)
-			cookie.setMaxAge(300);
+			//Save random cookie UUID 
+			String cookieUUID = UUID.randomUUID().toString();
+			questionServiceDBConn.insertUserUUID(user, cookieUUID);
+			
+			Cookie cookie = new Cookie("user", cookieUUID);
+			// Expire the cookie in five minutes (5 * 60), it's UTC ('Z' at the end!).
+			cookie.setMaxAge(30);
 			this.getThreadLocalResponse().addCookie(cookie);
 
 			this.getThreadLocalRequest().getSession().setAttribute("userEmailAndType",
@@ -155,26 +160,26 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 
 			// Return session id.
 			return new String[][] {
-					{ this.getThreadLocalRequest().getSession().getId(), selectedUser[0], selectedUser[2] } };
+					{ this.getThreadLocalRequest().getSession().getId(), selectedUser[0], selectedUser[2], cookieUUID } };
 		} else {
 			throw new pl.johnny.gwtQuiz.shared.FailedLoginException("Bad password");
 		}
 	};
 
 	@Override
-	public String[][] validateSession(String sessionID, String userEmailFromCookie) {
+	public String[][] validateSession(String sessionID, String cookieUUID) {
 
 		if (this.getThreadLocalRequest().getSession().getId().equals(sessionID)) {
 			System.out.println("With attribute");
 			return (String[][]) this.getThreadLocalRequest().getSession(true).getAttribute("userEmailAndType");
 
-		} else if (userEmailFromCookie != null) {
+		} else if (cookieUUID != null) {
 
 			for (Cookie serverCookies : this.getThreadLocalRequest().getCookies()) {
 				String[] selectedUser = null;
 
-				if (serverCookies.getValue().equals(userEmailFromCookie)) {
-					selectedUser = questionServiceDBConn.getUser(new User(serverCookies.getValue(), null));
+				if (serverCookies.getValue().equals(cookieUUID)) {
+					selectedUser = questionServiceDBConn.getUserUUID(cookieUUID);
 					
 					System.out.println("Cookie name: " + serverCookies.getName());
 					System.out.println("Cookie value: " + serverCookies.getValue());
