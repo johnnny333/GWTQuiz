@@ -87,22 +87,30 @@ public class NavBarActivity extends AbstractActivity implements NavBarView.Prese
 			navBarView.setAnchorListItemActive(5);
 
 		// Set user email on NavBar anchor button if returned from db.
-		clientFactory.getQuestionsService().validateSession(clientFactory.getCookie(CookieType.SESSION_ID),clientFactory.getCookie(CookieType.USER_EMAIL),
-				new AsyncCallback<String[][]>() {
-
-			@Override
-			public void onSuccess(String result[][]) {
-				if (result != null) {					
-					navBarView.setNavBarAnchorsVisibility(result, true);
-				} else {
-					navBarView.setNavBarAnchorsVisibility(result, false);
-				}
-			}
-			@Override
-			public void onFailure(Throwable caught) {
-				GWT.log("NavBarActivity failed", caught);
-			}
-		});
+//		clientFactory.getQuestionsService().validateSession(clientFactory.getCookie(CookieType.SESSION_ID),clientFactory.getCookie(CookieType.USER_EMAIL),
+//				new AsyncCallback<String[][]>() {
+//
+//			@Override
+//			public void onSuccess(String result[][]) {
+//				if (result != null) {					
+//					navBarView.setNavBarAnchorsVisibility(result, true);
+//				} else {
+//					navBarView.setNavBarAnchorsVisibility(result, false);
+//				}
+//			}
+//			@Override
+//			public void onFailure(Throwable caught) {
+//				GWT.log("NavBarActivity failed", caught);
+//			}
+//		});
+		
+		if (clientFactory.getCookie(CookieType.USER_EMAIL) != null) {					
+			navBarView.setNavBarAnchorsVisibility(new String[][]{{clientFactory.getCookie(CookieType.USER_EMAIL), 
+				clientFactory.getCookie(CookieType.USER_TYPE) }}, true);
+		} else {
+			navBarView.setNavBarAnchorsVisibility(null, false);
+		}
+		
 	}
 
 	/**
