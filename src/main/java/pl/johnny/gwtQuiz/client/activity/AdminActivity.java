@@ -21,7 +21,6 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 import pl.johnny.gwtQuiz.client.ClientFactory;
 import pl.johnny.gwtQuiz.client.ClientFactory.CookieType;
-import pl.johnny.gwtQuiz.client.place.AddQuestionsPlace;
 import pl.johnny.gwtQuiz.client.place.AdminPlace;
 import pl.johnny.gwtQuiz.client.place.LoginPlace;
 import pl.johnny.gwtQuiz.client.ui.AdminView;
@@ -34,6 +33,7 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 	// Alternatively, could be injected via GIN
 	private ClientFactory clientFactory;
 	private AdminView adminView;
+	private AdminView.Presenter adminViewPresenter = this;
 
 	public AdminActivity(AdminPlace place, final ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
@@ -43,13 +43,13 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 	 * Invoked by the ActivityManager to start a new Activity
 	 */
 	@Override
-	public void start(AcceptsOneWidget containerWidget, EventBus eventBus) {
+	public void start(final AcceptsOneWidget containerWidget, EventBus eventBus) {
 		/**
 		 * Check for session cookie and if exist, validate it on server. If
 		 * validation passed, let user stay into AdmininPlace. Otherwise,
 		 * redirect him into LoginPlace.
 		 */
-		String cookieSessionID = clientFactory.getCookie(CookieType.USER_EMAIL);
+		String cookieSessionID = clientFactory.getCookie(CookieType.SESSION_ID);
 		if (cookieSessionID == null) {
 			goTo(new LoginPlace(""));
 			return;
@@ -74,17 +74,17 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 					if (result == null) {
 						goTo(new LoginPlace(""));
 					} else if(Integer.parseInt(result[0][1]) == 1) {
-						goTo(new AddQuestionsPlace(""));
-					}//TODO deffer ui logic  else{}
+						goTo(new LoginPlace(""));
+					}else {
+						adminView = clientFactory.getAdminView();
+						adminView.setPresenter(adminViewPresenter);
+						containerWidget.setWidget(adminView.asWidget());
+
+						fetchAndBuildPanelWithTmpQuestions();		
+					}
 				}
 			});
 		}
-
-		adminView = clientFactory.getAdminView();
-		adminView.setPresenter(this);
-		containerWidget.setWidget(adminView.asWidget());
-
-		fetchAndBuildPanelWithTmpQuestions();
 	}
 
 	/**

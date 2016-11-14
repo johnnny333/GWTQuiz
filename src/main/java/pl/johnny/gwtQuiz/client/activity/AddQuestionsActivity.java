@@ -48,7 +48,7 @@ public class AddQuestionsActivity extends AbstractActivity implements AddQuestio
 		 * validation passed, let user stay into AddQuestionPlace. Otherwise,
 		 * redirect him into LoginPlace.
 		 */
-		String cookieSessionID = clientFactory.getCookie(CookieType.USER_EMAIL);
+		String cookieSessionID = clientFactory.getCookie(CookieType.SESSION_ID);
 		if (cookieSessionID == null) {
 			goTo(new LoginPlace("LoginIn"));
 			return;
@@ -69,6 +69,7 @@ public class AddQuestionsActivity extends AbstractActivity implements AddQuestio
 					 * in browser e.g user spoofed cookie) restrict access to AdminActicity.
 					 */
 					if (result == null) {
+						GWT.log(this.getClass().getName() + "failed validation");
 						goTo(new LoginPlace(""));
 					} else {
 						/**
