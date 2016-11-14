@@ -48,9 +48,9 @@ public class AddQuestionsActivity extends AbstractActivity implements AddQuestio
 		 * validation passed, let user stay into AddQuestionPlace. Otherwise,
 		 * redirect him into LoginPlace.
 		 */
-		String cookieSessionID = clientFactory.getCookie(CookieType.SESSION_ID);
+		String cookieSessionID = clientFactory.getCookie(CookieType.USER_EMAIL);
 		if (cookieSessionID == null) {
-			goTo(new LoginPlace(""));
+			goTo(new LoginPlace("LoginIn"));
 			return;
 		}else {
 			clientFactory.getQuestionsService().validateSession(cookieSessionID, clientFactory.getCookie(CookieType.USER_EMAIL), 

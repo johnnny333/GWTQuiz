@@ -49,7 +49,7 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 		 * validation passed, let user stay into AdmininPlace. Otherwise,
 		 * redirect him into LoginPlace.
 		 */
-		String cookieSessionID = clientFactory.getCookie(CookieType.SESSION_ID);
+		String cookieSessionID = clientFactory.getCookie(CookieType.USER_EMAIL);
 		if (cookieSessionID == null) {
 			goTo(new LoginPlace(""));
 			return;
