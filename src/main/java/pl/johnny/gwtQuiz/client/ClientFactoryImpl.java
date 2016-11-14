@@ -99,7 +99,7 @@ public class ClientFactoryImpl implements ClientFactory {
 
 			switch(cookieType) {
 				case SESSION_ID:
-					cookie = base64Decode(Cookies.getCookie("gwtQuizCookieUser")).split(",")[0];
+					cookie = Cookies.getCookie("JSESSIONID");
 					break;
 
 				case USER_EMAIL:

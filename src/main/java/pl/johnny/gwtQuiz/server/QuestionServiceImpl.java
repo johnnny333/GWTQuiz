@@ -165,6 +165,7 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 	public String[][] validateSession(String sessionID, String userEmailFromCookie) {
 
 		if (this.getThreadLocalRequest().getSession().getId().equals(sessionID)) {
+			System.out.println("With attribute");
 			return (String[][]) this.getThreadLocalRequest().getSession(true).getAttribute("userEmailAndType");
 
 		} else if (userEmailFromCookie != null) {
@@ -178,6 +179,9 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 					System.out.println("Cookie name: " + serverCookies.getName());
 					System.out.println("Cookie value: " + serverCookies.getValue());
 					System.out.println("Cookie lifetime: " + serverCookies.getMaxAge());
+					
+					this.getThreadLocalRequest().getSession().setAttribute("userEmailAndType",
+							new String[][] { { selectedUser[0], selectedUser[2] } });
 					
 					return new String[][] { { selectedUser[0], selectedUser[2] } };
 				}
