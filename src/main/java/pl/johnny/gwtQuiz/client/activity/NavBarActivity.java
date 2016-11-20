@@ -86,31 +86,13 @@ public class NavBarActivity extends AbstractActivity implements NavBarView.Prese
 		else if (place instanceof LoginPlace)
 			navBarView.setAnchorListItemActive(5);
 
-		// Set user email on NavBar anchor button if returned from db.
-//		clientFactory.getQuestionsService().validateSession(clientFactory.getCookie(CookieType.SESSION_ID),clientFactory.getCookie(CookieType.USER_EMAIL),
-//				new AsyncCallback<String[][]>() {
-//
-//			@Override
-//			public void onSuccess(String result[][]) {
-//				if (result != null) {					
-//					navBarView.setNavBarAnchorsVisibility(result, true);
-//				} else {
-//					navBarView.setNavBarAnchorsVisibility(result, false);
-//				}
-//			}
-//			@Override
-//			public void onFailure(Throwable caught) {
-//				GWT.log("NavBarActivity failed", caught);
-//			}
-//		});
-		
+		// Set user email on NavBar anchor button if cookie exists.
 		if (clientFactory.getCookie(CookieType.USER_EMAIL) != null) {					
 			navBarView.setNavBarAnchorsVisibility(new String[][]{{clientFactory.getCookie(CookieType.USER_EMAIL), 
 				clientFactory.getCookie(CookieType.USER_TYPE) }}, true);
 		} else {
 			navBarView.setNavBarAnchorsVisibility(null, false);
 		}
-		
 	}
 
 	/**
@@ -141,11 +123,11 @@ public class NavBarActivity extends AbstractActivity implements NavBarView.Prese
 			@Override
 			public void onSuccess(Boolean result) {
 				if (result) {
-					Cookies.removeCookie("gwtQuizCookieUser");
+					Cookies.removeCookie("gwtQuiz");
 					goTo(new MainMenuPlace(""));
 				} else {
 					GWT.log("No user session found");
-					Cookies.removeCookie("gwtQuizCookieUser");
+					Cookies.removeCookie("gwtQuiz");
 					goTo(new MainMenuPlace(""));
 				}
 			}

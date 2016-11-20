@@ -26,6 +26,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -142,7 +143,7 @@ public class LoginViewImp extends Composite implements LoginView {
 	void onLoginButtonClicked(ClickEvent e) {
 
 		if (formLogin.validate() && listener != null) {
-			listener.loginUser(new User(email.getValue().trim(), password.getValue().trim()));
+			listener.loginUser(new User(SafeHtmlUtils.htmlEscape(email.getValue().trim()), password.getValue().trim()));
 		}
 	}
 
@@ -236,12 +237,10 @@ public class LoginViewImp extends Composite implements LoginView {
 		
 		switch (tabToSelect) {
 		case "SignUp":
-			
 			signUpTab.showTab();
 			break;
 			
 		case "Login":
-			
 			loginTab.showTab();
 			break;
 

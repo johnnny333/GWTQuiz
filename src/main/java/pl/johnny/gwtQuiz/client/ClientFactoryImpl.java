@@ -93,7 +93,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	@Override
 	public String getCookie(CookieType cookieType) {
 		
-		if(Cookies.getCookie("gwtQuizCookieUser") != null) {
+		if(Cookies.getCookie("gwtQuiz") != null) {
 
 			String cookie = null;
 
@@ -103,15 +103,15 @@ public class ClientFactoryImpl implements ClientFactory {
 					break;
 
 				case USER_EMAIL:
-					cookie = base64Decode(Cookies.getCookie("gwtQuizCookieUser")).split(",")[1];
+					cookie = base64Decode(Cookies.getCookie("gwtQuiz")).split(",")[1];
 					break;
 					
 				case USER_TYPE:
-					cookie = base64Decode(Cookies.getCookie("gwtQuizCookieUser")).split(",")[2];
+					cookie = base64Decode(Cookies.getCookie("gwtQuiz")).split(",")[2];
 					break;
 					
 				case UUID:
-					cookie = base64Decode(Cookies.getCookie("gwtQuizCookieUser")).split(",")[3];
+					cookie = base64Decode(Cookies.getCookie("gwtQuiz")).split(",")[3];
 					GWT.log("UUID: " + cookie);
 					break;
 

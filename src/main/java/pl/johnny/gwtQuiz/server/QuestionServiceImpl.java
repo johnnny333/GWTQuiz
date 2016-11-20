@@ -152,7 +152,7 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 			
 			Cookie cookie = new Cookie("user", cookieUUID);
 			// Expire the cookie in five minutes (5 * 60), it's UTC ('Z' at the end!).
-			cookie.setMaxAge(30);
+			cookie.setMaxAge(60);
 			this.getThreadLocalResponse().addCookie(cookie);
 
 			this.getThreadLocalRequest().getSession().setAttribute("userEmailAndType",
