@@ -138,6 +138,7 @@ public class QuestionServiceDatabaseConn {
 				categoryData[resultSet.getRow() - 1] = resultSet.getString("category");
 			}
 			resultSet.close();
+			stmt.close();
 
 			/*
 			 * After filling arrays with questions data, make models with them
@@ -152,8 +153,6 @@ public class QuestionServiceDatabaseConn {
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 		} finally {
-
-			stmt.close();
 			c.close();
 		}
 
@@ -214,7 +213,7 @@ public class QuestionServiceDatabaseConn {
 				usersScoresCreatedAt[resultSet.getRow() - 1] = resultSet.getString("created_at");
 			}
 			resultSet.close();
-
+			stmt.close();
 			/*
 			 * After filling arrays with user scores data, make models with them
 			 * and pack said models to an ArrayList in order to use it on
@@ -230,7 +229,6 @@ public class QuestionServiceDatabaseConn {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.err.println(e.getCause() + " " + e.getStackTrace());
 		} finally {
-			stmt.close();
 			c.close();
 		}
 		return userScoresArray;
@@ -301,7 +299,6 @@ public class QuestionServiceDatabaseConn {
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.err.println(e.getCause() + " " + e.getStackTrace());
-			System.exit(0);
 		} finally {
 			c.close();
 		}
@@ -329,7 +326,6 @@ public class QuestionServiceDatabaseConn {
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.err.println(e.getCause() + " " + e.getStackTrace());
-			System.exit(0);
 		} finally {
 			c.close();
 		}
@@ -687,7 +683,6 @@ public class QuestionServiceDatabaseConn {
 
 			prepStmt.close();
 			c.commit();
-			// c.close();
 
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -858,7 +853,6 @@ public class QuestionServiceDatabaseConn {
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.err.println(e.getCause() + " " + e.getStackTrace());
-			// System.exit(0);
 		} finally {
 			c.close();
 		}
@@ -909,6 +903,7 @@ public class QuestionServiceDatabaseConn {
 
 			prepStmt.setString(1, categoryToDelete);
 			prepStmt.executeUpdate();
+			prepStmt.close();
 
 		} catch (Exception e) {
 
@@ -921,8 +916,6 @@ public class QuestionServiceDatabaseConn {
 			System.err.println(e.getCause() + " " + e.getStackTrace());
 
 		} finally {
-
-			prepStmt.close();
 			c.close();
 		}
 	}
@@ -980,6 +973,7 @@ public class QuestionServiceDatabaseConn {
 			prepStmt.setString(1, newUser.email);
 			prepStmt.setString(2, newUser.password);
 			prepStmt.executeUpdate();
+			prepStmt.close();
 
 		} catch (Exception e) {
 
@@ -992,7 +986,6 @@ public class QuestionServiceDatabaseConn {
 			System.err.println(e.getCause() + " " + e.getStackTrace());
 
 		} finally {
-			prepStmt.close();
 			c.close();
 		}
 	}
