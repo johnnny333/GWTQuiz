@@ -16,37 +16,39 @@ import pl.johnny.gwtQuiz.shared.UserScore;
 
 @RemoteServiceRelativePath("questionService")
 public interface QuestionService extends RemoteService {
-	ArrayList<Question> getQuestions();
+	
+	ArrayList<Question> getQuestions() throws Exception;
 
-	ArrayList<Question> getShuffledQuestions();
+	ArrayList<Question> getShuffledQuestions() throws Exception;
 
-	ArrayList<UserScore> getUserScores();
+	ArrayList<UserScore> getUserScores() throws Exception;
 
-	ArrayList<UserScore> insertUserScore(UserScore userScore);
+	ArrayList<UserScore> insertUserScore(UserScore userScore) throws Exception;
 
-	void updateUserScore(UserScore userScore);
+	void updateUserScore(UserScore userScore) throws Exception;
 
-	void deleteUserScore(UserScore userScore);
+	void deleteUserScore(UserScore userScore) throws Exception;
 	
 	/**
 	 * {"1", "Geografia},
 	 * {"2", "Muzyka"},
 	 * {"3", "Polityka"}
 	 * @return String[][]
+	 * @throws Exception 
 	 */
-	public String[][] getCategories();
+	public String[][] getCategories() throws Exception;
 	
-	public String[][] getCategory(String category);
+	public String[][] getCategory(String category) throws Exception;
 
 	public void insertUserTmpQuestion(Question userQuestion)
-			throws IllegalArgumentException, ConstraintViolationException;
+			throws IllegalArgumentException, ConstraintViolationException, Exception;
 
-	ArrayList<Question> getTmpQuestions();
+	ArrayList<Question> getTmpQuestions() throws Exception;
 
-	void deleteUserTmpQuestion(String questionID);
+	void deleteUserTmpQuestion(String questionID) throws Exception;
 
 	void acceptUserTmpQuestion(Question acceptedQuestion, String tmpQuestionID) throws IllegalArgumentException,
-    ConstraintViolationException;
+    ConstraintViolationException, Exception;
 
 	/**
 	 * Force Hibernate validator implementations to be available for
@@ -63,24 +65,26 @@ public interface QuestionService extends RemoteService {
 	 * user mail was not found or password was invalid.
 	 * @return (is user is valid) String[0] = email, String[1] = user email,
 	 * String[2] = type - user type determines user privileges in an app.
+	 * @throws Exception 
 	 */
-	String[][] loginUser(User user) throws IllegalArgumentException, pl.johnny.gwtQuiz.shared.FailedLoginException;
+	String[][] loginUser(User user) throws IllegalArgumentException, pl.johnny.gwtQuiz.shared.FailedLoginException, Exception;
 	
 	/**
 	 * Check for session validity.
 	 * 
 	 * @param sessionID
 	 * @return User Email and Type if session is valid, null otherwise.
+	 * @throws Exception 
 	 */
-	String[][] validateSession(String sessionID, String userEmail);
+	String[][] validateSession(String sessionID, String userEmail) throws Exception;
 
 	boolean logOutUser(String sessionID);
 
-	void insertNewCategory(String newCategory);
+	void insertNewCategory(String newCategory) throws Exception;
 
 	void deleteCategory(String categoryToDelete) throws SQLConstraintException;
 
-	void updateCategory(String updatedCategory, int categoryID);
+	void updateCategory(String updatedCategory, int categoryID) throws Exception;
 
 	void insertNewUser(User newUser) throws IllegalArgumentException, SQLConstraintException;
 

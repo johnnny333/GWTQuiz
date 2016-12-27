@@ -1,5 +1,6 @@
 package pl.johnny.gwtQuiz.server;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -42,51 +43,51 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 	}
 
 	@Override
-	public ArrayList<Question> getQuestions() {
+	public ArrayList<Question> getQuestions() throws Exception  {
 		return questionServiceDBConn.getQuestions();
 	}
 
 	@Override
-	public ArrayList<Question> getShuffledQuestions() {
+	public ArrayList<Question> getShuffledQuestions() throws Exception {
 		ArrayList<Question> shuffledQuestions = questionServiceDBConn.getQuestions();
 		Collections.shuffle(shuffledQuestions);
 		return shuffledQuestions;
 	}
 
 	@Override
-	public ArrayList<UserScore> getUserScores() {
+	public ArrayList<UserScore> getUserScores() throws Exception {
 		return questionServiceDBConn.getUserScores();
 	}
 
 	@Override
-	public ArrayList<UserScore> insertUserScore(UserScore userScore) {
+	public ArrayList<UserScore> insertUserScore(UserScore userScore) throws Exception {
 		questionServiceDBConn.insertUserScore(userScore);
 		return questionServiceDBConn.getUserScores();
 	}
 
 	@Override
-	public void updateUserScore(UserScore userScore) {
+	public void updateUserScore(UserScore userScore) throws Exception {
 		questionServiceDBConn.updateUserScore(userScore);
 	}
 
 	@Override
-	public void deleteUserScore(UserScore userScore) {
+	public void deleteUserScore(UserScore userScore) throws Exception {
 		questionServiceDBConn.deleteUserScore(userScore);
 	}
 
 	@Override
-	public String[][] getCategories() {
+	public String[][] getCategories() throws Exception {
 		return questionServiceDBConn.getCategories();
 	}
 
 	@Override
-	public String[][] getCategory(String category) {
+	public String[][] getCategory(String category) throws Exception {
 		return questionServiceDBConn.getCategory(category);
 	}
 
 	@Override
 	public void insertUserTmpQuestion(Question userQuestion)
-			throws IllegalArgumentException, ConstraintViolationException {
+			throws Exception {
 
 		// Verify that the inputs is valid.
 		Set<ConstraintViolation<Question>> violations = validator.validate(userQuestion, Default.class,
@@ -101,18 +102,18 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 	}
 
 	@Override
-	public ArrayList<Question> getTmpQuestions() {
+	public ArrayList<Question> getTmpQuestions() throws Exception {
 		return questionServiceDBConn.getTmpQuestions();
 	}
 
 	@Override
-	public void deleteUserTmpQuestion(String questionID) {
+	public void deleteUserTmpQuestion(String questionID) throws Exception {
 		questionServiceDBConn.deleteUserTmpQuestion(questionID);
 	}
 
 	@Override
 	public void acceptUserTmpQuestion(Question acceptedQuestion, String tmpQuestionID)
-			throws IllegalArgumentException, ConstraintViolationException {
+			throws Exception {
 
 		// Verify that the inputs is valid.
 		Set<ConstraintViolation<Question>> violations = validator.validate(acceptedQuestion, Default.class,
@@ -127,7 +128,7 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 
 	@Override
 	public String[][] loginUser(User user)
-			throws IllegalArgumentException, pl.johnny.gwtQuiz.shared.FailedLoginException {
+			throws IllegalArgumentException, pl.johnny.gwtQuiz.shared.FailedLoginException, Exception {
 
 		// Check if fields are non 0 length.
 		if (user.email.trim().isEmpty() || user.password.trim().isEmpty()) {
@@ -167,7 +168,7 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 	};
 
 	@Override
-	public String[][] validateSession(String sessionID, String cookieUUID) {
+	public String[][] validateSession(String sessionID, String cookieUUID) throws Exception {
 
 		if (this.getThreadLocalRequest().getSession().getId().equals(sessionID)) {
 			System.out.println("With attribute");
@@ -210,7 +211,7 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 	}
 
 	@Override
-	public void insertNewCategory(String newCategory) {
+	public void insertNewCategory(String newCategory) throws Exception {
 		questionServiceDBConn.insertNewCategory(newCategory);
 	}
 
@@ -227,7 +228,7 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 	}
 
 	@Override
-	public void updateCategory(String updatedCategory, int categoryID) {
+	public void updateCategory(String updatedCategory, int categoryID) throws Exception {
 		questionServiceDBConn.updateCategory(updatedCategory, categoryID);
 	}
 

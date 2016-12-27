@@ -1,4 +1,4 @@
-package pl.johnny.gwtQuiz.client;
+package pl.johnny.gwtQuiz.shared;
 
 import java.util.ArrayList;
 
@@ -7,9 +7,11 @@ import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 
+import pl.johnny.gwtQuiz.client.QuestionService;
+import pl.johnny.gwtQuiz.client.QuestionServiceAsync;
 import pl.johnny.gwtQuiz.shared.Question;
 
-public class IntegrationTests extends GWTTestCase {
+public class GetQuestionsTest extends GWTTestCase {
 
 	@Override
 	public String getModuleName() {
@@ -17,9 +19,9 @@ public class IntegrationTests extends GWTTestCase {
 		return "pl.johnny.gwtQuiz.GWTQuizJUNIT";
 	}
 
-	public void testSimple() {
-		assertTrue(true);
-	}
+//	public void testSimple() {
+//		assertTrue(true);
+//	}
 
 	/**
 	 * This test will send a request to the server using the getQuestions method
