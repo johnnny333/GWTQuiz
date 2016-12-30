@@ -53,6 +53,13 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 
 		token = place.getGoodbyeName();
 		this.place = place;
+	}
+
+	@Override
+	public void start(AcceptsOneWidget containerWidget, final EventBus eventBus) {
+		this.eventBus = eventBus;
+		containerWidget.setWidget(questionView.asWidget());
+		
 		/* Download questions from server,save it in a client and show 1st question */
 		questionService = clientFactory.getQuestionsService();
 		questionService.getShuffledQuestions(new AsyncCallback<ArrayList<Question>>() {
@@ -68,12 +75,6 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 				eventBus.fireEvent(new NewQuestionEvent(currentQuestionInt));
 			}
 		});
-	}
-
-	@Override
-	public void start(AcceptsOneWidget containerWidget, final EventBus eventBus) {
-		this.eventBus = eventBus;
-		containerWidget.setWidget(questionView.asWidget());
 
 		/* Global handler for question showing. Event argument holds question int */
 		handler = new NewQuestionEvent.Handler() {
@@ -256,5 +257,9 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 	@Override
 	public void setActualRecordPosition(int actualRecordPosition) {
 		questionView.setActualRecordPositionLabel(actualRecordPosition);
+	}
+	
+	public ArrayList<Question> getQuestionsArrayList() {
+		return questionsArrayList;
 	}
 }

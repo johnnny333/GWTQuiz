@@ -8,9 +8,8 @@ public class HighScoresPlace extends Place
 {
 	private String token;
 	
-	public HighScoresPlace(String token)
-	{
-		this.token = token;
+	public HighScoresPlace(String token) {
+		this.token = token == null ? "" : token;
 	}
 	
 	public HighScoresPlace(){}

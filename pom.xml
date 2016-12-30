@@ -66,7 +66,7 @@
 			<version>0.9.3</version>
 			<scope>provided</scope>
 		</dependency>
-<!-- 		ToggleSwitch for GWTBootstrap3 -->
+		<!-- ToggleSwitch for GWTBootstrap3 -->
 		<dependency>
 			<groupId>org.gwtbootstrap3</groupId>
 			<artifactId>gwtbootstrap3-extras</artifactId>
@@ -166,6 +166,13 @@
 			<groupId>org.mindrot</groupId>
 			<artifactId>jbcrypt</artifactId>
 			<version>0.3m</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.8.4</version>
 		</dependency>
 
 	</dependencies>

@@ -58,7 +58,7 @@ public class Question implements IsSerializable {
 	
 	/**
 	 * Used to retrieve questions from temporary tables. We add here an ID field. 
-	 * @param questionData String
+	 * @param question String
 	 * @param questionImageData String
 	 * @param answers String[]
 	 * @param correctAnswersData String
@@ -66,9 +66,9 @@ public class Question implements IsSerializable {
 	 * @param categoryData String
 	 * @param ID String
 	 */
-	public Question(String questionData,String questionImageData, String[] answers, String correctAnswersData, 
+	public Question(String question,String questionImageData, String[] answers, String correctAnswersData, 
 			int correctAnswersInt,String authorData, String categoryData, String ID) {
-		this.question = questionData;
+		this.question = question;
 		this.questionImageData = questionImageData;
 		this.answers = answers;
 		this.correctAnsw = correctAnswersData;
