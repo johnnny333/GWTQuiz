@@ -27,6 +27,15 @@ public class QuestionServiceDatabaseConn {
 
 	// Package access modifiers
 	public QuestionServiceDatabaseConn() {
+		System.out.println("QuestionServiceDatabaseConn() intialized !!!!");
+	
+		try {
+			Class.forName("org.sqlite.JDBC");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	/**

@@ -56,6 +56,7 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 
 	@Override
 	public ArrayList<UserScore> getUserScores() throws Exception {
+		System.out.println("Hello from Johnny and getUserScores()");
 		return questionServiceDBConn.getUserScores();
 	}
 
