@@ -37,6 +37,15 @@ public class QuestionServiceDatabaseConn {
 		}
 
 	}
+	
+	/**
+	 * Return database connection with foreign_keys set to 'ON'.
+	 */
+	private Connection getConnection() throws SQLException{
+		Connection connection = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
+		connection.createStatement().execute("PRAGMA foreign_keys = ON");
+		return connection;
+	}
 
 	/**
 	 * Basically,we need to recreate arrays structure as follows: <br/>
@@ -98,9 +107,7 @@ public class QuestionServiceDatabaseConn {
 
 		try {
 			// Connection
-			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
-			c.setAutoCommit(false);
-			c.createStatement().execute("PRAGMA foreign_keys = ON");
+			c = getConnection();
 			stmt = c.createStatement();
 
 			// Count rows
@@ -189,9 +196,7 @@ public class QuestionServiceDatabaseConn {
 
 		try {
 			// Connection
-			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
-			c.setAutoCommit(false);
-			c.createStatement().execute("PRAGMA foreign_keys = ON");
+			c = getConnection();
 			stmt = c.createStatement();
 
 			// Actual query
