@@ -43,7 +43,7 @@ public class QuestionServiceDatabaseConn {
 	 */
 	private Connection getConnection() throws SQLException {
 
-		final String dbType = "sqlite";
+		final String dbType = "mysql_lucid";
 
 		switch(dbType) {
 			case "sqlite":
@@ -52,10 +52,10 @@ public class QuestionServiceDatabaseConn {
 				connection.createStatement().execute("PRAGMA foreign_keys = ON");
 				return connection;
 
-			case "mysql":
+			case "mysql_lucid":
 
-				return DriverManager.getConnection("jdbc:mysql://localhost/quiz",
-						"user=lucid", "password=aaW6dWAJMa6LqMQS");
+				return DriverManager.getConnection("jdbc:mysql://localhost/quiz?socket=/lucid/services/MySQL/mysql.sock",
+						"lucid", "aaW6dWAJMa6LqMQS");
 
 			default:
 				return null;
@@ -216,9 +216,14 @@ public class QuestionServiceDatabaseConn {
 
 			// Actual query
 			ResultSet rsRowCount = stmt.executeQuery("SELECT COUNT(*) FROM user_scores;");
-			int rowsCount = rsRowCount.getInt(1);
+			
+			int rowsCount = 0;
+			
+			if (rsRowCount.next()) {
+			rowsCount = rsRowCount.getInt(1);
 			System.out.println(rsRowCount.getInt(1));
-
+			}
+			
 			userScoreID = new int[rowsCount];
 			userDisplay = new String[rowsCount];
 			userScores = new int[rowsCount];
@@ -226,7 +231,7 @@ public class QuestionServiceDatabaseConn {
 			usersScoresCreatedAt = new String[rowsCount];
 
 			ResultSet resultSet = stmt.executeQuery("SELECT ID, user_display, user_score, "
-					+ "is_editable, datetime(created_at, 'localtime') AS created_at"
+					+ "is_editable, created_at"
 					+ " FROM user_scores ORDER BY user_score DESC ,created_at DESC;");
 
 			while(resultSet.next()) {
