@@ -239,8 +239,8 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 			@Override
 			public void onFailure(Throwable caught) {
 
-				if (caught instanceof SQLConstraintException && caught.getMessage().equals("[SQLITE_CONSTRAINT]")) {
-					GWT.log("[SQLITE_CONSTRAINT] catched in AdminActivity || " + caught.getMessage());
+				if (caught instanceof SQLConstraintException && caught.getMessage().equals("[SQL_CONSTRAINT]")) {
+					GWT.log("[SQL_CONSTRAINT] catched in AdminActivity || " + caught.getMessage());
 
 					constraintModal.show();
 				}

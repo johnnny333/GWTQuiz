@@ -392,7 +392,10 @@ public class QuestionServiceDatabaseConn {
 
 			// Count rows
 			ResultSet rsRowCount = stmt.executeQuery("SELECT COUNT(*) FROM categories;");
-			int rowsCount = rsRowCount.getInt(1);
+			int rowsCount = 0;
+			if (rsRowCount.next()) {
+				rowsCount = rsRowCount.getInt(1);
+			}
 
 			// Initialize array
 			categoryData = new String[rowsCount][2];
@@ -857,9 +860,9 @@ public class QuestionServiceDatabaseConn {
 
 		try {
 			// Connection
-			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
+			c = getConnection();
 			// c.setAutoCommit(false);
-			c.createStatement().execute("PRAGMA foreign_keys = ON");
+//			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			PreparedStatement prepStmt = c.prepareStatement("SELECT email,password,type from users WHERE email= ?;");
 
@@ -901,9 +904,9 @@ public class QuestionServiceDatabaseConn {
 
 		try {
 			// Connection
-			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
-			c.setAutoCommit(false);
-			c.createStatement().execute("PRAGMA foreign_keys = ON");
+			c = getConnection();
+//			c.setAutoCommit(false);
+//			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			prepStmt = c.prepareStatement("INSERT INTO categories (category) VALUES (?);");
 
@@ -911,7 +914,7 @@ public class QuestionServiceDatabaseConn {
 			prepStmt.executeUpdate();
 
 			prepStmt.close();
-			c.commit();
+//			c.commit();
 
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -928,10 +931,10 @@ public class QuestionServiceDatabaseConn {
 
 		try {
 			// Connection
-			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
+			c = getConnection();
 			// Non transaction.
-			c.setAutoCommit(true);
-			c.createStatement().execute("PRAGMA foreign_keys = ON;");
+//			c.setAutoCommit(true);
+//			c.createStatement().execute("PRAGMA foreign_keys = ON;");
 
 			prepStmt = c.prepareStatement("DELETE FROM categories WHERE category=?;");
 
@@ -942,7 +945,10 @@ public class QuestionServiceDatabaseConn {
 		} catch (Exception e) {
 
 			// SQLite error codes: https://www.sqlite.org/c3ref/c_abort.html
-			if(((SQLException) e).getErrorCode() == 19) { throw new SQLException("[SQLITE_CONSTRAINT]"); }
+			// MySQL error codes: https://dev.mysql.com/doc/refman/5.5/en/error-messages-server.html
+			if(((SQLException) e).getErrorCode() == 1451) { 
+				System.out.println("Error code: " + ((SQLException) e).getErrorCode() );
+				throw new SQLException("[SQL_CONSTRAINT]"); }
 
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.err.println(e.getCause() + " " + e.getStackTrace());
@@ -959,10 +965,10 @@ public class QuestionServiceDatabaseConn {
 
 		try {
 			// Connection
-			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
+			c = getConnection();
 			// Non transaction.
-			c.setAutoCommit(false);
-			c.createStatement().execute("PRAGMA foreign_keys = ON;");
+//			c.setAutoCommit(false);
+//			c.createStatement().execute("PRAGMA foreign_keys = ON;");
 
 			prepStmt = c.prepareStatement("UPDATE categories SET category = ? WHERE id = ?;");
 
@@ -971,7 +977,7 @@ public class QuestionServiceDatabaseConn {
 			prepStmt.executeUpdate();
 
 			prepStmt.close();
-			c.commit();
+//			c.commit();
 
 		} catch (Exception e) {
 
