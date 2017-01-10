@@ -9,8 +9,6 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
 
 import pl.johnny.gwtQuiz.client.QuestionService;
 import pl.johnny.gwtQuiz.client.QuestionServiceAsync;
-import pl.johnny.gwtQuiz.shared.Question;
-import pl.johnny.gwtQuiz.shared.UserScore;
 
 public class InsertUserScoreTest extends GWTTestCase {
 
@@ -25,10 +23,10 @@ public class InsertUserScoreTest extends GWTTestCase {
 //	}
 
 	/**
-	 * This test will send a request to the server using the getQuestions method
+	 * This test will send a request to the server using the insertUserScore method
 	 * in QuestionService and verify the response.
 	 * 
-	 * Gotta' make a symbolic link to a database:
+	 * Gotta' make a symbolic link to a database if connecting to sqlite.
 	 * ln -s ~/workspace.gwt/GWTQuiz/src/main/webapp/quiz_resources ~/workspace.gwt/GWTQuiz/quiz_resources
 	 */
 	public void testQuestionService() {
@@ -45,8 +43,7 @@ public class InsertUserScoreTest extends GWTTestCase {
 		delayTestFinish(10000);
 
 		// Send a request to the server.
-		// Send a request to the server.
-		questionService.deleteUserScore(new UserScore(1, "TestuserDisplayUpdate", 11, false, "0000"), new AsyncCallback<Void>() {
+		questionService.insertUserScore(new UserScore(1, "TestuserDisplayUpdate", 11, false, "0000"), new AsyncCallback<ArrayList<UserScore>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -54,7 +51,7 @@ public class InsertUserScoreTest extends GWTTestCase {
 			}
 
 			@Override
-			public void onSuccess(Void result) {
+			public void onSuccess(ArrayList<UserScore> result) {
 				finishTest();
 			}
 		});

@@ -127,7 +127,10 @@ public class QuestionServiceDatabaseConn {
 
 			// Count rows
 			ResultSet rsRowCount = stmt.executeQuery("SELECT COUNT(*) FROM questions;");
-			int rowsCount = rsRowCount.getInt(1);
+			int rowsCount = 0;
+			if (rsRowCount.next()) {
+				rowsCount = rsRowCount.getInt(1);
+			}
 
 			// Initialize arrays
 			questionsData = new String[rowsCount][2];
@@ -216,12 +219,10 @@ public class QuestionServiceDatabaseConn {
 
 			// Actual query
 			ResultSet rsRowCount = stmt.executeQuery("SELECT COUNT(*) FROM user_scores;");
-			
 			int rowsCount = 0;
 			
 			if (rsRowCount.next()) {
-			rowsCount = rsRowCount.getInt(1);
-			System.out.println(rsRowCount.getInt(1));
+				rowsCount = rsRowCount.getInt(1);
 			}
 			
 			userScoreID = new int[rowsCount];
@@ -275,22 +276,21 @@ public class QuestionServiceDatabaseConn {
 
 		try {
 			// Connection
-			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
-			c.setAutoCommit(false);
-			c.createStatement().execute("PRAGMA foreign_keys = ON");
+//			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
+//			c.setAutoCommit(false);
+			c = getConnection();
+//			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			prepStmt = c.prepareStatement(
 					"INSERT INTO user_scores (user_display,user_score,is_editable) VALUES (?, ?, ?);");
 
-			// if(userScore.userDisplay == "");else throw new
-			// Exception("Temporary user score name field is not empty(\"\")");
 			prepStmt.setString(1, userScore.userDisplay);
 			prepStmt.setInt(2, userScore.score);
 			prepStmt.setBoolean(3, userScore.isEditable);
 			prepStmt.executeUpdate();
 
 			prepStmt.close();
-			c.commit();
+//			c.commit();
 
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -307,9 +307,9 @@ public class QuestionServiceDatabaseConn {
 
 		try {
 			// Connection
-			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
-			c.setAutoCommit(false);
-			c.createStatement().execute("PRAGMA foreign_keys = ON");
+			c = getConnection();
+//			c.setAutoCommit(false);
+//			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			prepStmt = c.prepareStatement("UPDATE user_scores SET user_display=?, is_editable=? WHERE ID=?;");
 
@@ -328,7 +328,7 @@ public class QuestionServiceDatabaseConn {
 			prepStmt.setInt(3, userScore.userScoreID);
 			prepStmt.executeUpdate();
 			prepStmt.close();
-			c.commit();
+//			c.commit();
 
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -345,9 +345,9 @@ public class QuestionServiceDatabaseConn {
 
 		try {
 			// Connection
-			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
-			c.setAutoCommit(false);
-			c.createStatement().execute("PRAGMA foreign_keys = ON");
+			c = getConnection();
+//			c.setAutoCommit(false);
+//			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			prepStmt = c.prepareStatement("DELETE FROM user_scores WHERE ID=?;");
 
@@ -355,7 +355,7 @@ public class QuestionServiceDatabaseConn {
 			prepStmt.executeUpdate();
 
 			prepStmt.close();
-			c.commit();
+//			c.commit();
 
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -384,9 +384,9 @@ public class QuestionServiceDatabaseConn {
 
 		try {
 			// Connection
-			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
-			c.setAutoCommit(false);
-			c.createStatement().execute("PRAGMA foreign_keys = ON");
+			c = getConnection();
+//			c.setAutoCommit(false);
+//			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			stmt = c.createStatement();
 
@@ -427,9 +427,9 @@ public class QuestionServiceDatabaseConn {
 
 		try {
 			// Connection
-			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
-			c.setAutoCommit(false);
-			c.createStatement().execute("PRAGMA foreign_keys = ON");
+			c = getConnection();
+//			c.setAutoCommit(false);
+//			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			// Initialize array
 			categoryData = new String[1][2];
@@ -444,7 +444,7 @@ public class QuestionServiceDatabaseConn {
 			}
 
 			prepStmt.close();
-			c.commit();
+//			c.commit();
 
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
