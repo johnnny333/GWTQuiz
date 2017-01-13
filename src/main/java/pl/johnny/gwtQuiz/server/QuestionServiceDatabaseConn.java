@@ -40,8 +40,9 @@ public class QuestionServiceDatabaseConn {
 
 	/**
 	 * Return database connection with foreign_keys set to 'ON'.
+	 * @throws ClassNotFoundException 
 	 */
-	private Connection getConnection() throws SQLException {
+	private Connection getConnection() throws SQLException, ClassNotFoundException {
 
 		final String dbType = "mysql_lucid";
 
@@ -56,6 +57,10 @@ public class QuestionServiceDatabaseConn {
 
 				return DriverManager.getConnection("jdbc:mysql://localhost/quiz?socket=/lucid/services/MySQL/mysql.sock",
 						"lucid", "aaW6dWAJMa6LqMQS");
+				
+			case "mysql":
+//				Class.forName("com.mysql.jdbc.Driver");
+				return DriverManager.getConnection("jdbc:mysql://localhost/quiz", "user", "kyt");	
 
 			default:
 				return null;
