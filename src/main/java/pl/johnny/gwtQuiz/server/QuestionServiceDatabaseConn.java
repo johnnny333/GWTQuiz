@@ -32,7 +32,6 @@ public class QuestionServiceDatabaseConn {
 		try {
 			Class.forName("org.sqlite.JDBC");
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -59,7 +58,6 @@ public class QuestionServiceDatabaseConn {
 						"lucid", "aaW6dWAJMa6LqMQS");
 				
 			case "mysql":
-//				Class.forName("com.mysql.jdbc.Driver");
 				return DriverManager.getConnection("jdbc:mysql://localhost/quiz", "user", "kyt");	
 
 			default:
@@ -281,10 +279,7 @@ public class QuestionServiceDatabaseConn {
 
 		try {
 			// Connection
-//			c = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
-//			c.setAutoCommit(false);
 			c = getConnection();
-//			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			prepStmt = c.prepareStatement(
 					"INSERT INTO user_scores (user_display,user_score,is_editable) VALUES (?, ?, ?);");
@@ -295,7 +290,6 @@ public class QuestionServiceDatabaseConn {
 			prepStmt.executeUpdate();
 
 			prepStmt.close();
-//			c.commit();
 
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -313,8 +307,6 @@ public class QuestionServiceDatabaseConn {
 		try {
 			// Connection
 			c = getConnection();
-//			c.setAutoCommit(false);
-//			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			prepStmt = c.prepareStatement("UPDATE user_scores SET user_display=?, is_editable=? WHERE ID=?;");
 
@@ -351,8 +343,6 @@ public class QuestionServiceDatabaseConn {
 		try {
 			// Connection
 			c = getConnection();
-//			c.setAutoCommit(false);
-//			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			prepStmt = c.prepareStatement("DELETE FROM user_scores WHERE ID=?;");
 
@@ -390,8 +380,6 @@ public class QuestionServiceDatabaseConn {
 		try {
 			// Connection
 			c = getConnection();
-//			c.setAutoCommit(false);
-//			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			stmt = c.createStatement();
 
@@ -436,8 +424,6 @@ public class QuestionServiceDatabaseConn {
 		try {
 			// Connection
 			c = getConnection();
-//			c.setAutoCommit(false);
-//			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			// Initialize array
 			categoryData = new String[1][2];
@@ -452,7 +438,6 @@ public class QuestionServiceDatabaseConn {
 			}
 
 			prepStmt.close();
-//			c.commit();
 
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -480,7 +465,6 @@ public class QuestionServiceDatabaseConn {
 			// Connection
 			c = getConnection();
 			c.setAutoCommit(false);
-//			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			PreparedStatement prepStmt = c.prepareStatement(
 					"INSERT INTO questions_tmp (question,author,category_id,has_image,image_url) VALUES (?,?,?,?,?);",
@@ -526,20 +510,6 @@ public class QuestionServiceDatabaseConn {
 			// Connection
 			c = getConnection();
 			c.setAutoCommit(false);
-//			c.createStatement().execute("PRAGMA foreign_keys = ON");
-
-			/*
-			 * Count rows from question_tmp to relate answers being now inserted
-			 * into answers_tmp with appropriate question which was just
-			 * inserted into questions_tmp (this is backed by foreign key);
-			 */
-			Statement stmt = c.createStatement();
-			
-//			questionID = stmt.RETURN_GENERATED_KEYS;
-//			System.out.println("questionID:" + questionID);
-//			if (rsRowCount.next()) {
-//				questionID = rsRowCount.getInt(1);
-//			}
 
 			PreparedStatement prepStmt = c.prepareStatement(
 					"INSERT INTO answers_tmp (questionID,answer1,answer2,answer3,answer4,correct_answer) VALUES (?,?,?,?,?,?);");
@@ -616,8 +586,6 @@ public class QuestionServiceDatabaseConn {
 		try {
 			// Connection
 			c = getConnection();
-//			c.setAutoCommit(false);
-//			c.createStatement().execute("PRAGMA foreign_keys = ON");
 			stmt = c.createStatement();
 
 			// Count rows
@@ -707,8 +675,6 @@ public class QuestionServiceDatabaseConn {
 		try {
 			// Connection
 			c = getConnection();
-//			c.setAutoCommit(false);
-//			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			prepStmt = c.prepareStatement("DELETE FROM answers_tmp WHERE ID=?;");
 
@@ -716,7 +682,6 @@ public class QuestionServiceDatabaseConn {
 			prepStmt.executeUpdate();
 
 			prepStmt.close();
-//			c.commit();
 
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -728,8 +693,6 @@ public class QuestionServiceDatabaseConn {
 		try {
 			// Connection
 			c = getConnection();
-//			c.setAutoCommit(false);
-//			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			prepStmt = c.prepareStatement("DELETE FROM questions_tmp WHERE ID=?;");
 
@@ -737,7 +700,6 @@ public class QuestionServiceDatabaseConn {
 			prepStmt.executeUpdate();
 
 			prepStmt.close();
-//			c.commit();
 
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -761,8 +723,6 @@ public class QuestionServiceDatabaseConn {
 		try {
 			// Connection
 			c = getConnection();
-//			c.setAutoCommit(false);
-//			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			PreparedStatement prepStmt = c.prepareStatement(
 					"INSERT INTO questions (question,author,category_id) VALUES (?,?,?);",
@@ -772,34 +732,6 @@ public class QuestionServiceDatabaseConn {
 			prepStmt.setString(2, userQuestion.getAuthor());
 			prepStmt.setString(3, userQuestion.getCategory());
 
-			/*
-			 * Get rows count from questions table to determine last inserted
-			 * record ID.
-			 */
-//			Statement stmt = c.createStatement();
-//			ResultSet  rsIDsCount = stmt.executeQuery("SELECT MAX(id) AS id FROM questions");
-//			
-//			if (rsIDsCount.next()) {
-//				questionID = rsIDsCount.getInt(1);
-//			}
-			
-			/*
-			 * If user submitted image, set has_image column flag to
-			 * 1(true).Otherwise its 0(false). Also, in if block set image name
-			 * - trimmed from full path - or - in else block - null if none
-			 * image is provided .
-			 */
-//			if(userQuestion.getImageURL() != null) {
-//				prepStmt.setString(4, "1");
-//				String trimmedImageURL = userQuestion.getImageURL()
-//						.substring(userQuestion.getImageURL().lastIndexOf("/") + 1);
-//				prepStmt.setString(5, "quiz_resources/question_images/" + (questionID + 1) + "/" + trimmedImageURL);
-//			} else {
-//				// If there is no image, set has_image to 0 and image_url to
-//				// null (which was handed in model).
-//				prepStmt.setString(4, "0");
-//				prepStmt.setString(5, userQuestion.getImageURL());
-//			}
 			prepStmt.executeUpdate();
 			
 			//Get last ID of questions table.
@@ -809,8 +741,6 @@ public class QuestionServiceDatabaseConn {
 
 			prepStmt.close();
 			
-//			c.commit();			
-
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.err.println(e.getCause() + " " + e.getStackTrace());
@@ -818,7 +748,7 @@ public class QuestionServiceDatabaseConn {
 			c.close();
 		}
 		
-		//TODO image id
+		//Question image handling
 		if(userQuestion.getImageURL() != null) {
 			
 			try {
@@ -845,21 +775,12 @@ public class QuestionServiceDatabaseConn {
 				c.close();
 			}
 		} 
-		
-//		else {
-//			// If there is no image, set has_image to 0 and image_url to
-//			// null (which was handed in model).
-//			prepStmt.setString(4, "0");
-//			prepStmt.setString(5, userQuestion.getImageURL());
-//		}
 
 		// Insert user-question answers into answers_tmp
 		try {
 			// Connection
 			c = getConnection();
-//			c.setAutoCommit(false);
-//			c.createStatement().execute("PRAGMA foreign_keys = ON");
-
+			
 			PreparedStatement prepStmt = c.prepareStatement(
 					"INSERT INTO answers (questionID,answer1,answer2,answer3,answer4,correct_answer) VALUES (?,?,?,?,?,?);");
 
@@ -872,7 +793,6 @@ public class QuestionServiceDatabaseConn {
 			prepStmt.executeUpdate();
 
 			prepStmt.close();
-//			c.commit();
 
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -924,8 +844,6 @@ public class QuestionServiceDatabaseConn {
 		try {
 			// Connection
 			c = getConnection();
-			// c.setAutoCommit(false);
-//			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			PreparedStatement prepStmt = c.prepareStatement("SELECT email,password,type from users WHERE email= ?;");
 
@@ -968,8 +886,6 @@ public class QuestionServiceDatabaseConn {
 		try {
 			// Connection
 			c = getConnection();
-//			c.setAutoCommit(false);
-//			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			prepStmt = c.prepareStatement("INSERT INTO categories (category) VALUES (?);");
 
@@ -977,7 +893,6 @@ public class QuestionServiceDatabaseConn {
 			prepStmt.executeUpdate();
 
 			prepStmt.close();
-//			c.commit();
 
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -995,9 +910,6 @@ public class QuestionServiceDatabaseConn {
 		try {
 			// Connection
 			c = getConnection();
-			// Non transaction.
-//			c.setAutoCommit(true);
-//			c.createStatement().execute("PRAGMA foreign_keys = ON;");
 
 			prepStmt = c.prepareStatement("DELETE FROM categories WHERE category=?;");
 
@@ -1029,9 +941,6 @@ public class QuestionServiceDatabaseConn {
 		try {
 			// Connection
 			c = getConnection();
-			// Non transaction.
-//			c.setAutoCommit(false);
-//			c.createStatement().execute("PRAGMA foreign_keys = ON;");
 
 			prepStmt = c.prepareStatement("UPDATE categories SET category = ? WHERE id = ?;");
 
@@ -1040,7 +949,6 @@ public class QuestionServiceDatabaseConn {
 			prepStmt.executeUpdate();
 
 			prepStmt.close();
-//			c.commit();
 
 		} catch (Exception e) {
 
@@ -1066,8 +974,6 @@ public class QuestionServiceDatabaseConn {
 		try {
 			// Connection
 			c = getConnection();
-//			c.setAutoCommit(true);
-//			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			prepStmt = c.prepareStatement("INSERT INTO users (email,password, type) VALUES (?, ?, 1);");
 
@@ -1097,9 +1003,6 @@ public class QuestionServiceDatabaseConn {
 		try {
 			// Connection
 			c = getConnection();
-			// Non transaction.
-//			c.setAutoCommit(false);
-//			c.createStatement().execute("PRAGMA foreign_keys = ON;");
 
 			prepStmt = c.prepareStatement("UPDATE users SET cookie_uuid = ? WHERE email = ?");
 
@@ -1108,7 +1011,6 @@ public class QuestionServiceDatabaseConn {
 			prepStmt.executeUpdate();
 
 			prepStmt.close();
-//			c.commit();
 
 		} catch (Exception e) {
 
@@ -1127,7 +1029,6 @@ public class QuestionServiceDatabaseConn {
 		try {
 			// Connection
 			c = getConnection();
-//			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			PreparedStatement prepStmt = c
 					.prepareStatement("SELECT email,password,type,cookie_uuid FROM users WHERE cookie_uuid = ?;");
