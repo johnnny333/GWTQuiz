@@ -44,7 +44,7 @@ public class QuestionServiceDatabaseConn {
 	 */
 	private Connection getConnection() throws SQLException, ClassNotFoundException {
 
-		final String dbType = "mysql_lucid";
+		final String dbType = "mysql";
 
 		switch(dbType) {
 			case "sqlite":
@@ -483,7 +483,8 @@ public class QuestionServiceDatabaseConn {
 //			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			PreparedStatement prepStmt = c.prepareStatement(
-					"INSERT INTO questions_tmp (question,author,category_id,has_image,image_url) VALUES (?,?,?,?,?);");
+					"INSERT INTO questions_tmp (question,author,category_id,has_image,image_url) VALUES (?,?,?,?,?);",
+					Statement.RETURN_GENERATED_KEYS);
 
 			prepStmt.setString(1, userQuestion.getQuestion());
 			prepStmt.setString(2, userQuestion.getAuthor());
@@ -504,6 +505,11 @@ public class QuestionServiceDatabaseConn {
 				prepStmt.setString(5, userQuestion.getImageURL());
 			}
 			prepStmt.executeUpdate();
+			
+			//Get last ID of questions_tmp table.
+			ResultSet lastQuestionID = prepStmt.getGeneratedKeys();    
+			lastQuestionID.next();  
+			questionID = lastQuestionID.getInt(1);
 
 			prepStmt.close();
 			c.commit();
@@ -529,10 +535,11 @@ public class QuestionServiceDatabaseConn {
 			 */
 			Statement stmt = c.createStatement();
 			
-			ResultSet rsRowCount = stmt.executeQuery("SELECT COUNT(*) FROM questions_tmp;");			
-			if (rsRowCount.next()) {
-				questionID = rsRowCount.getInt(1);
-			}
+//			questionID = stmt.RETURN_GENERATED_KEYS;
+//			System.out.println("questionID:" + questionID);
+//			if (rsRowCount.next()) {
+//				questionID = rsRowCount.getInt(1);
+//			}
 
 			PreparedStatement prepStmt = c.prepareStatement(
 					"INSERT INTO answers_tmp (questionID,answer1,answer2,answer3,answer4,correct_answer) VALUES (?,?,?,?,?,?);");
@@ -758,7 +765,8 @@ public class QuestionServiceDatabaseConn {
 //			c.createStatement().execute("PRAGMA foreign_keys = ON");
 
 			PreparedStatement prepStmt = c.prepareStatement(
-					"INSERT INTO questions (question,author,category_id,has_image,image_url) VALUES (?,?,?,?,?);");
+					"INSERT INTO questions (question,author,category_id) VALUES (?,?,?);",
+					Statement.RETURN_GENERATED_KEYS);
 
 			prepStmt.setString(1, userQuestion.getQuestion());
 			prepStmt.setString(2, userQuestion.getAuthor());
@@ -768,37 +776,40 @@ public class QuestionServiceDatabaseConn {
 			 * Get rows count from questions table to determine last inserted
 			 * record ID.
 			 */
-			Statement stmt = c.createStatement();
-			ResultSet rsRowCount = stmt.executeQuery("SELECT COUNT(*) FROM questions;");
-//			questionID = rsRowCount.getInt(1);
+//			Statement stmt = c.createStatement();
+//			ResultSet  rsIDsCount = stmt.executeQuery("SELECT MAX(id) AS id FROM questions");
+//			
+//			if (rsIDsCount.next()) {
+//				questionID = rsIDsCount.getInt(1);
+//			}
 			
-			int rowsCount = 0;
-			if (rsRowCount.next()) {
-				questionID = rsRowCount.getInt(1);
-			}
-			
-
 			/*
 			 * If user submitted image, set has_image column flag to
 			 * 1(true).Otherwise its 0(false). Also, in if block set image name
 			 * - trimmed from full path - or - in else block - null if none
 			 * image is provided .
 			 */
-			if(userQuestion.getImageURL() != null) {
-				prepStmt.setString(4, "1");
-				String trimmedImageURL = userQuestion.getImageURL()
-						.substring(userQuestion.getImageURL().lastIndexOf("/") + 1);
-				prepStmt.setString(5, "quiz_resources/question_images/" + (questionID + 1) + "/" + trimmedImageURL);
-			} else {
-				// If there is no image, set has_image to 0 and image_url to
-				// null (which was handed in model).
-				prepStmt.setString(4, "0");
-				prepStmt.setString(5, userQuestion.getImageURL());
-			}
+//			if(userQuestion.getImageURL() != null) {
+//				prepStmt.setString(4, "1");
+//				String trimmedImageURL = userQuestion.getImageURL()
+//						.substring(userQuestion.getImageURL().lastIndexOf("/") + 1);
+//				prepStmt.setString(5, "quiz_resources/question_images/" + (questionID + 1) + "/" + trimmedImageURL);
+//			} else {
+//				// If there is no image, set has_image to 0 and image_url to
+//				// null (which was handed in model).
+//				prepStmt.setString(4, "0");
+//				prepStmt.setString(5, userQuestion.getImageURL());
+//			}
 			prepStmt.executeUpdate();
+			
+			//Get last ID of questions table.
+			ResultSet lastQuestionID = prepStmt.getGeneratedKeys();    
+			lastQuestionID.next();  
+			questionID = lastQuestionID.getInt(1);
 
 			prepStmt.close();
-//			c.commit();
+			
+//			c.commit();			
 
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -806,6 +817,41 @@ public class QuestionServiceDatabaseConn {
 		} finally {
 			c.close();
 		}
+		
+		//TODO image id
+		if(userQuestion.getImageURL() != null) {
+			
+			try {
+				System.out.println("has image url");
+				c = getConnection();
+				
+				PreparedStatement prepStmt = c.prepareStatement(
+						"UPDATE questions SET has_image = ?, image_url = ? WHERE ID = ?;");
+				
+				prepStmt.setString(1, "1");
+				String trimmedImageURL = userQuestion.getImageURL()
+						.substring(userQuestion.getImageURL().lastIndexOf("/") + 1);
+				prepStmt.setString(2, "quiz_resources/question_images/" + (questionID) + "/" + trimmedImageURL);
+				prepStmt.setInt(3, questionID);
+				
+				prepStmt.executeUpdate();
+				
+				prepStmt.close();
+				
+			} catch (Exception e) {
+				System.err.println(e.getClass().getName() + ": " + e.getMessage());
+				System.err.println(e.getCause() + " " + e.getStackTrace());
+			} finally {
+				c.close();
+			}
+		} 
+		
+//		else {
+//			// If there is no image, set has_image to 0 and image_url to
+//			// null (which was handed in model).
+//			prepStmt.setString(4, "0");
+//			prepStmt.setString(5, userQuestion.getImageURL());
+//		}
 
 		// Insert user-question answers into answers_tmp
 		try {
@@ -817,7 +863,7 @@ public class QuestionServiceDatabaseConn {
 			PreparedStatement prepStmt = c.prepareStatement(
 					"INSERT INTO answers (questionID,answer1,answer2,answer3,answer4,correct_answer) VALUES (?,?,?,?,?,?);");
 
-			prepStmt.setInt(1, (questionID + 1));
+			prepStmt.setInt(1, (questionID));
 			prepStmt.setString(2, userQuestion.getAnswer(0));
 			prepStmt.setString(3, userQuestion.getAnswer(1));
 			prepStmt.setString(4, userQuestion.getAnswer(2));
@@ -848,7 +894,7 @@ public class QuestionServiceDatabaseConn {
 
 						FileUtils.getFile("quiz_resources/question_images_tmp/" + tmpQuestionID + "/"
 								+ userQuestion.getImageURL()),
-						FileUtils.getFile("quiz_resources/question_images/" + (questionID + 1)), true);
+						FileUtils.getFile("quiz_resources/question_images/" + (questionID)), true);
 
 				FileUtils.deleteDirectory(new File("quiz_resources/question_images_tmp/" + tmpQuestionID));
 
@@ -1071,7 +1117,6 @@ public class QuestionServiceDatabaseConn {
 		} finally {
 			c.close();
 		}
-
 	}
 
 	String[] getUserUUID(String cookieUUID) throws Exception {

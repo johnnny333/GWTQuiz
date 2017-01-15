@@ -14,6 +14,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 import pl.johnny.gwtQuiz.client.ClientFactory;
+import pl.johnny.gwtQuiz.client.place.AddQuestionsPlace;
 import pl.johnny.gwtQuiz.client.place.AdminPlace;
 import pl.johnny.gwtQuiz.client.place.LoginPlace;
 import pl.johnny.gwtQuiz.client.ui.LoginView;
@@ -84,7 +85,7 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
 				Cookies.setCookie("gwtQuiz", cookieInBase64 ,expires);
 				
 				loginView.resetLoginForms(LoginForm.FORM_LOGIN);
-				goTo(new AdminPlace(""));
+				goTo(new AddQuestionsPlace(""));
 			}
 
 			@Override
