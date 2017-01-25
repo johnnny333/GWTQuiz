@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javax.servlet.ServletException;
+
 import org.apache.commons.io.FileUtils;
 
 import pl.johnny.gwtQuiz.shared.Question;
@@ -28,40 +30,67 @@ public class QuestionServiceDatabaseConn {
 	// Package access modifiers
 	public QuestionServiceDatabaseConn() {
 		System.out.println("QuestionServiceDatabaseConn() intialized !!!!");
-
-		try {
-			Class.forName("org.sqlite.JDBC");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	/**
 	 * Return database connection with foreign_keys set to 'ON'.
-	 * @throws ClassNotFoundException 
+	 * 
+	 * @throws ClassNotFoundException
+	 * @throws ServletException
 	 */
-	private Connection getConnection() throws SQLException, ClassNotFoundException {
+	private Connection getConnection() throws SQLException, ClassNotFoundException, ServletException {
 
 		final String dbType = "mysql";
+		String url;
 
-		switch(dbType) {
-			case "sqlite":
+		switch (dbType) {
+		case "sqlite":
 
-				Connection connection = DriverManager.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
-				connection.createStatement().execute("PRAGMA foreign_keys = ON");
-				return connection;
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
 
-			case "mysql_lucid":
+			Connection connection = DriverManager
+					.getConnection("jdbc:sqlite:quiz_resources/questions_database/questions.db");
+			connection.createStatement().execute("PRAGMA foreign_keys = ON");
+			return connection;
 
-				return DriverManager.getConnection("jdbc:mysql://localhost/quiz?socket=/lucid/services/MySQL/mysql.sock",
-						"lucid", "aaW6dWAJMa6LqMQS");
+		case "mysql_lucid":
+
+			return DriverManager.getConnection("jdbc:mysql://localhost/quiz?socket=/lucid/services/MySQL/mysql.sock",
+					"lucid", "aaW6dWAJMa6LqMQS");
+
+		case "mysql":
+
+			if (System.getProperty("com.google.appengine.runtime.version").startsWith("Google App Engine/")) {
+				// Check the System properties to determine if we are running on
+				// appengine or not
+				// Google App Engine sets a few system properties that will
+				// reliably be present on a remote
+				// instance.
+//				url = "jdbc:google:mysql://quizownik:europe-west1:quizownik1/quiz?user=root&amp;password=33szarikow88";
+				url = "jdbc:google:mysql://quizownik:europe-west1:quizownik1/quiz?user=root&password=33szarikow88";
+
+				try {
+					// Load the class that provides the new
+					// "jdbc:google:mysql://" prefix.
+					Class.forName("com.mysql.jdbc.GoogleDriver");
+				} catch (ClassNotFoundException e) {
+					throw new ServletException("Error loading Google JDBC Driver", e);
+				}
 				
-			case "mysql":
-				return DriverManager.getConnection("jdbc:mysql://localhost/quiz", "user", "kyt");	
+			} else {
+				// Set the url with the local MySQL database connection url when
+				// running locally
+				url = System.getProperty("ae-cloudsql.local-database-url");
+			}
+			
+			return DriverManager.getConnection(url);
 
-			default:
-				return null;
+		default:
+			return null;
 		}
 	}
 
@@ -150,18 +179,18 @@ public class QuestionServiceDatabaseConn {
 							+ "LEFT JOIN questions ON answers.questionID = questions.ID "
 							+ "LEFT JOIN categories ON questions.category_id = categories.id; ");
 
-			while(resultSet.next()) {
+			while (resultSet.next()) {
 				// Get questions and save it to an Array
 				String question = resultSet.getString("question");
 				questionsData[resultSet.getRow() - 1][0] = question;
 
 				boolean questionImg = resultSet.getBoolean("has_image");
-				if(questionImg != false) {
+				if (questionImg != false) {
 					questionsData[resultSet.getRow() - 1][1] = resultSet.getString("image_url");
 				}
 
 				// Get answers and save it to an Array
-				for(int i = 0; i < 4; i++) {
+				for (int i = 0; i < 4; i++) {
 					String answer = resultSet.getString("answer" + (i + 1));
 					answersData[resultSet.getRow() - 1][i] = answer;
 				}
@@ -182,7 +211,7 @@ public class QuestionServiceDatabaseConn {
 			 * and pack said models to an ArrayList in order to use it on
 			 * QuestionServiceImpl
 			 */
-			for(int i = 0; i < questionsData.length; ++i) {
+			for (int i = 0; i < questionsData.length; ++i) {
 				Question question = new Question(questionsData[i][0], questionsData[i][1], answersData[i],
 						correctAnswersData[i], authorData[i], categoryData[i]);
 				questionsArray.add(question);
@@ -223,22 +252,21 @@ public class QuestionServiceDatabaseConn {
 			// Actual query
 			ResultSet rsRowCount = stmt.executeQuery("SELECT COUNT(*) FROM user_scores;");
 			int rowsCount = 0;
-			
+
 			if (rsRowCount.next()) {
 				rowsCount = rsRowCount.getInt(1);
 			}
-			
+
 			userScoreID = new int[rowsCount];
 			userDisplay = new String[rowsCount];
 			userScores = new int[rowsCount];
 			isEditable = new Boolean[rowsCount];
 			usersScoresCreatedAt = new String[rowsCount];
 
-			ResultSet resultSet = stmt.executeQuery("SELECT ID, user_display, user_score, "
-					+ "is_editable, created_at"
+			ResultSet resultSet = stmt.executeQuery("SELECT ID, user_display, user_score, " + "is_editable, created_at"
 					+ " FROM user_scores ORDER BY user_score DESC ,created_at DESC;");
 
-			while(resultSet.next()) {
+			while (resultSet.next()) {
 				// Get user score ID and save it to an Array
 				userScoreID[resultSet.getRow() - 1] = resultSet.getInt("ID");
 				// Get user displays and save it to an Array
@@ -257,7 +285,7 @@ public class QuestionServiceDatabaseConn {
 			 * and pack said models to an ArrayList in order to use it on
 			 * QuestionServiceImpl
 			 */
-			for(int i = 0; i < userDisplay.length; ++i) {
+			for (int i = 0; i < userDisplay.length; ++i) {
 				UserScore userScore = new UserScore(userScoreID[i], userDisplay[i], userScores[i], isEditable[i],
 						usersScoresCreatedAt[i]);
 				userScoresArray.add(userScore);
@@ -315,7 +343,7 @@ public class QuestionServiceDatabaseConn {
 			 * User provided name but deletes all its chars leaving us with
 			 * empty string (""), so we delete this invalid record;
 			 */
-			if(stringBarber(checkedNameString) == null) {
+			if (stringBarber(checkedNameString) == null) {
 				deleteUserScore(userScore);
 				return;
 			}
@@ -325,7 +353,7 @@ public class QuestionServiceDatabaseConn {
 			prepStmt.setInt(3, userScore.userScoreID);
 			prepStmt.executeUpdate();
 			prepStmt.close();
-//			c.commit();
+			// c.commit();
 
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -350,7 +378,7 @@ public class QuestionServiceDatabaseConn {
 			prepStmt.executeUpdate();
 
 			prepStmt.close();
-//			c.commit();
+			// c.commit();
 
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -397,7 +425,7 @@ public class QuestionServiceDatabaseConn {
 			ResultSet resultSet = stmt.executeQuery("SELECT id, category FROM categories;");
 
 			// Iterate over ResultSet and put each record into an array
-			while(resultSet.next()) {
+			while (resultSet.next()) {
 				categoryData[resultSet.getRow() - 1][0] = resultSet.getString("id");
 				categoryData[resultSet.getRow() - 1][1] = resultSet.getString("category");
 			}
@@ -432,7 +460,7 @@ public class QuestionServiceDatabaseConn {
 			prepStmt.setString(1, category);
 			ResultSet rs = prepStmt.executeQuery();
 
-			while(rs.next()) {
+			while (rs.next()) {
 				categoryData[0][0] = rs.getString("id");
 				categoryData[0][1] = rs.getString("category");
 			}
@@ -479,7 +507,7 @@ public class QuestionServiceDatabaseConn {
 			 * - trimmed from full path - or - in else block - null if none
 			 * image is provided .
 			 */
-			if(userQuestion.getImageURL() != null) {
+			if (userQuestion.getImageURL() != null) {
 				prepStmt.setString(4, "1");
 				String trimmedImageURL = userQuestion.getImageURL()
 						.substring(userQuestion.getImageURL().lastIndexOf("/") + 1);
@@ -489,10 +517,10 @@ public class QuestionServiceDatabaseConn {
 				prepStmt.setString(5, userQuestion.getImageURL());
 			}
 			prepStmt.executeUpdate();
-			
-			//Get last ID of questions_tmp table.
-			ResultSet lastQuestionID = prepStmt.getGeneratedKeys();    
-			lastQuestionID.next();  
+
+			// Get last ID of questions_tmp table.
+			ResultSet lastQuestionID = prepStmt.getGeneratedKeys();
+			lastQuestionID.next();
 			questionID = lastQuestionID.getInt(1);
 
 			prepStmt.close();
@@ -534,7 +562,7 @@ public class QuestionServiceDatabaseConn {
 		}
 
 		// Move uploaded image from /tmp to our pending storage.
-		if(userQuestion.getImageURL() != null) {
+		if (userQuestion.getImageURL() != null) {
 			try {
 
 				FileUtils.moveFileToDirectory(
@@ -612,18 +640,18 @@ public class QuestionServiceDatabaseConn {
 					+ "LEFT JOIN questions_tmp ON answers_tmp.questionID = questions_tmp.ID "
 					+ "LEFT JOIN categories ON questions_tmp.category_id = categories.id; ");
 
-			while(resultSet.next()) {
+			while (resultSet.next()) {
 				// Get questions and save it to an Array
 				String question = resultSet.getString("question");
 				questionsTmpData[resultSet.getRow() - 1][0] = question;
 
 				boolean questionImg = resultSet.getBoolean("has_image");
-				if(questionImg != false) {
+				if (questionImg != false) {
 					questionsTmpData[resultSet.getRow() - 1][1] = resultSet.getString("image_url");
 				}
 
 				// Get answers and save it to an Array
-				for(int i = 0; i < 4; i++) {
+				for (int i = 0; i < 4; i++) {
 					String answer = resultSet.getString("answer" + (i + 1));
 					answerTmpData[resultSet.getRow() - 1][i] = answer;
 				}
@@ -647,7 +675,7 @@ public class QuestionServiceDatabaseConn {
 			 * and pack said models to an ArrayList in order to use it on
 			 * QuestionServiceImpl
 			 */
-			for(int i = 0; i < questionsTmpData.length; ++i) {
+			for (int i = 0; i < questionsTmpData.length; ++i) {
 				Question question = new Question(questionsTmpData[i][0], questionsTmpData[i][1], answerTmpData[i],
 						correctAnswersTmpData[i], correctAnswersIntData[i], authorTmpData[i], categoryTmpData[i],
 						IDTmpData[i]);
@@ -733,54 +761,54 @@ public class QuestionServiceDatabaseConn {
 			prepStmt.setString(3, userQuestion.getCategory());
 
 			prepStmt.executeUpdate();
-			
-			//Get last ID of questions table.
-			ResultSet lastQuestionID = prepStmt.getGeneratedKeys();    
-			lastQuestionID.next();  
+
+			// Get last ID of questions table.
+			ResultSet lastQuestionID = prepStmt.getGeneratedKeys();
+			lastQuestionID.next();
 			questionID = lastQuestionID.getInt(1);
 
 			prepStmt.close();
-			
+
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.err.println(e.getCause() + " " + e.getStackTrace());
 		} finally {
 			c.close();
 		}
-		
-		//Question image handling
-		if(userQuestion.getImageURL() != null) {
-			
+
+		// Question image handling
+		if (userQuestion.getImageURL() != null) {
+
 			try {
 				System.out.println("has image url");
 				c = getConnection();
-				
-				PreparedStatement prepStmt = c.prepareStatement(
-						"UPDATE questions SET has_image = ?, image_url = ? WHERE ID = ?;");
-				
+
+				PreparedStatement prepStmt = c
+						.prepareStatement("UPDATE questions SET has_image = ?, image_url = ? WHERE ID = ?;");
+
 				prepStmt.setString(1, "1");
 				String trimmedImageURL = userQuestion.getImageURL()
 						.substring(userQuestion.getImageURL().lastIndexOf("/") + 1);
 				prepStmt.setString(2, "quiz_resources/question_images/" + (questionID) + "/" + trimmedImageURL);
 				prepStmt.setInt(3, questionID);
-				
+
 				prepStmt.executeUpdate();
-				
+
 				prepStmt.close();
-				
+
 			} catch (Exception e) {
 				System.err.println(e.getClass().getName() + ": " + e.getMessage());
 				System.err.println(e.getCause() + " " + e.getStackTrace());
 			} finally {
 				c.close();
 			}
-		} 
+		}
 
 		// Insert user-question answers into answers_tmp
 		try {
 			// Connection
 			c = getConnection();
-			
+
 			PreparedStatement prepStmt = c.prepareStatement(
 					"INSERT INTO answers (questionID,answer1,answer2,answer3,answer4,correct_answer) VALUES (?,?,?,?,?,?);");
 
@@ -807,7 +835,7 @@ public class QuestionServiceDatabaseConn {
 		 * main storage. After this, delete empty directory in
 		 * quiz_resources/question_images_tmp.
 		 */
-		if(userQuestion.getImageURL() != null) {
+		if (userQuestion.getImageURL() != null) {
 			try {
 
 				FileUtils.moveFileToDirectory(
@@ -834,7 +862,7 @@ public class QuestionServiceDatabaseConn {
 	 * 
 	 * @param user
 	 * @return [0] = email, [1] = password, [2] type;
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	String[] getUser(User user) throws Exception {
 
@@ -854,12 +882,12 @@ public class QuestionServiceDatabaseConn {
 			passwordData = new String[rs.getMetaData().getColumnCount()];
 
 			// Check if there are any results.
-			if(!rs.isBeforeFirst()) {
+			if (!rs.isBeforeFirst()) {
 				System.out.println("No such user");
 				return new String[] { "No such user" };
 			}
 
-			while(rs.next()) {
+			while (rs.next()) {
 				passwordData[0] = rs.getString(1);
 				passwordData[1] = rs.getString(2);
 				passwordData[2] = rs.getString(3);
@@ -920,10 +948,12 @@ public class QuestionServiceDatabaseConn {
 		} catch (Exception e) {
 
 			// SQLite error codes: https://www.sqlite.org/c3ref/c_abort.html
-			// MySQL error codes: https://dev.mysql.com/doc/refman/5.5/en/error-messages-server.html
-			if(((SQLException) e).getErrorCode() == 1451) { 
-				System.out.println("Error code: " + ((SQLException) e).getErrorCode() );
-				throw new SQLException("[SQL_CONSTRAINT]"); }
+			// MySQL error codes:
+			// https://dev.mysql.com/doc/refman/5.5/en/error-messages-server.html
+			if (((SQLException) e).getErrorCode() == 1451) {
+				System.out.println("Error code: " + ((SQLException) e).getErrorCode());
+				throw new SQLException("[SQL_CONSTRAINT]");
+			}
 
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.err.println(e.getCause() + " " + e.getStackTrace());
@@ -985,7 +1015,9 @@ public class QuestionServiceDatabaseConn {
 		} catch (Exception e) {
 
 			// SQLite error codes: https://www.sqlite.org/c3ref/c_abort.html
-			if(((SQLException) e).getErrorCode() == 19) { throw new SQLException("User already exist"); }
+			if (((SQLException) e).getErrorCode() == 19) {
+				throw new SQLException("User already exist");
+			}
 
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.err.println(e.getCause() + " " + e.getStackTrace());
@@ -1041,12 +1073,12 @@ public class QuestionServiceDatabaseConn {
 			userUUID = new String[rs.getMetaData().getColumnCount()];
 
 			// Check if there are any results.
-			if(!rs.isBeforeFirst()) {
+			if (!rs.isBeforeFirst()) {
 				System.out.println("No such user");
 				return new String[] { "No such user" };
 			}
 
-			while(rs.next()) {
+			while (rs.next()) {
 				userUUID[0] = rs.getString(1);
 				userUUID[1] = rs.getString(2);
 				userUUID[2] = rs.getString(3);
@@ -1080,10 +1112,10 @@ public class QuestionServiceDatabaseConn {
 		// Removes all white-spaces and non-visible characters;
 		String trimmedString = stringToCut.replaceAll("\\s+", "");
 		// User provided name but deletes it leaving us with empty string ("").
-		if(trimmedString == "")
+		if (trimmedString == "")
 			return null;
 
-		if(trimmedString.length() > 15) {
+		if (trimmedString.length() > 15) {
 			String trimmedAndSubstringed = trimmedString.substring(0, 15);
 			return trimmedAndSubstringed;
 		}
