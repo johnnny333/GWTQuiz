@@ -107,6 +107,7 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 	void onAdminPanelAnchorClicked(ClickEvent e) {
 		if (listener != null) {
 			listener.goTo(new AdminPlace(""));
+			navBarCollapse.hide();
 		}
 	}
 
