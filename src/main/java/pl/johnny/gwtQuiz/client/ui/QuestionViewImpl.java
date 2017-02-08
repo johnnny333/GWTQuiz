@@ -108,8 +108,6 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	@Override
 	public void showModal(int userPoints) {
 		isShowModal = true;
-		//remove any previously added high score cell table widget to avoid doubling them
-//		modalBody.remove(0);
 		
 		//Download user scores from server and populate user scores cell table
 		listener.insertDataIntoUserScoresTable();
@@ -134,7 +132,7 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	@UiHandler("modalCloseBtn")
 	void onModalCloseBtnClicked(ClickEvent e) {
 		if(!highScoreCellTableView.getIsNameFieldFilled()){
-//			GWT.log("getIsNameFieldFilled() (false) " + highScoreCellTableView.getIsNameFieldFilled());
+
 			highScoreCellTableView.deleteEmptyRecord();
 		}
 		if (listener != null) {
@@ -179,5 +177,11 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	@Override
 	public void setProgressBar(Double percent) {
 		progressBar.setPercent(percent);	
+	}
+
+	@Override
+	public Modal getModal() {
+		return modal;
+		
 	}
 }

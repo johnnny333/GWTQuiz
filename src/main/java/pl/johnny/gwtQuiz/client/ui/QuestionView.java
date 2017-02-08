@@ -1,5 +1,7 @@
 package pl.johnny.gwtQuiz.client.ui;
 
+import org.gwtbootstrap3.client.ui.Modal;
+
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.ui.IsWidget;
 
@@ -121,4 +123,7 @@ public interface QuestionView extends IsWidget
 	
 	/** Given value from Presenter, displays on label user position on modal. */
 	void setActualRecordPositionLabel(int actualRecordPosition);
+	
+	/** Get instance of modal containing Questions */
+	Modal getModal();
 }

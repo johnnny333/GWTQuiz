@@ -55,7 +55,7 @@ public class HighScoresActivity extends AbstractActivity implements
 	 */
 	@Override
 	public String mayStop() {
-//		return "The quiz is about to start!";
+		
 		return null;
 	}
 

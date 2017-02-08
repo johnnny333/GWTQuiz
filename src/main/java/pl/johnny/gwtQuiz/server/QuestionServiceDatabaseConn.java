@@ -40,7 +40,7 @@ public class QuestionServiceDatabaseConn {
 	 */
 	private Connection getConnection() throws SQLException, ClassNotFoundException, ServletException {
 
-		final String dbType = "mysql";
+		final String dbType = "mySQLlocal";
 		String url;
 
 		switch (dbType) {
@@ -60,17 +60,16 @@ public class QuestionServiceDatabaseConn {
 		case "mysql_lucid":
 
 			return DriverManager.getConnection("jdbc:mysql://localhost/quiz?socket=/lucid/services/MySQL/mysql.sock",
-					"lucid", "aaW6dWAJMa6LqMQS");
+					"lucid", "");
+
+		case "mySQLlocal":
+
+			return DriverManager.getConnection("jdbc:mysql://localhost/quiz", "user", "kyt");
 
 		case "mysql":
 
 			if (System.getProperty("com.google.appengine.runtime.version").startsWith("Google App Engine/")) {
-				// Check the System properties to determine if we are running on
-				// appengine or not
-				// Google App Engine sets a few system properties that will
-				// reliably be present on a remote
-				// instance.
-//				url = "jdbc:google:mysql://quizownik:europe-west1:quizownik1/quiz?user=root&amp;password=33szarikow88";
+
 				url = "jdbc:google:mysql://quizownik:europe-west1:quizownik1/quiz?user=root&password=33szarikow88";
 
 				try {
@@ -80,17 +79,17 @@ public class QuestionServiceDatabaseConn {
 				} catch (ClassNotFoundException e) {
 					throw new ServletException("Error loading Google JDBC Driver", e);
 				}
-				
+
 			} else {
 				// Set the url with the local MySQL database connection url when
 				// running locally
 				url = System.getProperty("ae-cloudsql.local-database-url");
 			}
-			
+
 			return DriverManager.getConnection(url);
 
 		default:
-			return null;
+			throw new SQLException("No connection was selected in getConnection()");
 		}
 	}
 

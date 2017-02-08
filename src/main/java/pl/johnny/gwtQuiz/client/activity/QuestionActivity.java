@@ -135,7 +135,14 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 		//cancel current timer
 		if(questionTimer != null) {
 			questionTimer.cancel();
-		} ;
+		}
+		
+		/*
+		 * When on modal High Score list user navigates away from there,
+		 * close modal and its glass override 
+		 */
+		questionView.getModal().hide();
+		
 		return null;
 	}
 
