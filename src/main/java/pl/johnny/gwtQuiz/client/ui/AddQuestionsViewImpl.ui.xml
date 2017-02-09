@@ -44,7 +44,7 @@
 										</b:ListBox>
 									</b:FormGroup>
 
-									<b:PanelGroup b:id="accordion">
+									<b:PanelGroup b:id="accordion" visible="false">
 										<b:FormLabel text="Image"></b:FormLabel>
 										<b:Panel>
 											<b:PanelHeader dataToggle="COLLAPSE"

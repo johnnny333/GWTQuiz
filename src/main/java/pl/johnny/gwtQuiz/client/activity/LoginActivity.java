@@ -73,13 +73,13 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
 
 				GWT.log("LoginActivity.loginUser() session id " + result);
 
-				// Set cookie for 1 day expiry.
-//				final long DURATION = 1000 * 60 * 60 * 24 * 1;
-//				Date expires = new Date(System.currentTimeMillis() + DURATION);
+				// Set cookie for 7 day expiry.
+				final long DURATION = 1000 * 60 * 60 * 24 * 7;
+				Date expires = new Date(System.currentTimeMillis() + DURATION);
 				
 				//Five minute cookie.
-				final long DURATION = 1000 * 5 * 60;
-				Date expires = new Date(System.currentTimeMillis() + DURATION);
+//				final long DURATION = 1000 * 5 * 60;
+//				Date expires = new Date(System.currentTimeMillis() + DURATION);
 				
 				String cookieInBase64 = clientFactory.base64Encode( (result[0][0] + "," + result[0][1] + "," + result[0][2] + "," + result[0][3]) );
 				Cookies.setCookie("gwtQuiz", cookieInBase64 ,expires);
