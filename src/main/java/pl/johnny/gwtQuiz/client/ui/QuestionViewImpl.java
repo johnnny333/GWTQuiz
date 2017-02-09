@@ -9,6 +9,7 @@ import org.gwtbootstrap3.client.ui.ProgressBar;
 import org.gwtbootstrap3.client.ui.constants.AlertType;
 import org.gwtbootstrap3.client.ui.html.Strong;
 
+import com.google.appengine.repackaged.com.google.common.cache.LoadingCache;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -48,11 +49,11 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	@UiField org.gwtbootstrap3.client.ui.Button btn2;
 	@UiField org.gwtbootstrap3.client.ui.Button btn3;
 	@UiField Modal modal;
+	@UiField Modal modalLoading;
 	@UiField ModalBody modalBody;
 	@UiField Alert modalAlert;
 	@UiField Strong modalPointsLabel;
 	@UiField Strong actualRecordPositionLabel;
-	@UiField Button prvsQstBtn;
 	@UiField org.gwtbootstrap3.client.ui.Button modalCloseBtn;
 	@UiField Heading questionCounter;
 	@UiField Heading pointsCounter;
@@ -98,13 +99,6 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 		}
 	}
 	
-	@UiHandler("prvsQstBtn")
-	void onPreviusBtnClicked(ClickEvent e) {
-		if (listener != null) {
-			listener.onPreviousBtnClicked();
-		}
-	}
-	
 	@Override
 	public void showModal(int userPoints) {
 		isShowModal = true;
@@ -138,11 +132,6 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 		if (listener != null) {
 			listener.goTo(new MainMenuPlace("MainMenu"));
 		}
-	}
-	
-	@Override
-	public void setPrvBtnVsbl(boolean bool){
-		prvsQstBtn.setVisible(bool);
 	}
 	
 	@Override
@@ -180,8 +169,12 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	}
 
 	@Override
-	public Modal getModal() {
+	public Modal getHighScoreModal() {
 		return modal;
-		
+	}
+	
+	@Override
+	public Modal getLoadingModal() {
+		return modalLoading;
 	}
 }

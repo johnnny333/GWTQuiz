@@ -77,7 +77,7 @@ public class HighScoreCellTableViewImpl extends Composite implements HighScoreCe
 				} ;
 			}
 		});
-		cellTableHighScores.setColumnWidth(nameColumn, 60.0, Unit.PCT);
+		cellTableHighScores.setColumnWidth(nameColumn, 55.0, Unit.PCT);
 		cellTableHighScores.addColumn(nameColumn, "Player");
 
 		// Add a NumberCell() column to show the user score.
@@ -87,7 +87,7 @@ public class HighScoreCellTableViewImpl extends Composite implements HighScoreCe
 				return object.score;
 			}
 		};
-		cellTableHighScores.setColumnWidth(scoreColumn, 8.0, Unit.PCT);
+		cellTableHighScores.setColumnWidth(scoreColumn, 14.0, Unit.PCT);
 		//		scoreColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 		cellTableHighScores.addColumn(scoreColumn, "Score");
 

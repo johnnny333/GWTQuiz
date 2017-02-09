@@ -49,8 +49,6 @@ public interface QuestionView extends IsWidget
 	 * */
 	void showModal(int userPoints);
 	
-	void setPrvBtnVsbl(boolean bool);
-	
 	/** 
 	 * Displays actual question number in a widget View.
 	 * 
@@ -125,5 +123,7 @@ public interface QuestionView extends IsWidget
 	void setActualRecordPositionLabel(int actualRecordPosition);
 	
 	/** Get instance of modal containing Questions */
-	Modal getModal();
+	Modal getHighScoreModal();
+
+	Modal getLoadingModal();
 }

@@ -2,6 +2,12 @@ package pl.johnny.gwtQuiz.client.activity;
 
 import java.util.ArrayList;
 
+import org.gwtbootstrap3.client.ui.Icon;
+import org.gwtbootstrap3.client.ui.Modal;
+import org.gwtbootstrap3.client.ui.ModalBody;
+import org.gwtbootstrap3.client.ui.constants.IconSize;
+import org.gwtbootstrap3.client.ui.constants.IconType;
+
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
@@ -9,6 +15,8 @@ import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HTML;
 
 import pl.johnny.gwtQuiz.client.ClientFactory;
 import pl.johnny.gwtQuiz.client.QuestionServiceAsync;
@@ -60,6 +68,9 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 		this.eventBus = eventBus;
 		containerWidget.setWidget(questionView.asWidget());
 		
+		//Show loading modal before all questions will be downloaded...
+		questionView.getLoadingModal().show();
+		
 		/* Download questions from server,save it in a client and show 1st question */
 		questionService = clientFactory.getQuestionsService();
 		questionService.getShuffledQuestions(new AsyncCallback<ArrayList<Question>>() {
@@ -72,6 +83,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 			@Override
 			public void onSuccess(ArrayList<Question> result) {
 				questionsArrayList = result;
+				questionView.getLoadingModal().hide();
 				eventBus.fireEvent(new NewQuestionEvent(currentQuestionInt));
 			}
 		});
@@ -82,11 +94,11 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 			@Override
 			public void onNewQuestion(NewQuestionEvent event) {
 				//Start a new instance of timer on every question.
-//				timerForProgressBar(25);
 				currentQuestionInt = event.getCurrentQuestionInt();
 				if(questionsArrayList != null) {
 					questionView.setShowModal(false);
 					questionView.setQuestion(questionsArrayList.get(currentQuestionInt).getQuestion());
+//					timerForProgressBar(25);
 
 					//Question image logic
 					if(questionsArrayList.get(currentQuestionInt).getImageURL() != null) {
@@ -97,11 +109,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 					}
 
 					questionView.setAnswers(questionsArrayList.get(currentQuestionInt));
-					/* Display previous button only on > 0 questions */
-					if(currentQuestionInt < 1)
-						questionView.setPrvBtnVsbl(false);
-					else
-						questionView.setPrvBtnVsbl(true);
+					
 					questionView.setQuestionCounter(currentQuestionInt + 1, questionsArrayList.size());
 					questionView.setPointsCounter(userPoints);
 					questionView.setCategoryField(questionsArrayList.get(currentQuestionInt).getCategory());
@@ -141,7 +149,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 		 * When on modal High Score list user navigates away from there,
 		 * close modal and its glass override 
 		 */
-		questionView.getModal().hide();
+		questionView.getHighScoreModal().hide();
 		
 		return null;
 	}

@@ -9,7 +9,7 @@
 	<b:Navbar>
 		<b:NavbarHeader>
 			<b:NavbarBrand ui:field="navBarBrand" icon="QUESTION_CIRCLE"
-				text="GWT Quiz"></b:NavbarBrand>
+				text="Quizownik"></b:NavbarBrand>
 			<b:NavbarCollapseButton dataTarget="#navbar-collapse" />
 		</b:NavbarHeader>
 
