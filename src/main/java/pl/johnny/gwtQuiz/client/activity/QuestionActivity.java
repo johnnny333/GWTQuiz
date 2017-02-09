@@ -77,6 +77,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 
 			@Override
 			public void onFailure(Throwable caught) {
+				questionView.getLoadingModal().add(new HTML("Problem downloading questions!"));
 				GWT.log("Failed getShuffledQuestions() RPC! ", caught);
 			}
 
@@ -98,7 +99,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 				if(questionsArrayList != null) {
 					questionView.setShowModal(false);
 					questionView.setQuestion(questionsArrayList.get(currentQuestionInt).getQuestion());
-//					timerForProgressBar(25);
+					timerForProgressBar(25);
 
 					//Question image logic
 					if(questionsArrayList.get(currentQuestionInt).getImageURL() != null) {
@@ -147,9 +148,10 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 		
 		/*
 		 * When on modal High Score list user navigates away from there,
-		 * close modal and its glass override 
+		 * close modals and its glass override 
 		 */
 		questionView.getHighScoreModal().hide();
+		questionView.getLoadingModal().hide();
 		
 		return null;
 	}

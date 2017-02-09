@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import org.gwtbootstrap3.client.ui.Alert;
 import org.gwtbootstrap3.client.ui.Icon;
+import org.gwtbootstrap3.client.ui.Modal;
 import org.gwtbootstrap3.client.ui.PanelGroup;
 import org.gwtbootstrap3.client.ui.constants.AlertType;
 
@@ -35,8 +36,12 @@ public class AdminViewImpl extends Composite implements AdminView {
 
 	@UiField
 	Icon refreshIcon;
+	
 	@UiField
 	HTMLPanel categoriesTableContainer;
+
+	@UiField
+	Modal modalLoading;
 
 	private Presenter listener;
 	private String[][] categories;
@@ -128,5 +133,10 @@ public class AdminViewImpl extends Composite implements AdminView {
 	public void buildCategoriesCellList(String[][] categories){
 		categoriesTableContainer.clear();
 		categoriesTableContainer.add(new CategoriesTable(categories, listener));
+	}
+	
+	@Override
+	public Modal getModalLoading() {
+		return modalLoading;
 	}
 }

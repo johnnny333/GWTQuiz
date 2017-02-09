@@ -48,4 +48,6 @@ public interface AdminView extends IsWidget
 	PanelWidget[] getPanelWidgets();
 
 	void buildCategoriesCellList(String[][] categories);
+
+	Modal getModalLoading();
 }

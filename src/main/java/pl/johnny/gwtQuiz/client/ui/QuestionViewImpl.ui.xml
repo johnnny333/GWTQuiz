@@ -27,14 +27,14 @@
 		<b:Container fluid="true">
 			<b:Row addStyleNames='{style.center}'>
 				<b:Column size="XS_3">
-					<b:Heading size="H3" subText="Question" ui:field="questionCounter" />
+					<b:Heading size="H3" subText="Qst" ui:field="questionCounter" />
 				</b:Column>
 				<b:Column size="XS_3">
-					<b:Heading size="H3" text="nmbrPoints" subText="Point/s"
+					<b:Heading size="H3" text="nPnt" subText="Pnt/s"
 						ui:field="pointsCounter" />
 				</b:Column>
 				<b:Column size="XS_3">
-					<b:Heading size="H4" text="category" subText=""
+					<b:Heading size="H4" text="ctgr" subText=""
 						ui:field="categoryField" addStyleNames='{style.h4Margin}' />
 				</b:Column>
 				<b:Column size="XS_3">

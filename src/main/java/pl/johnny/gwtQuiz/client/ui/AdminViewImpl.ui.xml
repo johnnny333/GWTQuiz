@@ -66,5 +66,14 @@
 				</b:Column>
 			</b:Row>
 		</b:Container>
+		
+		<!-- 		Loading Modal -->
+		<b:Modal title="Loading..." closable="false" fade="true"  addStyleNames="text-center"
+			dataBackdrop="STATIC" dataKeyboard="true"  ui:field="modalLoading" >
+			<b:ModalBody>
+				<b:Icon type="SPINNER" size="TIMES3" pulse="true"/>
+			</b:ModalBody>
+		</b:Modal>
+		
 	</g:HTMLPanel>
 </ui:UiBinder> 
