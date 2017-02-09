@@ -9,13 +9,11 @@ import org.gwtbootstrap3.client.ui.ProgressBar;
 import org.gwtbootstrap3.client.ui.constants.AlertType;
 import org.gwtbootstrap3.client.ui.html.Strong;
 
-import com.google.appengine.repackaged.com.google.common.cache.LoadingCache;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 

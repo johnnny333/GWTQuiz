@@ -1,5 +1,7 @@
 package pl.johnny.gwtQuiz.client.ui;
 
+import org.gwtbootstrap3.client.ui.Modal;
+
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.ui.IsWidget;
 
@@ -54,4 +56,6 @@ public interface AddQuestionsView extends IsWidget
 	void formReset();
 
 	void showConfirmationModal();
+
+	Modal getModalLoading();
 }

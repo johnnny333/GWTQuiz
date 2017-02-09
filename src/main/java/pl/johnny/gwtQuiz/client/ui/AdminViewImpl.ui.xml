@@ -69,7 +69,7 @@
 		
 		<!-- 		Loading Modal -->
 		<b:Modal title="Loading..." closable="false" fade="true"  addStyleNames="text-center"
-			dataBackdrop="STATIC" dataKeyboard="true"  ui:field="modalLoading" >
+			dataBackdrop="STATIC" dataKeyboard="true"  ui:field="modalAdminLoading" >
 			<b:ModalBody>
 				<b:Icon type="SPINNER" size="TIMES3" pulse="true"/>
 			</b:ModalBody>

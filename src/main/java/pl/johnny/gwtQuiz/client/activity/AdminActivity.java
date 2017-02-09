@@ -37,6 +37,7 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 	private AdminView.Presenter adminViewPresenter = this;
 
 	public AdminActivity(AdminPlace place, final ClientFactory clientFactory) {
+		this.adminView = clientFactory.getAdminView();
 		this.clientFactory = clientFactory;
 	}
 

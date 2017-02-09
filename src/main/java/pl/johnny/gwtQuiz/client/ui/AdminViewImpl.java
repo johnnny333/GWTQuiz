@@ -41,7 +41,7 @@ public class AdminViewImpl extends Composite implements AdminView {
 	HTMLPanel categoriesTableContainer;
 
 	@UiField
-	Modal modalLoading;
+	Modal modalAdminLoading;
 
 	private Presenter listener;
 	private String[][] categories;
@@ -137,6 +137,6 @@ public class AdminViewImpl extends Composite implements AdminView {
 	
 	@Override
 	public Modal getModalLoading() {
-		return modalLoading;
+		return modalAdminLoading;
 	}
 }

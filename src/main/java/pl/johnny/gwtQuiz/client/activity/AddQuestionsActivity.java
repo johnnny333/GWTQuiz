@@ -11,6 +11,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.gwt.user.client.ui.HTML;
 
 import pl.johnny.gwtQuiz.client.ClientFactory;
 import pl.johnny.gwtQuiz.client.ClientFactory.CookieType;
@@ -43,6 +44,8 @@ public class AddQuestionsActivity extends AbstractActivity implements AddQuestio
 	@Override
 	public void start(final AcceptsOneWidget containerWidget, EventBus eventBus) {
 		
+		addQuestionView.getModalLoading().show();
+		
 		/**
 		 * Check for session cookie and if exist, validate it on server. If
 		 * validation passed, let user stay into AddQuestionPlace. Otherwise,
@@ -58,12 +61,16 @@ public class AddQuestionsActivity extends AbstractActivity implements AddQuestio
 
 				@Override
 				public void onFailure(Throwable caught) {
+					addQuestionView.getModalLoading().add(new HTML("Problem loading data!"));
 					GWT.log("AddQuestionsActivity.validateSession() failed", caught);
 					return;
 				}
 
 				@Override
 				public void onSuccess(String[][] result) {
+					
+					addQuestionView.getModalLoading().hide();
+					
 					/** 
 					 * If user is not logged (IOW don't have his user cookie but other user cookie exist
 					 * in browser e.g user spoofed cookie) restrict access to AdminActicity.
@@ -103,7 +110,9 @@ public class AddQuestionsActivity extends AbstractActivity implements AddQuestio
 	 */
 	@Override
 	public String mayStop() {
-		// return "The quiz is about to start!";
+		
+		addQuestionView.getModalLoading().hide();
+		
 		return null;
 	}
 

@@ -80,6 +80,8 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 	FormGroup questionFormGroup;
 	@UiField
 	Modal confirmationModal;
+	@UiField
+	Modal modalLoading;
 
 	@UiField
 	PanelBody panelBodyInsideForm;
@@ -259,5 +261,10 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 			}
 		}
 		return result;
+	}
+	
+	@Override
+	public Modal getModalLoading() {
+		return modalLoading;
 	}
 }

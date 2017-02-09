@@ -49,7 +49,7 @@ public class HighScoreCellTableViewImpl extends Composite implements HighScoreCe
 
 		//Add position column
 		Column<UserScore, Integer> positionColumn = new RowNumberColumn();
-		cellTableHighScores.setColumnWidth(positionColumn, 5.0, Unit.PCT);
+		cellTableHighScores.setColumnWidth(positionColumn, 6.0, Unit.PCT);
 		cellTableHighScores.addColumn(positionColumn);
 
 		// Add a text column to show the name.

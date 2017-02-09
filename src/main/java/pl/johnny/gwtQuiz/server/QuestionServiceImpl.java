@@ -171,7 +171,7 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 	public String[][] validateSession(String sessionID, String cookieUUID) throws Exception {
 
 		if (this.getThreadLocalRequest().getSession().getId().equals(sessionID)) {
-			System.out.println("With attribute");
+			System.out.println("Got user session");
 			return (String[][]) this.getThreadLocalRequest().getSession(true).getAttribute("userEmailAndType");
 
 		} else if (cookieUUID != null) {

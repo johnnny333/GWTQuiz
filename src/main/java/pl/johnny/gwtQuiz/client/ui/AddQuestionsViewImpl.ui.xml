@@ -136,14 +136,26 @@
 			</b:Row>
 		</b:Container>
 
-		<b:Modal title="Question submitted" closable="false" fade="true" ui:field="confirmationModal"
-			dataBackdrop="STATIC" dataKeyboard="true" b:id="myModal">
+		<!-- Confirmation modal -->
+		<b:Modal title="Question submitted" closable="false" fade="true"
+			ui:field="confirmationModal" dataBackdrop="STATIC" dataKeyboard="true"
+			b:id="myModal">
 			<b:ModalBody>
 				<g:HTML text="Your question was sent to moderation."></g:HTML>
 			</b:ModalBody>
 			<b:ModalFooter addStyleNames='{style.center}'>
-				<b:Button type="SUCCESS" dataDismiss="MODAL" icon="REMOVE" text="Close"></b:Button>
+				<b:Button type="SUCCESS" dataDismiss="MODAL" icon="REMOVE"
+					text="Close"></b:Button>
 			</b:ModalFooter>
+		</b:Modal>
+
+		<!-- Loading Modal -->
+		<b:Modal title="Loading..." closable="false" fade="true"
+			addStyleNames="text-center" dataBackdrop="STATIC" dataKeyboard="true"
+			ui:field="modalLoading">
+			<b:ModalBody>
+				<b:Icon type="SPINNER" size="TIMES3" pulse="true" />
+			</b:ModalBody>
 		</b:Modal>
 
 	</g:HTMLPanel>
