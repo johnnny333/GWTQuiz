@@ -10,8 +10,7 @@
 	
 	.ansBut {
 		margin: 5px 5px;
-		min-width: 20%;
-		max-width: 35%;
+		width: 45%;
 		word-break: break-all;
 	}
 	

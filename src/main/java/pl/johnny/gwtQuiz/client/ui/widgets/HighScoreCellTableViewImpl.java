@@ -31,13 +31,6 @@ import pl.johnny.gwtQuiz.shared.UserScore;
  */
 public class HighScoreCellTableViewImpl extends Composite implements HighScoreCellTableView {
 
-	/**
-	* The list of data to display.
-	*/
-	//	private static final List<UserScore> CONTACTS = Arrays.asList(
-	//			new UserScore("John", "5", true),
-	//			new UserScore("Joe", "4", false),
-	//			new UserScore("George", "4", false));
 	private QuestionView.Presenter listener;
 	private CellTable<UserScore> cellTableHighScores;
 	private Boolean isNameFieldFilled = false;
@@ -56,8 +49,8 @@ public class HighScoreCellTableViewImpl extends Composite implements HighScoreCe
 
 		//Add position column
 		Column<UserScore, Integer> positionColumn = new RowNumberColumn();
-		cellTableHighScores.setColumnWidth(positionColumn, 15.0, Unit.PCT);
-		cellTableHighScores.addColumn(positionColumn, "Position");
+		cellTableHighScores.setColumnWidth(positionColumn, 5.0, Unit.PCT);
+		cellTableHighScores.addColumn(positionColumn);
 
 		// Add a text column to show the name.
 		Column<UserScore, String> nameColumn = new Column<UserScore, String>(new MyTextInputCell()) {
@@ -84,7 +77,7 @@ public class HighScoreCellTableViewImpl extends Composite implements HighScoreCe
 				} ;
 			}
 		});
-		cellTableHighScores.setColumnWidth(nameColumn, 58.0, Unit.PCT);
+		cellTableHighScores.setColumnWidth(nameColumn, 60.0, Unit.PCT);
 		cellTableHighScores.addColumn(nameColumn, "Player");
 
 		// Add a NumberCell() column to show the user score.
@@ -94,7 +87,7 @@ public class HighScoreCellTableViewImpl extends Composite implements HighScoreCe
 				return object.score;
 			}
 		};
-		cellTableHighScores.setColumnWidth(scoreColumn, 12.0, Unit.PCT);
+		cellTableHighScores.setColumnWidth(scoreColumn, 8.0, Unit.PCT);
 		//		scoreColumn.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 		cellTableHighScores.addColumn(scoreColumn, "Score");
 

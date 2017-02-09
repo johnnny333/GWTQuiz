@@ -22,10 +22,9 @@ public class User implements IsSerializable{
 	public String email;
 	
 	@NotEmpty
-	@Size(min=8, message = "size must be minimum or equal to 8 chars")
-	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,}", 
-				message="Password must be at least 8 chars long, contain at least one UPPERCASE letter, " 
-				+ "at least one lowercase letter, and at least one number.") //And minimum 8 characters
+	@Size(min=3, message = "size must be minimum or equal to 3 chars")
+	@Pattern(regexp = "^(?=.*[a-z])(?=.*\\d)[A-Za-z\\d]{3,}", 
+				message="Password must be at least 3 chars long and contain at least one number.")
 	public String password;
 	
 	/**
