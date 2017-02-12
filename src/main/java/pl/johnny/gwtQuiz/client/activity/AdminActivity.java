@@ -47,9 +47,6 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 	@Override
 	public void start(final AcceptsOneWidget containerWidget, EventBus eventBus) {
 		
-		//Loading Admin Panel could take a while hence loading modal.
-		adminView.getModalLoading().show();
-		
 		/**
 		 * Check for session cookie and if exist, validate it on server. If
 		 * validation passed, let user stay into AdmininPlace. Otherwise,
@@ -66,14 +63,12 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 				@Override
 				public void onFailure(Throwable caught) {
 					GWT.log("AdminActivity.validateSession() failed", caught);
-					adminView.getModalLoading().add(new HTML("Problem loading data!"));
 					return;
 				}
 
 				@Override
 				public void onSuccess(String[][] result) {
 					
-					adminView.getModalLoading().hide();
 					/** 
 					 * If user is not logged (IOW don't have his user cookie but other user cookie exist
 					 * in browser e.g user spoofed cookie) restrict access to AdminActicity.
@@ -101,7 +96,6 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 	 */
 	@Override
 	public String mayStop() {
-		adminView.getModalLoading().hide();
 		return null;
 	}
 

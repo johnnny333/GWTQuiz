@@ -37,7 +37,7 @@
 												<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"
 													ui:field="userEmailInlineHelpBlock" />
 												<b:TextBox b:id="usermail" ui:field="email"
-													validateOnBlur="true" allowBlank="false" maxLength="20" />
+													validateOnBlur="true" allowBlank="false" maxLength="35" />
 											</b:FormGroup>
 											<b:FormGroup ui:field="passwordFormGroup">
 												<b:FormLabel for="password" text="Password"></b:FormLabel>
@@ -77,7 +77,7 @@
 												<b:InlineHelpBlock iconType="EXCLAMATION_TRIANGLE"
 													ui:field="userRegisterEmailInlineHelpBlock" />
 												<b:Input b:id="usermailRegister" ui:field="emailRegister"
-													validateOnBlur="true" type="EMAIL" allowBlank="false" maxLength="20" />
+													validateOnBlur="true" type="EMAIL" allowBlank="false" maxLength="35" />
 											</b:FormGroup>
 											
 											<b:FormGroup ui:field="passwordRegisterFormGroup">

@@ -44,7 +44,7 @@
 										</b:ListBox>
 									</b:FormGroup>
 
-									<b:PanelGroup b:id="accordion" visible="false">
+									<b:PanelGroup b:id="accordion" visible="true">
 										<b:FormLabel text="Image"></b:FormLabel>
 										<b:Panel>
 											<b:PanelHeader dataToggle="COLLAPSE"
@@ -57,6 +57,32 @@
 											</b:PanelCollapse>
 										</b:Panel>
 									</b:PanelGroup>
+
+									<b:PanelGroup b:id="accordion" visible="true">
+										<b:FormLabel text="Image URL"></b:FormLabel>
+										<b:Panel>
+											<b:PanelHeader dataToggle="COLLAPSE"
+												dataParent="#accordion3" dataTarget="#collapseTwo" text="Add image URL to question?">
+											</b:PanelHeader>
+											<b:PanelCollapse b:id="collapseTwo">
+												<b:PanelBody>
+												
+													<b:FormGroup ui:field="imageFormGroup">
+														<b:FormLabel for="questionField" text="Image URL"></b:FormLabel>
+														<b:InlineHelpBlock ui:field="imageInlineHelpBlock"
+															iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
+														<b:TextBox placeholder="Fill in image URL..."
+															b:id="questionField" validateOnBlur="true" allowBlank="false"
+															ui:field="imageField" />
+													</b:FormGroup>
+
+													<b:Image type="ROUNDED" responsive="true" ui:field="imageURL"></b:Image>
+												</b:PanelBody>
+											</b:PanelCollapse>
+										</b:Panel>
+									</b:PanelGroup>
+
+
 
 									<b:FormGroup ui:field="questionFormGroup">
 										<b:FormLabel for="questionField" text="Question"></b:FormLabel>

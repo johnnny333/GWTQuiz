@@ -7,6 +7,7 @@ import java.util.List;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.Form;
 import org.gwtbootstrap3.client.ui.FormGroup;
+import org.gwtbootstrap3.client.ui.Image;
 import org.gwtbootstrap3.client.ui.InlineHelpBlock;
 import org.gwtbootstrap3.client.ui.ListBox;
 import org.gwtbootstrap3.client.ui.Modal;
@@ -19,6 +20,12 @@ import org.gwtbootstrap3.client.ui.form.validator.HasValidators;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.DoubleClickHandler;
+import com.google.gwt.event.dom.client.ErrorEvent;
+import com.google.gwt.event.dom.client.ErrorHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -82,6 +89,15 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 	Modal confirmationModal;
 	@UiField
 	Modal modalLoading;
+	
+	@UiField
+	TextBox imageField;
+	@UiField
+	Image imageURL;
+	@UiField
+	FormGroup imageFormGroup;
+	@UiField
+	InlineHelpBlock imageInlineHelpBlock;
 
 	@UiField
 	PanelBody panelBodyInsideForm;
@@ -92,6 +108,37 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 		// Set first ListBox.listItem disabled so it acts as a placeholder.
 		correctAnsListBox.getElement().getFirstChildElement().setAttribute("disabled", "disabled");
 		correctAnsListBox.setItemSelected(0, true);
+		
+		imageField.addValueChangeHandler(new ValueChangeHandler<String>() {
+			
+			@Override
+			public void onValueChange(ValueChangeEvent<String> event) {
+				
+				imageURL.setUrl(SafeHtmlUtils.htmlEscape(event.getValue()));
+			}
+		});
+		
+		imageURL.addDoubleClickHandler(new DoubleClickHandler() {
+			
+			@Override
+			public void onDoubleClick(DoubleClickEvent event) {
+				imageField.setValue("");
+				imageURL.setUrl("");
+				imageFormGroup.setValidationState(ValidationState.NONE);
+				imageInlineHelpBlock.setText("");
+				
+			}
+		});
+		
+		imageURL.addErrorHandler(new ErrorHandler() {
+			
+			@Override
+			public void onError(ErrorEvent event) {
+				imageURL.setUrl("");
+				imageFormGroup.setValidationState(ValidationState.ERROR);
+				imageInlineHelpBlock.setText("Provided URL is not valid!");
+			}
+		});
 	}
 
 	@Override
@@ -201,7 +248,7 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 		categoryListBox.setItemSelected(0, true);
 		correctAnsFormGroup.setValidationState(ValidationState.NONE);
 		correctAnsListBox.setItemSelected(0, true);
-
+		
 		/*
 		 * Here, we hide img tag with image we just uploaded AND set upload
 		 * image name to null so our picture is technically in the DOM but won't

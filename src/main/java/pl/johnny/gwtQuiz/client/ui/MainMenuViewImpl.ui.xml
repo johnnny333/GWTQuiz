@@ -10,6 +10,10 @@
 		display: flex;
 		justify-content: center;
 		}
+		
+		.button > i {
+		margin: 3px 3px;
+	}
 	</ui:style>
 
 
@@ -17,11 +21,11 @@
 		<b:Row>
 			<b:Column size="SM_12">
 			
-				<b:Button ui:field="newGameButton" addStyleNames='{style.button}'>New Game</b:Button>
+				<b:Button ui:field="newGameButton" icon="PLAY_CIRCLE_O" addStyleNames='{style.button}' text=" New Game"></b:Button>
 				<h:Br></h:Br>
-				<b:Button ui:field="highScoresButton" addStyleNames='{style.button}'>High Scores</b:Button>
+				<b:Button ui:field="highScoresButton" icon="LIST_ALT" addStyleNames='{style.button}' text="High Scores"></b:Button>
 				<h:Br></h:Br>
-				<b:Button ui:field="addQuestionsButton" addStyleNames='{style.button}'>Add Questions</b:Button>
+				<b:Button ui:field="addQuestionsButton" icon="PLUS_CIRCLE" addStyleNames='{style.button}' text="Add Questions"></b:Button>
 
 			</b:Column>
 		</b:Row>

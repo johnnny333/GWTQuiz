@@ -99,7 +99,7 @@ public class QuestionActivity extends AbstractActivity implements QuestionView.P
 				if(questionsArrayList != null) {
 					questionView.setShowModal(false);
 					questionView.setQuestion(questionsArrayList.get(currentQuestionInt).getQuestion());
-					timerForProgressBar(25);
+//					timerForProgressBar(25);
 
 					//Question image logic
 					if(questionsArrayList.get(currentQuestionInt).getImageURL() != null) {
