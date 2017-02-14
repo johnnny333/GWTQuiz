@@ -508,9 +508,8 @@ public class QuestionServiceDatabaseConn {
 			 */
 			if (userQuestion.getImageURL() != null) {
 				prepStmt.setString(4, "1");
-				String trimmedImageURL = userQuestion.getImageURL()
-						.substring(userQuestion.getImageURL().lastIndexOf("/") + 1);
-				prepStmt.setString(5, trimmedImageURL);
+				
+				prepStmt.setString(5, userQuestion.getImageURL());
 			} else {
 				prepStmt.setString(4, "0");
 				prepStmt.setString(5, userQuestion.getImageURL());
@@ -560,24 +559,7 @@ public class QuestionServiceDatabaseConn {
 			c.close();
 		}
 
-		// Move uploaded image from /tmp to our pending storage.
-		if (userQuestion.getImageURL() != null) {
-			try {
-
-				FileUtils.moveFileToDirectory(
-						/*
-						 * getImageURL resolves to full,absolute path of
-						 * uploaded image and was brought from servlet response
-						 * after successful image upload.So here we just use it
-						 * to point to a source file.
-						 */
-						FileUtils.getFile(userQuestion.getImageURL()),
-						FileUtils.getFile("quiz_resources/question_images_tmp/" + questionID), true);
-
-			} catch (IOException e) {
-				System.err.println(e);
-			}
-		}
+		
 	}
 
 	/**
@@ -735,10 +717,6 @@ public class QuestionServiceDatabaseConn {
 			c.close();
 		}
 
-		// Delete question image.If there is none image,no exception will be
-		// thrown hence, deleteQuietly.
-		FileUtils.deleteQuietly(new File("quiz_resources/question_images_tmp/" + questionID));
-
 	}
 
 	void acceptUserTmpQuestion(Question userQuestion, String tmpQuestionID) throws Exception {
@@ -786,9 +764,7 @@ public class QuestionServiceDatabaseConn {
 						.prepareStatement("UPDATE questions SET has_image = ?, image_url = ? WHERE ID = ?;");
 
 				prepStmt.setString(1, "1");
-				String trimmedImageURL = userQuestion.getImageURL()
-						.substring(userQuestion.getImageURL().lastIndexOf("/") + 1);
-				prepStmt.setString(2, "quiz_resources/question_images/" + (questionID) + "/" + trimmedImageURL);
+				prepStmt.setString(2, userQuestion.getImageURL());
 				prepStmt.setInt(3, questionID);
 
 				prepStmt.executeUpdate();
@@ -828,27 +804,6 @@ public class QuestionServiceDatabaseConn {
 			c.close();
 		}
 
-		/*
-		 * Move uploaded image from
-		 * quiz_resources/question_images_tmp/{question_id}/{file_name} to our
-		 * main storage. After this, delete empty directory in
-		 * quiz_resources/question_images_tmp.
-		 */
-		if (userQuestion.getImageURL() != null) {
-			try {
-
-				FileUtils.moveFileToDirectory(
-
-						FileUtils.getFile("quiz_resources/question_images_tmp/" + tmpQuestionID + "/"
-								+ userQuestion.getImageURL()),
-						FileUtils.getFile("quiz_resources/question_images/" + (questionID)), true);
-
-				FileUtils.deleteDirectory(new File("quiz_resources/question_images_tmp/" + tmpQuestionID));
-
-			} catch (IOException e) {
-				System.err.println(e);
-			}
-		}
 
 		// Finally delete this particular user question and answers from
 		// temporary tables.

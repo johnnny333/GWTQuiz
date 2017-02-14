@@ -16,6 +16,7 @@
 	
 	.questionImage {
 		margin: 10px auto 1px;
+		max-height: 350px;
 	}
 	
 	.h4Margin {

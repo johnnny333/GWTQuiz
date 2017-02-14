@@ -1,7 +1,6 @@
 package pl.johnny.gwtQuiz.client.ui;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.gwtbootstrap3.client.ui.Button;
@@ -11,10 +10,8 @@ import org.gwtbootstrap3.client.ui.Image;
 import org.gwtbootstrap3.client.ui.InlineHelpBlock;
 import org.gwtbootstrap3.client.ui.ListBox;
 import org.gwtbootstrap3.client.ui.Modal;
-import org.gwtbootstrap3.client.ui.Panel;
 import org.gwtbootstrap3.client.ui.PanelBody;
 import org.gwtbootstrap3.client.ui.TextBox;
-import org.gwtbootstrap3.client.ui.base.ComplexWidget;
 import org.gwtbootstrap3.client.ui.constants.ValidationState;
 import org.gwtbootstrap3.client.ui.form.validator.HasValidators;
 
@@ -30,14 +27,12 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasOneWidget;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
-import pl.johnny.gwtQuiz.client.ui.widgets.UploadWidget;
 import pl.johnny.gwtQuiz.shared.Question;
 
 public class AddQuestionsViewImpl extends Composite implements AddQuestionsView {
@@ -49,8 +44,6 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 
 	private Presenter listener;
 
-	@UiField
-	HTMLPanel imageWidget;
 	@UiField
 	FormGroup categorySelectFormGroup;
 	@UiField
@@ -98,6 +91,8 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 	FormGroup imageFormGroup;
 	@UiField
 	InlineHelpBlock imageInlineHelpBlock;
+	
+	String imageUrlField;
 
 	@UiField
 	PanelBody panelBodyInsideForm;
@@ -118,6 +113,8 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 				imageURL.getElement().getStyle().setProperty("maxHeight", "350px");
 				imageFormGroup.setValidationState(ValidationState.NONE);
 				imageInlineHelpBlock.setText("");
+				
+				imageUrlField = imageField.getValue();
 			}
 		});
 
@@ -129,6 +126,8 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 				imageURL.setUrl("");
 				imageFormGroup.setValidationState(ValidationState.NONE);
 				imageInlineHelpBlock.setText("");
+				
+				imageUrlField = null;
 
 			}
 		});
@@ -142,6 +141,8 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 					imageFormGroup.setValidationState(ValidationState.ERROR);
 					imageInlineHelpBlock.setText("Provided URL is not valid!");
 					imageURL.setUrl("");
+					
+					imageUrlField = null;
 				}
 			}
 		});
@@ -150,19 +151,6 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 	@Override
 	public void setPresenter(Presenter listener) {
 		this.listener = listener;
-
-		/*
-		 * Add image widget to this view and hand instance of listener so it
-		 * communicate with this view.
-		 */
-		GWT.log("Image widget count before: " + imageWidget.getWidgetCount());
-		if (imageWidget.getWidgetCount() < 1) {
-			imageWidget.add(new UploadWidget(listener));
-		} else {
-			imageWidget.remove(0);
-			imageWidget.add(new UploadWidget(listener));
-		}
-		GWT.log("Image widget count after: " + imageWidget.getWidgetCount());
 	}
 
 	@Override
@@ -209,7 +197,7 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 			String[] userAnswers = new String[] { answer1Field.getValue(), answer2Field.getValue(),
 					answer3Field.getValue(), answer4Field.getValue() };
 
-			Question userQuestion = new Question(questionField.getValue(), listener.getUploadedImageName(), userAnswers,
+			Question userQuestion = new Question(questionField.getValue(), imageUrlField != null ? imageUrlField : null, userAnswers,
 					correctAnsListBox.getSelectedValue(), authorField.getValue(), categoryListBox.getSelectedValue());
 			// There goes RPC logic over activity...
 			listener.insertUserQuestion(userQuestion);
@@ -256,17 +244,6 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 		correctAnsListBox.setItemSelected(0, true);
 
 		imageURL.setUrl("");
-
-		/*
-		 * Here, we hide img tag with image we just uploaded AND set upload
-		 * image name to null so our picture is technically in the DOM but won't
-		 * be submitted since our AddQuestionActivity.uploadedImagePath is null.
-		 * formReset() is called after onFormValidateClick(ClickEvent event) and
-		 * after onFormResetClick(ClickEvent event).
-		 */
-		listener.setUploadedImageName(null);
-		if (DOM.getElementById("recivedImage") != null)
-			DOM.getElementById("recivedImage").setAttribute("style", "display:none");
 	}
 
 	@Override

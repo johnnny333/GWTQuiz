@@ -3,7 +3,9 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
 	xmlns:h="urn:import:org.gwtbootstrap3.client.ui.html">
 	<ui:style>
-	
+	.questionImage {
+		max-height: 350px;
+	}
 	</ui:style>
 
 	<b:Panel>
@@ -32,7 +34,8 @@
 							<b:PanelCollapse b:id="userQuestionImage"
 								ui:field="imgPanelCollapse">
 								<b:PanelBody>
-									<b:Image responsive="true" type="ROUNDED" ui:field="userImage"></b:Image>
+									<b:Image responsive="true" addStyleNames='{style.questionImage}'
+										type="ROUNDED" ui:field="userImage"></b:Image>
 								</b:PanelBody>
 							</b:PanelCollapse>
 						</b:Panel>
@@ -40,7 +43,8 @@
 
 					<b:FormGroup ui:field="questionFormGroup">
 						<b:FormLabel for="questionField" text="Question"></b:FormLabel>
-						<b:InlineHelpBlock ui:field="questionInlineHelpBlock" iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
+						<b:InlineHelpBlock ui:field="questionInlineHelpBlock"
+							iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
 						<b:TextBox maxLength="50" placeholder="Fill in your question..."
 							b:id="questionField" validateOnBlur="true" allowBlank="false"
 							ui:field="userQuestionField" />
@@ -86,7 +90,8 @@
 
 					<b:FormGroup ui:field="authorFormGroup">
 						<b:FormLabel for="authorField" text="Author"></b:FormLabel>
-						<b:InlineHelpBlock ui:field="authorInlineHelpBlock" iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
+						<b:InlineHelpBlock ui:field="authorInlineHelpBlock"
+							iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
 						<b:TextBox placeholder="Fill in your nick / name!"
 							ui:field="userAuthorField" maxLength="20" b:id="authorField"
 							validateOnBlur="true" allowBlank="false" />

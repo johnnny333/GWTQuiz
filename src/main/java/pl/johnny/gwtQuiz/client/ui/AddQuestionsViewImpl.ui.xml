@@ -45,20 +45,6 @@
 									</b:FormGroup>
 
 									<b:PanelGroup b:id="accordion" visible="true">
-										<b:FormLabel text="Image"></b:FormLabel>
-										<b:Panel>
-											<b:PanelHeader dataToggle="COLLAPSE"
-												dataParent="#accordion2" dataTarget="#collapseOne" text="Add image to question?">
-											</b:PanelHeader>
-											<b:PanelCollapse b:id="collapseOne">
-												<b:PanelBody>
-													<g:HTMLPanel ui:field="imageWidget"></g:HTMLPanel>
-												</b:PanelBody>
-											</b:PanelCollapse>
-										</b:Panel>
-									</b:PanelGroup>
-
-									<b:PanelGroup b:id="accordion" visible="true">
 										<b:FormLabel text="Image URL"></b:FormLabel>
 										<b:Panel>
 											<b:PanelHeader dataToggle="COLLAPSE"

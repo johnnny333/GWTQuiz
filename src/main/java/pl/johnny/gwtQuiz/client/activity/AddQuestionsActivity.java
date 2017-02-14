@@ -155,14 +155,4 @@ public class AddQuestionsActivity extends AbstractActivity implements AddQuestio
 			}
 		});
 	}
-
-	@Override
-	public void setUploadedImageName(String uploadedImageName) {
-		this.uploadedImagePath = uploadedImageName;
-	}
-
-	@Override
-	public String getUploadedImageName() {
-		return uploadedImagePath;
-	}
 }

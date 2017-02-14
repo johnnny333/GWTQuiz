@@ -153,7 +153,7 @@ public class PanelWidget extends Composite {
 		if (userImageURL != null) {
 			imgPanelHeader.setDataTarget("#" + questionID + "userQuestionImage");
 			imgPanelCollapse.setId(questionID + "userQuestionImage");
-			userImage.setUrl("quiz_resources/question_images_tmp/" + questionID + "/" + userImageURL);
+			userImage.setUrl(userImageURL);
 			userImagePanel.setVisible(true);
 		}
 	}
@@ -201,7 +201,7 @@ public class PanelWidget extends Composite {
 			String userImageVar = null;
 			if (userImage.getUrl() != "") {
 				//Get only image filename from absolute path.
-				userImageVar = userImage.getUrl().substring(userImage.getUrl().lastIndexOf("/") + 1);
+				userImageVar = userImage.getUrl();
 			}
 			
 			// Fill question model with data from form.
