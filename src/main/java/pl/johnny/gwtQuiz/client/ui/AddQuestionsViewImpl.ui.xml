@@ -72,7 +72,7 @@
 														<b:InlineHelpBlock ui:field="imageInlineHelpBlock"
 															iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
 														<b:TextBox placeholder="Fill in image URL..."
-															b:id="questionField" validateOnBlur="true" allowBlank="false"
+															b:id="questionField" validateOnBlur="false" allowBlank="false"
 															ui:field="imageField" />
 													</b:FormGroup>
 

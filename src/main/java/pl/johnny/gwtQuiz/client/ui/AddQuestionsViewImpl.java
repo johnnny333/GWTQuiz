@@ -89,7 +89,7 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 	Modal confirmationModal;
 	@UiField
 	Modal modalLoading;
-	
+
 	@UiField
 	TextBox imageField;
 	@UiField
@@ -108,35 +108,41 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 		// Set first ListBox.listItem disabled so it acts as a placeholder.
 		correctAnsListBox.getElement().getFirstChildElement().setAttribute("disabled", "disabled");
 		correctAnsListBox.setItemSelected(0, true);
-		
+
 		imageField.addValueChangeHandler(new ValueChangeHandler<String>() {
-			
+
 			@Override
 			public void onValueChange(ValueChangeEvent<String> event) {
-				
+
 				imageURL.setUrl(SafeHtmlUtils.htmlEscape(event.getValue()));
+				imageURL.getElement().getStyle().setProperty("maxHeight", "350px");
+				imageFormGroup.setValidationState(ValidationState.NONE);
+				imageInlineHelpBlock.setText("");
 			}
 		});
-		
+
 		imageURL.addDoubleClickHandler(new DoubleClickHandler() {
-			
+
 			@Override
 			public void onDoubleClick(DoubleClickEvent event) {
 				imageField.setValue("");
 				imageURL.setUrl("");
 				imageFormGroup.setValidationState(ValidationState.NONE);
 				imageInlineHelpBlock.setText("");
-				
+
 			}
 		});
-		
+
 		imageURL.addErrorHandler(new ErrorHandler() {
-			
+
 			@Override
 			public void onError(ErrorEvent event) {
-				imageURL.setUrl("");
-				imageFormGroup.setValidationState(ValidationState.ERROR);
-				imageInlineHelpBlock.setText("Provided URL is not valid!");
+
+				if (!imageField.getValue().isEmpty()) {
+					imageFormGroup.setValidationState(ValidationState.ERROR);
+					imageInlineHelpBlock.setText("Provided URL is not valid!");
+					imageURL.setUrl("");
+				}
 			}
 		});
 	}
@@ -193,8 +199,8 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 		 */
 		if (form.validate() && categoryListBox.getSelectedValue() != "Choose your question category..."
 				&& correctAnsListBox.getSelectedValue() != "Which answer is correct?") {
-			
-			//Trim and escape HTML on TextBox Fields.
+
+			// Trim and escape HTML on TextBox Fields.
 			for (HasValidators<?> child : getChildrenWithValidators(form)) {
 				((TextBox) child).setText(SafeHtmlUtils.htmlEscape(((TextBox) child).getValue().trim()));
 			}
@@ -248,7 +254,9 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 		categoryListBox.setItemSelected(0, true);
 		correctAnsFormGroup.setValidationState(ValidationState.NONE);
 		correctAnsListBox.setItemSelected(0, true);
-		
+
+		imageURL.setUrl("");
+
 		/*
 		 * Here, we hide img tag with image we just uploaded AND set upload
 		 * image name to null so our picture is technically in the DOM but won't
@@ -309,7 +317,7 @@ public class AddQuestionsViewImpl extends Composite implements AddQuestionsView 
 		}
 		return result;
 	}
-	
+
 	@Override
 	public Modal getModalLoading() {
 		return modalLoading;
