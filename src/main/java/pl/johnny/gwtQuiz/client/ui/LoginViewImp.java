@@ -210,16 +210,20 @@ public class LoginViewImp extends Composite implements LoginView {
 	public void setLoginServerErrorMessage(String errorMessage) {
 		
 		switch (errorMessage) {
+		
+		//User login.
 		case "No such user":
 			userMailFormGroup.setValidationState(ValidationState.ERROR);
 			userEmailInlineHelpBlock.setText(errorMessage);
 			break;
-			
+		
+		//Password login.	
 		case "Bad password":
 			passwordFormGroup.setValidationState(ValidationState.ERROR);
 			passwordInlineHelpBlock.setText(errorMessage);
 			break;
-			
+		
+		//Sign up
 		case "User already exist":
 			userRegisterMailFormGroup.setValidationState(ValidationState.ERROR);
 			userRegisterEmailInlineHelpBlock.setText(errorMessage + "! Use different email to register.");

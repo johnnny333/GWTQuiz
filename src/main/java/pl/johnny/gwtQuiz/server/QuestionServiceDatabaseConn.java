@@ -968,8 +968,9 @@ public class QuestionServiceDatabaseConn {
 
 		} catch (Exception e) {
 
-			// SQLite error codes: https://www.sqlite.org/c3ref/c_abort.html
-			if (((SQLException) e).getErrorCode() == 19) {
+			// SQLite error codes: https://www.sqlite.org/c3ref/c_abort.html - 19
+			// mySQL error codes: https://dev.mysql.com/doc/refman/5.5/en/error-messages-server.html- 1062
+			if (((SQLException) e).getErrorCode() == 1062) {
 				throw new SQLException("User already exist");
 			}
 
