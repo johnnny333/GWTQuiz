@@ -15,7 +15,7 @@
 	}
 	
 	.questionImage {
-		margin: 10px auto 1px;
+		padding-top: 5px;
 		max-height: 350px;
 	}
 	

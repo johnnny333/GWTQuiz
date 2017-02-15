@@ -9,6 +9,7 @@ import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.HTML;
@@ -17,6 +18,7 @@ import pl.johnny.gwtQuiz.client.ClientFactory;
 import pl.johnny.gwtQuiz.client.ClientFactory.CookieType;
 import pl.johnny.gwtQuiz.client.place.AddQuestionsPlace;
 import pl.johnny.gwtQuiz.client.place.LoginPlace;
+import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
 import pl.johnny.gwtQuiz.client.ui.AddQuestionsView;
 import pl.johnny.gwtQuiz.shared.Question;
 
@@ -59,7 +61,9 @@ public class AddQuestionsActivity extends AbstractActivity implements AddQuestio
 
 				@Override
 				public void onFailure(Throwable caught) {
-					GWT.log("AddQuestionsActivity.validateSession() failed", caught);
+					GWT.log("AddQuestionsActivity.validateSession() failed ", caught);
+					Cookies.removeCookie("gwtQuiz");
+					goTo(new MainMenuPlace(""));
 					return;
 				}
 
@@ -72,6 +76,7 @@ public class AddQuestionsActivity extends AbstractActivity implements AddQuestio
 					 */
 					if (result == null) {
 						GWT.log(this.getClass().getName() + "failed validation");
+						Cookies.removeCookie("gwtQuiz");
 						goTo(new LoginPlace(""));
 					} else {
 						/**
