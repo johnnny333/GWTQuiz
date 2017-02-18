@@ -1,6 +1,7 @@
 package pl.johnny.gwtQuiz.client.ui;
 
 import org.gwtbootstrap3.client.ui.Alert;
+import org.gwtbootstrap3.client.ui.Anchor;
 import org.gwtbootstrap3.client.ui.Heading;
 import org.gwtbootstrap3.client.ui.Image;
 import org.gwtbootstrap3.client.ui.Modal;
@@ -57,7 +58,8 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	@UiField Heading pointsCounter;
 	@UiField Heading categoryField;
 	@UiField Heading authorField;
-	@UiField ProgressBar progressBar;	
+	@UiField ProgressBar progressBar;
+	@UiField Anchor imageAnchor;
 	
 	@Override
 	public void setPresenter(Presenter listener) {
@@ -79,6 +81,9 @@ public class QuestionViewImpl extends Composite implements QuestionView {
 	public void setQuestionImage(String questionImageURL,boolean isVisible) {
 		questionImage.setUrl(questionImageURL);
 		questionImage.setVisible(isVisible);
+		
+		imageAnchor.setHref(questionImageURL);
+		imageAnchor.getElement().appendChild(questionImage.getElement());
 	}
 
 	@Override

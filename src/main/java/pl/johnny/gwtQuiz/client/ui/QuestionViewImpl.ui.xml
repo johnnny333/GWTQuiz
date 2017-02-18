@@ -59,7 +59,8 @@
 								<b:Heading size="H1" ui:field="qstnLbl"></b:Heading>
 								<b:Image type="ROUNDED" url="" ui:field="questionImage"
 									addStyleNames='{style.questionImage}' visible="false"
-									responsive="true" />
+									responsive="true" ></b:Image>
+									<b:Anchor target="_blank" ui:field="imageAnchor"></b:Anchor>
 							</b:PanelHeader>
 							<b:PanelBody>
 								<b:Button ui:field="btn0" text="questionButton"

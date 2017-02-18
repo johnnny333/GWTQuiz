@@ -4,35 +4,6 @@ body {
 	background-color: #7fcef5;
 }
 
-h1 {
-	font-size: 2em;
-	font-weight: bold;
-	color: #777777;
-	margin: 40px 0px 70px;
-	text-align: center;
-}
-
-.sendButton {
-	display: block;
-	font-size: 16pt;
-}
-
-/** Most GWT widgets already have a style name defined */
-.gwt-DialogBox {
-	width: 400px;
-}
-
-.dialogVPanel {
-	margin: 5px;
-}
-
-.serverResponseLabelError {
-	color: red;
-}
-/** Set ids using widget.getElement().setId("idOfElement") */
-#closeButton {
-	margin: 15px 6px 6px;
-}
 
 /*======================== UPLOAD WIDGET ==================*/
 
@@ -85,7 +56,7 @@ div#collapseOne tr:first-of-type > td {
 
 /* Center uploaded image */
  img.img-responsive {
-	margin: 0 auto;
+	margin: 8px auto;
 }
 
 /*====================END=UPLOAD WIDGET ==================*/
@@ -119,4 +90,53 @@ div.add-form-buttons > button {
 
 #tab5 > div > div > div:nth-child(1) input[type="text"]:FOCUS {
 	background: #d9edf7;
+}
+
+/*============COLORING===================*/
+
+.navbar-default .navbar-collapse, .navbar-default .navbar-form {
+	background-color: #00BCD4;
+}
+
+.navbar-default .navbar-brand {
+	background-color: #00BCD4;
+}
+
+.fa {
+	color: #36737b;
+}
+
+.navbar-default .navbar-nav .open .dropdown-menu>li>a,
+.navbar-default .navbar-nav>li>a {
+	color: #d6fffb !important;
+}
+
+.navbar-default {
+	background-color: #00BCD4 !important;
+}
+
+.icon-bar {
+	background-color: #b4dde2 !important;
+}
+
+.navbar-default .navbar-toggle:focus, .navbar-default .navbar-toggle:hover,
+.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover,
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover {
+	background-color: #199cad !important;
+}
+
+.navbar-default .navbar-brand {
+	color: #d6fffb !important;
+}
+
+.btn-default {
+	border-color: #00bcd4 !important;
+}
+
+.panel-footer, .panel-default>.panel-heading {
+	background-color: transparent !important;
+}
+
+#myModal > div > div > div.modal-footer.pl-johnny-gwtQuiz-client-ui-QuestionViewImpl_QuestionViewImplUiBinderImpl_GenCss_style-center > button > i {
+	color: inherit;
 }
