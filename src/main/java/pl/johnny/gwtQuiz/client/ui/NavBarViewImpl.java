@@ -125,11 +125,11 @@ public class NavBarViewImpl extends Composite implements NavBarView {
 			anchorListItems[i].setActive(false);
 		}
 
-		navBarBrand.getElement().getStyle().setProperty("backgroundColor", "#F8F8F8");
+		navBarBrand.getElement().getStyle().setProperty("backgroundColor", "#00bcd4");
 
 		switch (whichAnchorToHighlight) {
 		case 0:
-			navBarBrand.getElement().getStyle().setProperty("backgroundColor", "#E7E7E7");
+			navBarBrand.getElement().getStyle().setProperty("backgroundColor", "#199cad");
 			break;
 
 		case 1:

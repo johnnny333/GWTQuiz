@@ -94,11 +94,10 @@ div.add-form-buttons > button {
 
 /*============COLORING===================*/
 
-.navbar-default .navbar-collapse, .navbar-default .navbar-form {
-	background-color: #00BCD4;
-}
 
-.navbar-default .navbar-brand {
+.navbar-nav>li>.dropdown-menu,
+.navbar-default .navbar-brand,
+.navbar-default .navbar-collapse, .navbar-default .navbar-form {
 	background-color: #00BCD4;
 }
 

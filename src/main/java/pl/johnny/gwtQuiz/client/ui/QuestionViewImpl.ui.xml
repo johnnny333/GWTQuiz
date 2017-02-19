@@ -11,7 +11,7 @@
 	.ansBut {
 		margin: 5px 5px;
 		width: 45%;
-		word-break: break-all;
+		white-space: normal;
 	}
 	
 	.questionImage {
@@ -50,7 +50,7 @@
 					<h:Hr></h:Hr>
 
 					<b:Progress active="true" type="STRIPED">
-						<b:ProgressBar type="SUCCESS" ui:field="progressBar" />
+						<b:ProgressBar type="INFO" ui:field="progressBar" />
 					</b:Progress>
 
 					<g:HTMLPanel addStyleNames='{style.center}'>
