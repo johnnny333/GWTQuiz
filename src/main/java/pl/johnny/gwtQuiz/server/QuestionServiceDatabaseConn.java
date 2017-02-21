@@ -1,7 +1,5 @@
 package pl.johnny.gwtQuiz.server;
 
-import java.io.File;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -11,8 +9,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
-
-import org.apache.commons.io.FileUtils;
 
 import pl.johnny.gwtQuiz.shared.Question;
 import pl.johnny.gwtQuiz.shared.User;
@@ -60,17 +56,17 @@ public class QuestionServiceDatabaseConn {
 		case "mysql_lucid":
 
 			return DriverManager.getConnection("jdbc:mysql://localhost/quiz?socket=/lucid/services/MySQL/mysql.sock",
-					"lucid", "");
+					"lucid", "-");
 
 		case "mySQLlocal":
 
-			return DriverManager.getConnection("jdbc:mysql://localhost/quiz", "user", "kyt");
+			return DriverManager.getConnection("jdbc:mysql://localhost/quiz", "-", "-");
 
 		case "mysql":
 
 			if (System.getProperty("com.google.appengine.runtime.version").startsWith("Google App Engine/")) {
 
-				url = "jdbc:google:mysql://quizownik:europe-west1:quizownik1/quiz?user=root&password=33szarikow88";
+				url = "jdbc:google:mysql://quizownik:europe-west1:quizownik1/quiz?user=-&password=-";
 
 				try {
 					// Load the class that provides the new

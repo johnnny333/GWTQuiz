@@ -72,8 +72,7 @@
 								<b:Button ui:field="btn3" text="questionButton"
 									addStyleNames='{style.ansBut}'></b:Button>
 							</b:PanelBody>
-							<b:PanelFooter>
-							</b:PanelFooter>
+							
 						</b:Panel>
 
 					</g:HTMLPanel>

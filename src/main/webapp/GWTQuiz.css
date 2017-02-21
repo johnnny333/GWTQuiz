@@ -136,6 +136,6 @@ div.add-form-buttons > button {
 	background-color: transparent !important;
 }
 
-#myModal > div > div > div.modal-footer.pl-johnny-gwtQuiz-client-ui-QuestionViewImpl_QuestionViewImplUiBinderImpl_GenCss_style-center > button > i {
+#myModal > div > div > div button > i {
 	color: inherit;
 }
