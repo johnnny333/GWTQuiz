@@ -101,10 +101,8 @@
 			</b:PanelBody>
 
 			<b:PanelFooter addStyleNames="text-center add-form-buttons">
-				<b:Button ui:field="acceptQuestionButton" type="SUCCESS">Accept
-					Question</b:Button>
-				<b:Button ui:field="deleteQuestionButton" type="DANGER">Delete
-					Question</b:Button>
+				<b:Button ui:field="acceptQuestionButton" icon="THUMBS_O_UP" text="Accept Question"></b:Button>
+				<b:Button ui:field="deleteQuestionButton" icon="REMOVE" text="Delete Question"></b:Button>
 			</b:PanelFooter>
 
 		</b:PanelCollapse>

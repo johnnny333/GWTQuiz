@@ -38,7 +38,6 @@
 							<b:Panel>
 
 								<b:PanelHeader>
-									<!-- <b:Heading size="H4" text="User Questions" /> -->
 									<b:Icon type="REFRESH" spin="false" addStyleNames="{style.icon}"
 										ui:field="refreshIcon" title="Refesh temporary questions list." />
 								</b:PanelHeader>
@@ -50,8 +49,6 @@
 									</b:PanelGroup>
 
 								</b:PanelBody>
-
-								<b:PanelFooter></b:PanelFooter>
 
 							</b:Panel>
 						</b:TabPane>

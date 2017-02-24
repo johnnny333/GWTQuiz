@@ -188,6 +188,7 @@ public class CategoriesTable extends Composite {
 				valueBox.clear();
 			}
 		});
+		addButton.setIcon(IconType.PLUS_CIRCLE);
 
 		// Modal settings.
 		final Modal modal = new Modal();

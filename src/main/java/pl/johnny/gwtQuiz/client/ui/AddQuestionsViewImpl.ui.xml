@@ -58,7 +58,7 @@
 														<b:InlineHelpBlock ui:field="imageInlineHelpBlock"
 															iconType="EXCLAMATION_TRIANGLE"></b:InlineHelpBlock>
 														<b:TextBox placeholder="Fill in image URL..."
-															b:id="questionField" validateOnBlur="false" allowBlank="false"
+															b:id="questionField" validateOnBlur="false" allowBlank="true"
 															ui:field="imageField" />
 													</b:FormGroup>
 
@@ -135,9 +135,9 @@
 
 
 							<b:PanelFooter addStyleNames="text-center add-form-buttons">
-								<b:Button ui:field="formValidateButton" type="SUCCESS"
+								<b:Button ui:field="formValidateButton" icon="PLUS_CIRCLE"
 									text="Submit question"></b:Button>
-								<b:Button ui:field="formResetButton" type="DANGER"
+								<b:Button ui:field="formResetButton" icon="REPEAT"
 									text="Reset form"></b:Button>
 							</b:PanelFooter>
 

@@ -53,6 +53,7 @@ public class AddQuestionsActivity extends AbstractActivity implements AddQuestio
 		 */
 		String cookieSessionID = clientFactory.getCookie(CookieType.SESSION_ID);
 		if (cookieSessionID == null) {
+			Cookies.removeCookie("gwtQuiz");
 			goTo(new LoginPlace("LoginIn"));
 			return;
 		}else {

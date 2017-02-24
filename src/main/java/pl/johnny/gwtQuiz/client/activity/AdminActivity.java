@@ -16,6 +16,7 @@ import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.HTML;
@@ -54,6 +55,7 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 		 */
 		String cookieSessionID = clientFactory.getCookie(CookieType.SESSION_ID);
 		if (cookieSessionID == null) {
+			Cookies.removeCookie("gwtQuiz");
 			goTo(new LoginPlace(""));
 			return;
 		} else {

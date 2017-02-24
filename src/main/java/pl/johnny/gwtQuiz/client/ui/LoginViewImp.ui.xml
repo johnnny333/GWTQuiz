@@ -54,7 +54,7 @@
 
 								<b:PanelFooter addStyleNames="text-center add-form-buttons">
 
-									<b:Button ui:field="loginButton" type="PRIMARY" text="Log in"></b:Button>
+									<b:Button ui:field="loginButton" icon="USER" text="Log in"></b:Button>
 
 								</b:PanelFooter>
 							</b:Panel>
@@ -108,7 +108,7 @@
 
 								<b:PanelFooter addStyleNames="text-center add-form-buttons">
 
-									<b:Button ui:field="registerButton" type="PRIMARY" text="Sign up"></b:Button>
+									<b:Button ui:field="registerButton" icon="SIGN_IN" text="Sign up"></b:Button>
 
 								</b:PanelFooter>
 							</b:Panel>
