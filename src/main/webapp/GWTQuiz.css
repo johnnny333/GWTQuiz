@@ -120,7 +120,8 @@ div.add-form-buttons > button {
 
 .navbar-default .navbar-toggle:focus, .navbar-default .navbar-toggle:hover,
 .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover,
-.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover {
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover,
+.dropdown-menu>li>a:hover {
 	background-color: #199cad !important;
 }
 

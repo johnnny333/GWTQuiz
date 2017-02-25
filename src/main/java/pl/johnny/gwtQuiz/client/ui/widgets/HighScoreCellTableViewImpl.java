@@ -1,6 +1,7 @@
 package pl.johnny.gwtQuiz.client.ui.widgets;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.gwtbootstrap3.client.ui.gwt.CellTable;
 
@@ -10,6 +11,9 @@ import com.google.gwt.cell.client.NumberCell;
 import com.google.gwt.cell.client.TextInputCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.client.constants.TimeZoneConstants;
+import com.google.gwt.i18n.shared.TimeZone;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates.Template;
 import com.google.gwt.safehtml.shared.SafeHtml;
@@ -21,7 +25,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.view.client.NoSelectionModel;
 
 import pl.johnny.gwtQuiz.client.ui.QuestionView;
-import pl.johnny.gwtQuiz.client.ui.QuestionView.Presenter;
 import pl.johnny.gwtQuiz.shared.UserScore;
 
 /** 
@@ -95,7 +98,11 @@ public class HighScoreCellTableViewImpl extends Composite implements HighScoreCe
 		TextColumn<UserScore> createdAtColumn = new TextColumn<UserScore>() {
 			@Override
 			public String getValue(UserScore object) {
-				return object.createdAt;
+				
+				Date date = DateTimeFormat.getFormat("yyyy-MM-dd HH:mm:ss.s Z").parse(object.createdAt + " Z");
+				String dateString = DateTimeFormat.getFormat("yyyy-MM-dd HH:mm").format(date);
+				
+				return dateString;
 			}
 		};
 		cellTableHighScores.addColumn(createdAtColumn, "Date");
