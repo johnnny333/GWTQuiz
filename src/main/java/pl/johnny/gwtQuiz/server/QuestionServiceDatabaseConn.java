@@ -36,7 +36,7 @@ public class QuestionServiceDatabaseConn {
 	 */
 	private Connection getConnection() throws SQLException, ClassNotFoundException, ServletException {
 
-		final String dbType = "mySQLlocal";
+		final String dbType = "mysql";
 		String url;
 
 		switch (dbType) {
@@ -56,7 +56,7 @@ public class QuestionServiceDatabaseConn {
 		case "mysql_lucid":
 
 			return DriverManager.getConnection("jdbc:mysql://localhost/quiz?socket=/lucid/services/MySQL/mysql.sock",
-					"lucid", "-");
+					"-", "-");
 
 		case "mySQLlocal":
 
@@ -989,8 +989,8 @@ public class QuestionServiceDatabaseConn {
 
 			prepStmt = c.prepareStatement("UPDATE users SET cookie_uuid = ? WHERE email = ?");
 
-			prepStmt.setString(1, userToUpdate.email);
-			prepStmt.setString(2, UUID);
+			prepStmt.setString(1, UUID);
+			prepStmt.setString(2, userToUpdate.email);
 			prepStmt.executeUpdate();
 
 			prepStmt.close();

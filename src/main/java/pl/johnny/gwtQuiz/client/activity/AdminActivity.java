@@ -23,6 +23,7 @@ import com.google.gwt.user.client.ui.HTML;
 
 import pl.johnny.gwtQuiz.client.ClientFactory;
 import pl.johnny.gwtQuiz.client.ClientFactory.CookieType;
+import pl.johnny.gwtQuiz.client.place.AddQuestionsPlace;
 import pl.johnny.gwtQuiz.client.place.AdminPlace;
 import pl.johnny.gwtQuiz.client.place.LoginPlace;
 import pl.johnny.gwtQuiz.client.ui.AdminView;
@@ -78,9 +79,10 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 					 * also restrict access to AdminActivity.
 					 */
 					if (result == null) {
+						Cookies.removeCookie("gwtQuiz");
 						goTo(new LoginPlace(""));
 					} else if(Integer.parseInt(result[0][1]) == 1) {
-						goTo(new LoginPlace(""));
+						goTo(new AddQuestionsPlace(""));
 					}else {
 						adminView = clientFactory.getAdminView();
 						adminView.setPresenter(adminViewPresenter);

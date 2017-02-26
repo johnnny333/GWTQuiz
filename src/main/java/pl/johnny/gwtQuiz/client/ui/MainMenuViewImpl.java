@@ -1,10 +1,13 @@
 package pl.johnny.gwtQuiz.client.ui;
 
+import org.gwtbootstrap3.client.ui.Anchor;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -20,6 +23,7 @@ public class MainMenuViewImpl extends Composite implements MainMenuView {
 	@UiField org.gwtbootstrap3.client.ui.Button newGameButton;
 	@UiField org.gwtbootstrap3.client.ui.Button highScoresButton;
 	@UiField org.gwtbootstrap3.client.ui.Button addQuestionsButton;
+	@UiField Anchor mailAnchor;
 	
 	private Presenter listener;
 
@@ -51,5 +55,10 @@ public class MainMenuViewImpl extends Composite implements MainMenuView {
 	@Override
 	public void setPresenter(Presenter listener) {
 		this.listener = listener;
+	}
+	
+	@UiHandler("mailAnchor")
+	void onMailAnchorClicked(ClickEvent e) {
+		Window.open("mailto:janzarewicz@gmail.com?subject=Quizownik inquiry...", "_parent", null);
 	}
 }
