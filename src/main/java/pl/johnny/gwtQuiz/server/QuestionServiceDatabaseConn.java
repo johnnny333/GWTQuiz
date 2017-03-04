@@ -60,13 +60,13 @@ public class QuestionServiceDatabaseConn {
 
 		case "mySQLlocal":
 
-			return DriverManager.getConnection("jdbc:mysql://localhost/quiz", "user", "kyt");
+			return DriverManager.getConnection("jdbc:mysql://localhost/quiz", "", "");
 
 		case "mysql":
 
 			if (System.getProperty("com.google.appengine.runtime.version").startsWith("Google App Engine/")) {
 
-				url = "jdbc:google:mysql://quizownik:europe-west1:quizownik1/quiz?user=root&password=33szarikow88";
+				url = "jdbc:google:mysql://quizownik:europe-west1:quizownik1/quiz?user=&password=";
 
 				try {
 					// Load the class that provides the new
