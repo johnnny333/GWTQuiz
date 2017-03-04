@@ -1,6 +1,7 @@
 package pl.johnny.gwtQuiz.server;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -149,7 +150,6 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 			
 			//Save random cookie UUID 
 			String cookieUUID = UUID.randomUUID().toString();
-			questionServiceDBConn.insertUserUUID(user, cookieUUID);
 			
 			Cookie cookie = new Cookie("user", cookieUUID);
 			// Expire the cookie in five minutes (5 * 60), it's UTC ('Z' at the end!).
@@ -168,28 +168,26 @@ public class QuestionServiceImpl extends RemoteServiceServlet implements Questio
 	};
 
 	@Override
-	public String[][] validateSession(String sessionID, String cookieUUID) throws Exception {
-
+	public String[][] validateSession(String sessionID, String userEmailAndTypeAndUUID) throws Exception {
+		
 		if (this.getThreadLocalRequest().getSession().getId().equals(sessionID)) {
 			System.out.println("Got user session");
 			return (String[][]) this.getThreadLocalRequest().getSession(true).getAttribute("userEmailAndType");
 
-		} else if (cookieUUID != null) {
+		} else if (!userEmailAndTypeAndUUID.isEmpty()) {
 
 			for (Cookie serverCookies : this.getThreadLocalRequest().getCookies()) {
-				String[] selectedUser = null;
 
-				if (serverCookies.getValue().equals(cookieUUID)) {
-					selectedUser = questionServiceDBConn.getUserUUID(cookieUUID);
+				if (serverCookies.getValue().equals(userEmailAndTypeAndUUID.split(",")[2])) {
 					
 					System.out.println("Cookie name: " + serverCookies.getName());
 					System.out.println("Cookie value: " + serverCookies.getValue());
-					System.out.println("Cookie lifetime: " + serverCookies.getMaxAge());
+					System.out.println("Cookie lifetime: " + serverCookies.getMaxAge());		
 					
 					this.getThreadLocalRequest().getSession().setAttribute("userEmailAndType",
-							new String[][] { { selectedUser[0], selectedUser[2] } });
+							new String[][] { { userEmailAndTypeAndUUID.split(",")[0], userEmailAndTypeAndUUID.split(",")[1] } });
 					
-					return new String[][] { { selectedUser[0], selectedUser[2] } };
+					return new String[][] { { userEmailAndTypeAndUUID.split(",")[0], userEmailAndTypeAndUUID.split(",")[1] } };
 				}
 			}
 			return null;

@@ -26,6 +26,7 @@ import pl.johnny.gwtQuiz.client.ClientFactory.CookieType;
 import pl.johnny.gwtQuiz.client.place.AddQuestionsPlace;
 import pl.johnny.gwtQuiz.client.place.AdminPlace;
 import pl.johnny.gwtQuiz.client.place.LoginPlace;
+import pl.johnny.gwtQuiz.client.place.MainMenuPlace;
 import pl.johnny.gwtQuiz.client.ui.AdminView;
 import pl.johnny.gwtQuiz.client.ui.widgets.PanelWidget;
 import pl.johnny.gwtQuiz.shared.Question;
@@ -54,18 +55,24 @@ public class AdminActivity extends AbstractActivity implements AdminView.Present
 		 * validation passed, let user stay into AdmininPlace. Otherwise,
 		 * redirect him into LoginPlace.
 		 */
-		String cookieSessionID = clientFactory.getCookie(CookieType.SESSION_ID);
-		if (cookieSessionID == null) {
-			Cookies.removeCookie("gwtQuiz");
+		String cookieSessionID = clientFactory.getCookie(CookieType.SESSION_ID),
+				userEmailCookie = clientFactory.getCookie(CookieType.USER_EMAIL);
+		
+		if (cookieSessionID == null && userEmailCookie == null) {
 			goTo(new LoginPlace(""));
 			return;
 		} else {
-			clientFactory.getQuestionsService().validateSession(cookieSessionID,clientFactory.getCookie(CookieType.UUID),
+			clientFactory.getQuestionsService().validateSession(cookieSessionID,
+					clientFactory.getCookie(CookieType.USER_EMAIL) + ","
+							+ clientFactory.getCookie(CookieType.USER_TYPE) + ","
+							+ clientFactory.getCookie(CookieType.UUID),
 					new AsyncCallback<String[][]>() {
 
 				@Override
 				public void onFailure(Throwable caught) {
 					GWT.log("AdminActivity.validateSession() failed", caught);
+					Cookies.removeCookie("gwtQuiz");
+					goTo(new MainMenuPlace(""));
 					return;
 				}
 

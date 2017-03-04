@@ -28,12 +28,6 @@ public class AddQuestionsActivity extends AbstractActivity implements AddQuestio
 	private ClientFactory clientFactory;
 	private AddQuestionsView addQuestionView;
 	private AddQuestionsView.Presenter addQuestionViewPresenter = this;
-	
-	/**
-	 * Field representing uploaded image name. If its null it means no image was
-	 * uploaded.
-	 */
-	private String uploadedImagePath = null;
 
 	public AddQuestionsActivity(AddQuestionsPlace place, final ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
@@ -45,64 +39,70 @@ public class AddQuestionsActivity extends AbstractActivity implements AddQuestio
 	 */
 	@Override
 	public void start(final AcceptsOneWidget containerWidget, EventBus eventBus) {
-				
+
 		/**
 		 * Check for session cookie and if exist, validate it on server. If
 		 * validation passed, let user stay into AddQuestionPlace. Otherwise,
 		 * redirect him into LoginPlace.
 		 */
-		String cookieSessionID = clientFactory.getCookie(CookieType.SESSION_ID);
-		if (cookieSessionID == null) {
-			Cookies.removeCookie("gwtQuiz");
+		String cookieSessionID = clientFactory.getCookie(CookieType.SESSION_ID),
+				userEmailCookie = clientFactory.getCookie(CookieType.USER_EMAIL);
+		
+		if (cookieSessionID == null && userEmailCookie == null) {
 			goTo(new LoginPlace("LoginIn"));
 			return;
-		}else {
-			clientFactory.getQuestionsService().validateSession(cookieSessionID, clientFactory.getCookie(CookieType.UUID), 
+		} else {
+			clientFactory.getQuestionsService().validateSession(cookieSessionID,
+					clientFactory.getCookie(CookieType.USER_EMAIL) + ","
+							+ clientFactory.getCookie(CookieType.USER_TYPE) + ","
+							+ clientFactory.getCookie(CookieType.UUID),
 					new AsyncCallback<String[][]>() {
 
-				@Override
-				public void onFailure(Throwable caught) {
-					GWT.log("AddQuestionsActivity.validateSession() failed ", caught);
-					Cookies.removeCookie("gwtQuiz");
-					goTo(new MainMenuPlace(""));
-					return;
-				}
+						@Override
+						public void onFailure(Throwable caught) {
+							GWT.log("AddQuestionsActivity.validateSession() failed ", caught);
+							Cookies.removeCookie("gwtQuiz");
+							goTo(new MainMenuPlace(""));
+							return;
+						}
 
-				@Override
-				public void onSuccess(String[][] result) {
-										
-					/** 
-					 * If user is not logged (IOW don't have his user cookie but other user cookie exist
-					 * in browser e.g user spoofed cookie) restrict access to AdminActicity.
-					 */
-					if (result == null) {
-						GWT.log(this.getClass().getName() + "failed validation");
-						Cookies.removeCookie("gwtQuiz");
-						goTo(new LoginPlace(""));
-					} else {
-						/**
-						 * If proper user is logged in - initialize view.
-						 * .......
-						 * Put categories from database into ListBox in this activity view
-						 */
-						clientFactory.getQuestionsService().getCategories(new AsyncCallback<String[][]>() {
+						@Override
+						public void onSuccess(String[][] result) {
 
-							@Override
-							public void onSuccess(String[][] result) {
-								AddQuestionsView addQuestionView = clientFactory.getAddQuestionsView();
-								addQuestionView.setPresenter(addQuestionViewPresenter);
-								containerWidget.setWidget(addQuestionView.asWidget());
-								addQuestionView.setCategories(result);
+							/**
+							 * If user is not logged (IOW don't have his user
+							 * cookie but other user cookie exist in browser e.g
+							 * user spoofed cookie) restrict access to
+							 * AdminActicity.
+							 */
+							if (result == null) {
+								GWT.log(this.getClass().getName() + "failed validation");
+								Cookies.removeCookie("gwtQuiz");
+								goTo(new LoginPlace(""));
+							} else {
+								/**
+								 * If proper user is logged in - initialize
+								 * view. ....... Put categories from database
+								 * into ListBox in this activity view
+								 */
+								clientFactory.getQuestionsService().getCategories(new AsyncCallback<String[][]>() {
+
+									@Override
+									public void onSuccess(String[][] result) {
+										AddQuestionsView addQuestionView = clientFactory.getAddQuestionsView();
+										addQuestionView.setPresenter(addQuestionViewPresenter);
+										containerWidget.setWidget(addQuestionView.asWidget());
+										addQuestionView.setCategories(result);
+									}
+
+									@Override
+									public void onFailure(Throwable caught) {
+										GWT.log("Failed AddQuestionsActivity.getCategories() RPC! ", caught);
+									}
+								});
 							}
-
-							@Override
-							public void onFailure(Throwable caught) {
-								GWT.log("Failed AddQuestionsActivity.getCategories() RPC! ", caught);
-							}
-						});
-					}
-				}
-			});
+						}
+					});
 		}
 	}
 
@@ -110,7 +110,7 @@ public class AddQuestionsActivity extends AbstractActivity implements AddQuestio
 	 * Ask user before stopping this activity
 	 */
 	@Override
-	public String mayStop() {		
+	public String mayStop() {
 		return null;
 	}
 
@@ -128,8 +128,8 @@ public class AddQuestionsActivity extends AbstractActivity implements AddQuestio
 
 			@Override
 			public void onFailure(Throwable caught) {
-				
-				//Catch Hibernate validation exception message.
+
+				// Catch Hibernate validation exception message.
 				if (caught instanceof ConstraintViolationException) {
 
 					ConstraintViolationException violationException = (ConstraintViolationException) caught;
@@ -137,13 +137,11 @@ public class AddQuestionsActivity extends AbstractActivity implements AddQuestio
 
 					StringBuffer sb = new StringBuffer();
 					for (ConstraintViolation<?> constraintViolation : violations) {
-						sb.append(constraintViolation.getPropertyPath().toString())
-								.append(":") //
-								.append(constraintViolation.getMessage())
-								.append("\n");
-					
-					addQuestionView.setServerErrorMessage(constraintViolation.getPropertyPath().toString(),  
-							constraintViolation.getMessage());
+						sb.append(constraintViolation.getPropertyPath().toString()).append(":") //
+								.append(constraintViolation.getMessage()).append("\n");
+
+						addQuestionView.setServerErrorMessage(constraintViolation.getPropertyPath().toString(),
+								constraintViolation.getMessage());
 
 					}
 					GWT.log("insertUserQuestion On Failure hibernate " + sb);

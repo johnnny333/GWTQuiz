@@ -112,7 +112,6 @@ public class ClientFactoryImpl implements ClientFactory {
 					
 				case UUID:
 					cookie = base64Decode(Cookies.getCookie("gwtQuiz")).split(",")[3];
-					GWT.log("UUID: " + cookie);
 					break;
 
 				default:

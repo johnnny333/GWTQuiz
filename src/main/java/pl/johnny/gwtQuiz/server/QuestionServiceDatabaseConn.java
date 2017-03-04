@@ -60,13 +60,13 @@ public class QuestionServiceDatabaseConn {
 
 		case "mySQLlocal":
 
-			return DriverManager.getConnection("jdbc:mysql://localhost/quiz", "-", "-");
+			return DriverManager.getConnection("jdbc:mysql://localhost/quiz", "user", "kyt");
 
 		case "mysql":
 
 			if (System.getProperty("com.google.appengine.runtime.version").startsWith("Google App Engine/")) {
 
-				url = "jdbc:google:mysql://quizownik:europe-west1:quizownik1/quiz?user=-&password=-";
+				url = "jdbc:google:mysql://quizownik:europe-west1:quizownik1/quiz?user=root&password=33szarikow88";
 
 				try {
 					// Load the class that provides the new
@@ -976,75 +976,6 @@ public class QuestionServiceDatabaseConn {
 		} finally {
 			c.close();
 		}
-	}
-
-	void insertUserUUID(User userToUpdate, String UUID) throws SQLException {
-
-		Connection c = null;
-		PreparedStatement prepStmt = null;
-
-		try {
-			// Connection
-			c = getConnection();
-
-			prepStmt = c.prepareStatement("UPDATE users SET cookie_uuid = ? WHERE email = ?");
-
-			prepStmt.setString(1, UUID);
-			prepStmt.setString(2, userToUpdate.email);
-			prepStmt.executeUpdate();
-
-			prepStmt.close();
-
-		} catch (Exception e) {
-
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
-			System.err.println(e.getCause() + " " + e.getStackTrace());
-		} finally {
-			c.close();
-		}
-	}
-
-	String[] getUserUUID(String cookieUUID) throws Exception {
-
-		Connection c = null;
-		String userUUID[] = null;
-
-		try {
-			// Connection
-			c = getConnection();
-
-			PreparedStatement prepStmt = c
-					.prepareStatement("SELECT email,password,type,cookie_uuid FROM users WHERE cookie_uuid = ?;");
-
-			prepStmt.setString(1, cookieUUID);
-			ResultSet rs = prepStmt.executeQuery();
-
-			// Check if there are any results.
-			// Initialize array for data.
-			userUUID = new String[rs.getMetaData().getColumnCount()];
-
-			// Check if there are any results.
-			if (!rs.isBeforeFirst()) {
-				System.out.println("No such user");
-				return new String[] { "No such user" };
-			}
-
-			while (rs.next()) {
-				userUUID[0] = rs.getString(1);
-				userUUID[1] = rs.getString(2);
-				userUUID[2] = rs.getString(3);
-				userUUID[3] = rs.getString(4);
-			}
-
-			prepStmt.close();
-
-		} catch (Exception e) {
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
-			System.err.println(e.getCause() + " " + e.getStackTrace());
-		} finally {
-			c.close();
-		}
-		return userUUID;
 	}
 
 	/**
