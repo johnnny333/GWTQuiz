@@ -18,6 +18,7 @@ import org.gwtbootstrap3.client.ui.Input;
 import org.gwtbootstrap3.client.ui.NavTabs;
 import org.gwtbootstrap3.client.ui.TabListItem;
 import org.gwtbootstrap3.client.ui.TextBox;
+import org.gwtbootstrap3.client.ui.constants.IconType;
 import org.gwtbootstrap3.client.ui.constants.InputType;
 import org.gwtbootstrap3.client.ui.constants.ValidationState;
 import org.gwtbootstrap3.extras.toggleswitch.client.ui.ToggleSwitch;
@@ -46,10 +47,10 @@ public class LoginViewImp extends Composite implements LoginView {
 
 	@UiField
 	TabListItem loginTab;
-	
+
 	@UiField
 	TabListItem signUpTab;
-	
+
 	// Login fields
 
 	@UiField
@@ -116,16 +117,16 @@ public class LoginViewImp extends Composite implements LoginView {
 
 	public LoginViewImp() {
 		initWidget(uiBinder.createAndBindUi(this));
-		
-		//Show/Hide password input values on toggle.
+
+		// Show/Hide password input values on toggle.
 		passwordToogleSwitch.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
-			
+
 			@Override
 			public void onValueChange(ValueChangeEvent<Boolean> event) {
-				if(event.getValue()){
+				if (event.getValue()) {
 					passwordRegister.setType(InputType.TEXT);
 					passwordRetypeRegister.setType(InputType.TEXT);
-				}else {
+				} else {
 					passwordRegister.setType(InputType.PASSWORD);
 					passwordRetypeRegister.setType(InputType.PASSWORD);
 				}
@@ -137,12 +138,15 @@ public class LoginViewImp extends Composite implements LoginView {
 	public void setPresenter(Presenter listener) {
 		this.listener = listener;
 	}
-	
-	//Login logic
+
+	// Login logic
 	@UiHandler("loginButton")
 	void onLoginButtonClicked(ClickEvent e) {
 
 		if (formLogin.validate() && listener != null) {
+
+			isLogging(true);
+
 			listener.loginUser(new User(SafeHtmlUtils.htmlEscape(email.getValue().trim()), password.getValue().trim()));
 		}
 	}
@@ -162,8 +166,8 @@ public class LoginViewImp extends Composite implements LoginView {
 
 				Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
-				Set<ConstraintViolation<User>> violations = validator
-						.validate(new User(emailRegister.getValue().trim(), passwordRegister.getValue()), Default.class);
+				Set<ConstraintViolation<User>> violations = validator.validate(
+						new User(emailRegister.getValue().trim(), passwordRegister.getValue()), Default.class);
 
 				if (!violations.isEmpty()) {
 					StringBuffer errorMessage = new StringBuffer();
@@ -195,6 +199,7 @@ public class LoginViewImp extends Composite implements LoginView {
 
 				} else {
 					GWT.log("Hibernate validation OK");
+					isSigningUp(true);
 					listener.registerUser(new User(emailRegister.getValue(), passwordRegister.getValue()));
 				}
 			} else {
@@ -208,26 +213,26 @@ public class LoginViewImp extends Composite implements LoginView {
 
 	@Override
 	public void setLoginServerErrorMessage(String errorMessage) {
-		
+
 		switch (errorMessage) {
-		
-		//User login.
+
+		// User login.
 		case "No such user":
 			userMailFormGroup.setValidationState(ValidationState.ERROR);
 			userEmailInlineHelpBlock.setText(errorMessage);
 			break;
-		
-		//Password login.	
+
+		// Password login.
 		case "Bad password":
 			passwordFormGroup.setValidationState(ValidationState.ERROR);
 			passwordInlineHelpBlock.setText(errorMessage);
 			break;
-		
-		//Sign up
+
+		// Sign up
 		case "User already exist":
 			userRegisterMailFormGroup.setValidationState(ValidationState.ERROR);
 			userRegisterEmailInlineHelpBlock.setText(errorMessage + "! Use different email to register.");
-			
+
 			break;
 
 		default:
@@ -235,15 +240,15 @@ public class LoginViewImp extends Composite implements LoginView {
 			break;
 		}
 	}
-	
+
 	@Override
-	public void selectTab(String tabToSelect){
-		
+	public void selectTab(String tabToSelect) {
+
 		switch (tabToSelect) {
 		case "SignUp":
 			signUpTab.showTab();
 			break;
-			
+
 		case "Login":
 			loginTab.showTab();
 			break;
@@ -252,20 +257,44 @@ public class LoginViewImp extends Composite implements LoginView {
 			break;
 		}
 	}
-	
+
 	@Override
-	public void resetLoginForms(LoginForm formToReset){
+	public void resetLoginForms(LoginForm formToReset) {
 		switch (formToReset) {
 		case FORM_LOGIN:
 			formLogin.reset();
 			break;
-			
+
 		case FORM_REGISTER:
 			formRegister.reset();
 			break;
-			
+
 		default:
 			break;
+		}
+	}
+
+	@Override
+	public void isLogging(boolean isLogging) {
+
+		if (isLogging) {
+			loginButton.setIcon(IconType.SPINNER);
+			loginButton.setIconSpin(true);
+		} else {
+			loginButton.setIcon(IconType.USER);
+			loginButton.setIconSpin(false);
+		}
+	}
+
+	@Override
+	public void isSigningUp(boolean isLogging) {
+		
+		if (isLogging) {
+			registerButton.setIcon(IconType.SPINNER);
+			registerButton.setIconSpin(true);
+		} else {
+			registerButton.setIcon(IconType.SIGN_IN);
+			registerButton.setIconSpin(false);
 		}
 	}
 }

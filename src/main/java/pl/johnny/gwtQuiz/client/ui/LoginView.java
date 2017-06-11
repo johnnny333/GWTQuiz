@@ -48,4 +48,16 @@ public interface LoginView extends IsWidget
 	public enum LoginForm {
 		FORM_LOGIN, FORM_REGISTER
 	}
+	
+	/**
+	 * Show loading spinner when user is logging...
+	 * Otherwise display user icon.
+	 */
+	void isLogging(boolean isLogging);
+	
+	/**
+	 * Show loading spinner when user is signing up...
+	 * Otherwise display sign in icon.
+	 */
+	void isSigningUp(boolean isLogging);
 }

@@ -85,12 +85,17 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
 				Cookies.setCookie("gwtQuiz", cookieInBase64 ,expires);
 				
 				loginView.resetLoginForms(LoginForm.FORM_LOGIN);
+				
+				loginView.isLogging(false);
+				
 				goTo(new AddQuestionsPlace(""));
 			}
 
 			@Override
 			public void onFailure(Throwable caught) {
-
+				
+				loginView.isLogging(false);
+				
 				if (caught instanceof FailedLoginException) {
 					loginView.setLoginServerErrorMessage(caught.getMessage());
 					return;
@@ -107,6 +112,7 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
 			@Override
 			public void onSuccess(Void result) {
 				GWT.log("registerUser succeded in LoginActivity.registerUser()");
+				loginView.isSigningUp(false);
 				//After successful register, take new user to AdminPlace.
 				loginView.resetLoginForms(LoginForm.FORM_REGISTER);
 				loginUser(newUser);
@@ -114,7 +120,9 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
 
 			@Override
 			public void onFailure(Throwable caught) {
-
+				
+				loginView.isSigningUp(false);
+				
 				if (caught instanceof SQLConstraintException) {
 					loginView.setLoginServerErrorMessage(caught.getMessage());
 					GWT.log("SQLConstraintException in LoginActivity.registerUSer() " + caught.getMessage());
